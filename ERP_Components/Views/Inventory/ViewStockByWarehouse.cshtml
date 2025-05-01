@@ -1,0 +1,28 @@
+﻿@model List<Stock>
+
+<h2 class="text-center mb-4">Stock Details</h2>
+
+<link href="~/css/Product.css" rel="stylesheet" />
+<table class="product-table">
+    <thead>
+        <tr>
+            <th>Product Name</th>
+            <th>Quantity</th>
+            <th>Last Updated</th>
+            <th>Unit Price</th>
+    
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var stock in Model)
+        {
+            <tr>
+                <td>@stock.ProductName</td>
+                <td>@stock.Quantity</td>
+                <td>@stock.LastUpdated.ToShortDateString()</td>
+                <td>@stock.UnitPrice</td>
+               
+            </tr>
+        }
+    </tbody>
+</table>

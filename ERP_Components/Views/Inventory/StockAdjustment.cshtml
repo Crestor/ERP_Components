@@ -1,0 +1,67 @@
+﻿@model List<StockAdjustment>
+
+@{
+    ViewBag.Title = "Stock Adjustments";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    }
+
+    <link href="~/css/Stock.css" rel="stylesheet" />
+
+
+<div class="adjustment-section">
+    <h2>Stock Adjustments</h2>
+
+    @if (TempData["Message"] != null)
+    {
+        <div class="message">@TempData["Message"]</div>
+    }
+
+    <table class="adjustment-table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Product</th>
+                <th>Warehouse</th>
+                <th>Quantity Change</th>
+                <th>Reason</th>
+                <th>Adjustment Date</th>
+                <th colspan="2">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (int i = 0; i < Model.Count; i++)
+            {
+                <tr>
+                    <form asp-action="UpdateStockAdjustment" asp-controller="Home" method="post">
+                    <td>
+                            @Model[i].AdjustmentId
+                        <input type="hidden" name="AdjustmentId" value="@Model[i].AdjustmentId" />
+                    </td>
+                    <td>@Model[i].ProductName</td>
+                    <td>
+                        <input type="text" name="WarehouseName" value="@Model[i].WarehouseName" required />
+                    </td>
+                    <td>
+                        <input type="number" name="QuantityChange" value="@Model[i].QuantityChange" required />
+                    </td>
+                    <td>
+                        <input type="text" name="Reason" value="@Model[i].Reason" required />
+                    </td>
+                    <td>@Model[i].AdjustmentDate.ToString("yyyy-MM-dd HH:mm")</td>
+                    <td>
+                        <button type="submit" class="btn-update">Update</button>
+                    </td>
+                    </form>
+
+                    <form asp-action="DeleteStockAdjustment" asp-controller="Home" method="post" onsubmit="return confirm('Delete this adjustment?');">
+                    <td>
+                        <input type="hidden" name="AdjustmentId" value="@Model[i].AdjustmentId" />
+                        <button type="submit" class="btn-delete">Delete</button>
+                    </td>
+                    </form>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

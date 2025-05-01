@@ -1,0 +1,75 @@
+﻿.adjustment-section {
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 25px;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+    .adjustment-section h2 {
+        text-align: center;
+        margin-bottom: 25px;
+        color: #333;
+        font-size: 1.8rem;
+        font-weight: 600;
+    }
+
+.adjustment-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.95rem;
+    background: #fdfdfd;
+}
+
+    .adjustment-table th, .adjustment-table td {
+        padding: 12px 15px;
+        border: 1px solid #e0e0e0;
+        text-align: left;
+    }
+
+    .adjustment-table thead {
+        background-color: #c34949;
+        color: white;
+    }
+
+    .adjustment-table tbody tr:nth-child(even) {
+        background-color: ghostwhite;
+    }
+
+    .adjustment-table tbody tr:hover {
+        background-color: #f0a7a7;
+    }
+
+.btn-update {
+    background-color: #28a745;
+    color: white;
+    padding: 6px 12px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+    .btn-update:hover {
+        background-color: #218838;
+    }
+
+.btn-delete {
+    background-color: red;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+    .btn-delete:hover {
+        background-color: #c82333;
+    }
+
+.message {
+    text-align: center;
+    margin-top: 20px;
+    font-weight: bold;
+    color: green;
+}

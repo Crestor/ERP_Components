@@ -1,0 +1,68 @@
+﻿@{
+    ViewBag.Title = "Inventory Dashboard";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+}
+
+
+
+<title>Inventory Dashboard</title>
+
+
+
+
+<link asp-append-version="true" rel="stylesheet" href="/css/inventorydashboard.css" type="text/css" />
+
+<h2 style="margin-bottom: 1.5rem;">📊 Inventory Dashboard</h2>
+<div class="dashboard">
+    <div class="card">
+        <h3>Total Inventory</h3>
+        <div class="value">12,350 items</div>
+        <div class="subtext">Across all warehouses</div>
+    </div>
+    <div class="card">
+        <h3>Low Stock Items</h3>
+        <div class="value">18 items</div>
+        <div class="subtext">Reorder soon</div>
+    </div>
+    <div class="card">
+        <h3>Incoming Shipments</h3>
+        <div class="value">5 orders</div>
+        <div class="subtext">Expected within 7 days</div>
+    </div>
+    <div class="card">
+        <h3>Orders to Ship</h3>
+        <div class="value">34 orders</div>
+        <div class="subtext">8 pending, 26 packed</div>
+    </div>
+    <div class="card">
+        <h3>Total Inventory Value</h3>
+        <div class="value">₹ 1.2 Cr</div>
+        <div class="subtext">Weighted avg cost</div>
+    </div>
+    <div class="card">
+        <h3>Fastest Selling Item</h3>
+        <div class="value">Wireless Mouse</div>
+        <div class="subtext">1,250 sold this month</div>
+    </div>
+    <div class="card">
+        <h3>Slow Moving Items</h3>
+        <div class="value">23 items</div>
+        <div class="subtext">In stock > 90 days</div>
+    </div>
+    <div class="card">
+        <h3>Shrinkage/Damage</h3>
+        <div class="value">₹ 8,500</div>
+        <div class="subtext">Last 30 days</div>
+    </div>
+    <div class="card">
+        <h3>Warehouses Active</h3>
+        <div class="value">3 locations</div>
+        <div class="subtext">Delhi, Mumbai, Bangalore</div>
+    </div>
+    <div class="card">
+        <h3>Last Stock Audit</h3>
+        <div class="value">15 March 2025</div>
+        <div class="subtext">Next due in 15 days</div>
+    </div>
+</div>

@@ -1,0 +1,58 @@
+﻿
+.dashboard {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+}
+
+.card {
+    background: #a14040;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.06);
+    padding: 1.5rem;
+    transition: 0.3s ease;
+    color:white;
+}
+
+    .card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 6px 12px rgba(0,0,0,0.08);
+    }
+
+    .card h3 {
+        font-size: 1rem;
+        color: white;
+        margin-bottom: 0.5rem;
+    }
+
+    .card .value {
+        font-size: 1.6rem;
+        font-weight: bold;
+        color: white;
+        margin-bottom: 0.3rem;
+    }
+
+    .card .subtext {
+        font-size: 0.875rem;
+        color: white;
+    }
+
+
+.table th, .product-table td {
+    padding: 12px 15px;
+    border: 1px solid #e0e0e0;
+    text-align: left;
+}
+
+.table thead {
+    background-color: #c34949;
+    color: white;
+}
+
+.table tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.table tbody tr:hover {
+    background-color: #f0a7a7;
+}

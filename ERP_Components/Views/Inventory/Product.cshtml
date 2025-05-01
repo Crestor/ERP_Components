@@ -1,0 +1,63 @@
+﻿@{
+    ViewBag.Title = "Add Product";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link rel="stylesheet" href="~/css/Product.css">
+
+<div class="section">
+    @using (Html.BeginForm("Product", "Home", FormMethod.Post))
+    {
+
+
+        <h2>Add Product</h2>
+
+        <div class="form">
+
+            <div class="form-group">
+                <label>Product Category</label>
+                <input type="text" name="ProductCategory" placeholder="Enter category" />
+            </div>
+            <div class="form-group">
+                <label>Product Code</label>
+                <input type="text" name="ProductCode" placeholder="Enter product code" />
+            </div>
+            <div class="form-group">
+                <label>Product Name</label>
+                <input type="text" name="ProductName" placeholder="Enter product name" />
+            </div>
+            <div class="form-group">
+                <label>Product Description</label>
+                <textarea name="ProductDescription" placeholder="Enter product description"></textarea>
+            </div>
+            <div class="form-group">
+                <label>Product Qty</label>
+                <input type="number" name="ProductQty" placeholder="Enter quantity" />
+            </div>
+            <div class="form-group">
+                <label>UOM</label>
+                <input type="text" name="UOM" placeholder="Enter unit of measure" />
+            </div>
+            <div class="form-group">
+                <label>Applicable GST</label>
+                <input type="text" name="ApplicableGST" placeholder="Enter GST percentage" />
+            </div>
+            <div class="form-group">
+                <label>Unit Price</label>
+                <input type="number" name="UnitPrice" placeholder="Enter unit price" />
+            </div>
+    
+            <div class="form-group">
+                <label>Total Value</label>
+                <input type="number" name="TotalValue" placeholder="Enter total value" />
+            </div>
+            <div class="form-group">
+                <label>Location</label>
+                <input type="text" name="Location" placeholder="Enter location" />
+            </div>
+            <div class="form-group">
+                <button type="submit">Submit</button>
+            </div>
+        </div>
+    }
+</div>

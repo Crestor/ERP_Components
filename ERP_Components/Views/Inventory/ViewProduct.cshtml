@@ -1,0 +1,39 @@
+﻿@{
+    ViewBag.Title = "View Products";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@model List<Product>
+
+<link rel="stylesheet" href="~/css/Product.css" />
+
+<div class="product-section">
+    <h2>Product List</h2>
+    <table class="product-table">
+        <thead>
+
+
+            <tr>
+                <th>Category</th>
+                <th>Code</th>
+                <th>Name</th>
+                <th>Qty</th>
+                <th>Unit Price</th>
+                <th>Total Value</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.ProductCategory</td>
+                    <td>@item.ProductCode</td>
+                    <td>@item.ProductName</td>
+                    <td>@item.ProductQty</td>
+                    <td>@item.UnitPrice</td>
+                    <td>@item.TotalValue</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

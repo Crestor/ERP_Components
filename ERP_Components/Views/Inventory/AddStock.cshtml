@@ -1,0 +1,43 @@
+﻿@{
+    ViewBag.Title = "Add Stock";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<link href="~/css/Inventory.css" rel="stylesheet" />
+@model List<Stock>
+
+
+<h2>Add Stock Entry</h2>
+
+<form  method="post">
+    <div>
+        <label>Product:</label>
+        <select name="ProductId" required>
+            <option value="">-- Select Product --</option>
+            Console.WriteLine(ViewBag.ProductList);
+            @foreach (var product in ViewBag.ProductList)
+            {
+                
+                <option value="@product.ProductId">@product.ProductName</option>
+            }
+        </select>
+    </div>
+
+    <div>
+        <label>Warehouse:</label>
+        <select  name="WarehouseId" required>
+            <option value="">-- Select Warehouse --</option>
+            @foreach (var warehouse in ViewBag.WarehouseList)
+            {
+                <option value="@warehouse.WarehouseId">@warehouse.WarehouseName</option>
+            }
+        </select>
+    </div>
+
+    <div>
+        <input type="number" name="Quantity" placeholder="Quantity" required />
+    </div>
+
+    <button class="btn btn-primary type="submit" asp-action="AddStock" asp-controller="Home">Add Stock</button>
+
+    
+</form>

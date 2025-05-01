@@ -1,0 +1,59 @@
+﻿@model List<Warehouse>
+
+@{
+    ViewBag.Title = "Warehouses";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link href="~/css/Card.css" rel="stylesheet" />
+
+<h2>Warehouses</h2>
+
+<div class="container">
+    <div class="row">
+        <!-- Left: Warehouse Cards -->
+        <div class="col-md-8">
+            <div class="row">
+                @foreach (var warehouse in Model)
+                {
+                    <div class="col-md-4 mb-4">
+                        <div class="card h-100">
+
+                            <img src="~/images/warehouse.png" class="card-img-top" alt="Warehouse Icon">
+                            <div class="card-body">
+                                <h5 class="card-title">@warehouse.WarehouseName</h5>
+                                <p class="card-text">@warehouse.Location</p>
+
+                                <!-- This button now links to the ViewWarehouseStock action with the warehouse ID -->
+                                <a href="@Url.Action("ViewStockByWarehouse", "Home", new { warehouseId = warehouse.WarehouseId })" class="btn btn-primary">
+                                    View Stock
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                }
+
+            </div>
+        </div>
+
+        <!-- Right: Sticky Form -->
+        <div class="col-md-4">
+            <div class="sticky-form">
+                <h3>Add New Warehouse</h3>
+                <form method="post">
+                    <div class="form-group">
+                        <label for="WarehouseName">Warehouse Name</label>
+                        <input type="text" id="WarehouseName" name="WarehouseName" class="form-control" required />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="Location">Location</label>
+                        <input type="text" id="Location" name="Location" class="form-control" required />
+                    </div>
+
+                    <button class="btn btn-primary" type="submit" asp-action="AddWarehouses" asp-controller="Home">Add New Warehouse</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

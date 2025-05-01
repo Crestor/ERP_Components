@@ -1,0 +1,25 @@
+﻿@using ERP_Component_DAL.Models;
+@{
+    ViewBag.Title = "Login Authentication";
+    Layout = "~/Views/Shared/_loginLayout.cshtml";
+
+}
+@model Users
+
+
+<link asp-append-version="true" rel="stylesheet" href="/css/Login.css" type="text/css" />
+
+
+<div class="login-container">
+    <h2>Inventory Management</h2>
+    <form asp-action="Login" asp-controller="Home" method="post">
+        <!-- form fields -->
+
+
+
+
+        <input type="text" name="UserName" placeholder="Username" required />
+        <input type="password" name="Password" placeholder="Password" required />
+        <button type="submit">Login</button>
+    </form>
+</div>
