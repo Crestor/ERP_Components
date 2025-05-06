@@ -1,0 +1,57 @@
+﻿@model ERP_Component_DAL.Models.Items
+@{
+    ViewBag.Title = "Edit Material";
+    string activeSection = ViewBag.Section as string ?? "main";
+}
+
+<h2>Edit Material</h2>
+
+<div class="vendor-section" id="main" style="@(activeSection == "main" ? "" : "display:none")">
+    <h3>Main Details</h3>
+    <form method="post" action="/Inventory/UpdateMain">
+        <input type="hidden" name="itemId" value="@Model.itemId" />
+        <label>Item Name:</label>
+        <input type="text" name="itemName" value="@Model.itemName" /><br />
+        <label>SKU:</label>
+        <input type="number" name="SKU" value="@Model.SKU" /><br />
+        <label>HSN:</label>
+        <input type="number" name="HSN" value="@Model.HSN" /><br />
+        <label>Specification:</label>
+        <textarea name="specification">@Model.specification</textarea><br />
+        <label>Unit Price:</label>
+        <input type="text" name="unitPrice" value="@Model.unitPrice" /><br />
+        <label>UOM:</label>
+        <input type="text" name="UOM" value="@Model.UOM" /><br />
+        <button type="submit">Save</button>
+    </form>
+</div>
+
+<div class="vendor-section" id="address" style="@(activeSection == "address" ? "" : "display:none")">
+    <h3>Lot Details</h3>
+    <form method="post" action="/Inventory/UpdateLot">
+        <input type="hidden" name="lotId" value="@Model.lotId" />
+        <label>Lot Series:</label>
+        <input type="number" name="lotSeries" value="@Model.lotSeries" /><br />
+        <label>Manufacturing Date:</label>
+        <input type="date" name="manufacture" value="@Model.manufacture.ToString("yyyy-MM-dd")" /><br />
+        <label>Expiry:</label>
+        <input type="date" name="expiry" value="@Model.expiry.ToString("yyyy-MM-dd")" /><br />
+        <label>Delivered:</label>
+        <input type="date" name="deliverd" value="@Model.deliverd.ToString("yyyy-MM-dd")" /><br />
+        <button type="submit">Save</button>
+    </form>
+</div>
+
+<div class="vendor-section" id="bank" style="@(activeSection == "bank" ? "" : "display:none")">
+    <h3>Stock Details</h3>
+    <form method="post" action="/Inventory/UpdateStock">
+        <input type="hidden" name="inventoryId" value="@Model.inventoryId" />
+        <label>In Stock:</label>
+        <input type="number" name="inStock" value="@Model.inStock" /><br />
+        <label>Stock Alert:</label>
+        <input type="number" name="stockAlert" value="@Model.stockAlert" /><br />
+        <label>Warehouse:</label>
+        <input type="text" name="warehouse" value="@Model.warehouse" /><br />
+        <button type="submit">Save</button>
+    </form>
+</div>

@@ -1,7 +1,7 @@
-/* Prevent horizontal scroll */
+
 body {
     overflow-x: hidden;
-    background-color: #f8f1f1; /* Light background for contrast */
+    background-color: #f8f1f1; 
 }
 
 /* Sidebar wrapper */

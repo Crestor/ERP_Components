@@ -1,0 +1,185 @@
+﻿@using ERP_Component_DAL.Models;
+<link rel="stylesheet" href="~/css/Product.css" />
+
+@model List<Category>
+
+
+
+<style>
+    .tab-buttons {
+        display: flex;
+        justify-content: space-between;
+        padding: 20px 40px;
+        /* background-color: #f8f9fa; */
+        border-radius: 10px;
+        margin: 20px auto;
+        width: 90%;
+        /* box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05); */
+    }
+
+    .tab-button {
+        padding: 10px 20px;
+        background-color: #023e8a;
+        color: #fff;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-weight: 500;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+
+        .tab-button:hover {
+            background-color: #0077b6;
+            transform: scale(1.05);
+        }
+
+</style>
+
+<div class="tab-buttons">
+    <button class="tab-button" onclick="showSection('product')">
+        Add Product Category
+    </button>
+    <button class="tab-button" onclick="showSection('material')">
+        Add Material Category
+    </button>
+</div>
+
+
+<div class="container" id="product" style="display:block">
+
+
+    <h2>Add Product SubCategory</h2>
+    <form method="post" asp-action="AddSubCategory" asp-controller="Inventory">
+        <div class="form-section">
+            <h3>Category Info</h3>
+            <div class="form-row">
+                <label class="required">Category Name</label>
+                <select class="form-control" style="padding:10px" id="name" name="categoryId" required>
+                    <option disabled selected> select Name</option>
+                    @for (var i = 0; i < Model.Count; i++)
+                    {
+
+                        <option value="@Model[i].categoryId">@Model[i].categoryName</option>
+                    }
+                </select>
+           
+                <label class="required">SubCategory Name</label>
+                <input type="text" name="subCategoryName" placeholder="Enter Category Name" />
+            </div>
+            <div class="form-row">
+                <label class="required">SubCategory Code</label>
+                <input type="text" name="categoryCode" placeholder="Enter Category code" />
+            
+                <label class="required">SubCategory Description</label>
+                <textarea style="width:33%" name="categoryDescription" placeholder="Enter product Description"></textarea>
+
+            </div>
+
+            <div class="form-row" style="width:50%">
+                <label class="required">Is Active</label>
+                <select name="isActive" required>
+                    <option selected disabled>select</option>
+                    <option>yes</option>
+                    <option>NO</option>
+                </select>
+            </div>
+        </div>
+        <div class="button-container">
+                <button type="submit">Submit</button>
+            </div>
+    </form>
+</div>
+
+<div class="container" id="material" style="display:none">
+
+
+    <h2>Add Material SubCategory</h2>
+    <form method="post" asp-action="AddSubCategory" asp-controller="Inventory">
+        <div class="form-section">
+            <h3>Category Info</h3>
+            <div class="form-row">
+                <label class="required">Category Name</label>
+                <select class="form-control" style="padding:10px" id="name" name="categoryName" required>
+                    <option selected disabled>Select</option>
+                </select>
+
+                <label class="required">SubCategory Name</label>
+                <input type="text" name="subCategoryName" placeholder="Enter Category Name" />
+            </div>
+            <div class="form-row">
+                <label class="required">SubCategory Code</label>
+                <input type="text" name="categoryCode" placeholder="Enter Category code" />
+
+                <label class="required">SubCategory Description</label>
+                <textarea style="width:33%" name="categoryDescription" placeholder="Enter product Description"></textarea>
+
+            </div>
+
+            <div class="form-row" style="width:50%">
+                <label class="required">Is Active</label>
+                <select name="isActive" required>
+                    <option selected disabled>select</option>
+                    <option>yes</option>
+                    <option>NO</option>
+                </select>
+            </div>
+        </div>
+        <div class="button-container">
+            <button type="submit">Submit</button>
+        </div>
+    </form>
+</div>
+<script>
+
+        function showSection(sectionId) {
+        document.querySelectorAll('.container').forEach(el => el.style.display = 'none');
+        document.getElementById(sectionId).style.display = 'block';
+
+        if (sectionId === "material") {
+            getName();  
+        }
+
+       
+    }
+
+</script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+
+
+       function getName() {
+        console.log("getName called");
+        $.ajax({
+            type: "GET",
+            url: "/Inventory/CategoriesNames",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (response) {
+                console.log("Server response:", response);
+
+                let dropdown = $("#name");
+                console.log("Dropdown element:", dropdown);
+
+                dropdown.empty();
+                dropdown.append('<option selected disabled>Select</option>');
+
+                response.forEach(function (item) {
+                    console.log("Item:", item);
+
+                    const category = item.categoryName || item.CategoryName;
+                    if (category) {
+                        dropdown.append('<option value="' + category + '">' + category + '</option>');
+                    } else {
+                        console.warn("categoryName missing in item", item);
+                    }
+                });
+            },
+            error: function (xhr, status, error) {
+                console.error("AJAX Error:", error);
+            }
+        });
+    }
+
+
+</script>
+

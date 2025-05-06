@@ -1,0 +1,159 @@
+﻿@using ERP_Component_DAL.Models;
+
+
+@{
+    ViewBag.Title = "Add Material";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link rel="stylesheet" href="~/css/Product.css">
+
+@model List<Product>
+
+
+<div id="material"  class="container">
+    <form method="post" asp-action="AddMaterial" asp-controller="Inventory">
+
+        <div class="form-section">
+            <h3>Material Info</h3>
+            <div class="form-row">
+
+                <label class="required" for="productName">Product Name:</label>
+                <input type="text" name="itemName" required />
+                <input type="hidden" name="itemType" value="material" required />
+
+                <label class="required" for="sku">Stack Keeping Unit(SKU):</label>
+                <input type="number" name="SKU" required />
+            </div>
+            <div class="form-row">
+                <label class="required" for="hsn">HSN:</label>
+                <input type="number" name="HSN" />
+                <label class="required" for="category">Category:</label>
+                <select name="categoryId" id="role" onchange="getName()">
+                    <option selected disabled>Select</option>
+                    @foreach (var scheme in Model)
+                    {
+                        @foreach (var category in scheme.category)
+                        {
+                            <option value="@category.categoryId">@category.categoryName</option>
+                        }
+                    }
+                </select>
+            </div>
+            <div class="form-row">
+                <label class="required" for="subCategory">Sub-category:</label>
+                <select id="name" name="subCategoryName">
+                    <option selected disabled>Select</option>
+                  
+                </select>
+                <label for="descr">Specification:</label>
+                <textarea style="width:33%" name="specification"></textarea>
+
+            </div>
+            <div class="form-row">
+                <label for="image">Unit Price:</label>
+                <input type="text" name="unitPrice" />
+                <label for="uom">Unit of Measurement:</label>
+                <input type="text" name="UOM" />
+            </div>
+
+            <div class="form-row">
+                <label for="image">GST:</label>
+                <input type="number" name="gst" />
+
+            </div>
+        </div>
+
+
+
+        <div class="form-section">
+            <h3>LOT</h3>
+            <div class="form-row">
+
+                <label class="required" for="initialQuantity">LOT Series:</label>
+                <input type="number" name="lotSeries" required />
+                <input type="hidden" name="type" value="lot" required />
+
+                <label class="required" for="sku">Manufacturing Date:</label>
+                <input type="date" name="manufacture" required />
+            </div>
+            <div class="form-row">
+                <label class="required" for="msl">Expiry Date:</label>
+                <input type="date" name="expiry" />
+                <label for="recorderQuantity">Delivered Date:</label>
+                <input type="date" name="deliverd" />
+            </div>
+
+        </div>
+
+
+        <div class="form-section">
+            <h3>Stock Details</h3>
+            <div class="form-row">
+
+                <label class="required" for="inStock">In Stock:</label>
+                <input type="number" name="inStock" required />
+
+                <label class="required" for="stockAlert">Stock Alert:</label>
+                <input type="number" name="stockAlert" required />
+            </div>
+            <div class="form-row">
+                <label class="required" for="warehouse">Warehouse:</label>
+                <select name="warehouseId">
+                <option selected disabled>Select</option>
+                @foreach (var scheme in Model)
+                {
+                    @foreach (var warehouse in scheme.warehouse)
+                    {
+                        <option value="@warehouse.warehouseId">@warehouse.warehouseName</option>
+                    }
+                }
+                </select>
+
+            </div>
+
+
+        </div>
+
+
+        <div class="button-container">
+            <button type="submit">Submit</button>
+            <button type="reset">Reset</button>
+        </div>
+    </form>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+        function getName() {
+        var Id = $("#role").val();
+
+        $.ajax({
+            type: "GET",
+            url: "/Inventory/SubCategoriesNames",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            data: { categoryId: Id },
+            success: function (response) {
+                if (response.length > 0) {
+                    $("#name").empty();
+                    $("#name").append('<option selected disabled>Select</option>');
+                    response.forEach(function (item) {
+                        // $("#name").append('<option value="' + item.subCategoryName + '">' + item.subCategoryName + '</option>');
+                       $("#name").append('<option value="' + item.subCategoryId + '">' + item.name + '</option>');
+
+
+                    });
+                } else {
+                    $("#name").empty().append('<option selected disabled>No SubCategory Found</option>');
+                }
+            },
+            error: function (xhr, status, error) {
+                console.error("AJAX Error: ", error);
+                console.error("Status: ", status);
+                console.error("Response: ", xhr.responseText);
+                alert("Error fetching user data. Check console for details.");
+            }
+        });
+    }
+</script>

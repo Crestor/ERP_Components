@@ -1,0 +1,242 @@
+﻿@using ERP_Component_DAL.Models;
+<link rel="stylesheet" href="~/css/Product.css">
+
+@model List<Category>
+
+<style>
+    .tab-buttons {
+        display: flex;
+        justify-content: space-between;
+        padding: 20px 40px;
+        /* background-color: #f8f9fa; */
+        border-radius: 10px;
+        margin: 20px auto;
+        width: 90%;
+        /* box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05); */
+    }
+
+    .tab-button {
+        padding: 10px 20px;
+        background-color: #023e8a;
+        color: #fff;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-weight: 500;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+
+        .tab-button:hover {
+            background-color: #0077b6;
+            transform: scale(1.05);
+        }
+
+</style>
+
+<div class="tab-buttons">
+    <button class="tab-button" onclick="showSection('product')">
+        View Product Category
+    </button>
+    <button class="tab-button" onclick="getName();showSection('material');">
+        View Material Category
+    </button>
+</div>
+
+
+
+
+
+
+<div class="container" id="product" style="display:block">
+
+    <div>
+        <h4>View Product Categories</h4>
+
+</div>
+
+    <div class="Table">
+        <table>
+            <thead>
+                <tr>
+                    <th>S.No.</th>
+                    <th>Category Name</th>
+                    <th>Category Code</th>
+                    <th>Category Description</th>
+                    <th>Is Active</th>
+                    <th>Date</th>
+                    <th>Action</th>
+
+                </tr>
+            </thead>
+            <tbody id="geeks">
+
+
+                @for (var i = 0; i < Model.Count; i++)
+                {
+
+                    var x = Model[i];
+                    var index = i + 1;
+
+                    <tr>
+                        <td>@index</td>
+                        <td>@x.categoryName</td>
+                        <td>@x.categoryCode</td>
+                        <td>@x.categoryDescription</td>
+                        <td>@x.isActive</td>
+                        <td>@x.createdOn.ToShortDateString()</td>
+                        
+                        <td>
+                            <div class="actions">
+
+                                <button onclick="location.href='@Url.Action("EditCategory", "Inventory", new { categoryId = x.categoryId }, null)'"><i class="fas fa-edit"></i></button>
+                                <button onclick="location.href='@Url.Action("DeleteCategory", "Inventory", new { categoryId = x.categoryId }, null)'"><i class="fas fa-trash"></i></button>
+
+                                @* <button style="background-color:#007bff; color:white; text-align:center; border-radius:10px; padding:4px 10px" onclick="location.href='@Url.Action("EditCategory", "Inventory", new { categoryId = x.categoryId }, null)'">Edit</button>
+
+
+                                <button style="background-color:#d01313c2; color:white; text-align:center; border-radius:10px; padding:4px 10px" onclick="location.href='@Url.Action("DeleteCategory", "Inventory", new { categoryId = x.categoryId }, null)'">Delete</button> *@
+
+                            </div>
+                        </td>
+
+                    </tr>
+                }
+            </tbody>
+
+
+
+        </table>
+    </div>
+
+</div>
+
+<div class="container" id="material" style="display: none;">
+
+    <div>
+        <h4>View Material Categories</h4>
+
+</div>
+
+    <div class="Table">
+        <table>
+            <thead>
+                <tr>
+                    <th>S.No.</th>
+                    <th>Category Name</th>
+                    <th>Category Code</th>
+                    <th>Category Description</th>
+                    <th>Is Active</th>
+                    <th>Date</th>
+                    <th>Action</th>
+
+                </tr>
+            </thead>
+            <tbody id="geeks">
+
+
+                @for (var i = 0; i < Model.Count; i++)
+                {
+
+                    var x = Model[i];
+                    var index = i + 1;
+
+                    <tr>
+                        <td>@index</td>
+                        <td>@x.categoryName</td>
+                        <td>@x.categoryCode</td>
+                        <td>@x.categoryDescription</td>
+                        <td>@x.isActive</td>
+                        <td>@x.createdOn.ToShortDateString()</td>
+
+                        <td>
+                            <div class="actions">
+
+                                <button onclick="location.href='@Url.Action("EditCategory", "Inventory", new { categoryId = x.categoryId }, null)'"><i class="fas fa-edit"></i></button>
+                                <button onclick="location.href='@Url.Action("DeleteCategory", "Inventory", new { categoryId = x.categoryId }, null)'"><i class="fas fa-trash"></i></button>
+
+                                @* <button style="background-color:#007bff; color:white; text-align:center; border-radius:10px; padding:4px 10px" onclick="location.href='@Url.Action("EditCategory", "Inventory", new { categoryId = x.categoryId }, null)'">Edit</button>
+
+
+                                <button style="background-color:#d01313c2; color:white; text-align:center; border-radius:10px; padding:4px 10px" onclick="location.href='@Url.Action("DeleteCategory", "Inventory", new { categoryId = x.categoryId }, null)'">Delete</button> *@
+
+                            </div>
+                        </td>
+
+                    </tr>
+                }
+            </tbody>
+
+
+
+        </table>
+    </div>
+
+</div>
+<script>
+
+     function showSection(sectionId) {
+        document.querySelectorAll('.container').forEach(el => el.style.display = 'none');
+        document.getElementById(sectionId).style.display = 'block';
+
+    }
+</script>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+
+        function getName() {
+        $.ajax({
+            type: "GET",
+            url: "/Inventory/ViewMaterialCategories",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (response) {
+                let tbody = $("#material tbody");
+                tbody.empty(); // Clear existing rows
+
+                if (response.length > 0) {
+                    response.forEach((item, index) => {
+                        tbody.append(`
+                            <tr>
+                                <td>${index + 1}</td>
+                                <td>${item.categoryName}</td>
+                                <td>${item.categoryCode}</td>
+                                <td>${item.categoryDescription}</td>
+                                <td>${item.isActive}</td>
+                                <td>${new Date(item.createdOn).toLocaleDateString()}</td>
+                                <td>
+                                    <div class="actions">
+                                        <button onclick="location.href='/Inventory/EditCategory?categoryId=${item.categoryId}'">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                        <button onclick="location.href='/Inventory/DeleteCategory?categoryId=${item.categoryId}'">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        `);
+                    });
+                } else {
+                    tbody.append('<tr><td colspan="7">No Material Categories Found</td></tr>');
+                }
+            },
+            error: function (xhr, status, error) {
+                console.error("AJAX Error:", error);
+                alert("Error fetching material categories.");
+            }
+        });
+    }
+
+
+
+
+// function getName() {
+//     console.log("get Data"); 
+//     $.ajax({
+//         type: "GET",
+//             url: "/Inventory/ViewMaterialCategories",
+   
+//     });
+// }
+</script>

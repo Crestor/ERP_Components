@@ -1,4 +1,4 @@
-﻿@model List<Stock>
+﻿@* @model List<Stock> *@
 
 <h2 class="text-center mb-4">Stock Details</h2>
 
@@ -14,7 +14,7 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var stock in Model)
+        @* @foreach (var stock in Model)
         {
             <tr>
                 <td>@stock.ProductName</td>
@@ -23,6 +23,6 @@
                 <td>@stock.UnitPrice</td>
                
             </tr>
-        }
+        } *@
     </tbody>
 </table>

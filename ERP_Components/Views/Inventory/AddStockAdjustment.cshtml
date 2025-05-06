@@ -1,4 +1,4 @@
-﻿@model List<StockAdjustment>
+﻿@* @model List<StockAdjustment> *@
 
 @{
     ViewBag.Title = "Add Stock Adjustment";
@@ -15,11 +15,11 @@
         <select name="ProductId" required>
             <option value="">-- Select Product --</option>
          
-            @foreach (var product in ViewBag.ProductList)
-            {
+            @* @foreach (var product in ViewBag.ProductList) *@
+            @* { *@
 
-                <option value="@product.ProductId">@product.ProductName</option>
-            }
+            @*     <option value="@product.ProductId">@product.ProductName</option> *@
+            @* } *@
         </select>
     </div>
 

@@ -39,7 +39,7 @@
         margin: 10px 30px;
     }
 
-        .table-actions button {
+        .table-actions button{
             padding: 6px 16px;
             border: none;
             background-color: #023e8ac7;
@@ -55,7 +55,7 @@
 
 
 <div>
-    <h4>View Product</h4>
+    <h4>View Materials</h4>
 </div>
 
 <div class="container">
@@ -82,13 +82,10 @@
                     <th>Stock Keeping Unit</th>
                     <th>HSN</th>
                     <th>Specification</th>
-                    <th>Unit Price</th>
-                    <th>Cost Price</th>
-                    <th>Mrp</th>
-                    <th>Selling Price</th>
+                     <th>Unit Price</th>
                     <th>Unit Of Measurement</th>
-
-
+                  
+               
                 </tr>
             </thead>
             <tbody>
@@ -103,11 +100,8 @@
                         <td>@v.HSN</td>
                         <td>@v.specification</td>
                         <td>@v.unitPrice</td>
-                        <td>@v.costPrice</td>
-                        <td>@v.mrp</td>
-                        <td>@v.sellingPrice</td>
                         <td>@v.UOM</td>
-
+                        
                     </tr>
                 }
             </tbody>
@@ -122,11 +116,11 @@
                     <th></th>
                     <th>S.No.</th>
                     <th>Item Name</th>
-                    <th>Batch Series</th>
+                    <th>Lot Series</th>
                     <th>Manufacturing Date</th>
                     <th>Expiry Date</th>
                     <th>Delivered Date</th>
-
+                 
                 </tr>
             </thead>
             <tbody>
@@ -137,11 +131,11 @@
                         <td><input type="checkbox" class="row-check" onchange="toggleActionButtons(this)"></td>
                         <td>@(i + 1)</td>
                         <td>@v.itemName</td>
-                        <td>@v.batchSeries</td>
+                        <td>@v.lotSeries</td>
                         <td>@v.manufacture.ToShortDateString()</td>
                         <td>@v.expiry.ToShortDateString()</td>
                         <td>@v.deliverd.ToShortDateString()</td>
-
+                       
                     </tr>
                 }
             </tbody>
@@ -159,7 +153,7 @@
                     <th>Warehouse</th>
                     <th>In Stock</th>
                     <th>Stock Alert</th>
-
+                   
                 </tr>
             </thead>
             <tbody>
@@ -173,7 +167,7 @@
                         <td>@v.warehouse</td>
                         <td>@v.inStock</td>
                         <td>@v.stockAlert</td>
-
+                        
                     </tr>
                 }
             </tbody>
@@ -183,7 +177,8 @@
 
 
 
-<script>
+
+    <script>
     function showSection(sectionId) {
         document.querySelectorAll('.vendor-section').forEach(el => el.style.display = 'none');
         document.getElementById(sectionId).style.display = 'block';
@@ -206,11 +201,23 @@
 
     function editSelected() {
         const id = getSelectedVendorId();
-        if (id) {
-            window.location.href = '@Url.Action(" EditProduct", "Inventory")' + '?itemId=' + id;
+        const activeSection = document.querySelector('.vendor-section:not([style*="display: none"])').id;
+
+        if (id && activeSection) {
+            const sectionParam = encodeURIComponent(activeSection);
+            const url = '@Url.Action("EditMaterial", "Inventory")' + `?itemId=${id}&section=${sectionParam}`;
+            window.location.href = url;
         }
     }
 
+    function clearCheckboxes() {
+        document.querySelectorAll('.row-check').forEach(cb => cb.checked = false);
+        document.getElementById("editBtn").disabled = true;
+        document.getElementById("deleteBtn").disabled = true;
+    }
+</script>
+
+<script>
     function confirmDelete() {
         const vendorId = getSelectedVendorId();
 

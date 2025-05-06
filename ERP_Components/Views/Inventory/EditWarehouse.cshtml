@@ -1,4 +1,6 @@
-﻿@* @model List<Warehouse> *@
+﻿@using ERP_Component_DAL.Models;
+
+
 
 @{
     ViewBag.Title = "Warehouses";
@@ -6,11 +8,12 @@
 }
 
 <link rel="stylesheet" href="~/css/Product.css">
+ @model Warehouse
 
-<h2>Add Warehouses</h2>
+<h2>Edit Warehouses</h2>
 
 <div>
-    <form id="vendorForm" method="post" asp-action="AddWarehouses" asp-controller="Inventory" onsubmit="savedDetail()">
+    <form id="vendorForm" method="post" asp-action="EditWarehouse" asp-controller="Inventory" onsubmit="savedDetail()">
 
 
         <div class="form-section">
@@ -18,36 +21,37 @@
             <div class="form-row">
 
                 <label for="type"> Warehouse Type </label>
-                <select name="warehouseType">
+                <select name="warehouseType" value="@Model.warehouseType">
                     <option disabled selected>Select</option>
                     <option>Sales</option>
                     <option>Production</option>
                 </select>
-             
+
 
                 <label for="name">Warehouse Name</label>
-                <input type="text" id="panno" name="warehouseName" required>
+                <input type="text" id="panno" name="warehouseName" value="@Model.warehouseName" required>
+                <input type="text" id="panno" name="addressId" value="@Model.addressId" required hidden>
 
             </div>
-           
+
 
         </div>
-      
+
         <div class="form-section">
             <h3>Address Details</h3>
             <div class="form-row">
 
                 <label for="address2"> Address Line 1:   </label>
-                <input type="text" id="address1" name="Address1" required>
+                <input type="text" id="address1" name="Address1" value="@Model.Address1" required>
 
         <label for="address2"> Address Line 2:   </label>
-        <input type="text" id="address2" name="Address2" required>
-              
+                <input type="text" id="address2" name="Address2" value="@Model.Address2" required>
+
             </div>
             <div class="form-row">
 
         <label for="country">Country:</label>
-        <select id="country" name="Country">
+                <select id="country" name="Country" value="@Model.Country">
             <option selected disabled>-Select-</option>
             <option>India</option>
 
@@ -56,34 +60,34 @@
 
 
                 <label for="state">State: </label>
-                <select id="state" name="State" required>
+                <select id="state" name="State" required value="@Model.State">
                     @* onchange="updateDistricts()" *@
                     <option selected disabled value=" ">-Select State-</option>
 
                 </select>
-               
+
             </div>
 
             <div class="form-row">
 
         <label for="district"> District: </label>
-        <select id="district" name="District" required>
+                <select id="district" name="District" required value="@Model.District">
             <option disabled selected value=" ">-Select District-</option>
         </select>
 
                 <label for="city">Area:</label>
-                <select id="city" name="Area" onchange="checkOtherCity(this)" required>
+                <select id="city" name="Area" onchange="checkOtherCity(this)" value="@Model.Area" required>
                     <option selected disabled value="">-Select Area-</option>
                     <option value="other">other</option>
 
 
                 </select>
-                
+
             </div>
 
             <div class="form-row" style="width:50%">
     <label for="pincode"> Postal Code:</label>
-    <input type="text" id="pincode" name="PostalCode" required>
+    <input type="text" id="pincode" name="PostalCode" value="@Model.PostalCode" required>
     </div>
         </div>
         <div class="button-container">
@@ -232,7 +236,7 @@
 
 
 
-   
+
 
     document.getElementById("state").addEventListener("change", updateDistricts);
     document.getElementById("district").addEventListener("change", updateCities);
@@ -240,3 +244,4 @@
 
     window.onload = populateStates;
 </script>
+

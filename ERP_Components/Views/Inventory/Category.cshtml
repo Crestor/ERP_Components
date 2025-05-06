@@ -1,0 +1,155 @@
+﻿@using ERP_Component_DAL.Models;
+<link rel="stylesheet" href="~/css/Product.css" />
+
+@model List<Category>
+
+<style>
+    .tab-buttons {
+        display: flex;
+        justify-content: space-between;
+       
+        padding: 20px 40px;
+        /* background-color: #f8f9fa; */
+        border-radius: 10px;
+        margin: 20px auto;
+        width:90%;
+        /* box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05); */
+    }
+
+    .tab-button {
+        padding: 10px 20px;
+        background-color: #023e8a;
+        color: #fff;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-weight: 500;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+
+        .tab-button:hover {
+            background-color: #0077b6;
+            transform: scale(1.05);
+        }
+
+</style>
+@* <div class="tab-buttons" style="display: flex; padding: 20px 60px; gap: 10px;justify-content: space-between; align-items: center; margin: 10px 30px;">
+    <button style=" padding: 8px 16px; border: none; background-color: #023e8ac7;color: white; border-radius: 5px;cursor: pointer;" onclick="showSection('product')">
+        Add Product category
+    </button>
+    <button style=" padding: 8px 16px; border: none; background-color: #023e8ac7;color: white; border-radius: 5px;cursor: pointer;" onclick="showSection('material')">
+        Add Material Category
+    </button>
+
+</div>
+ *@
+<div class="tab-buttons">
+    <button class="tab-button" onclick="showSection('product')">
+        Add Product Category
+    </button>
+    <button class="tab-button" onclick="showSection('material')">
+        Add Material Category
+    </button>
+</div>
+
+
+
+
+<div class="container" id="product" style="display: block;">
+
+
+    <div style="display:flex; justify-content:center; align-items:center;margin:auto">
+        <h3>Add Product Category</h3>
+    </div>
+    <form method="post" asp-action="AddCategory" asp-controller="Inventory">
+        <div class="form-section">
+            <h3>Category Info</h3>
+            <div class="form-row">
+
+              
+                <label class="required">Category Name</label>
+                <input type="text" name="categoryName" placeholder="Enter Category Name" />
+                <input type="hidden" name="formType" value="product" />
+
+
+                <label class="required">Category Code</label>
+                <input type="text" name="categoryCode" placeholder="Enter Category code" />
+              
+            </div>
+            <div class="form-row">
+
+            
+
+                <label class="required">Category Description</label>
+                <textarea name="categoryDescription" style="width: 33%;" placeholder="Enter product Description"></textarea>
+                <label class="required">Is Active</label>
+                <select name="isActive" required>
+                    <option selected disabled>select</option>
+                    <option>yes</option>
+                    <option>NO</option>
+                </select>
+
+            </div>
+           
+        </div>
+            <div class="button-container">
+                <button type="submit">Submit</button>
+            </div>
+    </form>
+</div>
+
+
+
+
+
+
+<div class="container" id="material" style="display: none;">
+
+    <div style="display:flex; justify-content:center; align-items:center;margin:auto">
+    <h3>Add Material Category</h3>
+    </div>
+    <form method="post" asp-action="AddCategory" asp-controller="Inventory">
+        <div class="form-section">
+            <h3>Category Info</h3>
+            <div class="form-row">
+
+
+                <label class="required">Category Name</label>
+                <input type="text" name="categoryName" placeholder="Enter Category Name" />
+                <input type="hidden" name="formType" value="material" />
+
+                <label class="required">Category Code</label>
+                <input type="text" name="categoryCode" placeholder="Enter Category code" />
+
+            </div>
+            <div class="form-row">
+
+
+
+                <label class="required">Category Description</label>
+                <textarea name="categoryDescription" style="width: 33%;" placeholder="Enter product Description"></textarea>
+                <label class="required">Is Active</label>
+                <select name="isActive" required>
+                    <option selected disabled>select</option>
+                    <option>yes</option>
+                    <option>NO</option>
+                </select>
+
+            </div>
+
+        </div>
+        <div class="button-container">
+            <button type="submit">Submit</button>
+        </div>
+    </form>
+</div>
+
+
+<script>
+
+     function showSection(sectionId) {
+        document.querySelectorAll('.container').forEach(el => el.style.display = 'none');
+        document.getElementById(sectionId).style.display = 'block';
+        clearCheckboxes();
+    }
+</script>

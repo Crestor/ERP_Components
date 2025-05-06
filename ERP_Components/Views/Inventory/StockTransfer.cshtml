@@ -21,56 +21,63 @@
                 <input type="text" name="productName" required />
                 @* <input type="hidden" name="itemType" value="product" required /> *@
 
-                <label class="required" for="sku">Purchase Date:</label>
-                <input type="date" name="purchaseDate" required />
+                <label class="required" for="sku">Order Date:</label>
+                <input type="date" name="orderDate" required />
             </div>
             <div class="form-row">
-                <label class="required" for="supplier">Supplier Name:</label>
+                <label class="required" for="supplier">Customer Name:</label>
                 <input type="text" name="supplierName" />
-                <label class="required" for="invoice">Invoice Number:</label>
+                <label class="required" for="invoice">Customer Contact:</label>
                 <input type="text" name="invoice" />
             </div>
             <div class="form-row">
                 <label class="required" for="batch">Batch Number:</label>
                 <input type="text" name="batchNumber">
-                    
-                <label for="descr">Quantity Purchased:</label>
+
+                <label for="descr">Quantity Ordered:</label>
                 <input type="number" name="quantity">
 
             </div>
             <div class="form-row">
-                <label for="price">Total Price:</label>
-                <input type="text" name="totalPrice" />
-                <label for="cost">Warehouse Location:</label>
-                <input type="text" name="location" />
+                <label for="price">Selling Price:</label>
+                <input type="text" name="sellingPrice" />
+                <label for="cost">Available Stock:</label>
+                <input type="text" name="available" />
             </div>
             <div class="form-row">
                 <label for="mrp">Tax%:</label>
                 <input type="number" name="tax" />
-                <label for="selling">Shipping Charges:</label>
-                <input type="text" name="shippingCharges" />
-            </div>
-            <div class="form-row">
-               
-                <label for="image">Remarks:</label>
-                <textarea  name="remark"></textarea>
-                <label for="image">upload Invoice:</label>
-                <input type="file" name="upload" />
+                <label for="selling">Discount%:</label>
+                <input type="text" name="discount" />
             </div>
             <div class="form-row">
 
-                <label class="required" for="initialQuantity">Payment Status:</label>
+                <label for="image">Total Amount:</label>
+                <input type="text"  name="total">
+                <label for="image">Payment methode:</label>
+                <input type="text" name="payment" />
+            </div>
+            <div class="form-row">
+
+                <label class="required" >Payment Status:</label>
                 <input type="text" name="paymentStatus" required />
-              
 
-                <label class="required" for="sku">Purchase Status:</label>
+
+                <label class="required" for="sku">Order Status:</label>
                 <input type="text" name="purchaseStatus" required />
+            </div>
+            <div class="form-row">
+                <label for="image">Delivery Date:</label>
+                <input type="date" name="delivery" />
+                <label for="image">Remarks:</label>
+                <textarea name="remark"></textarea>
+                
             </div>
         </div>
 
 
 
-        
+
 
 
         <div class="button-container">

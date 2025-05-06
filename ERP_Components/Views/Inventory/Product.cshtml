@@ -1,63 +1,173 @@
-﻿@{
+﻿@using ERP_Component_DAL.Models;
+
+
+@{
     ViewBag.Title = "Add Product";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <link rel="stylesheet" href="~/css/Product.css">
 
-<div class="section">
-    @using (Html.BeginForm("Product", "Home", FormMethod.Post))
-    {
+@model List<Product>
+
+<div id="product"  class="container">
+    <form method="post" asp-action="AddProduct" asp-controller="Inventory">
+        
+                <div class="form-section">
+            <h3>Product Info</h3>
+            <div class="form-row">
+
+                <label class="required" for="productName">Product Name:</label>
+                <input type="text"  name="productName" required />
+                <input type="hidden"  name="itemType" value="product" required />
+
+                <label class="required" for="sku">Stack Keeping Unit(SKU):</label>
+                <input type="number"  name="SKU"  required />
+            </div>
+            <div class="form-row">
+                <label class="required" for="hsn">HSN:</label>
+                <input type="number"  name="HSN"/>
+                <label class="required" for="category">Category:</label>
+                <select name="categoryId" id="role" onchange="getName()">
+                    <option disabled selected></option>
+                @foreach (var scheme in Model)
+                {
+                    @foreach (var category in scheme.category)
+                    {
+                        <option value="@category.categoryId">@category.categoryName</option>
+                    }
+                }
+                </select>          
+                </div>
+            <div class="form-row">
+                <label class="required" for="subCategory">Sub-category:</label>
+                <select id="name" name="subCategoryName">
+                    <option selected disabled>Select</option>
+
+                </select>
+                <label for="descr">Specification:</label>
+                <textarea style="width:33%" name="specification"></textarea>
+               
+            </div>
+            <div class="form-row">
+                <label for="price">Unit Price:</label>
+                <input type="text" name="unitPrice" />
+                <label for="cost">Cost Price:</label>
+                <input type="text" name="costPrice" />
+            </div>
+            <div class="form-row">
+                <label for="mrp">MRP:</label>
+                <input type="text" name="mrp" />
+                <label for="selling">Selling Price:</label>
+                <input type="text" name="sellingPrice" />
+            </div>
+            <div class="form-row">
+                <label for="image">Unit Of Measurement:</label>
+                <input type="text" name="UOM" />
+                <label for="image">GST:</label>
+                <input type="number" name="gst" />
+              
+            </div>
+         </div>
 
 
-        <h2>Add Product</h2>
 
-        <div class="form">
+               <div class="form-section">
+        <h3>LOT</h3>
+        <div class="form-row">
 
-            <div class="form-group">
-                <label>Product Category</label>
-                <input type="text" name="ProductCategory" placeholder="Enter category" />
-            </div>
-            <div class="form-group">
-                <label>Product Code</label>
-                <input type="text" name="ProductCode" placeholder="Enter product code" />
-            </div>
-            <div class="form-group">
-                <label>Product Name</label>
-                <input type="text" name="ProductName" placeholder="Enter product name" />
-            </div>
-            <div class="form-group">
-                <label>Product Description</label>
-                <textarea name="ProductDescription" placeholder="Enter product description"></textarea>
-            </div>
-            <div class="form-group">
-                <label>Product Qty</label>
-                <input type="number" name="ProductQty" placeholder="Enter quantity" />
-            </div>
-            <div class="form-group">
-                <label>UOM</label>
-                <input type="text" name="UOM" placeholder="Enter unit of measure" />
-            </div>
-            <div class="form-group">
-                <label>Applicable GST</label>
-                <input type="text" name="ApplicableGST" placeholder="Enter GST percentage" />
-            </div>
-            <div class="form-group">
-                <label>Unit Price</label>
-                <input type="number" name="UnitPrice" placeholder="Enter unit price" />
-            </div>
-    
-            <div class="form-group">
-                <label>Total Value</label>
-                <input type="number" name="TotalValue" placeholder="Enter total value" />
-            </div>
-            <div class="form-group">
-                <label>Location</label>
-                <input type="text" name="Location" placeholder="Enter location" />
-            </div>
-            <div class="form-group">
-                <button type="submit">Submit</button>
-            </div>
+            <label class="required" for="initialQuantity">Batch Series:</label>
+            <input type="number" name="batchSeries" required/> 
+            <input type="hidden" name="type" value="batch" required/>
+
+                <label class="required" for="sku">Manufacturing Date:</label>
+            <input type="date" name="manufacture" required/>
         </div>
+        <div class="form-row">
+                <label class="required" for="msl">Expiry Date:</label>
+            <input type="date" name="expiry"/>
+            <label for="recorderQuantity">Delivered Date:</label>
+                <input type="date" name="deliverd" />
+        </div>
+      
+    </div>
+
+
+              <div class="form-section">
+        <h3>Stock Details</h3>
+        <div class="form-row">
+
+                <label class="required" for="costPrice">In Stock:</label>
+            <input type="number" name="inStock" required/>
+
+                <label class="required" for="sellingPrice">Stock Alert:</label>
+            <input type="number" name="stockAlert" required/>
+        </div>
+        <div class="form-row">
+                <label class="required" for="wholeSalePrice">Warehouse:</label>
+                <select name="warehouseId">
+                    <option selected disabled></option>
+                @foreach (var scheme in Model)
+                {
+                    @foreach (var warehouse in scheme.warehouse)
+                    {
+                        <option value="@warehouse.warehouseId">@warehouse.warehouseName</option>
+                    }
+                }
+                </select>
+        </div>
+        
+
+
+    </div>
+
+
+           <div class="button-container">
+            <button type="submit">Submit</button>
+            <button type="reset" >Reset</button>
+        </div>
+    </form>
+</div> 
+
+
+
+
+
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+        function getName() {
+        var Id = $("#role").val();
+
+        $.ajax({
+            type: "GET",
+            url: "/Inventory/SubCategoriesNames",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            data: { categoryId: Id },
+                success: function (response) {
+        console.log("Subcategories response:", response);
+        if (response.length > 0) {
+            $("#name").empty();
+            $("#name").append('<option selected disabled>Select</option>');
+            response.forEach(function (item) {
+                console.log("Each item:", item);
+                $("#name").append('<option value="' + item.subCategoryId + '">' + item.name + '</option>');
+            });
+        } else {
+            $("#name").empty().append('<option selected disabled>No SubCategory Found</option>');
+        }
+    },
+
+            error: function (xhr, status, error) {
+                console.error("AJAX Error: ", error);
+                console.error("Status: ", status);
+                console.error("Response: ", xhr.responseText);
+                alert("Error fetching user data. Check console for details.");
+            }
+        });
     }
-</div>
+</script>
+
+
+

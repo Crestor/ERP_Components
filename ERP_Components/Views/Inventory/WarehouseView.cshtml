@@ -1,0 +1,102 @@
+﻿@using ERP_Component_DAL.Models;
+
+
+@model List<Warehouse>
+
+
+
+<style>
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        background: white;
+        border-radius: 10px;
+        overflow: hidden;
+    }
+
+    th, td {
+        padding: 12px;
+        text-align: center;
+        border-bottom: 1px solid #ddd;
+    }
+
+    th {
+        background-color: #007bff;
+        color: white;
+    }
+
+    .actions button {
+        margin-right: 5px;
+        padding: 4px 6px;
+        font-size: 12px;
+    }
+</style>
+
+<div class="header1">
+    <h4>View Categories</h4>
+
+</div>
+<div class="container">
+
+
+
+    <div class="Table">
+        <table>
+            <thead>
+                <tr>
+                    <th>S.No.</th>
+                    <th>Warehouse Name</th>
+                    <th>Warehouse Type</th>
+                    <th>Address line 1</th>
+                    <th>Address line 2</th>
+                    <th>State</th>
+                    <th>District</th>
+                    <th>Area</th>
+                    <th>Pincode</th>
+                    <th>Created On</th>
+                    <th>Action</th>
+
+                </tr>
+            </thead>
+            <tbody id="geeks">
+
+
+                @for (var i = 0; i < Model.Count; i++)
+                {
+
+                    var x = Model[i];
+                    var index = i + 1;
+
+                    <tr>
+                        <td>@index</td>
+                        <td>@x.warehouseName</td>
+                        <td>@x.warehouseType</td>
+                        <td>@x.Address1</td>
+                        <td>@x.Address2</td>
+                        <td>@x.State</td>
+                        <td>@x.District</td>
+                        <td>@x.Area</td>
+                        <td>@x.PostalCode</td>
+                        <td>@x.CreatedOn.ToShortDateString()</td>
+
+                        <td>
+                            <div class="actions">
+
+                                <button onclick="location.href='@Url.Action("EditWarehouse", "Inventory", new { addressId = x.addressId }, null)'"><i class="fas fa-edit"></i></button>
+                                <button onclick="location.href='@Url.Action("DeleteWarehouse", "Inventory", new { addressId = x.addressId }, null)'"><i class="fas fa-trash"></i></button>
+
+                               
+                            </div>
+                        </td>
+
+                    </tr>
+                }
+            </tbody>
+
+
+
+        </table>
+    </div>
+
+</div>
+
