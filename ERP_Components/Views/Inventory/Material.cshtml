@@ -9,10 +9,12 @@
 <link rel="stylesheet" href="~/css/Product.css">
 
 @model List<Product>
-
+<div class="header1">
+    <h4>Add Material</h4>
+</div>
 
 <div id="material"  class="container">
-    <form method="post" asp-action="AddMaterial" asp-controller="Inventory">
+    <form method="post" asp-action="AddMaterial" asp-controller="Inventory" onsubmit="return savedDetail()">
 
         <div class="form-section">
             <h3>Material Info</h3>
@@ -20,7 +22,8 @@
 
                 <label class="required" for="productName">Product Name:</label>
                 <input type="text" name="itemName" required />
-                <input type="hidden" name="itemType" value="material" required />
+                <input type="hidden" name="itemType" value="2" required />
+                
 
                 <label class="required" for="sku">Stack Keeping Unit(SKU):</label>
                 <input type="number" name="SKU" required />
@@ -42,7 +45,7 @@
             </div>
             <div class="form-row">
                 <label class="required" for="subCategory">Sub-category:</label>
-                <select id="name" name="subCategoryName">
+                <select id="name" name="subCategoryId">
                     <option selected disabled>Select</option>
                   
                 </select>
@@ -51,41 +54,25 @@
 
             </div>
             <div class="form-row">
-                <label for="image">Unit Price:</label>
-                <input type="text" name="unitPrice" />
+              
                 <label for="uom">Unit of Measurement:</label>
                 <input type="text" name="UOM" />
-            </div>
-
-            <div class="form-row">
-                <label for="image">GST:</label>
+                <input type="hidden" name="type" value="lot"/>
+                <label for="gst">GST:</label>
                 <input type="number" name="gst" />
-
             </div>
-        </div>
 
-
-
-        <div class="form-section">
-            <h3>LOT</h3>
-            <div class="form-row">
-
-                <label class="required" for="initialQuantity">LOT Series:</label>
-                <input type="number" name="lotSeries" required />
-                <input type="hidden" name="type" value="lot" required />
-
-                <label class="required" for="sku">Manufacturing Date:</label>
-                <input type="date" name="manufacture" required />
-            </div>
-            <div class="form-row">
+            <div class="form-row" style="width:50%">
+              
                 <label class="required" for="msl">Expiry Date:</label>
                 <input type="date" name="expiry" />
-                <label for="recorderQuantity">Delivered Date:</label>
-                <input type="date" name="deliverd" />
+                <input type="hidden" name="type" value="lot" required />
             </div>
-
         </div>
 
+
+
+     
 
         <div class="form-section">
             <h3>Stock Details</h3>
@@ -97,7 +84,7 @@
                 <label class="required" for="stockAlert">Stock Alert:</label>
                 <input type="number" name="stockAlert" required />
             </div>
-            <div class="form-row">
+            <div class="form-row" style="width:50%">
                 <label class="required" for="warehouse">Warehouse:</label>
                 <select name="warehouseId">
                 <option selected disabled>Select</option>
@@ -140,7 +127,7 @@
                     $("#name").append('<option selected disabled>Select</option>');
                     response.forEach(function (item) {
                         // $("#name").append('<option value="' + item.subCategoryName + '">' + item.subCategoryName + '</option>');
-                       $("#name").append('<option value="' + item.subCategoryId + '">' + item.name + '</option>');
+                       $("#name").append('<option value="' + item.subCategoryId + '">' + item.categoryName + '</option>');
 
 
                     });
@@ -155,5 +142,17 @@
                 alert("Error fetching user data. Check console for details.");
             }
         });
+    }
+</script>
+
+<script>
+      function savedDetail(){
+                Swal.fire({
+      position: "center",
+      icon: "success",
+      title: "Your work has been saved",
+      showConfirmButton: false,
+      timer: 1500
+    });
     }
 </script>

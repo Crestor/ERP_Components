@@ -1,0 +1,715 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\vhk\\OneDrive\\Documents\\GitHub\\ERP_Components\\ERP_Components\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{F6714C32-E579-4014-8B12-804853BE1925}|..\\ERP_Component_DAL\\ERP_Component_DAL.csproj|c:\\users\\vhk\\onedrive\\documents\\github\\erp_components\\erp_component_dal\\services\\inventoryservices.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F6714C32-E579-4014-8B12-804853BE1925}|..\\ERP_Component_DAL\\ERP_Component_DAL.csproj|c:\\users\\vhk\\onedrive\\documents\\github\\erp_components\\erp_component_dal\\models\\order.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4F490951-4E76-408B-B4F3-D4C500C97A6A}|ERP_Components.csproj|c:\\users\\vhk\\onedrive\\documents\\github\\erp_components\\erp_components\\views\\inventory\\viewstocktransfer.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{4F490951-4E76-408B-B4F3-D4C500C97A6A}|ERP_Components.csproj|solutionrelative:views\\inventory\\viewstocktransfer.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4F490951-4E76-408B-B4F3-D4C500C97A6A}|ERP_Components.csproj|c:\\users\\vhk\\onedrive\\documents\\github\\erp_components\\erp_components\\controllers\\inventorycontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4F490951-4E76-408B-B4F3-D4C500C97A6A}|ERP_Components.csproj|solutionrelative:controllers\\inventorycontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4F490951-4E76-408B-B4F3-D4C500C97A6A}|ERP_Components.csproj|c:\\users\\vhk\\onedrive\\documents\\github\\erp_components\\erp_components\\views\\inventory\\editstocktransfer.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{4F490951-4E76-408B-B4F3-D4C500C97A6A}|ERP_Components.csproj|solutionrelative:views\\inventory\\editstocktransfer.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4F490951-4E76-408B-B4F3-D4C500C97A6A}|ERP_Components.csproj|c:\\users\\vhk\\onedrive\\documents\\github\\erp_components\\erp_components\\views\\inventory\\stocktransfer.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{4F490951-4E76-408B-B4F3-D4C500C97A6A}|ERP_Components.csproj|solutionrelative:views\\inventory\\stocktransfer.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F6714C32-E579-4014-8B12-804853BE1925}|..\\ERP_Component_DAL\\ERP_Component_DAL.csproj|c:\\users\\vhk\\onedrive\\documents\\github\\erp_components\\erp_component_dal\\services\\userservices.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F6714C32-E579-4014-8B12-804853BE1925}|..\\ERP_Component_DAL\\ERP_Component_DAL.csproj|c:\\users\\vhk\\onedrive\\documents\\github\\erp_components\\erp_component_dal\\models\\stock.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4F490951-4E76-408B-B4F3-D4C500C97A6A}|ERP_Components.csproj|c:\\users\\vhk\\onedrive\\documents\\github\\erp_components\\erp_components\\views\\inventory\\addstock.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{4F490951-4E76-408B-B4F3-D4C500C97A6A}|ERP_Components.csproj|solutionrelative:views\\inventory\\addstock.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F6714C32-E579-4014-8B12-804853BE1925}|..\\ERP_Component_DAL\\ERP_Component_DAL.csproj|c:\\users\\vhk\\onedrive\\documents\\github\\erp_components\\erp_component_dal\\services\\assetservices.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4F490951-4E76-408B-B4F3-D4C500C97A6A}|ERP_Components.csproj|c:\\users\\vhk\\onedrive\\documents\\github\\erp_components\\erp_components\\controllers\\homecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4F490951-4E76-408B-B4F3-D4C500C97A6A}|ERP_Components.csproj|solutionrelative:controllers\\homecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4F490951-4E76-408B-B4F3-D4C500C97A6A}|ERP_Components.csproj|c:\\users\\vhk\\onedrive\\documents\\github\\erp_components\\erp_components\\views\\asset\\assetview.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{4F490951-4E76-408B-B4F3-D4C500C97A6A}|ERP_Components.csproj|solutionrelative:views\\asset\\assetview.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4F490951-4E76-408B-B4F3-D4C500C97A6A}|ERP_Components.csproj|c:\\users\\vhk\\onedrive\\documents\\github\\erp_components\\erp_components\\controllers\\assetcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4F490951-4E76-408B-B4F3-D4C500C97A6A}|ERP_Components.csproj|solutionrelative:controllers\\assetcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4F490951-4E76-408B-B4F3-D4C500C97A6A}|ERP_Components.csproj|c:\\users\\vhk\\onedrive\\documents\\github\\erp_components\\erp_components\\views\\asset\\editasset.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{4F490951-4E76-408B-B4F3-D4C500C97A6A}|ERP_Components.csproj|solutionrelative:views\\asset\\editasset.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4F490951-4E76-408B-B4F3-D4C500C97A6A}|ERP_Components.csproj|c:\\users\\vhk\\onedrive\\documents\\github\\erp_components\\erp_components\\views\\asset\\addasset.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{4F490951-4E76-408B-B4F3-D4C500C97A6A}|ERP_Components.csproj|solutionrelative:views\\asset\\addasset.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4F490951-4E76-408B-B4F3-D4C500C97A6A}|ERP_Components.csproj|c:\\users\\vhk\\onedrive\\documents\\github\\erp_components\\erp_components\\views\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{4F490951-4E76-408B-B4F3-D4C500C97A6A}|ERP_Components.csproj|solutionrelative:views\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F6714C32-E579-4014-8B12-804853BE1925}|..\\ERP_Component_DAL\\ERP_Component_DAL.csproj|c:\\users\\vhk\\onedrive\\documents\\github\\erp_components\\erp_component_dal\\models\\asset.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4F490951-4E76-408B-B4F3-D4C500C97A6A}|ERP_Components.csproj|c:\\users\\vhk\\onedrive\\documents\\github\\erp_components\\erp_components\\views\\inventory\\viewproduct.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{4F490951-4E76-408B-B4F3-D4C500C97A6A}|ERP_Components.csproj|solutionrelative:views\\inventory\\viewproduct.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4F490951-4E76-408B-B4F3-D4C500C97A6A}|ERP_Components.csproj|c:\\users\\vhk\\onedrive\\documents\\github\\erp_components\\erp_components\\views\\inventory\\viewmaterial.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{4F490951-4E76-408B-B4F3-D4C500C97A6A}|ERP_Components.csproj|solutionrelative:views\\inventory\\viewmaterial.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4F490951-4E76-408B-B4F3-D4C500C97A6A}|ERP_Components.csproj|c:\\users\\vhk\\onedrive\\documents\\github\\erp_components\\erp_components\\wwwroot\\css\\product.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}",
+      "RelativeMoniker": "D:0:0:{4F490951-4E76-408B-B4F3-D4C500C97A6A}|ERP_Components.csproj|solutionrelative:wwwroot\\css\\product.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4F490951-4E76-408B-B4F3-D4C500C97A6A}|ERP_Components.csproj|c:\\users\\vhk\\onedrive\\documents\\github\\erp_components\\erp_components\\views\\inventory\\editmaterial.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{4F490951-4E76-408B-B4F3-D4C500C97A6A}|ERP_Components.csproj|solutionrelative:views\\inventory\\editmaterial.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4F490951-4E76-408B-B4F3-D4C500C97A6A}|ERP_Components.csproj|c:\\users\\vhk\\onedrive\\documents\\github\\erp_components\\erp_components\\views\\inventory\\editstock.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{4F490951-4E76-408B-B4F3-D4C500C97A6A}|ERP_Components.csproj|solutionrelative:views\\inventory\\editstock.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4F490951-4E76-408B-B4F3-D4C500C97A6A}|ERP_Components.csproj|c:\\users\\vhk\\onedrive\\documents\\github\\erp_components\\erp_components\\views\\inventory\\viewstock.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{4F490951-4E76-408B-B4F3-D4C500C97A6A}|ERP_Components.csproj|solutionrelative:views\\inventory\\viewstock.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\vhk\\AppData\\Local\\SourceServer\\953d9afac9acbf25f1b9561e0d92f23e42f3e396385d26d16f1481ea35285eaa\\ERP_Component_DAL\\Services\\InventoryServices.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4F490951-4E76-408B-B4F3-D4C500C97A6A}|ERP_Components.csproj|c:\\users\\vhk\\onedrive\\documents\\github\\erp_components\\erp_components\\views\\inventory\\product.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{4F490951-4E76-408B-B4F3-D4C500C97A6A}|ERP_Components.csproj|solutionrelative:views\\inventory\\product.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4F490951-4E76-408B-B4F3-D4C500C97A6A}|ERP_Components.csproj|c:\\users\\vhk\\onedrive\\documents\\github\\erp_components\\erp_components\\views\\inventory\\editproduct.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{4F490951-4E76-408B-B4F3-D4C500C97A6A}|ERP_Components.csproj|solutionrelative:views\\inventory\\editproduct.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4F490951-4E76-408B-B4F3-D4C500C97A6A}|ERP_Components.csproj|c:\\users\\vhk\\onedrive\\documents\\github\\erp_components\\erp_components\\views\\inventory\\material.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{4F490951-4E76-408B-B4F3-D4C500C97A6A}|ERP_Components.csproj|solutionrelative:views\\inventory\\material.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F6714C32-E579-4014-8B12-804853BE1925}|..\\ERP_Component_DAL\\ERP_Component_DAL.csproj|c:\\users\\vhk\\onedrive\\documents\\github\\erp_components\\erp_component_dal\\models\\items.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4F490951-4E76-408B-B4F3-D4C500C97A6A}|ERP_Components.csproj|c:\\users\\vhk\\onedrive\\documents\\github\\erp_components\\erp_components\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{4F490951-4E76-408B-B4F3-D4C500C97A6A}|ERP_Components.csproj|solutionrelative:appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F6714C32-E579-4014-8B12-804853BE1925}|..\\ERP_Component_DAL\\ERP_Component_DAL.csproj|c:\\users\\vhk\\onedrive\\documents\\github\\erp_components\\erp_component_dal\\models\\warehouse.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4F490951-4E76-408B-B4F3-D4C500C97A6A}|ERP_Components.csproj|c:\\users\\vhk\\onedrive\\documents\\github\\erp_components\\erp_components\\views\\inventory\\editwarehouse.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{4F490951-4E76-408B-B4F3-D4C500C97A6A}|ERP_Components.csproj|solutionrelative:views\\inventory\\editwarehouse.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F6714C32-E579-4014-8B12-804853BE1925}|..\\ERP_Component_DAL\\ERP_Component_DAL.csproj|c:\\users\\vhk\\onedrive\\documents\\github\\erp_components\\erp_component_dal\\services\\warehouseservices.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4F490951-4E76-408B-B4F3-D4C500C97A6A}|ERP_Components.csproj|c:\\users\\vhk\\onedrive\\documents\\github\\erp_components\\erp_components\\views\\inventory\\warehouses.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{4F490951-4E76-408B-B4F3-D4C500C97A6A}|ERP_Components.csproj|solutionrelative:views\\inventory\\warehouses.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4F490951-4E76-408B-B4F3-D4C500C97A6A}|ERP_Components.csproj|c:\\users\\vhk\\onedrive\\documents\\github\\erp_components\\erp_components\\views\\inventory\\warehouseview.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{4F490951-4E76-408B-B4F3-D4C500C97A6A}|ERP_Components.csproj|solutionrelative:views\\inventory\\warehouseview.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4F490951-4E76-408B-B4F3-D4C500C97A6A}|ERP_Components.csproj|c:\\users\\vhk\\onedrive\\documents\\github\\erp_components\\erp_components\\controllers\\warehousecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4F490951-4E76-408B-B4F3-D4C500C97A6A}|ERP_Components.csproj|solutionrelative:controllers\\warehousecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4F490951-4E76-408B-B4F3-D4C500C97A6A}|ERP_Components.csproj|c:\\users\\vhk\\onedrive\\documents\\github\\erp_components\\erp_components\\views\\inventory\\dashboard.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{4F490951-4E76-408B-B4F3-D4C500C97A6A}|ERP_Components.csproj|solutionrelative:views\\inventory\\dashboard.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F6714C32-E579-4014-8B12-804853BE1925}|..\\ERP_Component_DAL\\ERP_Component_DAL.csproj|c:\\users\\vhk\\onedrive\\documents\\github\\erp_components\\erp_component_dal\\models\\product.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4F490951-4E76-408B-B4F3-D4C500C97A6A}|ERP_Components.csproj|c:\\users\\vhk\\onedrive\\documents\\github\\erp_components\\erp_components\\views\\home\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{4F490951-4E76-408B-B4F3-D4C500C97A6A}|ERP_Components.csproj|solutionrelative:views\\home\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4F490951-4E76-408B-B4F3-D4C500C97A6A}|ERP_Components.csproj|c:\\users\\vhk\\onedrive\\documents\\github\\erp_components\\erp_components\\views\\inventory\\subcategory.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{4F490951-4E76-408B-B4F3-D4C500C97A6A}|ERP_Components.csproj|solutionrelative:views\\inventory\\subcategory.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4F490951-4E76-408B-B4F3-D4C500C97A6A}|ERP_Components.csproj|c:\\users\\vhk\\onedrive\\documents\\github\\erp_components\\erp_components\\views\\inventory\\stockadjustment.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{4F490951-4E76-408B-B4F3-D4C500C97A6A}|ERP_Components.csproj|solutionrelative:views\\inventory\\stockadjustment.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4F490951-4E76-408B-B4F3-D4C500C97A6A}|ERP_Components.csproj|c:\\users\\vhk\\onedrive\\documents\\github\\erp_components\\erp_components\\views\\warehouse\\warehouselocation.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{4F490951-4E76-408B-B4F3-D4C500C97A6A}|ERP_Components.csproj|solutionrelative:views\\warehouse\\warehouselocation.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4F490951-4E76-408B-B4F3-D4C500C97A6A}|ERP_Components.csproj|c:\\users\\vhk\\onedrive\\documents\\github\\erp_components\\erp_components\\views\\warehouse\\editwarehouselocation.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{4F490951-4E76-408B-B4F3-D4C500C97A6A}|ERP_Components.csproj|solutionrelative:views\\warehouse\\editwarehouselocation.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 37,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 16,
+              "Title": "Asset.cs",
+              "DocumentMoniker": "C:\\Users\\vhk\\OneDrive\\Documents\\GitHub\\ERP_Components\\ERP_Component_DAL\\Models\\Asset.cs",
+              "RelativeDocumentMoniker": "..\\ERP_Component_DAL\\Models\\Asset.cs",
+              "ToolTip": "C:\\Users\\vhk\\OneDrive\\Documents\\GitHub\\ERP_Components\\ERP_Component_DAL\\Models\\Asset.cs",
+              "RelativeToolTip": "..\\ERP_Component_DAL\\Models\\Asset.cs",
+              "ViewState": "AgIAABEAAADQmJmZmZkwwBwAAAAlAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-09T04:56:27.253Z",
+              "IsPinned": true,
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 14,
+              "Title": "AddAsset.cshtml",
+              "DocumentMoniker": "C:\\Users\\vhk\\OneDrive\\Documents\\GitHub\\ERP_Components\\ERP_Components\\Views\\Asset\\AddAsset.cshtml",
+              "RelativeDocumentMoniker": "Views\\Asset\\AddAsset.cshtml",
+              "ToolTip": "C:\\Users\\vhk\\OneDrive\\Documents\\GitHub\\ERP_Components\\ERP_Components\\Views\\Asset\\AddAsset.cshtml",
+              "RelativeToolTip": "Views\\Asset\\AddAsset.cshtml",
+              "ViewState": "AgIAAEkAAAAAAAAAAAAwwGUAAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-05-09T04:39:24.5Z",
+              "IsPinned": true,
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "AssetView.cshtml",
+              "DocumentMoniker": "C:\\Users\\vhk\\OneDrive\\Documents\\GitHub\\ERP_Components\\ERP_Components\\Views\\Asset\\AssetView.cshtml",
+              "RelativeDocumentMoniker": "Views\\Asset\\AssetView.cshtml",
+              "ToolTip": "C:\\Users\\vhk\\OneDrive\\Documents\\GitHub\\ERP_Components\\ERP_Components\\Views\\Asset\\AssetView.cshtml",
+              "RelativeToolTip": "Views\\Asset\\AssetView.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABIAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-05-09T05:04:42.477Z",
+              "IsPinned": true,
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 39,
+              "Title": "StockAdjustment.cshtml",
+              "DocumentMoniker": "C:\\Users\\vhk\\OneDrive\\Documents\\GitHub\\ERP_Components\\ERP_Components\\Views\\Inventory\\StockAdjustment.cshtml",
+              "RelativeDocumentMoniker": "Views\\Inventory\\StockAdjustment.cshtml",
+              "ToolTip": "C:\\Users\\vhk\\OneDrive\\Documents\\GitHub\\ERP_Components\\ERP_Components\\Views\\Inventory\\StockAdjustment.cshtml",
+              "RelativeToolTip": "Views\\Inventory\\StockAdjustment.cshtml",
+              "ViewState": "AgIAACwAAABAz8zMzAwswAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-05-09T16:59:54.221Z",
+              "IsPinned": true
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 24,
+              "Title": "Product.cshtml",
+              "DocumentMoniker": "C:\\Users\\vhk\\OneDrive\\Documents\\GitHub\\ERP_Components\\ERP_Components\\Views\\Inventory\\Product.cshtml",
+              "RelativeDocumentMoniker": "Views\\Inventory\\Product.cshtml",
+              "ToolTip": "C:\\Users\\vhk\\OneDrive\\Documents\\GitHub\\ERP_Components\\ERP_Components\\Views\\Inventory\\Product.cshtml",
+              "RelativeToolTip": "Views\\Inventory\\Product.cshtml",
+              "ViewState": "AgIAADIAAAAAAAAAAAAwwBQAAAAhAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-05-09T16:59:22.515Z",
+              "IsPinned": true
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{aa2115a1-9712-457b-9047-dbb71ca2cdd2}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "ViewStockTransfer.cshtml",
+              "DocumentMoniker": "C:\\Users\\vhk\\OneDrive\\Documents\\GitHub\\ERP_Components\\ERP_Components\\Views\\Inventory\\ViewStockTransfer.cshtml",
+              "RelativeDocumentMoniker": "Views\\Inventory\\ViewStockTransfer.cshtml",
+              "ToolTip": "C:\\Users\\vhk\\OneDrive\\Documents\\GitHub\\ERP_Components\\ERP_Components\\Views\\Inventory\\ViewStockTransfer.cshtml",
+              "RelativeToolTip": "Views\\Inventory\\ViewStockTransfer.cshtml",
+              "ViewState": "AgIAACcAAAAAIjMzMzMLwCkAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-05-11T15:23:48.212Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "EditStockTransfer.cshtml",
+              "DocumentMoniker": "C:\\Users\\vhk\\OneDrive\\Documents\\GitHub\\ERP_Components\\ERP_Components\\Views\\Inventory\\EditStockTransfer.cshtml",
+              "RelativeDocumentMoniker": "Views\\Inventory\\EditStockTransfer.cshtml",
+              "ToolTip": "C:\\Users\\vhk\\OneDrive\\Documents\\GitHub\\ERP_Components\\ERP_Components\\Views\\Inventory\\EditStockTransfer.cshtml",
+              "RelativeToolTip": "Views\\Inventory\\EditStockTransfer.cshtml",
+              "ViewState": "AgIAADIAAAAAAAAAAAAWwDgAAAAzAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-05-11T15:23:40.328Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Order.cs",
+              "DocumentMoniker": "C:\\Users\\vhk\\OneDrive\\Documents\\GitHub\\ERP_Components\\ERP_Component_DAL\\Models\\Order.cs",
+              "RelativeDocumentMoniker": "..\\ERP_Component_DAL\\Models\\Order.cs",
+              "ToolTip": "C:\\Users\\vhk\\OneDrive\\Documents\\GitHub\\ERP_Components\\ERP_Component_DAL\\Models\\Order.cs",
+              "RelativeToolTip": "..\\ERP_Component_DAL\\Models\\Order.cs",
+              "ViewState": "AgIAAA0AAAAAAAAAAAAzwBMAAAAzAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-11T15:19:13.594Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "UserServices.cs",
+              "DocumentMoniker": "C:\\Users\\vhk\\OneDrive\\Documents\\GitHub\\ERP_Components\\ERP_Component_DAL\\Services\\UserServices.cs",
+              "RelativeDocumentMoniker": "..\\ERP_Component_DAL\\Services\\UserServices.cs",
+              "ToolTip": "C:\\Users\\vhk\\OneDrive\\Documents\\GitHub\\ERP_Components\\ERP_Component_DAL\\Services\\UserServices.cs",
+              "RelativeToolTip": "..\\ERP_Component_DAL\\Services\\UserServices.cs",
+              "ViewState": "AgIAAAMAAAAAMzMzMzMrwAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-11T15:01:44.716Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "HomeController.cs",
+              "DocumentMoniker": "C:\\Users\\vhk\\OneDrive\\Documents\\GitHub\\ERP_Components\\ERP_Components\\Controllers\\HomeController.cs",
+              "RelativeDocumentMoniker": "Controllers\\HomeController.cs",
+              "ToolTip": "C:\\Users\\vhk\\OneDrive\\Documents\\GitHub\\ERP_Components\\ERP_Components\\Controllers\\HomeController.cs",
+              "RelativeToolTip": "Controllers\\HomeController.cs",
+              "ViewState": "AgIAACAAAAAA+v////8vwAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-11T14:44:09.383Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
+              "Title": "EditAsset.cshtml",
+              "DocumentMoniker": "C:\\Users\\vhk\\OneDrive\\Documents\\GitHub\\ERP_Components\\ERP_Components\\Views\\Asset\\EditAsset.cshtml",
+              "RelativeDocumentMoniker": "Views\\Asset\\EditAsset.cshtml",
+              "ToolTip": "C:\\Users\\vhk\\OneDrive\\Documents\\GitHub\\ERP_Components\\ERP_Components\\Views\\Asset\\EditAsset.cshtml",
+              "RelativeToolTip": "Views\\Asset\\EditAsset.cshtml",
+              "ViewState": "AgIAAAMAAAAA/v////8TwAwAAAAVAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-05-11T13:43:57.422Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 19,
+              "Title": "Product.css",
+              "DocumentMoniker": "C:\\Users\\vhk\\OneDrive\\Documents\\GitHub\\ERP_Components\\ERP_Components\\wwwroot\\css\\Product.css",
+              "RelativeDocumentMoniker": "wwwroot\\css\\Product.css",
+              "ToolTip": "C:\\Users\\vhk\\OneDrive\\Documents\\GitHub\\ERP_Components\\ERP_Components\\wwwroot\\css\\Product.css",
+              "RelativeToolTip": "wwwroot\\css\\Product.css",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAMAAAAQAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003000|",
+              "WhenOpened": "2025-05-11T03:56:04.132Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "StockTransfer.cshtml",
+              "DocumentMoniker": "C:\\Users\\vhk\\OneDrive\\Documents\\GitHub\\ERP_Components\\ERP_Components\\Views\\Inventory\\StockTransfer.cshtml",
+              "RelativeDocumentMoniker": "Views\\Inventory\\StockTransfer.cshtml",
+              "ToolTip": "C:\\Users\\vhk\\OneDrive\\Documents\\GitHub\\ERP_Components\\ERP_Components\\Views\\Inventory\\StockTransfer.cshtml",
+              "RelativeToolTip": "Views\\Inventory\\StockTransfer.cshtml",
+              "ViewState": "AgIAABwAAAAAAAAAAAAmwCcAAAAiAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-05-10T14:33:30.213Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "AddStock.cshtml",
+              "DocumentMoniker": "C:\\Users\\vhk\\OneDrive\\Documents\\GitHub\\ERP_Components\\ERP_Components\\Views\\Inventory\\AddStock.cshtml",
+              "RelativeDocumentMoniker": "Views\\Inventory\\AddStock.cshtml",
+              "ToolTip": "C:\\Users\\vhk\\OneDrive\\Documents\\GitHub\\ERP_Components\\ERP_Components\\Views\\Inventory\\AddStock.cshtml",
+              "RelativeToolTip": "Views\\Inventory\\AddStock.cshtml",
+              "ViewState": "AgIAAA0AAABglpmZmdkhwCcAAAA5AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-05-10T11:02:38.704Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 22,
+              "Title": "ViewStock.cshtml",
+              "DocumentMoniker": "C:\\Users\\vhk\\OneDrive\\Documents\\GitHub\\ERP_Components\\ERP_Components\\Views\\Inventory\\ViewStock.cshtml",
+              "RelativeDocumentMoniker": "Views\\Inventory\\ViewStock.cshtml",
+              "ToolTip": "C:\\Users\\vhk\\OneDrive\\Documents\\GitHub\\ERP_Components\\ERP_Components\\Views\\Inventory\\ViewStock.cshtml",
+              "RelativeToolTip": "Views\\Inventory\\ViewStock.cshtml",
+              "ViewState": "AgIAACMAAAAAzczMzMwuwCwAAAARAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-05-10T10:33:40.397Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 21,
+              "Title": "EditStock.cshtml",
+              "DocumentMoniker": "C:\\Users\\vhk\\OneDrive\\Documents\\GitHub\\ERP_Components\\ERP_Components\\Views\\Inventory\\EditStock.cshtml",
+              "RelativeDocumentMoniker": "Views\\Inventory\\EditStock.cshtml",
+              "ToolTip": "C:\\Users\\vhk\\OneDrive\\Documents\\GitHub\\ERP_Components\\ERP_Components\\Views\\Inventory\\EditStock.cshtml",
+              "RelativeToolTip": "Views\\Inventory\\EditStock.cshtml",
+              "ViewState": "AgIAAB0AAAAAAAAAAAAUwCkAAAAyAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-05-10T10:33:32.847Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "Stock.cs",
+              "DocumentMoniker": "C:\\Users\\vhk\\OneDrive\\Documents\\GitHub\\ERP_Components\\ERP_Component_DAL\\Models\\Stock.cs",
+              "RelativeDocumentMoniker": "..\\ERP_Component_DAL\\Models\\Stock.cs",
+              "ToolTip": "C:\\Users\\vhk\\OneDrive\\Documents\\GitHub\\ERP_Components\\ERP_Component_DAL\\Models\\Stock.cs",
+              "RelativeToolTip": "..\\ERP_Component_DAL\\Models\\Stock.cs",
+              "ViewState": "AgIAABEAAAAAAgAAAAAIwBcAAAAtAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-10T10:30:36.139Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 23,
+              "Title": "InventoryServices.cs",
+              "DocumentMoniker": "C:\\Users\\vhk\\AppData\\Local\\SourceServer\\953d9afac9acbf25f1b9561e0d92f23e42f3e396385d26d16f1481ea35285eaa\\ERP_Component_DAL\\Services\\InventoryServices.cs",
+              "RelativeDocumentMoniker": "..\\..\\..\\..\\..\\AppData\\Local\\SourceServer\\953d9afac9acbf25f1b9561e0d92f23e42f3e396385d26d16f1481ea35285eaa\\ERP_Component_DAL\\Services\\InventoryServices.cs",
+              "ToolTip": "C:\\Users\\vhk\\AppData\\Local\\SourceServer\\953d9afac9acbf25f1b9561e0d92f23e42f3e396385d26d16f1481ea35285eaa\\ERP_Component_DAL\\Services\\InventoryServices.cs",
+              "RelativeToolTip": "..\\..\\..\\..\\..\\AppData\\Local\\SourceServer\\953d9afac9acbf25f1b9561e0d92f23e42f3e396385d26d16f1481ea35285eaa\\ERP_Component_DAL\\Services\\InventoryServices.cs",
+              "ViewState": "AgIAABsDAAAAAAAAAADwvyYDAAAsAAAAAQAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-10T10:25:54.482Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 25,
+              "Title": "EditProduct.cshtml",
+              "DocumentMoniker": "C:\\Users\\vhk\\OneDrive\\Documents\\GitHub\\ERP_Components\\ERP_Components\\Views\\Inventory\\EditProduct.cshtml",
+              "RelativeDocumentMoniker": "Views\\Inventory\\EditProduct.cshtml",
+              "ToolTip": "C:\\Users\\vhk\\OneDrive\\Documents\\GitHub\\ERP_Components\\ERP_Components\\Views\\Inventory\\EditProduct.cshtml",
+              "RelativeToolTip": "Views\\Inventory\\EditProduct.cshtml",
+              "ViewState": "AgIAAIMAAAAAPDMzMzMLwIsAAABhAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-05-10T09:42:51.266Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 20,
+              "Title": "EditMaterial.cshtml",
+              "DocumentMoniker": "C:\\Users\\vhk\\OneDrive\\Documents\\GitHub\\ERP_Components\\ERP_Components\\Views\\Inventory\\EditMaterial.cshtml",
+              "RelativeDocumentMoniker": "Views\\Inventory\\EditMaterial.cshtml",
+              "ToolTip": "C:\\Users\\vhk\\OneDrive\\Documents\\GitHub\\ERP_Components\\ERP_Components\\Views\\Inventory\\EditMaterial.cshtml",
+              "RelativeToolTip": "Views\\Inventory\\EditMaterial.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAHkAAAAqAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-05-10T09:38:50.601Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 28,
+              "Title": "appsettings.json",
+              "DocumentMoniker": "C:\\Users\\vhk\\OneDrive\\Documents\\GitHub\\ERP_Components\\ERP_Components\\appsettings.json",
+              "RelativeDocumentMoniker": "appsettings.json",
+              "ToolTip": "C:\\Users\\vhk\\OneDrive\\Documents\\GitHub\\ERP_Components\\ERP_Components\\appsettings.json",
+              "RelativeToolTip": "appsettings.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2025-05-10T09:01:41.121Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 15,
+              "Title": "_Layout.cshtml",
+              "DocumentMoniker": "C:\\Users\\vhk\\OneDrive\\Documents\\GitHub\\ERP_Components\\ERP_Components\\Views\\Shared\\_Layout.cshtml",
+              "RelativeDocumentMoniker": "Views\\Shared\\_Layout.cshtml",
+              "ToolTip": "C:\\Users\\vhk\\OneDrive\\Documents\\GitHub\\ERP_Components\\ERP_Components\\Views\\Shared\\_Layout.cshtml",
+              "RelativeToolTip": "Views\\Shared\\_Layout.cshtml",
+              "ViewState": "AgIAAHgAAAAAAAAAAAAcwIQAAAA3AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-05-10T06:42:26.395Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 29,
+              "Title": "Warehouse.cs",
+              "DocumentMoniker": "C:\\Users\\vhk\\OneDrive\\Documents\\GitHub\\ERP_Components\\ERP_Component_DAL\\Models\\Warehouse.cs",
+              "RelativeDocumentMoniker": "..\\ERP_Component_DAL\\Models\\Warehouse.cs",
+              "ToolTip": "C:\\Users\\vhk\\OneDrive\\Documents\\GitHub\\ERP_Components\\ERP_Component_DAL\\Models\\Warehouse.cs",
+              "RelativeToolTip": "..\\ERP_Component_DAL\\Models\\Warehouse.cs",
+              "ViewState": "AgIAABgAAAAAAAAAAAAkwB8AAAArAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-10T05:58:16.367Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 32,
+              "Title": "Warehouses.cshtml",
+              "DocumentMoniker": "C:\\Users\\vhk\\OneDrive\\Documents\\GitHub\\ERP_Components\\ERP_Components\\Views\\Inventory\\Warehouses.cshtml",
+              "RelativeDocumentMoniker": "Views\\Inventory\\Warehouses.cshtml",
+              "ToolTip": "C:\\Users\\vhk\\OneDrive\\Documents\\GitHub\\ERP_Components\\ERP_Components\\Views\\Inventory\\Warehouses.cshtml",
+              "RelativeToolTip": "Views\\Inventory\\Warehouses.cshtml",
+              "ViewState": "AgIAAAkAAAAAAAAAAAAAABYAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-05-10T05:42:42.071Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "AssetController.cs",
+              "DocumentMoniker": "C:\\Users\\vhk\\OneDrive\\Documents\\GitHub\\ERP_Components\\ERP_Components\\Controllers\\AssetController.cs",
+              "RelativeDocumentMoniker": "Controllers\\AssetController.cs",
+              "ToolTip": "C:\\Users\\vhk\\OneDrive\\Documents\\GitHub\\ERP_Components\\ERP_Components\\Controllers\\AssetController.cs",
+              "RelativeToolTip": "Controllers\\AssetController.cs",
+              "ViewState": "AgIAACAAAAAAAAAAAAAMwCwAAAAIAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-10T04:35:31.856Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 17,
+              "Title": "ViewProduct.cshtml",
+              "DocumentMoniker": "C:\\Users\\vhk\\OneDrive\\Documents\\GitHub\\ERP_Components\\ERP_Components\\Views\\Inventory\\ViewProduct.cshtml",
+              "RelativeDocumentMoniker": "Views\\Inventory\\ViewProduct.cshtml",
+              "ToolTip": "C:\\Users\\vhk\\OneDrive\\Documents\\GitHub\\ERP_Components\\ERP_Components\\Views\\Inventory\\ViewProduct.cshtml",
+              "RelativeToolTip": "Views\\Inventory\\ViewProduct.cshtml",
+              "ViewState": "AgIAADMAAAAAPjMzMzMbwD0AAABDAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-05-10T04:34:06.664Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 18,
+              "Title": "ViewMaterial.cshtml",
+              "DocumentMoniker": "C:\\Users\\vhk\\OneDrive\\Documents\\GitHub\\ERP_Components\\ERP_Components\\Views\\Inventory\\ViewMaterial.cshtml",
+              "RelativeDocumentMoniker": "Views\\Inventory\\ViewMaterial.cshtml",
+              "ToolTip": "C:\\Users\\vhk\\OneDrive\\Documents\\GitHub\\ERP_Components\\ERP_Components\\Views\\Inventory\\ViewMaterial.cshtml",
+              "RelativeToolTip": "Views\\Inventory\\ViewMaterial.cshtml",
+              "ViewState": "AgIAAC0AAAAAVDMzMzMrwEIAAAAoAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-05-10T04:33:26.538Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 27,
+              "Title": "Items.cs",
+              "DocumentMoniker": "C:\\Users\\vhk\\OneDrive\\Documents\\GitHub\\ERP_Components\\ERP_Component_DAL\\Models\\Items.cs",
+              "RelativeDocumentMoniker": "..\\ERP_Component_DAL\\Models\\Items.cs",
+              "ToolTip": "C:\\Users\\vhk\\OneDrive\\Documents\\GitHub\\ERP_Components\\ERP_Component_DAL\\Models\\Items.cs",
+              "RelativeToolTip": "..\\ERP_Component_DAL\\Models\\Items.cs",
+              "ViewState": "AgIAACkAAAAAAAAAAAA4wDAAAAAHAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-10T03:58:35.276Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 36,
+              "Title": "Product.cs",
+              "DocumentMoniker": "C:\\Users\\vhk\\OneDrive\\Documents\\GitHub\\ERP_Components\\ERP_Component_DAL\\Models\\Product.cs",
+              "RelativeDocumentMoniker": "..\\ERP_Component_DAL\\Models\\Product.cs",
+              "ToolTip": "C:\\Users\\vhk\\OneDrive\\Documents\\GitHub\\ERP_Components\\ERP_Component_DAL\\Models\\Product.cs",
+              "RelativeToolTip": "..\\ERP_Component_DAL\\Models\\Product.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-10T03:58:31.114Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "AssetServices.cs",
+              "DocumentMoniker": "C:\\Users\\vhk\\OneDrive\\Documents\\GitHub\\ERP_Components\\ERP_Component_DAL\\Services\\AssetServices.cs",
+              "RelativeDocumentMoniker": "..\\ERP_Component_DAL\\Services\\AssetServices.cs",
+              "ToolTip": "C:\\Users\\vhk\\OneDrive\\Documents\\GitHub\\ERP_Components\\ERP_Component_DAL\\Services\\AssetServices.cs",
+              "RelativeToolTip": "..\\ERP_Component_DAL\\Services\\AssetServices.cs",
+              "ViewState": "AgIAADYAAAAAAAAAAAAAAD0AAAAgAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-10T03:51:27.206Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 37,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "C:\\Users\\vhk\\OneDrive\\Documents\\GitHub\\ERP_Components\\ERP_Components\\Views\\Home\\Index.cshtml",
+              "RelativeDocumentMoniker": "Views\\Home\\Index.cshtml",
+              "ToolTip": "C:\\Users\\vhk\\OneDrive\\Documents\\GitHub\\ERP_Components\\ERP_Components\\Views\\Home\\Index.cshtml",
+              "RelativeToolTip": "Views\\Home\\Index.cshtml",
+              "ViewState": "AgIAABgAAAAAAAAAAAAAACUAAACFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-05-10T03:24:17.903Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 31,
+              "Title": "WarehouseServices.cs",
+              "DocumentMoniker": "C:\\Users\\vhk\\OneDrive\\Documents\\GitHub\\ERP_Components\\ERP_Component_DAL\\Services\\WarehouseServices.cs",
+              "RelativeDocumentMoniker": "..\\ERP_Component_DAL\\Services\\WarehouseServices.cs",
+              "ToolTip": "C:\\Users\\vhk\\OneDrive\\Documents\\GitHub\\ERP_Components\\ERP_Component_DAL\\Services\\WarehouseServices.cs",
+              "RelativeToolTip": "..\\ERP_Component_DAL\\Services\\WarehouseServices.cs",
+              "ViewState": "AgIAAJMAAAAAAAAAAAAYwJoAAAAVAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-10T03:22:28.816Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 34,
+              "Title": "WarehouseController.cs",
+              "DocumentMoniker": "C:\\Users\\vhk\\OneDrive\\Documents\\GitHub\\ERP_Components\\ERP_Components\\Controllers\\WarehouseController.cs",
+              "RelativeDocumentMoniker": "Controllers\\WarehouseController.cs",
+              "ToolTip": "C:\\Users\\vhk\\OneDrive\\Documents\\GitHub\\ERP_Components\\ERP_Components\\Controllers\\WarehouseController.cs",
+              "RelativeToolTip": "Controllers\\WarehouseController.cs",
+              "ViewState": "AgIAABsAAAAAAAAAAAAowCAAAAAIAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-10T03:22:28.847Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 26,
+              "Title": "Material.cshtml",
+              "DocumentMoniker": "C:\\Users\\vhk\\OneDrive\\Documents\\GitHub\\ERP_Components\\ERP_Components\\Views\\Inventory\\Material.cshtml",
+              "RelativeDocumentMoniker": "Views\\Inventory\\Material.cshtml",
+              "ToolTip": "C:\\Users\\vhk\\OneDrive\\Documents\\GitHub\\ERP_Components\\ERP_Components\\Views\\Inventory\\Material.cshtml",
+              "RelativeToolTip": "Views\\Inventory\\Material.cshtml",
+              "ViewState": "AgIAADUAAAAAYWZmZmYkwDkAAAA9AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-05-09T17:29:34.373Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 38,
+              "Title": "SubCategory.cshtml",
+              "DocumentMoniker": "C:\\Users\\vhk\\OneDrive\\Documents\\GitHub\\ERP_Components\\ERP_Components\\Views\\Inventory\\SubCategory.cshtml",
+              "RelativeDocumentMoniker": "Views\\Inventory\\SubCategory.cshtml",
+              "ToolTip": "C:\\Users\\vhk\\OneDrive\\Documents\\GitHub\\ERP_Components\\ERP_Components\\Views\\Inventory\\SubCategory.cshtml",
+              "RelativeToolTip": "Views\\Inventory\\SubCategory.cshtml",
+              "ViewState": "AgIAAIQAAAAAAAAAAAAAAJcAAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-05-09T17:24:24.419Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 35,
+              "Title": "Dashboard.cshtml",
+              "DocumentMoniker": "C:\\Users\\vhk\\OneDrive\\Documents\\GitHub\\ERP_Components\\ERP_Components\\Views\\Inventory\\Dashboard.cshtml",
+              "RelativeDocumentMoniker": "Views\\Inventory\\Dashboard.cshtml",
+              "ToolTip": "C:\\Users\\vhk\\OneDrive\\Documents\\GitHub\\ERP_Components\\ERP_Components\\Views\\Inventory\\Dashboard.cshtml",
+              "RelativeToolTip": "Views\\Inventory\\Dashboard.cshtml",
+              "ViewState": "AgIAAE4AAAAAcGZmZmb0vwAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-05-09T17:21:53.232Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "InventoryServices.cs",
+              "DocumentMoniker": "C:\\Users\\vhk\\OneDrive\\Documents\\GitHub\\ERP_Components\\ERP_Component_DAL\\Services\\InventoryServices.cs",
+              "RelativeDocumentMoniker": "..\\ERP_Component_DAL\\Services\\InventoryServices.cs",
+              "ToolTip": "C:\\Users\\vhk\\OneDrive\\Documents\\GitHub\\ERP_Components\\ERP_Component_DAL\\Services\\InventoryServices.cs*",
+              "RelativeToolTip": "..\\ERP_Component_DAL\\Services\\InventoryServices.cs*",
+              "ViewState": "AgIAAIIGAAAANDMzMzMgwIkGAAA0AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-09T17:20:37.307Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 40,
+              "Title": "WarehouseLocation.cshtml",
+              "DocumentMoniker": "C:\\Users\\vhk\\OneDrive\\Documents\\GitHub\\ERP_Components\\ERP_Components\\Views\\Warehouse\\WarehouseLocation.cshtml",
+              "RelativeDocumentMoniker": "Views\\Warehouse\\WarehouseLocation.cshtml",
+              "ToolTip": "C:\\Users\\vhk\\OneDrive\\Documents\\GitHub\\ERP_Components\\ERP_Components\\Views\\Warehouse\\WarehouseLocation.cshtml",
+              "RelativeToolTip": "Views\\Warehouse\\WarehouseLocation.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAWAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-05-09T17:02:51.393Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 41,
+              "Title": "EditWarehouseLocation.cshtml",
+              "DocumentMoniker": "C:\\Users\\vhk\\OneDrive\\Documents\\GitHub\\ERP_Components\\ERP_Components\\Views\\Warehouse\\EditWarehouseLocation.cshtml",
+              "RelativeDocumentMoniker": "Views\\Warehouse\\EditWarehouseLocation.cshtml",
+              "ToolTip": "C:\\Users\\vhk\\OneDrive\\Documents\\GitHub\\ERP_Components\\ERP_Components\\Views\\Warehouse\\EditWarehouseLocation.cshtml",
+              "RelativeToolTip": "Views\\Warehouse\\EditWarehouseLocation.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABAAAABtAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-05-09T17:02:29.339Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 30,
+              "Title": "EditWarehouse.cshtml",
+              "DocumentMoniker": "C:\\Users\\vhk\\OneDrive\\Documents\\GitHub\\ERP_Components\\ERP_Components\\Views\\Inventory\\EditWarehouse.cshtml",
+              "RelativeDocumentMoniker": "Views\\Inventory\\EditWarehouse.cshtml",
+              "ToolTip": "C:\\Users\\vhk\\OneDrive\\Documents\\GitHub\\ERP_Components\\ERP_Components\\Views\\Inventory\\EditWarehouse.cshtml",
+              "RelativeToolTip": "Views\\Inventory\\EditWarehouse.cshtml",
+              "ViewState": "AgIAAB4AAAAAAAAAAAAUwBYAAAAQAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-05-09T16:57:52.747Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 33,
+              "Title": "WarehouseView.cshtml",
+              "DocumentMoniker": "C:\\Users\\vhk\\OneDrive\\Documents\\GitHub\\ERP_Components\\ERP_Components\\Views\\Inventory\\WarehouseView.cshtml",
+              "RelativeDocumentMoniker": "Views\\Inventory\\WarehouseView.cshtml",
+              "ToolTip": "C:\\Users\\vhk\\OneDrive\\Documents\\GitHub\\ERP_Components\\ERP_Components\\Views\\Inventory\\WarehouseView.cshtml",
+              "RelativeToolTip": "Views\\Inventory\\WarehouseView.cshtml",
+              "ViewState": "AgIAABEAAAAAAAAAAAAAABUAAAArAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-05-09T15:12:55.959Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "InventoryController.cs",
+              "DocumentMoniker": "C:\\Users\\vhk\\OneDrive\\Documents\\GitHub\\ERP_Components\\ERP_Components\\Controllers\\InventoryController.cs",
+              "RelativeDocumentMoniker": "Controllers\\InventoryController.cs",
+              "ToolTip": "C:\\Users\\vhk\\OneDrive\\Documents\\GitHub\\ERP_Components\\ERP_Components\\Controllers\\InventoryController.cs",
+              "RelativeToolTip": "Controllers\\InventoryController.cs",
+              "ViewState": "AgIAALwBAAAAQJ2ZmZnZv8QBAAA7AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-09T14:22:45.233Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

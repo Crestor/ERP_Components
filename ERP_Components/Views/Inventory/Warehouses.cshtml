@@ -7,45 +7,34 @@
 
 <link rel="stylesheet" href="~/css/Product.css">
 
-<h2>Add Warehouses</h2>
+<div class="header1">
+    <h4>Add Warehouse</h4>
+</div>
 
-<div>
+<div class="container">
     <form id="vendorForm" method="post" asp-action="AddWarehouses" asp-controller="Inventory" onsubmit="savedDetail()">
 
 
+        <
+      
         <div class="form-section">
             <h3>Warehouse Details</h3>
             <div class="form-row">
 
-                <label for="type"> Warehouse Type </label>
-                <select name="warehouseType">
-                    <option disabled selected>Select</option>
-                    <option>Sales</option>
-                    <option>Production</option>
-                </select>
-             
-
                 <label for="name">Warehouse Name</label>
                 <input type="text" id="panno" name="warehouseName" required>
+                <input type="hidden" name="type" value="1" required>
 
-            </div>
-           
-
-        </div>
-      
-        <div class="form-section">
-            <h3>Address Details</h3>
-            <div class="form-row">
 
                 <label for="address2"> Address Line 1:   </label>
                 <input type="text" id="address1" name="Address1" required>
 
-        <label for="address2"> Address Line 2:   </label>
-        <input type="text" id="address2" name="Address2" required>
+     
               
             </div>
             <div class="form-row">
-
+                <label for="address2"> Address Line 2:   </label>
+                <input type="text" id="address2" name="Address2" required>
         <label for="country">Country:</label>
         <select id="country" name="Country">
             <option selected disabled>-Select-</option>
@@ -54,23 +43,26 @@
             </select>
 
 
+            </div>
 
+            <div class="form-row">
                 <label for="state">State: </label>
                 <select id="state" name="State" required>
                     @* onchange="updateDistricts()" *@
                     <option selected disabled value=" ">-Select State-</option>
 
                 </select>
-               
-            </div>
 
-            <div class="form-row">
-
-        <label for="district"> District: </label>
+                <label for="district"> District: </label>
         <select id="district" name="District" required>
             <option disabled selected value=" ">-Select District-</option>
         </select>
 
+               
+                
+            </div>
+
+            <div class="form-row">
                 <label for="city">Area:</label>
                 <select id="city" name="Area" onchange="checkOtherCity(this)" required>
                     <option selected disabled value="">-Select Area-</option>
@@ -78,10 +70,6 @@
 
 
                 </select>
-                
-            </div>
-
-            <div class="form-row" style="width:50%">
     <label for="pincode"> Postal Code:</label>
     <input type="text" id="pincode" name="PostalCode" required>
     </div>
@@ -239,4 +227,16 @@
 
 
     window.onload = populateStates;
+</script>
+
+<script>
+      function savedDetail(){
+                Swal.fire({
+      position: "center",
+      icon: "success",
+      title: "Your work has been saved",
+      showConfirmButton: false,
+      timer: 1500
+    });
+    }
 </script>

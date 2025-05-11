@@ -1,0 +1,94 @@
+﻿@using ERP_Component_DAL.Models;
+
+
+@{
+    ViewBag.Title = "Add Material";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link rel="stylesheet" href="~/css/Product.css">
+
+@model List<Items>
+<div class="header1">
+    <h4>Add Opening Stock</h4>
+</div>
+
+
+<div id="material" class="container">
+    <form method="post" asp-action="OpeningStockEntryForm" asp-controller="Inventory" onsubmit="return savedDetail()">
+
+        <div class="form-section">
+            <h3>Stock Adjustment</h3>
+            <div class="form-row">
+
+                <label class="required" for="itemName">Product Name:</label>
+                <select name="itemId">
+
+                    <option selected disabled>Select Item</option>
+                    @for (var i = 0; i < Model.Count; i++)
+                    {
+
+                        <option value="@Model[i].itemId">@Model[i].itemName</option>
+                    }
+                </select>
+
+                @* <input type="hidden" name="itemType" value="product" required /> *@
+
+                <label class="required" for="supplier">Quantity:</label>
+                <input type="number" id="currentStock" name="inStock" />
+            </div>
+            <div class="form-row" style="width:50%">
+
+                <label class="required" for="supplier">Batch Series:</label>
+                <input type="text"  name="batchSeries"/>
+
+               
+            </div>
+          
+            
+
+        </div>
+
+
+        <div class="button-container">
+            <button type="submit">Submit</button>
+            <button type="reset">Reset</button>
+        </div>
+    </form>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        $('#itemDropdown').change(function () {
+            var itemId = $(this).val();
+
+            if (itemId) {
+                $.ajax({
+                    url: '/Inventory/GetCurrentStock',
+                    type: 'GET',
+                    data: { itemId: itemId },
+                    success: function (data) {
+                        $('#currentStock').val(data.currentStock);
+                    },
+                    error: function () {
+                        alert('Failed to fetch stock');
+                    }
+                });
+            }
+        });
+    });
+</script>
+
+<script>
+      function savedDetail(){
+                Swal.fire({
+      position: "center",
+      icon: "success",
+      title: "Your work has been saved",
+      showConfirmButton: false,
+      timer: 1500
+    });
+    }
+</script>

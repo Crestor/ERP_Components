@@ -1,0 +1,73 @@
+﻿@using ERP_Component_DAL.Models;
+
+
+@{
+    ViewBag.Title = "Stock List";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@model List<Warehouse>
+<link href="~/css/Product.css" rel="stylesheet" />
+
+<div class="header1">
+    <h4>View Warehouse Stock</h4>
+</div>
+
+<div class="product-section">
+
+
+
+
+    <table class="product-table" style="margin:0px 15px">
+        <thead>
+            <tr>
+                <th>Sno.</th>
+                <th>Item Name</th>
+                <th>Zone Name</th>
+                <th>Aisle Number</th>
+                <th>Shelf Number</th>
+                <th>Quantity</th>
+                <th>Date</th>
+                <th>Action</th>
+             
+            </tr>
+        </thead>
+        <tbody id="geeks">
+
+
+            @for (var i = 0; i < Model.Count; i++)
+            {
+
+                var x = Model[i];
+                var index = i + 1;
+
+                <tr id="row-@x.">
+                    <td>@index</td>
+                    <td>@x.itemName</td>
+                    <td>@x.zoneName</td>
+                    <td>@x.aisle</td>
+                    <td>@x.shelfNumber</td>
+                    <td>@x.quantity</td>
+                    <td>@x.CreatedOn</td>
+                    
+                    <td>
+                        <div class="actions">
+
+                            <button onclick="location.href='@Url.Action("EditWarehouseStock", "Warehouse", new { detailId = @x.detailId }, null)'"><i class="fas fa-edit"></i></button>
+                            <button onclick="location.href='@Url.Action("DeleteWarehouseStock", "Warehouse", new { detailId = @x.detailId }, null)'"><i class="fas fa-trash"></i></button>
+
+                            @*  <button style="background-color:#007bff; color:white; text-align:center;border:none; border-radius:10px; padding:4px 10px" onclick="location.href='@Url.Action("EditSubCategory", "Inventory", new { subCategoryId = x.SubCategoryId }, null)'">Edit</button>
+
+
+                                <button style="background-color:#d01313c2;color:white; text-align:center;border:none; border-radius:10px; padding:4px 10px" onclick="location.href='@Url.Action("DeleteSubCategory", "Inventory", new { subCategoryId = x.SubCategoryId }, null)'">Delete</button> *@
+
+                        </div>
+                    </td>
+
+                </tr>
+            }
+        </tbody>
+
+    </table>
+</div>
+

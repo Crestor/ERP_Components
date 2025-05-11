@@ -1,0 +1,97 @@
+﻿@using ERP_Component_DAL.Models;
+
+
+@{
+    ViewBag.Title = "Edit Stock";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link rel="stylesheet" href="~/css/Product.css">
+
+@model Stock
+<div class="header1">
+    <h4>Edit Stock</h4>
+</div>
+<div id="product" class="container">
+    <form method="post" asp-action="UpdateStock" asp-controller="Inventory" onsubmit="return savedDetail()">
+
+        <div class="form-section">
+            <h3>Edit Stock</h3>
+            <div class="form-row">
+
+                <label class="required" for="productName">Item Name:</label>
+
+                <select name="itemId">
+                    <option selected disabled>Select Item</option>
+                    @foreach (var item in Model.items)
+                    {
+
+
+                        <option value="@item.itemId">@item.itemName</option>
+
+                    }
+                </select>
+
+                <label class="required" for="sku">Purchase Date:</label>
+                <input type="date" name="stockDate" required />
+                <input type="hidden" name="stockId" value="@Model.stockId" required />
+            </div>
+            <div class="form-row">
+
+                <label class="required" for="invoice">Invoice Number:</label>
+                <input type="text" name="invoice" />
+                <label class="required" for="batch">Batch Number:</label>
+                <input type="text" name="batchSeries" >
+            </div>
+            <div class="form-row">
+
+
+                <label for="descr">Quantity Purchased:</label>
+                <input type="number" name="quantity" value="@Model.quantity">
+                <label for="price">Unit Price:</label>
+                <input type="text" name="costPrice" value="@Model.costPrice" />
+            </div>
+            <div class="form-row">
+
+                <label class="required" for="sku">Manufacturing Date:</label>
+                <input type="date" name="manufacture" required/>
+                <label class="required" for="sku">Expiry Date:</label>
+                <input type="date" name="expiry" required value="@Model.expiry" />
+            </div>
+            <div class="form-row">
+                <label for="price">Total Price:</label>
+                <input type="text" name="totalPrice" />
+                <label for="cost">Warehouse Location:</label>
+                <select name="warehouseId">
+                    <option selected disabled>Select</option>
+                    @foreach (var warehouse in Model.warehouse)
+                    {
+
+                        <option value="@warehouse.warehouseId">@warehouse.warehouseName</option>
+
+                    }
+                </select>
+            </div>
+
+
+        </div>
+
+
+        <div class="button-container">
+            <button type="submit">Submit</button>
+            <button type="reset">Reset</button>
+        </div>
+    </form>
+</div>
+
+<script>
+      function savedDetail(){
+                Swal.fire({
+      position: "center",
+      icon: "success",
+      title: "Your work has been saved",
+      showConfirmButton: false,
+      timer: 1500
+    });
+    }
+</script>

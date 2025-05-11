@@ -1,0 +1,104 @@
+﻿@using ERP_Component_DAL.Models;
+
+
+@{
+    ViewBag.Title = "Add Asset";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link rel="stylesheet" href="~/css/Product.css">
+
+@model Asset
+
+<div class="header1">
+    <h4>Add Asset</h4>
+</div>
+<div id="asset" class="container">
+
+
+
+    <form method="post" asp-action="UpdateAsset" asp-controller="Asset" onsubmit="savedDetail()">
+
+        <div class="form-section">
+            <h3>Add Asset</h3>
+            <div class="form-row">
+
+                <label class="required" for="assetName">Item Name:</label>
+                <input type="text" name="itemName" value="@Model.itemName"/>
+                <input type="hidden" name="itemType" value="3" />
+
+
+                <label class="required" for="type">Item Type:</label>
+                <input type="text"  name="assetType" />
+            </div>
+            <div class="form-row">
+                <label class="required" for="category">Category:</label>
+               <select name="category">
+                   <option selected disabled>select</option>
+               </select>
+                <label class="required" for="serial">Serial Number:</label>
+                <input type="text" name="serialNumber" value="@Model.serialNumber" />
+                <input type="hidden" name="itemId" value="@Model.itemId" />
+
+            </div>
+            <div class="form-row">
+
+
+                <label for="cost">Purchase Cost:</label>
+                <input type="number" name="price" value="@Model.price">
+
+
+
+                <label for="cost">Warranty Period:</label>
+                <input type="date" name="warrantyEndDate" value="@Model.warrantyEndDate" />
+            </div>
+
+            <div class="form-row">
+
+                <label for="department">Department:</label>
+                <select name="department">
+                    <option selected disabled>Select</option>
+                </select>
+                <label for="assign">Assign To:</label>
+                <select name="employeeName">
+                    <option selected disabled>Select</option>
+                </select>
+            </div>
+
+            <div class="form-row">
+                <label for="assign">Status:</label>
+                <select name="status">
+                    <option selected disabled>Select</option>
+                    <option value="1">Available</option>
+                    <option value="2">Under Inspection</option>
+                    <option value="3">Damaged</option>
+                </select>
+                <label for="location">Description:</label>
+                <textarea name="description"></textarea>
+
+            </div>
+        </div>
+
+
+
+
+
+
+        <div class="button-container">
+            <button type="submit">Submit</button>
+            <button type="reset">Reset</button>
+        </div>
+    </form>
+</div>
+
+<script>
+      function savedDetail(){
+                Swal.fire({
+      position: "center",
+      icon: "success",
+      title: "Your work has been saved",
+      showConfirmButton: false,
+      timer: 1500
+    });
+    }
+</script>

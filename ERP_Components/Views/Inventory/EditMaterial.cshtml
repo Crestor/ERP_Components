@@ -1,57 +1,155 @@
-﻿@model ERP_Component_DAL.Models.Items
+﻿@using ERP_Component_DAL.Models;
+
+
 @{
-    ViewBag.Title = "Edit Material";
-    string activeSection = ViewBag.Section as string ?? "main";
+    ViewBag.Title = "Add Material";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
+<link rel="stylesheet" href="~/css/Product.css">
+@model Items
+<div class="header1">
+    <h4>Edit Material</h4>
+</div>
 
-<h2>Edit Material</h2>
+<div id="material" class="container">
+    <form method="post" asp-action="UpdateMaterial" asp-controller="Inventory" onsubmit="return savedDetail()">
 
-<div class="vendor-section" id="main" style="@(activeSection == "main" ? "" : "display:none")">
-    <h3>Main Details</h3>
-    <form method="post" action="/Inventory/UpdateMain">
-        <input type="hidden" name="itemId" value="@Model.itemId" />
-        <label>Item Name:</label>
-        <input type="text" name="itemName" value="@Model.itemName" /><br />
-        <label>SKU:</label>
-        <input type="number" name="SKU" value="@Model.SKU" /><br />
-        <label>HSN:</label>
-        <input type="number" name="HSN" value="@Model.HSN" /><br />
-        <label>Specification:</label>
-        <textarea name="specification">@Model.specification</textarea><br />
-        <label>Unit Price:</label>
-        <input type="text" name="unitPrice" value="@Model.unitPrice" /><br />
-        <label>UOM:</label>
-        <input type="text" name="UOM" value="@Model.UOM" /><br />
-        <button type="submit">Save</button>
+        <div class="form-section">
+            <h3>Material Info</h3>
+            <div class="form-row">
+
+                <label class="required" for="productName">Product Name:</label>
+                <input type="text" name="itemName" value="@Model.itemName" required />
+                <input type="hidden" name="itemid" value="@Model.itemId" required />
+
+                <label class="required" for="sku">Stack Keeping Unit(SKU):</label>
+                <input type="number" name="SKU" required value="@Model.SKU" />
+            </div>
+            <div class="form-row">
+                <label class="required" for="hsn">HSN:</label>
+                <input type="number" name="HSN" value="@Model.HSN" />
+                <label class="required" for="category">Category:</label>
+                <select name="categoryId" id="role" onchange="getName()">
+                    <option selected disabled>Select</option>
+                    @foreach (var category in Model.categories)
+                    {
+
+
+                        <option value="@category.categoryId">@category.categoryName</option>
+
+                    }
+                </select>
+                
+            </div>
+            <div class="form-row">
+                <label class="required" for="subCategory">Sub-category:</label>
+                <select id="name" name="subCategoryName">
+                    <option selected disabled>Select</option>
+
+                </select>
+                <label for="descr">Specification:</label>
+                <textarea style="width:33%" name="specification" value="@Model.specification"></textarea>
+
+            </div>
+            <div class="form-row">
+                
+                <label for="uom">Unit of Measurement:</label>
+                <input type="text" name="UOM" value="@Model.UOM" />
+            </div>
+
+            <div class="form-row">
+                <label for="image">GST:</label>
+                <input type="number" name="gst" value="@Model.gst" />
+                <label for="descr">Update Description:</label>
+                <textarea  name="description" ></textarea>
+            </div>
+        </div>
+
+
+
+     
+
+
+        <div class="form-section">
+            <h3>Stock Details</h3>
+            <div class="form-row">
+
+                <label class="required" for="inStock">In Stock:</label>
+                <input type="number" name="inStock" required value="@Model.inStock" />
+
+                <label class="required" for="stockAlert">Stock Alert:</label>
+                <input type="number" name="stockAlert" required value="@Model.stockAlert" />
+            </div>
+            <div class="form-row" style="width:50%">
+                <label class="required" for="warehouse">Warehouse:</label>
+                <select name="warehouseId">
+                    <option selected disabled>Select</option>
+                    @foreach (var warehouse in Model.Warehouse)
+                    {
+
+
+                        <option value="@warehouse.warehouseId">@warehouse.warehouseName</option>
+
+                    }
+                </select>
+               
+
+            </div>
+
+
+        </div>
+
+
+        <div class="button-container">
+            <button type="submit">Submit</button>
+            <button type="reset">Reset</button>
+        </div>
     </form>
 </div>
 
-<div class="vendor-section" id="address" style="@(activeSection == "address" ? "" : "display:none")">
-    <h3>Lot Details</h3>
-    <form method="post" action="/Inventory/UpdateLot">
-        <input type="hidden" name="lotId" value="@Model.lotId" />
-        <label>Lot Series:</label>
-        <input type="number" name="lotSeries" value="@Model.lotSeries" /><br />
-        <label>Manufacturing Date:</label>
-        <input type="date" name="manufacture" value="@Model.manufacture.ToString("yyyy-MM-dd")" /><br />
-        <label>Expiry:</label>
-        <input type="date" name="expiry" value="@Model.expiry.ToString("yyyy-MM-dd")" /><br />
-        <label>Delivered:</label>
-        <input type="date" name="deliverd" value="@Model.deliverd.ToString("yyyy-MM-dd")" /><br />
-        <button type="submit">Save</button>
-    </form>
-</div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+        function getName() {
+        var Id = $("#role").val();
 
-<div class="vendor-section" id="bank" style="@(activeSection == "bank" ? "" : "display:none")">
-    <h3>Stock Details</h3>
-    <form method="post" action="/Inventory/UpdateStock">
-        <input type="hidden" name="inventoryId" value="@Model.inventoryId" />
-        <label>In Stock:</label>
-        <input type="number" name="inStock" value="@Model.inStock" /><br />
-        <label>Stock Alert:</label>
-        <input type="number" name="stockAlert" value="@Model.stockAlert" /><br />
-        <label>Warehouse:</label>
-        <input type="text" name="warehouse" value="@Model.warehouse" /><br />
-        <button type="submit">Save</button>
-    </form>
-</div>
+        $.ajax({
+            type: "GET",
+            url: "/Inventory/SubCategoriesNames",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            data: { categoryId: Id },
+            success: function (response) {
+                if (response.length > 0) {
+                    $("#name").empty();
+                    $("#name").append('<option selected disabled>Select</option>');
+                    response.forEach(function (item) {
+                        // $("#name").append('<option value="' + item.subCategoryName + '">' + item.subCategoryName + '</option>');
+                       $("#name").append('<option value="' + item.subCategoryId + '">' + item.categoryName + '</option>');
+
+
+                    });
+                } else {
+                    $("#name").empty().append('<option selected disabled>No SubCategory Found</option>');
+                }
+            },
+            error: function (xhr, status, error) {
+                console.error("AJAX Error: ", error);
+                console.error("Status: ", status);
+                console.error("Response: ", xhr.responseText);
+                alert("Error fetching user data. Check console for details.");
+            }
+        });
+    }
+</script>
+
+<script>
+      function savedDetail(){
+                Swal.fire({
+      position: "center",
+      icon: "success",
+      title: "Your work has been saved",
+      showConfirmButton: false,
+      timer: 1500
+    });
+    }
+</script>

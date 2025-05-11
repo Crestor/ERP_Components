@@ -9,23 +9,18 @@
 
 <link rel="stylesheet" href="~/css/Product.css">
  @model Warehouse
-
-<h2>Edit Warehouses</h2>
-
-<div>
-    <form id="vendorForm" method="post" asp-action="EditWarehouse" asp-controller="Inventory" onsubmit="savedDetail()">
+<div class="header1">
+    <h4>Edit Warehouse</h4>
+</div>
+<div class="container">
+    <form id="vendorForm" method="post" asp-action="EditWarehouse" asp-controller="Inventory" onsubmit=" return savedDetail()">
 
 
         <div class="form-section">
             <h3>Warehouse Details</h3>
             <div class="form-row">
 
-                <label for="type"> Warehouse Type </label>
-                <select name="warehouseType" value="@Model.warehouseType">
-                    <option disabled selected>Select</option>
-                    <option>Sales</option>
-                    <option>Production</option>
-                </select>
+                
 
 
                 <label for="name">Warehouse Name</label>
@@ -244,4 +239,14 @@
 
     window.onload = populateStates;
 </script>
-
+<script>
+      function savedDetail(){
+                Swal.fire({
+      position: "center",
+      icon: "success",
+      title: "Your work has been saved",
+      showConfirmButton: false,
+      timer: 1500
+    });
+    }
+</script>

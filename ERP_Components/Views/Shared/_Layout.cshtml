@@ -9,31 +9,381 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
 
     <!-- Font Awesome for icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.19.1/dist/sweetalert2.all.min.js"></script>
 
     <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.19.1/dist/sweetalert2.min.css" rel="stylesheet">
     <!-- Custom CSS -->
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-</head>
+    <style>
+        #sidebar-wrapper.toggled {
+        margin-left: -250px;
+        transition: margin 0.3s ease;
+        }
 
+        #sidebar-wrapper {
+        width: 250px;
+        transition: margin 0.3s ease;
+        }
+
+    </style>
+</head>
+@{
+    var Role = Context.Session.GetString("Role");
+
+}
 <body>
     <div class="d-flex" id="wrapper" >
         <!-- Sidebar -->
         <div class="border-right text-light" style="background-color:#a14040; min-height: 100vh;" id="sidebar-wrapper">
-            <div class="sidebar-heading">Inventory Management</div>
-            <div class="list-group list-group-flush">
-                @* <!-- Users --> *@
-                @* <a href="#" class="list-group-item list-group-item-action" style="background-color:#a14040; color:white;"> *@
-                @*     <i class="fas fa-users me-2"></i> Users *@
-                @* </a> *@
 
-                <!-- Inventory Dashboard -->
-                <a href="@Url.Action("InventoryDashboard", "Inventory")" class="list-group-item list-group-item-action" style="background-color:#a14040; color:white;">
-                    <i class="fas fa-tachometer-alt me-2"></i> Inventory Dashboard
+
+            @if (Role == "Inventory")
+            {
+                <div class="sidebar-heading">Inventory Management</div>
+                <div class="list-group list-group-flush">
+                   
+
+                    <!-- Inventory Dashboard -->
+                    <a href="@Url.Action("Dashboard", "Inventory")" class="list-group-item list-group-item-action" style="background-color:#a14040; color:white;">
+                        <i class="fas fa-tachometer-alt me-2"></i> Inventory Dashboard
+                    </a>
+
+                    <!-- Warehouse -->
+                    <a class="list-group-item list-group-item-action d-flex justify-content-between align-items-center"
+                    data-bs-toggle="collapse"
+                    href="#warehoseDropdown"
+                    role="button"
+                    aria-expanded="false"
+                    aria-controls="productDropdown"
+                    style="background-color:#a14040; color:white;">
+                        <span> <i class="fas fa-warehouse me-2"></i> Warehouse</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </a>
+                    <div class="collapse" id="warehoseDropdown">
+                        <a href="@Url.Action("Warehouses", "Inventory")" class="list-group-item list-group-item-action ps-5" style="background-color:#c34949; color:white;">
+                            <i class="fas fa-plus-circle me-2"></i> Add Warehouse
+                        </a>
+                        <a href="@Url.Action("WarehouseView", "Inventory")" class="list-group-item list-group-item-action ps-5" style="background-color:#c34949; color:white;">
+                            <i class="fas fa-eye me-2"></i> View Warehouse
+                        </a>
+                    </div>
+
+
+                    <!-- Inventory -->
+                    <a href="@Url.Action("Inventory", "Inventory")" class="list-group-item list-group-item-action" style="background-color:#a14040; color:white;">
+                        <i class="fas fa-boxes me-2"></i> Inventory
+                    </a>
+
+                    <!-- Products -->
+                    <a class="list-group-item list-group-item-action d-flex justify-content-between align-items-center"
+                    data-bs-toggle="collapse"
+                    href="#productDropdown"
+                    role="button"
+                    aria-expanded="false"
+                    aria-controls="productDropdown"
+                    style="background-color:#a14040; color:white;">
+                        <span><i class="fas fa-box-open me-2"></i> Products</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </a>
+                    <div class="collapse" id="productDropdown">
+                        <a href="@Url.Action("Product", "Inventory")" class="list-group-item list-group-item-action ps-5" style="background-color:#c34949; color:white;">
+                            <i class="fas fa-plus-circle me-2"></i> Add Products
+                        </a>
+                        <a href="@Url.Action("ViewProduct", "Inventory")" class="list-group-item list-group-item-action ps-5" style="background-color:#c34949; color:white;">
+                            <i class="fas fa-eye me-2"></i> View Products
+                        </a>
+                    </div>
+
+                    <!-- Material -->
+                    <a class="list-group-item list-group-item-action d-flex justify-content-between align-items-center"
+                    data-bs-toggle="collapse"
+                    href="#materialDropdown"
+                    role="button"
+                    aria-expanded="false"
+                    aria-controls="productDropdown"
+                    style="background-color:#a14040; color:white;">
+                        <span><i class="fas fa-box-open me-2"></i> Raw Material</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </a>
+                    <div class="collapse" id="materialDropdown">
+                        <a href="@Url.Action("Material", "Inventory")" class="list-group-item list-group-item-action ps-5" style="background-color:#c34949; color:white;">
+                            <i class="fas fa-plus-circle me-2"></i> Add Raw Material
+                        </a>
+                        <a href="@Url.Action("ViewMaterial", "Inventory")" class="list-group-item list-group-item-action ps-5" style="background-color:#c34949; color:white;">
+                            <i class="fas fa-eye me-2"></i> View Products
+                        </a>
+                    </div>
+
+                    <!-- Asset -->
+                    <a class="list-group-item list-group-item-action d-flex justify-content-between align-items-center"
+                       data-bs-toggle="collapse"
+                       href="#asset"
+                       role="button"
+                       aria-expanded="false"
+                       aria-controls="productDropdown"
+                       style="background-color:#a14040; color:white;">
+                        <span> <i class="fas fa-warehouse me-2"></i>Add Asset</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </a>
+                    <div class="collapse" id="asset">
+                        <a href="@Url.Action("AddAsset", "Asset")" class="list-group-item list-group-item-action ps-5" style="background-color:#c34949; color:white;">
+                            <i class="fas fa-plus-circle me-2"></i> Add Asset
+                        </a>
+                        <a href="@Url.Action("AssetView", "Asset")" class="list-group-item list-group-item-action ps-5" style="background-color:#c34949; color:white;">
+                            <i class="fas fa-eye me-2"></i> View Asset
+                        </a>
+                    </div>
+
+
+                    @* Category *@
+                    <a class="list-group-item list-group-item-action d-flex justify-content-between align-items-center"
+                    data-bs-toggle="collapse"
+                    href="#categoryDropdown"
+                    role="button"
+                    aria-expanded="false"
+                    aria-controls="productDropdown"
+                    style="background-color:#a14040; color:white;">
+                        <span><i class="fas fa-box-open me-2"></i>Category</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </a>
+                    <div class="collapse" id="categoryDropdown">
+                        <a href="@Url.Action("Category", "Inventory")" class="list-group-item list-group-item-action ps-5" style="background-color:#c34949; color:white;">
+                            <i class="fas fa-plus-circle me-2"></i> Add Category
+                        </a>
+                        <a href="@Url.Action("ViewCategory", "Inventory")" class="list-group-item list-group-item-action ps-5" style="background-color:#c34949; color:white;">
+                            <i class="fas fa-eye me-2"></i> View Category
+                        </a>
+                       
+                        
+                       
+                    </div>
+                    <!-- SubCategory -->
+                    <a class="list-group-item list-group-item-action d-flex justify-content-between align-items-center"
+                       data-bs-toggle="collapse"
+                       href="#subcategory"
+                       role="button"
+                       aria-expanded="false"
+                       aria-controls="productDropdown"
+                       style="background-color:#a14040; color:white;">
+                        <span> <i class="fas fa-warehouse me-2"></i>SubCategory</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </a>
+                    <div class="collapse" id="subcategory">
+                        <a href="@Url.Action("SubCategory", "Inventory")" class="list-group-item list-group-item-action ps-5" style="background-color:#c34949; color:white;">
+                            <i class="fas fa-plus-circle me-2"></i> Add SubCategory
+                        </a>
+                        <a href="@Url.Action("ViewSubCategory", "Inventory")" class="list-group-item list-group-item-action ps-5" style="background-color:#c34949; color:white;">
+                            <i class="fas fa-eye me-2"></i> View SubCategory
+                        </a>
+                    </div>
+
+                    <!-- Stocks -->
+                    <a class="list-group-item list-group-item-action d-flex justify-content-between align-items-center"
+                    data-bs-toggle="collapse"
+                    href="#stockDropdown"
+                    role="button"
+                    aria-expanded="false"
+                    aria-controls="stockDropdown"
+                    style="background-color:#a14040; color:white;">
+                        <span> <i class="fa-solid fa-boxes-stacked"></i>   Stocks</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </a>
+                    <div class="collapse" id="stockDropdown">
+                        <a href="@Url.Action("OpeningStockEntryForm", "Inventory")" class="list-group-item list-group-item-action ps-5" style="background-color:#c34949; color:white;">
+                            <i class="fas fa-plus-square me-2"></i>Add Opening Stock
+                        </a> <a href="@Url.Action("AddStock", "Inventory")" class="list-group-item list-group-item-action ps-5" style="background-color:#c34949; color:white;">
+                            <i class="fas fa-plus-square me-2"></i> Add Stock In
+                        </a>
+                        <a href="@Url.Action("ViewStock", "Inventory")" class="list-group-item list-group-item-action ps-5" style="background-color:#c34949; color:white;">
+                            <i class="fas fa-eye me-2"></i> View Stock
+                        </a>
+
+                    </div>
+
+                    <!-- Stock Adjustment -->
+                    <a class="list-group-item list-group-item-action d-flex justify-content-between align-items-center"
+                    data-bs-toggle="collapse"
+                    href="#adjustmentDropdown"
+                    role="button"
+                    aria-expanded="false"
+                    aria-controls="adjustmentDropdown"
+                    style="background-color:#a14040; color:white;">
+                        <span><i class="fas fa-sliders-h me-2"></i> Stock Adjustment</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </a>
+                    <div class="collapse" id="adjustmentDropdown">
+                        <a href="@Url.Action("StockAdjustment", "Inventory")" class="list-group-item list-group-item-action ps-5" style="background-color:#c34949; color:white;">
+                            <i class="fas fa-edit me-2"></i> Stock Adjustment
+                        </a>
+                        <a href="@Url.Action("AddStockAdjustment", "Inventory")" class="list-group-item list-group-item-action ps-5" style="background-color:#c34949; color:white;">
+                            <i class="fas fa-plus-circle me-2"></i> Add Adjustment
+                        </a>
+                    </div>
+
+                    <!-- Stock Transfer -->
+                    <a class="list-group-item list-group-item-action d-flex justify-content-between align-items-center"
+                    data-bs-toggle="collapse"
+                    href="#transferDropdown"
+                    role="button"
+                    aria-expanded="false"
+                    aria-controls="transferDropdown"
+                    style="background-color:#a14040; color:white;">
+                        <span><i class="fas fa-truck-moving me-2"></i> Stock Transfer</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </a>
+                    <div class="collapse" id="transferDropdown">
+                        <a href="@Url.Action("StockTransfer", "Inventory")" class="list-group-item list-group-item-action ps-5" style="background-color:#c34949; color:white;">
+                            <i class="fas fa-plus me-2"></i> Add Transfer
+                        </a>
+                        <a href="@Url.Action("ViewStockTransfer", "Inventory")" class="list-group-item list-group-item-action ps-5" style="background-color:#c34949; color:white;">
+                            <i class="fas fa-eye me-2"></i> View Transfer
+                        </a>
+                    </div>
+
+
+
+                    <!-- Logout -->
+                    <a href="@Url.Action("Index", "Home")" class="list-group-item list-group-item-action" style="background-color:#a14040; color:white;">
+                        <i class="fas fa-sign-out-alt me-2"></i> Logout
+                    </a>
+
+
+                </div>
+            }
+
+
+            @* <---------------------------------------------------------Warehouse Management-----------------------------------------------------> *@
+
+            else if (Role == "Warehouse")
+            {
+
+                <div class="sidebar-heading">Warehouse Management</div>
+                <div class="list-group list-group-flush">
+                   
+
+                    <!-- Warehouse Dashboard -->
+                    <a href="@Url.Action("Dashboard", "Warehouse")" class="list-group-item list-group-item-action" style="background-color:#a14040; color:white;">
+                        <i class="fas fa-tachometer-alt me-2"></i> Warehouse Dashboard
+                    </a>
+
+                    <!-- Warehouse Location -->
+                    <a class="list-group-item list-group-item-action d-flex justify-content-between align-items-center"
+                    data-bs-toggle="collapse"
+                    href="#warehoseDropdown"
+                    role="button"
+                    aria-expanded="false"
+                    aria-controls="productDropdown"
+                    style="background-color:#a14040; color:white;">
+                        <span> <i class="fas fa-warehouse me-2"></i> Warehouse Location</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </a>
+                    <div class="collapse" id="warehoseDropdown">
+                        <a href="@Url.Action("WarehouseLocation", "Warehouse")" class="list-group-item list-group-item-action ps-5" style="background-color:#c34949; color:white;">
+                            <i class="fas fa-plus-circle me-2"></i> Add Warehouse Location
+                        </a>
+                        <a href="@Url.Action("WarehouseLocationView", "Warehouse")" class="list-group-item list-group-item-action ps-5" style="background-color:#c34949; color:white;">
+                            <i class="fas fa-eye me-2"></i> View Warehouse
+                        </a>
+                    </div>
+
+
+
+
+
+                    <!-- Stocks -->
+                    <a class="list-group-item list-group-item-action d-flex justify-content-between align-items-center"
+                    data-bs-toggle="collapse"
+                    href="#stockDropdown"
+                    role="button"
+                    aria-expanded="false"
+                    aria-controls="stockDropdown"
+                    style="background-color:#a14040; color:white;">
+                        <span> <i class="fa-solid fa-boxes-stacked"></i>Stock Management</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </a>
+                    <div class="collapse" id="stockDropdown">
+                        <a href="@Url.Action("AddWarehouseStock", "Warehouse")" class="list-group-item list-group-item-action ps-5" style="background-color:#c34949; color:white;">
+                            <i class="fas fa-plus-square me-2"></i>Add Stock
+                        </a>
+                        <a href="@Url.Action("WarehouseStockView", "Warehouse")" class="list-group-item list-group-item-action ps-5" style="background-color:#c34949; color:white;">
+                            <i class="fas fa-plus-square me-2"></i>View Stock
+                        </a>
+
+                        <a href="@Url.Action("AddWarehouseStock", "Warehouse")" class="list-group-item list-group-item-action ps-5" style="background-color:#c34949; color:white;">
+                            <i class="fas fa-plus-square me-2"></i> Add Stock In
+                        </a>
+                        <a href="@Url.Action("ViewStock", "Inventory")" class="list-group-item list-group-item-action ps-5" style="background-color:#c34949; color:white;">
+                            <i class="fas fa-eye me-2"></i> View Stock
+                        </a>
+
+                    </div>
+
+                    <!-- Stock Adjustment -->
+                    <a class="list-group-item list-group-item-action d-flex justify-content-between align-items-center"
+                    data-bs-toggle="collapse"
+                    href="#adjustmentDropdown"
+                    role="button"
+                    aria-expanded="false"
+                    aria-controls="adjustmentDropdown"
+                    style="background-color:#a14040; color:white;">
+                        <span><i class="fas fa-sliders-h me-2"></i> Stock Adjustment</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </a>
+                    <div class="collapse" id="adjustmentDropdown">
+                        <a href="@Url.Action("StockAdjustment", "Inventory")" class="list-group-item list-group-item-action ps-5" style="background-color:#c34949; color:white;">
+                            <i class="fas fa-edit me-2"></i> Stock Adjustment
+                        </a>
+                        <a href="@Url.Action("AddStockAdjustment", "Inventory")" class="list-group-item list-group-item-action ps-5" style="background-color:#c34949; color:white;">
+                            <i class="fas fa-plus-circle me-2"></i> Add Adjustment
+                        </a>
+                    </div>
+
+                    <!-- Stock Transfer -->
+                    <a class="list-group-item list-group-item-action d-flex justify-content-between align-items-center"
+                    data-bs-toggle="collapse"
+                    href="#transferDropdown"
+                    role="button"
+                    aria-expanded="false"
+                    aria-controls="transferDropdown"
+                    style="background-color:#a14040; color:white;">
+                        <span><i class="fas fa-truck-moving me-2"></i> Stock Transfer</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </a>
+                    <div class="collapse" id="transferDropdown">
+                        <a href="@Url.Action("StockTransfer", "Inventory")" class="list-group-item list-group-item-action ps-5" style="background-color:#c34949; color:white;">
+                            <i class="fas fa-plus me-2"></i> Add Transfer
+                        </a>
+                        <a href="@Url.Action("ViewStockTransfer", "Inventory")" class="list-group-item list-group-item-action ps-5" style="background-color:#c34949; color:white;">
+                            <i class="fas fa-eye me-2"></i> View Transfer
+                        </a>
+                    </div>
+
+
+
+                    <!-- Logout -->
+                    <a href="@Url.Action("Index", "Home")" class="list-group-item list-group-item-action" style="background-color:#a14040; color:white;">
+                        <i class="fas fa-sign-out-alt me-2"></i> Logout
+                    </a>
+
+
+                </div>
+
+            }
+
+            @* <--------------------------------------------------------- Asset Management -----------------------------------------------------> *@
+            else if (Role == "Asset")
+            {
+                <div class="sidebar-heading">Asset Management</div>
+                <div class="list-group list-group-flush">
+
+              
+                <!-- Asset Dashboard -->
+                <a href="@Url.Action("Dashboard", "Asset")" class="list-group-item list-group-item-action" style="background-color:#a14040; color:white;">
+                    <i class="fas fa-tachometer-alt me-2"></i> Asset Dashboard
                 </a>
 
-                <!-- Warehouse -->
+                <!-- Asset -->
                 <a class="list-group-item list-group-item-action d-flex justify-content-between align-items-center"
                    data-bs-toggle="collapse"
                    href="#warehoseDropdown"
@@ -41,94 +391,20 @@
                    aria-expanded="false"
                    aria-controls="productDropdown"
                    style="background-color:#a14040; color:white;">
-                    <span> <i class="fas fa-warehouse me-2"></i> Warehouse</span>
+                    <span> <i class="fas fa-warehouse me-2"></i>Add Asset</span>
                     <i class="fas fa-chevron-down"></i>
                 </a>
                 <div class="collapse" id="warehoseDropdown">
-                    <a href="@Url.Action("Warehouses", "Inventory")" class="list-group-item list-group-item-action ps-5" style="background-color:#c34949; color:white;">
-                        <i class="fas fa-plus-circle me-2"></i> Add Warehouse
+                        <a href="@Url.Action("AddAsset", "Asset")" class="list-group-item list-group-item-action ps-5" style="background-color:#c34949; color:white;">
+                        <i class="fas fa-plus-circle me-2"></i> Add Asset
                     </a>
-                    <a href="@Url.Action("WarehouseView", "Inventory")" class="list-group-item list-group-item-action ps-5" style="background-color:#c34949; color:white;">
-                        <i class="fas fa-eye me-2"></i> View Warehouse
-                    </a>
-                </div>
-
-
-                <!-- Inventory -->
-                <a href="@Url.Action("Inventory", "Inventory")" class="list-group-item list-group-item-action" style="background-color:#a14040; color:white;">
-                    <i class="fas fa-boxes me-2"></i> Inventory
-                </a>
-
-                <!-- Products -->
-                <a class="list-group-item list-group-item-action d-flex justify-content-between align-items-center"
-                   data-bs-toggle="collapse"
-                   href="#productDropdown"
-                   role="button"
-                   aria-expanded="false"
-                   aria-controls="productDropdown"
-                   style="background-color:#a14040; color:white;">
-                    <span><i class="fas fa-box-open me-2"></i> Products</span>
-                    <i class="fas fa-chevron-down"></i>
-                </a>
-                <div class="collapse" id="productDropdown">
-                    <a href="@Url.Action("Product", "Inventory")" class="list-group-item list-group-item-action ps-5" style="background-color:#c34949; color:white;">
-                        <i class="fas fa-plus-circle me-2"></i> Add Products
-                    </a>
-                    <a href="@Url.Action("ViewProduct", "Inventory")" class="list-group-item list-group-item-action ps-5" style="background-color:#c34949; color:white;">
-                        <i class="fas fa-eye me-2"></i> View Products
-                    </a>
-                </div>
-
-                <!-- Material -->
-                <a class="list-group-item list-group-item-action d-flex justify-content-between align-items-center"
-                   data-bs-toggle="collapse"
-                   href="#productDropdown"
-                   role="button"
-                   aria-expanded="false"
-                   aria-controls="productDropdown"
-                   style="background-color:#a14040; color:white;">
-                    <span><i class="fas fa-box-open me-2"></i> Raw Material</span>
-                    <i class="fas fa-chevron-down"></i>
-                </a>
-                <div class="collapse" id="productDropdown">
-                    <a href="@Url.Action("Material", "Inventory")" class="list-group-item list-group-item-action ps-5" style="background-color:#c34949; color:white;">
-                        <i class="fas fa-plus-circle me-2"></i> Add Raw Material
-                    </a>
-                    <a href="@Url.Action("ViewMaterial", "Inventory")" class="list-group-item list-group-item-action ps-5" style="background-color:#c34949; color:white;">
-                        <i class="fas fa-eye me-2"></i> View Products
+                    <a href="@Url.Action("AssetView", "Asset")" class="list-group-item list-group-item-action ps-5" style="background-color:#c34949; color:white;">
+                        <i class="fas fa-eye me-2"></i> View Asset
                     </a>
                 </div>
 
 
 
-                @* Category *@
-                <a class="list-group-item list-group-item-action d-flex justify-content-between align-items-center"
-                   data-bs-toggle="collapse"
-                   href="#categoryDropdown"
-                   role="button"
-                   aria-expanded="false"
-                   aria-controls="productDropdown"
-                   style="background-color:#a14040; color:white;">
-                    <span><i class="fas fa-box-open me-2"></i>Category</span>
-                    <i class="fas fa-chevron-down"></i>
-                </a>
-                <div class="collapse" id="categoryDropdown">
-                    <a href="@Url.Action("Category", "Inventory")" class="list-group-item list-group-item-action ps-5" style="background-color:#c34949; color:white;">
-                        <i class="fas fa-plus-circle me-2"></i> Add Category
-                    </a>
-                    <a href="@Url.Action("ViewCategory", "Inventory")" class="list-group-item list-group-item-action ps-5" style="background-color:#c34949; color:white;">
-                        <i class="fas fa-eye me-2"></i> View Category
-                    </a>
-                    @* subCategory *@
-                    <a href="@Url.Action("SubCategory", "Inventory")" class="list-group-item list-group-item-action ps-5" style="background-color:#c34949; color:white;">
-                        <i class="fas fa-plus-circle me-2"></i> Add SubCategory
-                    </a>
-                    <a href="@Url.Action("ViewSubCategory", "Inventory")" class="list-group-item list-group-item-action ps-5" style="background-color:#c34949; color:white;">
-                        <i class="fas fa-eye me-2"></i> View SubCategory
-                    </a>
-                </div>
-
-          
                 <!-- Stocks -->
                 <a class="list-group-item list-group-item-action d-flex justify-content-between align-items-center"
                    data-bs-toggle="collapse"
@@ -137,17 +413,24 @@
                    aria-expanded="false"
                    aria-controls="stockDropdown"
                    style="background-color:#a14040; color:white;">
-                    <span> <i class="fa-solid fa-boxes-stacked"></i>   Stocks</span>
+                    <span> <i class="fa-solid fa-boxes-stacked"></i>Stock Management</span>
                     <i class="fas fa-chevron-down"></i>
                 </a>
                 <div class="collapse" id="stockDropdown">
-                    <a href="@Url.Action("AddStock", "Inventory")" class="list-group-item list-group-item-action ps-5" style="background-color:#c34949; color:white;">
-                        <i class="fas fa-plus-square me-2"></i> Add Stock
+                    <a href="@Url.Action("AddWarehouseStock", "Warehouse")" class="list-group-item list-group-item-action ps-5" style="background-color:#c34949; color:white;">
+                        <i class="fas fa-plus-square me-2"></i>Add Stock
+                    </a>
+                    <a href="@Url.Action("WarehouseStockView", "Warehouse")" class="list-group-item list-group-item-action ps-5" style="background-color:#c34949; color:white;">
+                        <i class="fas fa-plus-square me-2"></i>View Stock
+                    </a>
+
+                    <a href="@Url.Action("AddWarehouseStock", "Warehouse")" class="list-group-item list-group-item-action ps-5" style="background-color:#c34949; color:white;">
+                        <i class="fas fa-plus-square me-2"></i> Add Stock In
                     </a>
                     <a href="@Url.Action("ViewStock", "Inventory")" class="list-group-item list-group-item-action ps-5" style="background-color:#c34949; color:white;">
                         <i class="fas fa-eye me-2"></i> View Stock
                     </a>
-                   
+
                 </div>
 
                 <!-- Stock Adjustment -->
@@ -183,10 +466,10 @@
                 </a>
                 <div class="collapse" id="transferDropdown">
                     <a href="@Url.Action("StockTransfer", "Inventory")" class="list-group-item list-group-item-action ps-5" style="background-color:#c34949; color:white;">
-                        <i class="fas fa-random me-2"></i> Stock Transfer
-                    </a>
-                    <a href="@Url.Action("AddStockTransfer", "Inventory")" class="list-group-item list-group-item-action ps-5" style="background-color:#c34949; color:white;">
                         <i class="fas fa-plus me-2"></i> Add Transfer
+                    </a>
+                    <a href="@Url.Action("ViewStockTransfer", "Inventory")" class="list-group-item list-group-item-action ps-5" style="background-color:#c34949; color:white;">
+                        <i class="fas fa-eye me-2"></i> View Transfer
                     </a>
                 </div>
 
@@ -199,21 +482,27 @@
 
 
             </div>
+
+            }
+
+
         </div>
 
         <!-- Page Content -->
         <div id="page-content-wrapper">
-            <nav class="navbar navbar-expand-lg border-bottom" style="background:#e7e7e7;  box-shadow: 0 0 10px rgba(0,0,0,0.1);">
+            
+            <nav class="navbar navbar-expand-lg border-bottom" style="background:#e7e7e7; box-shadow: 0 0 10px rgba(0,0,0,0.1);">
                 <div class="container-fluid">
-                    @* <button class="btn btn-light" id="menu-toggle">
+                    <button class="btn" style="color:white; background:#a14040;" id="menu-toggle">
                         <i class="fa-duotone fa-solid fa-bars"></i>
-                    </button> *@
+                    </button>
 
-                    @* <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                             data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
                             aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-icon"></span>
-                    </button> *@
+                    </button>
 
                     <div class="collapse navbar-collapse" id="navbarSupportedContent">
                         <ul class="navbar-nav ms-auto mt-2 mt-lg-0">
@@ -263,3 +552,12 @@
   
 </body>
 </html>
+
+<script>
+    $(document).ready(function () {
+        $("#menu-toggle").click(function (e) {
+            e.preventDefault();
+            $("#sidebar-wrapper").toggleClass("toggled");
+        });
+    });
+</script>

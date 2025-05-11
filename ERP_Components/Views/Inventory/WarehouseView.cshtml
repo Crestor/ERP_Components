@@ -3,38 +3,12 @@
 
 @model List<Warehouse>
 
+<link rel="stylesheet" href="~/css/Product.css">
 
 
-<style>
-    table {
-        width: 100%;
-        border-collapse: collapse;
-        background: white;
-        border-radius: 10px;
-        overflow: hidden;
-    }
-
-    th, td {
-        padding: 12px;
-        text-align: center;
-        border-bottom: 1px solid #ddd;
-    }
-
-    th {
-        background-color: #007bff;
-        color: white;
-    }
-
-    .actions button {
-        margin-right: 5px;
-        padding: 4px 6px;
-        font-size: 12px;
-    }
-</style>
 
 <div class="header1">
-    <h4>View Categories</h4>
-
+    <h4>View Warehouse</h4>
 </div>
 <div class="container">
 
@@ -46,7 +20,7 @@
                 <tr>
                     <th>S.No.</th>
                     <th>Warehouse Name</th>
-                    <th>Warehouse Type</th>
+            
                     <th>Address line 1</th>
                     <th>Address line 2</th>
                     <th>State</th>
@@ -70,7 +44,7 @@
                     <tr>
                         <td>@index</td>
                         <td>@x.warehouseName</td>
-                        <td>@x.warehouseType</td>
+                     
                         <td>@x.Address1</td>
                         <td>@x.Address2</td>
                         <td>@x.State</td>
@@ -83,7 +57,7 @@
                             <div class="actions">
 
                                 <button onclick="location.href='@Url.Action("EditWarehouse", "Inventory", new { addressId = x.addressId }, null)'"><i class="fas fa-edit"></i></button>
-                                <button onclick="location.href='@Url.Action("DeleteWarehouse", "Inventory", new { addressId = x.addressId }, null)'"><i class="fas fa-trash"></i></button>
+                                <button onclick="openRejectModal('@x.addressId')"><i class="fas fa-trash"></i></button>
 
                                
                             </div>
@@ -100,3 +74,30 @@
 
 </div>
 
+<script>
+    function openRejectModal(addressId) {
+
+          console.log(addressId);
+          const id =addressId;
+          Swal.fire({
+            title: "Are you sure?",
+            text: "You won't be able to revert this!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, delete it!"
+          }).then((result) => {
+            if (result.isConfirmed) {
+              if (addressId) {
+
+                let url = `/Inventory/DeleteWarehouse?addressId=${id}`;
+
+                console.log('Redirecting to', url);
+                window.location.href = url;
+              }
+            }
+          });
+
+        }
+</script>

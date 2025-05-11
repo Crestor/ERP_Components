@@ -11,6 +11,7 @@ namespace ERP_Components.Controllers
 {
     public class InventoryController : Controller
     {
+      
         private readonly string jsonFilePath = "wwwroot/Json/city.json";
         private readonly ILogger<InventoryController> _logger;
         private readonly UserServices _userServices;
@@ -21,7 +22,7 @@ namespace ERP_Components.Controllers
 
         public InventoryController(ILogger<InventoryController> logger, IConfiguration configuration)
         {
-            
+          
             _logger = logger;
             _configuration = configuration;
             _userServices = new UserServices(configuration);
@@ -78,12 +79,26 @@ namespace ERP_Components.Controllers
             return View(item);
         }
 
-        public IActionResult EditProduct(int itemId)
+        public IActionResult EditProduct(Guid itemId)
         {
+            List<Category> category = inventoryServices.getProductCategoriesName();
+            List<Warehouse> warehouses = inventoryServices.getWarehouseName();
+            var item = inventoryServices.GetProductData(itemId);
 
-            return View();
+
+            item.categories = category;
+            item.Warehouse = warehouses;
+            return View(item);
+            
         }
+        public IActionResult UpdateProduct(Items item)
+        {
+            inventoryServices.UpdateMaterialItem(item);
+            inventoryServices.UpdateInventory(item);
+            inventoryServices.UpdateProductPrice(item);
 
+            return RedirectToAction("ViewProduct");
+        }
 
         //<----------------------Material-------------------->
         public IActionResult Material()
@@ -115,36 +130,34 @@ namespace ERP_Components.Controllers
             return View(item);
         }
 
-        public IActionResult EditMaterial(int itemId, string section)
+        public IActionResult EditMaterial(Guid itemId)
         {
-            //var item = db.Items.FirstOrDefault(x => x.itemId == itemId); 
-            //ViewBag.Section = section;
-            //return View(item);
-            return View();
+            List<Category> category = inventoryServices.getMaterialCategoriesName();
+            List<Warehouse> warehouses = inventoryServices.getWarehouseName();
+
+
+            var item = inventoryServices.GetMaterialData(itemId);
+
+
+            item.categories = category;
+            item.Warehouse = warehouses;
+            return View(item);
+
         }
 
-        [HttpPost]
-        public ActionResult UpdateMain(Items model)
+        public IActionResult UpdateMaterial(Items item)
         {
+            inventoryServices.UpdateMaterialItem(item);
+            inventoryServices.UpdateInventory(item);
             
-            return RedirectToAction("ViewMaterials");
-        }
 
-        [HttpPost]
-        public ActionResult UpdateLot(Items model)
-        {
-         
-            return RedirectToAction("ViewMaterials");
-        }
-
-        [HttpPost]
-        public ActionResult UpdateStock(Items model)
-        {
-          
-            return RedirectToAction("ViewMaterials");
+            return RedirectToAction("ViewMaterial");
         }
 
 
+
+
+        //<---------------------Category------------>
         public IActionResult Category()
         {
          
@@ -194,7 +207,7 @@ namespace ERP_Components.Controllers
 
 
 
-        //SubCategory
+        //<-------------------SubCategory-------------->
         public IActionResult SubCategory()
         {
             List<Category> category = inventoryServices.CategoryProductNames();
@@ -249,16 +262,12 @@ namespace ERP_Components.Controllers
         }
 
 
-
+        //<---------------------------Warehouse------------------>
         public IActionResult Warehouses()
         {
            
             return View();
         }
-
-
-       
-
 
 
         [HttpPost]
@@ -336,18 +345,187 @@ namespace ERP_Components.Controllers
             return RedirectToAction("WarehouseView");
         }
 
+        //<--------------------opening stock ------------------->
 
+        [HttpGet]
+        public IActionResult OpeningStockEntryForm()
+        {
+            List<Items> item = inventoryServices.GetItemsNames();
+            return View(item);
+        }
+
+        [HttpPost]
+        public IActionResult OpeningStockEntryForm(Items item)
+        {
+            inventoryServices.OpeningStockEntryForm(item);
+            return RedirectToAction("OpeningStockEntryForm");
+        }
+
+
+        //<--------------------Stock In ------------------->
 
         public IActionResult AddStock()
         {
-   
-            return View();
+            var product = new List<Product>
+    {
+        new Product
+        {
+
+            items = inventoryServices.GetItemsNames() ?? new List<Items>(),
+            warehouse = inventoryServices.getWarehouseName() ?? new List<Warehouse>()
+
         }
+    };
+            return View(product);
+          
+        }
+
+
+        public IActionResult SetStock(Stock stock)
+        {
+            inventoryServices.AddStock(stock);
+            return RedirectToAction("AddStock");
+        }
+        public IActionResult ViewStock()
+        {
+            List<Stock> stockList  = inventoryServices.ViewStock();
+            
+            return View(stockList);
+        }
+        public IActionResult EditStock(Guid stockId)
+        {
+            // Get dropdown lists
+            List<Items> items = inventoryServices.GetItemsNames();
+            List<Warehouse> warehouses = inventoryServices.getWarehouseName();
+
+
+            var stock = inventoryServices.GetStock(stockId);
+
+
+            stock.items = items;
+            stock.warehouse = warehouses;
+
+            return View(stock);
+        }
+
+
+
+        [HttpPost]
+        public IActionResult UpdateStock(Stock stock)
+        {
+            inventoryServices.UpdateStock(stock);
+            return RedirectToAction("ViewStock");
+        }
+
+        public IActionResult DeleteStock(Guid stockId)
+        {
+            inventoryServices.DeleteStock(stockId);
+            return RedirectToAction("ViewStock");
+        }
+
+
+
+        //<--------------------Stock Out----------->
         public IActionResult StockTransfer()
         {
+            var product = new List<Product>
+    {
+        new Product
+        {
+
+            items = inventoryServices.GetItemsNames() ?? new List<Items>(),
+            warehouse = inventoryServices.getWarehouseName() ?? new List<Warehouse>()
+
+        }
+    };
+            return View(product);
             
+        }
+
+        public IActionResult AddStockTransfer(Order order)
+        {
+            inventoryServices.AddStockTransfer(order);
+            return RedirectToAction("StockTransfer");
+        }
+
+        public IActionResult ViewStockTransfer()
+        {
+          List<Order> order = inventoryServices.ViewStockTransfer();
+            return View(order);
+        }
+
+
+        
+
+        public IActionResult EditStockTransfer(Guid orderId)
+        {
+           
+            List<Items> items = inventoryServices.GetItemsNames();
+            List<Warehouse> warehouses = inventoryServices.getWarehouseName();
+
+           
+            var order = inventoryServices.GetStockTransfer(orderId);
+
+           
+            order.items = items;
+            order.warehouse = warehouses;
+
+            return View(order);
+        }
+
+
+
+      
+
+        public IActionResult UpdateStockTransfer(Order order)
+        {
+            inventoryServices.UpdateStockTransfer(order);
+           return RedirectToAction("ViewStockTransfer");
+        }
+
+        public IActionResult DeleteStockTransfer(Guid stockId)
+        {
+            inventoryServices.DeleteStockTransfer(stockId);
+            return RedirectToAction("ViewStock");
+        }
+
+        //<-------------------Stock Adjustment--------------->
+
+
+        public IActionResult AddStockAdjustment()
+        {
+            var product = new List<Product>
+    {
+        new Product
+        {
+
+            items = inventoryServices.GetItemsNames() ?? new List<Items>(),
+            warehouse = inventoryServices.getWarehouseName() ?? new List<Warehouse>()
+
+        }
+    };
+            return View(product);
+        }
+
+        public IActionResult SetAdjustment(Adjustment adjust)
+        {
+            inventoryServices.AddStockAdjustment(adjust);
+            return RedirectToAction("AddStockAdjustment");
+        }
+
+        public JsonResult GetCurrentStock(Guid itemId)
+        {
+            var CurrentStock = inventoryServices.GetCurrentStock(itemId);
+            return Json(CurrentStock);
+        }
+
+
+        public IActionResult StockAdjustment()
+        {
+          
             return View();
         }
+
 
 
         //[HttpPost]
@@ -391,11 +569,7 @@ namespace ERP_Components.Controllers
 
         //// GET: ViewStock
         //[HttpGet]
-        //public IActionResult ViewStock()
-        //{
-        //    var stockList = _userServices.ViewStock();
-        //    return View(stockList);
-        //}
+
 
         //public IActionResult ViewStock()
         //{
@@ -418,12 +592,7 @@ namespace ERP_Components.Controllers
         //    return RedirectToAction("ViewStock");
         //}
 
-        public IActionResult StockAdjustment()
-        {
-            //var adjustments = _userServices.StockAdjustment();
-            //return View(adjustments);
-            return View();
-        }
+
 
         //[HttpPost]
 
@@ -453,17 +622,7 @@ namespace ERP_Components.Controllers
 
 
 
-        //public IActionResult AddStockAdjustment()
-        //{
-        //    var products = _userServices.GetProductList() ?? new List<Product>();
-        //    ViewBag.ProductList = products;
-
-        //    ViewBag.WarehouseList = _userServices.GetWarehouseList() ?? new List<Warehouse>();
-
-
-
-        //    return View(new List<StockAdjustment>());
-        //}
+        
 
         //[HttpPost]
 

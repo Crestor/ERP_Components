@@ -3,35 +3,14 @@
 
 @model List<Category>
 
-<style>
-    .tab-buttons {
-        display: flex;
-        justify-content: space-between;
-        padding: 20px 40px;
-        /* background-color: #f8f9fa; */
-        border-radius: 10px;
-        margin: 20px auto;
-        width: 90%;
-        /* box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05); */
-    }
 
-    .tab-button {
-        padding: 10px 20px;
-        background-color: #023e8a;
-        color: #fff;
-        border: none;
-        border-radius: 8px;
-        cursor: pointer;
-        font-weight: 500;
-        transition: background-color 0.3s ease, transform 0.2s ease;
-    }
 
-        .tab-button:hover {
-            background-color: #0077b6;
-            transform: scale(1.05);
-        }
 
-</style>
+
+<div class="header1">
+    <h4>View Category</h4>
+</div>
+
 
 <div class="tab-buttons">
     <button class="tab-button" onclick="showSection('product')">
@@ -49,7 +28,7 @@
 
 <div class="container" id="product" style="display:block">
 
-    <div>
+    <div style="display:flex;justify-content:center;text-align:center">
         <h4>View Product Categories</h4>
 
 </div>
@@ -112,7 +91,7 @@
 
 <div class="container" id="material" style="display: none;">
 
-    <div>
+    <div style="display:flex;justify-content:center;text-align:center">
         <h4>View Material Categories</h4>
 
 </div>
@@ -152,7 +131,7 @@
                             <div class="actions">
 
                                 <button onclick="location.href='@Url.Action("EditCategory", "Inventory", new { categoryId = x.categoryId }, null)'"><i class="fas fa-edit"></i></button>
-                                <button onclick="location.href='@Url.Action("DeleteCategory", "Inventory", new { categoryId = x.categoryId }, null)'"><i class="fas fa-trash"></i></button>
+                                <button onclick="openRejectModal('@x.categoryId')"><i class="fas fa-trash"></i></button>
 
                                 @* <button style="background-color:#007bff; color:white; text-align:center; border-radius:10px; padding:4px 10px" onclick="location.href='@Url.Action("EditCategory", "Inventory", new { categoryId = x.categoryId }, null)'">Edit</button>
 
@@ -239,4 +218,33 @@
    
 //     });
 // }
+</script>
+
+<script>
+
+    function openRejectModal(categoryId) {
+
+          console.log(categoryId);
+          const id = categoryId;
+          Swal.fire({
+            title: "Are you sure?",
+            text: "You won't be able to revert this!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, delete it!"
+          }).then((result) => {
+            if (result.isConfirmed) {
+              if (categoryId) {
+
+                let url = `/Inventory/DeleteCategory?categoryId=${id}`;
+
+                console.log('Redirecting to', url);
+                window.location.href = url;
+              }
+            }
+          });
+
+        }
 </script>

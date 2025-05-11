@@ -1,58 +1,101 @@
-﻿@{
+﻿@using ERP_Component_DAL.Models;
+
+
+@{
     ViewBag.Title = "Stock List";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-@* @model List<Stock> *@
+@model List<Stock>
 <link href="~/css/Product.css" rel="stylesheet" />
-
+<div class="header1">
+    <h4>View Stock</h4>
+</div>
 
 <div class="product-section">
-    <h2>Stock Inventory</h2>
+   
 
-    @if (TempData["Message"] != null)
-    {
-        <p style="color: green;">@TempData["Message"]</p>
-    }
+   
 
-    <table class="product-table">
+    <table class="product-table" style="margin:0px 15px">
         <thead>
             <tr>
-                <th>Stock ID</th>
+                <th>Sno.</th>
                 <th>Product Name</th>
-                <th>Warehouse Name</th>
                 <th>Quantity</th>
-                <th>Unit Price</th>
-                <th>Last Updated</th>
+                <th>Cost Price</th>
+                <th>Arrival Date</th>
+                <th>Expiry Date</th>
                 <th>Actions</th>
             </tr>
         </thead>
-        <tbody>
-            @foreach (var stock in Model)
+        <tbody id="geeks">
+
+
+            @for (var i = 0; i < Model.Count; i++)
             {
-                <tr>
-                    <td>@stock.StockId</td>
-                    <td>@stock.ProductName</td>
-                    <td>@stock.WarehouseName</td>
+
+                var x = Model[i];
+                var index = i + 1;
+
+                <tr id="row-@x.stockId">
+                    <td>@index</td>
+                    <td>@x.itemName</td>
+                
+                 
+                    <td>@x.quantity</td>
+                    <td>@x.costPrice</td>
+                 
+                    <td>@x.arrival.ToShortDateString()</td>
+
+                    <td>@x.expiry.ToShortDateString()</td>
+
                     <td>
-                        <form asp-action="UpdateStock" asp-controller="Home" method="post" class="action-buttons">
-                            <input type="hidden" name="StockId" value="@stock.StockId" />
-                            <input type="hidden" name="ProductId" value="@stock.ProductId" />
-                            <input type="hidden" name="WarehouseId" value="@stock.WarehouseId" />
-                            <input type="number" name="Quantity" value="@stock.Quantity" required />
-                            <button type="submit" class="btn btn-update">Update</button>
-                        </form>
+                        <div class="actions">
+
+                            <button onclick="location.href='@Url.Action("EditStock", "Inventory", new { stockId = @x.stockId }, null)'"><i class="fas fa-edit"></i></button>
+                            <button onclick="openRejectModal('@x.stockId')"><i class="fas fa-trash"></i></button>
+
+                            @*  <button style="background-color:#007bff; color:white; text-align:center;border:none; border-radius:10px; padding:4px 10px" onclick="location.href='@Url.Action("EditSubCategory", "Inventory", new { subCategoryId = x.SubCategoryId }, null)'">Edit</button>
+
+
+                                <button style="background-color:#d01313c2;color:white; text-align:center;border:none; border-radius:10px; padding:4px 10px" onclick="location.href='@Url.Action("DeleteSubCategory", "Inventory", new { subCategoryId = x.SubCategoryId }, null)'">Delete</button> *@
+
+                        </div>
                     </td>
-                    <td>@stock.UnitPrice</td>
-                    <td>@stock.LastUpdated.ToString("yyyy-MM-dd")</td>
-                    <td class="action-buttons">
-                        <form asp-action="DeleteStock" asp-controller="Home" method="post" onsubmit="return confirm('Are you sure you want to delete this stock?');">
-                            <input type="hidden" name="id" value="@stock.StockId" />
-                            <button type="submit" class="btn btn-danger">Delete</button>
-                        </form>
-                    </td>
+
                 </tr>
             }
         </tbody>
+
     </table>
 </div>
+
+<script>
+
+    function openRejectModal(stockId) {
+
+          console.log(stockId);
+          const id = stockId;
+          Swal.fire({
+            title: "Are you sure?",
+            text: "You won't be able to revert this!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, delete it!"
+          }).then((result) => {
+            if (result.isConfirmed) {
+              if (stockId) {
+
+                let url = `/Inventory/DeleteStock?stockId=${id}`;
+
+                console.log('Redirecting to', url);
+                window.location.href = url;
+              }
+            }
+          });
+
+        }
+</script>

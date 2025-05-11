@@ -1,0 +1,97 @@
+﻿@using ERP_Component_DAL.Models;
+
+
+@{
+    ViewBag.Title = "Edit Stock Transfer";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@model Order
+<link rel="stylesheet" href="~/css/Product.css">
+<div class="header1">
+    <h4>Edit Stock Transfer</h4>
+</div>
+
+
+<div id="product" class="container">
+    <form method="post" asp-action="UpdateStockTransfer" asp-controller="Inventory" onsubmit="return savedDetail()">
+
+        <div class="form-section">
+            <h3>Edit Stock Out</h3>
+            <div class="form-row">
+
+                <label class="required" for="itemName">Product Name:</label>
+                <select name="itemId">
+                    <option selected disabled>Select Item</option>
+                    @foreach (var item in Model.items)
+                    {
+                       
+                        
+                            <option value="@item.itemId">@item.itemName</option>
+                        
+                    }
+                </select>
+              
+                @* <input type="hidden" name="itemType" value="product" required /> *@
+
+                <label class="required" for="sku">Order Date:</label>
+                <input type="date" value="@Model.orderDate" name="orderDate" required />
+                <input type="hidden" value="@Model.OrderId" name="orderId" required />
+            </div>
+            <div class="form-row">
+                <label class="required" for="supplier">Customer Name:</label>
+                <input type="text" name="customerName" value="@Model.customerName" />
+                <label class="required" for="batch">Batch Number:</label>
+                <input type="text" name="batchSeries" value="@Model.batchSeries">
+            </div>
+            <div class="form-row">
+
+
+                <label for="descr">Quantity Ordered:</label>
+                <input type="number" name="quantity" value="@Model.quantity">
+                <label for="cost">Available Stock:</label>
+                <input type="text" name="available" value="@Model.available" />
+            </div>
+            <div class="form-row">
+                <label for="price">Selling Price:</label>
+                <input type="text" name="unitPrice" />
+                <label for="image">Total Amount:</label>
+                <input type="text" name="totalPrice" value="@Model.totalPrice">
+            </div>
+            <div class="form-row">
+                <label for="warehouse">Warehouse:</label>
+                <select name="warehouseId">
+                    <option selected disabled>Select</option>
+                    @foreach (var warehouse in Model.warehouse)
+                    {
+                       
+                            <option value="@warehouse.warehouseId">@warehouse.warehouseName</option>
+                       
+                    }
+                </select>
+            </div>
+        </div>
+
+
+
+
+
+
+        <div class="button-container">
+            <button type="submit">Submit</button>
+            <button type="reset">Reset</button>
+        </div>
+    </form>
+</div>
+
+<script>
+      function savedDetail(){
+                Swal.fire({
+      position: "center",
+      icon: "success",
+      title: "Your work has been saved",
+      showConfirmButton: false,
+      timer: 1500
+    });
+    }
+</script>

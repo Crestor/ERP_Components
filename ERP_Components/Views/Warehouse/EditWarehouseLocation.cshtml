@@ -1,0 +1,75 @@
+﻿@using ERP_Component_DAL.Models;
+
+
+@{
+    ViewBag.Title = "Add Material";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link rel="stylesheet" href="~/css/Product.css">
+
+@model WarehouseNew
+<div class="header1">
+    <h4>Edit Warehouse</h4>
+</div>
+
+<div id="material" class="container">
+    <form method="post" asp-action="UpdateWarehouseLocation" asp-controller="Warehouse" onsubmit="savedDetail">
+
+        <div class="form-section">
+            <h3>Warehouse Info</h3>
+            <div class="form-row">
+
+                <label class="required" for="Name">Warehouse Name:</label>
+                <select class="form-control" style="padding:10px" name="warehouseId" required>
+                    <option disabled selected> select Name</option>
+                    @for (var i = 0; i < Model.warehouseNames.Count; i++)
+                    {
+
+                        <option value="@Model.warehouseNames[i].warehouseId">@Model.warehouseNames[i].warehouseName</option>
+                    }
+                </select>
+
+                <label class="required" for="zone">Zone Name:</label>
+                <input type="text" value="@Model.warehouseLocation.zoneName" name="zoneName" required />
+                <input type="hidden" value="@Model.warehouseLocation.locationId" name="locationId" required />
+            </div>
+            <div class="form-row">
+                <label class="required" for="aisle">Aisle Number:</label>
+                <input type="text" value="@Model.warehouseLocation.aisle" name="aisle" />
+                <label class="required" for="category">Shelf Number:</label>
+                <input type="text" value="@Model.warehouseLocation.shelfNumber" name="shelfNumber" />
+            </div>
+            <div class="form-row">
+                <label class="required" for="subCategory">LocationCode:</label>
+                <input type="text" name="locationCode" value="@Model.warehouseLocation.locationCode" />
+                <label for="descr">Description:</label>
+                <textarea style="width:33%" name="description"></textarea>
+
+            </div>
+
+        </div>
+
+
+
+
+
+
+        <div class="button-container">
+            <button type="submit">Submit</button>
+            <button type="reset">Reset</button>
+        </div>
+    </form>
+</div>
+<script>
+      function savedDetail(){
+                Swal.fire({
+      position: "center",
+      icon: "success",
+      title: "Your work has been saved",
+      showConfirmButton: false,
+      timer: 1500
+    });
+    }
+</script>
+

@@ -12,11 +12,14 @@ namespace ERP_Component_DAL.Models
         //Items
         public Guid itemId {  get; set; }
         public string? itemName { get; set; }
-        public string? itemType { get; set; }
+        public int itemType { get; set; }
+        public int locationId { get; set; }
 
         public int SKU { get; set; }
         public int HSN { get; set; }
         public string? category { get; set; }
+        public string? description { get; set; }
+        public string? warehouseName { get; set; }
         public string? subCategory { get; set; }
         public string? specification { get; set; }
         public int gst { get; set; }
@@ -38,12 +41,12 @@ namespace ERP_Component_DAL.Models
       
         public string? lotSeries{get;set;}
         public string?  batchSeries{get;set;}
-        public DateTime expiry { get; set; }
+        public DateOnly expiry { get; set; }
 
         public int daysToExpire { get; set; }
-        public DateTime manufacture { get; set; }
+        public DateTime arrival { get; set; }
 
-        public DateTime deliverd { get; set; }
+       
         public string? type { get; set; }
 
 
@@ -53,11 +56,13 @@ namespace ERP_Component_DAL.Models
       
      
         public int inStock { get; set; }
+        public int quantity { get; set; }
         public int stockAlert { get; set; }
 
 
         public Guid warehouseId { get; set; }
-        
 
+        public List<Category> categories { get; set; }
+        public List<Warehouse> Warehouse { get; set; }
     }
 }

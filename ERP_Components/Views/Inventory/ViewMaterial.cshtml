@@ -51,11 +51,8 @@
 </style>
 
 
-
-
-
-<div>
-    <h4>View Materials</h4>
+<div class="header1">
+    <h4>View Material</h4>
 </div>
 
 <div class="container">
@@ -63,6 +60,198 @@
         <button onclick="showSection('main')">Main Details</button>
         <button onclick="showSection('address')">Lot Details</button>
         <button onclick="showSection('bank')">Stock Details</button>
+    </div>
+
+    <div class="table-actions">
+
+        <button onclick="editSelected()" style="background-color:#c34949 ;color:white" id="editBtn" disabled>Edit</button>
+        @* <button onClick="confirmDelete()" id="deleteBtn" style="background-color:#d01313c2" disabled>Delete</button> *@
+    </div>
+
+
+    <div class="vendor-section" id="main" style="display: block;">
+        <table class="vendor-table">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>S.No.</th>
+                    <th>Item Name</th>
+                    <th>Stock Keeping Unit</th>
+                    <th>HSN</th>
+                    <th>Specification</th>
+                    <th>Unit Price</th>
+                    <th>Unit Of Measurement</th>
+
+
+                </tr>
+            </thead>
+            <tbody>
+                @for (var i = 0; i < Model.Count; i++)
+                {
+                    var v = Model[i];
+                    <tr data-id="@v.itemId">
+                        <td><input type="checkbox" class="row-check" onchange="toggleActionButtons(this)"></td>
+                        <td>@(i + 1)</td>
+                        <td>@v.itemName</td>
+                        <td>@v.SKU</td>
+                        <td>@v.HSN</td>
+                        <td>@v.specification</td>
+                        <td>@v.unitPrice</td>
+                        <td>@v.UOM</td>
+
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+
+    <div class="vendor-section" id="address" style="display: none;">
+        <table class="vendor-table">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>S.No.</th>
+                    <th>Item Name</th>
+                    <th>Lot Series</th>
+                    <th>Manufacturing Date</th>
+                    <th>Expiry Date</th>
+                 
+
+                </tr>
+            </thead>
+            <tbody>
+                @for (var i = 0; i < Model.Count; i++)
+                {
+                    var v = Model[i];
+                    <tr data-id="@v.itemId">
+                        <td><input type="checkbox" class="row-check" onchange="toggleActionButtons(this)"></td>
+                        <td>@(i + 1)</td>
+                        <td>@v.itemName</td>
+                        <td>@v.lotSeries</td>
+                        <td>@v.arrival.ToShortDateString()</td>
+                        <td>@v.expiry.ToShortDateString()</td>
+                       
+
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+
+    <div class="vendor-section" id="bank" style="display: none;">
+        <table class="vendor-table">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>S.No.</th>
+                    <th>Item Name</th>
+                    <th>Warehouse</th>
+                    <th>In Stock</th>
+                    <th>Stock Alert</th>
+
+                </tr>
+            </thead>
+            <tbody>
+                @for (var i = 0; i < Model.Count; i++)
+                {
+                    var v = Model[i];
+                    <tr data-id="@v.itemId">
+                        <td><input type="checkbox" class="row-check" onchange="toggleActionButtons(this)"></td>
+                        <td>@(i + 1)</td>
+                        <td>@v.itemName</td>
+                        <td>@v.warehouseName</td>
+                        <td>@v.inStock</td>
+                        <td>@v.stockAlert</td>
+
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+
+<script>
+    function showSection(sectionId) {
+        document.querySelectorAll('.vendor-section').forEach(el => el.style.display = 'none');
+        document.getElementById(sectionId).style.display = 'block';
+        clearCheckboxes();
+    }
+
+    function toggleActionButtons(checkbox) {
+        document.querySelectorAll('.row-check').forEach(cb => {
+            if (cb !== checkbox) cb.checked = false;
+        });
+        const selected = document.querySelector('.row-check:checked');
+        document.getElementById("editBtn").disabled = !selected;
+        document.getElementById("deleteBtn").disabled = !selected;
+    }
+
+    function getSelectedVendorId() {
+        const row = document.querySelector('.row-check:checked')?.closest('tr');
+        return row?.getAttribute('data-id');
+    }
+
+        function editSelected() {
+        const id = getSelectedVendorId();
+        const activeSection = document.querySelector('.vendor-section:not([style*="display: none"])')?.id;
+
+        if (id && activeSection) {
+            const url = '@Url.Action("EditMaterial", "Inventory")' + `?itemId=${id}&section=${activeSection}`;
+            window.location.href = url; 
+        }
+    }
+
+
+    function confirmDelete() {
+        const vendorId = getSelectedVendorId();
+
+            if (vendorId) {
+             Swal.fire({
+            title: "Are you sure?",
+            text: "You won't be able to revert this!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, delete it!"
+          }).then((result) => {
+            if (result.isConfirmed) {
+                  if (vendorId) {
+
+
+                            let url = `/Benifitiary/DeleteVendor?vendorId=${vendorId}`;
+
+                console.log('Redirecting to', url);
+                window.location.href = url;
+              }
+            }
+          });
+
+        }
+    }
+
+
+    function clearCheckboxes() {
+        document.querySelectorAll('.row-check').forEach(cb => cb.checked = false);
+        toggleActionButtons(null);
+    }
+</script>
+
+
+
+@* <div>
+    <h4>View Materials</h4>
+</div>
+
+<div class="container">
+    <div class="tab-buttons">
+        <button onclick="showSection('main')">Main Details</button>
+        <button onclick="showSection('lot')">Lot Details</button>
+        <button onclick="showSection('stock')">Stock Details</button>
     </div>
 
     <div class="table-actions">
@@ -109,7 +298,7 @@
     </div>
 
 
-    <div class="vendor-section" id="address" style="display: none;">
+    <div class="vendor-section" id="lot" style="display: none;">
         <table class="vendor-table">
             <thead>
                 <tr>
@@ -143,7 +332,7 @@
     </div>
 
 
-    <div class="vendor-section" id="bank" style="display: none;">
+    <div class="vendor-section" id="stock" style="display: none;">
         <table class="vendor-table">
             <thead>
                 <tr>
@@ -164,7 +353,7 @@
                         <td><input type="checkbox" class="row-check" onchange="toggleActionButtons(this)"></td>
                         <td>@(i + 1)</td>
                         <td>@v.itemName</td>
-                        <td>@v.warehouse</td>
+                        <td>@v.warehouseName</td>
                         <td>@v.inStock</td>
                         <td>@v.stockAlert</td>
                         
@@ -251,5 +440,5 @@
         document.querySelectorAll('.row-check').forEach(cb => cb.checked = false);
         toggleActionButtons(null);
     }
-</script>
+</script> *@
 

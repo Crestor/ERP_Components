@@ -8,64 +8,75 @@
 
 <link rel="stylesheet" href="~/css/Product.css">
 
+@model List<Product>
 
 
+
+<div class="header1">
+    <h4>Add Stock</h4>
+</div>
 <div id="product" class="container">
-    <form method="post" asp-action="AddSock" asp-controller="Inventory">
+    <form method="post" asp-action="SetStock" asp-controller="Inventory" onsubmit="return savedDetail()">
 
         <div class="form-section">
             <h3>Add Stock</h3>
             <div class="form-row">
 
-                <label class="required" for="productName">Product Name:</label>
-                <input type="text" name="productName" required />
-                @* <input type="hidden" name="itemType" value="product" required /> *@
-
+                <label class="required" for="productName">Item Name:</label>
+  
+                <select name="itemId">
+                    <option selected disabled>Select Item</option>
+                    @foreach (var scheme in Model)
+                    {
+                        @foreach (var item in scheme.items)
+                        {
+                            <option value="@item.itemId">@item.itemName</option>
+                        }
+                    }
+                </select>
+            
                 <label class="required" for="sku">Purchase Date:</label>
-                <input type="date" name="purchaseDate" required />
+                <input type="date" name="stockDate" required />
+                <input type="hidden" name="type" value="0" required />
             </div>
             <div class="form-row">
-                <label class="required" for="supplier">Supplier Name:</label>
-                <input type="text" name="supplierName" />
+               
                 <label class="required" for="invoice">Invoice Number:</label>
                 <input type="text" name="invoice" />
+                <label class="required" for="batch">Batch Number:</label>
+                <input type="text" name="batchSeries">
             </div>
             <div class="form-row">
-                <label class="required" for="batch">Batch Number:</label>
-                <input type="text" name="batchNumber">
-                    
+ 
                 <label for="descr">Quantity Purchased:</label>
                 <input type="number" name="quantity">
+                <label for="price">Unit Price:</label>
+                <input type="text" name="costPrice" />
+            </div>
+            <div class="form-row">
 
+                <label class="required" for="sku">Manufacturing Date:</label>
+                <input type="date" name="manufacture" required />
+                <label class="required" for="sku">Expiry Date:</label>
+                <input type="date" name="expiry" required />
             </div>
             <div class="form-row">
                 <label for="price">Total Price:</label>
                 <input type="text" name="totalPrice" />
                 <label for="cost">Warehouse Location:</label>
-                <input type="text" name="location" />
+                <select name="warehouseId">
+                    <option selected disabled>Select</option>
+                    @foreach (var scheme in Model)
+                    {
+                        @foreach (var warehouse in scheme.warehouse)
+                        {
+                            <option value="@warehouse.warehouseId">@warehouse.warehouseName</option>
+                        }
+                    }
+                </select>
             </div>
-            <div class="form-row">
-                <label for="mrp">Tax%:</label>
-                <input type="number" name="tax" />
-                <label for="selling">Shipping Charges:</label>
-                <input type="text" name="shippingCharges" />
-            </div>
-            <div class="form-row">
-               
-                <label for="image">Remarks:</label>
-                <textarea  name="remark"></textarea>
-                <label for="image">upload Invoice:</label>
-                <input type="file" name="upload" />
-            </div>
-            <div class="form-row">
-
-                <label class="required" for="initialQuantity">Payment Status:</label>
-                <input type="text" name="paymentStatus" required />
-              
-
-                <label class="required" for="sku">Purchase Status:</label>
-                <input type="text" name="purchaseStatus" required />
-            </div>
+           
+            
         </div>
 
 
@@ -79,3 +90,15 @@
         </div>
     </form>
 </div> 
+
+<script>
+      function savedDetail(){
+                Swal.fire({
+      position: "center",
+      icon: "success",
+      title: "Your work has been saved",
+      showConfirmButton: false,
+      timer: 1500
+    });
+    }
+</script>

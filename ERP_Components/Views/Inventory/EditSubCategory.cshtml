@@ -2,33 +2,36 @@
 <link rel="stylesheet" href="~/css/Product.css" />
 
 @model Category
+<div class="header1">
+    <h4>Edit SubCategory</h4>
+</div>
 <div class="container">
 
 
-    <h2>Edit Category</h2>
-    <form method="post" asp-action="EditSubCategory" asp-controller="Inventory">
-        <div class="form">
-            <div class="form-group">
+    <div style="display:flex; justify-content:center; align-items:center;margin:auto">
+        <h4>Edit Sub Category</h4>
+    </div>
+    <form method="post" asp-action="EditSubCategory" asp-controller="Inventory" onsubmit="return savedDetail()">
+        <div class="form-section">
+            <div class="form-row">
                 <label class="required">Category Name</label>
                <input value="@Model.categoryName" name="categoryName" readonly />
                <input value="@Model.SubCategoryId" name="SubCategoryId" hidden />
                
-            </div>
-            <div class="form-group">
+          
                 <label class="required">SubCategory Name</label>
                 <input type="text"  name="subCategoryName" value="@Model.subCategoryName" placeholder="Enter Category Name" />
             </div>
-            <div class="form-group">
+            <div class="form-row">
                 <label class="required">SubCategory Code</label>
                 <input type="text" name="categoryCode" value="@Model.categoryCode" placeholder="Enter Category code" />
-            </div>
-            <div class="form-group">
+            
                 <label class="required">SubCategory Description</label>
                 <textarea name="categoryDescription" value="@Model.categoryDescription" placeholder="Enter product Description"></textarea>
 
             </div>
 
-            <div class="form-group">
+            <div class="form-row" style="width:50%">
                 <label class="required">Is Active</label>
                 <select value="@Model.isActive" name="isActive" required>
                     <option selected disabled>select</option>
@@ -36,9 +39,21 @@
                     <option>NO</option>
                 </select>
             </div>
-            <div class="form-group">
+            <div class="button-container">
                 <button type="submit">Submit</button>
             </div>
         </div>
     </form>
 </div>
+
+<script>
+      function savedDetail(){
+                Swal.fire({
+      position: "center",
+      icon: "success",
+      title: "Your work has been saved",
+      showConfirmButton: false,
+      timer: 1500
+    });
+    }
+</script>

@@ -1,149 +1,17 @@
-﻿/*.section {
-    max-width: 900px;
-    margin: 40px auto;
-    padding: 20px;
-    background: #f9f9f9;
-    border-radius: 10px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-}
-
-.form {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-    justify-content: space-between;
-}
-
-.form-group {
-    flex: 1 1 calc(50% - 20px);*/ /* Two per row with spacing */
-    /*display: flex;
-    flex-direction: column;
-}
-
-    .form-group textarea,
-    .form-group input {
-        padding: 10px;
-        border: 1px solid #ccc;
-        border-radius: 6px;
-        font-size: 1rem;
-        width: 100%;
-    }
-
-    .form-group label {
-        margin-bottom: 5px;
-        font-weight: 600;
-    }
-
-    .form-group button {
-        margin-top: 25px;
-        padding: 12px;
-        background-color: #c34949;
-        color: white;
-        font-size: 1rem;
-        border: none;
-        border-radius: 6px;
-        cursor: pointer;
-        transition: background 0.3s ease;
-        width: 100%;
-    }
-
-        .form-group button:hover {
-            background-color: white;
-            color: #c34949;
-            border: 1px solid #c34949;
-        }*/
-
-
-    /* Make textareas full width */
-    /*.form-group textarea {
-        resize: vertical;
-    }*/
-
-    /* Full width for submit button */
-    /*.form-group:last-child {
-        flex: 1 1 100%;
-    }
-
-
-
-
-.btn-update {
-    background-color: #28a745;
-    color: white;
-    padding: 6px 12px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-}
-
-    .btn-update:hover {
-        background-color: #218838;
-    }
-
-.btn-delete {
-    background-color: red;
-    color: white;
-    border: none;
-    padding: 6px 12px;
-    border-radius: 4px;
-    cursor: pointer;
-}
-
-    .btn-delete:hover {
-        background-color: #c82333;
-    }
-
-.message {
-    text-align: center;
-    margin-top: 20px;
-    font-weight: bold;
-    color: green;
-}
-
-
-.product-section {
-    max-width: 1200px;
-    margin: 40px auto;
-    padding: 20px;
-    background: #fff;
-    border-radius: 12px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-}
-
-    .product-section h2 {
-        text-align: center;
-        margin-bottom: 20px;
-        color: #333;
-    }
-
-.product-table {
+﻿.header1 {
     width: 100%;
-    border-collapse: collapse;
-    font-size: 0.95rem;
-    background: #fdfdfd;
+    /*    background: #a14040;*/
+    background: #c34949;
+    color: white;
+    padding: 10px;
+    display: flex;
+    margin: 10px 10px 30px 10px;
+    text-align: center;
+    justify-content: center
 }
-
-    .product-table th, .product-table td {
-        padding: 12px 15px;
-        border: 1px solid #e0e0e0;
-        text-align: left;
-    }
-
-    .product-table thead {
-        background-color: #c34949;
-        color: white;
-    }
-
-    .product-table tbody tr:nth-child(even) {
-        background-color: #f9f9f9;
-    }
-
-    .product-table tbody tr:hover {
-        background-color: #f0a7a7;
-    }*/
 
 label.required::after {
-    content: " *";
+    content: "*";
     color: red;
         
 }
@@ -161,9 +29,8 @@ label.required::after {
 
     .tab-buttons button {
         padding: 8px 16px;
-     
         border: none;
-        background-color: #023e8ac7;
+        background-color: #c34949;
         color: white;
         border-radius: 5px;
         cursor: pointer;
@@ -172,20 +39,15 @@ label.required::after {
 
 
 
-.header1 {
-    margin-top: 5px;
-    text-align: center;
-    justify-content: center;
-    margin-bottom: 40px;
-}
 
-h4 {
+
+/*h4 {
     background-color: #023e8ac7;
     color: white;
     padding: 10px;
     margin-bottom: 20px;
     text-align: center;
-}
+}*/
 
 .container {
     background-color: #ffffff;
@@ -198,16 +60,7 @@ h4 {
     margin-bottom: 30px;
 }
 
-/*.container {
-    background-color: #ffffff;
-    width: 80%;
-    background-color: #f0f0f0;
-    padding: 30px 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0.1, 0.1, 0.1, 0.1);
-    padding-bottom: 50px;
-    margin-bottom: 30px;
-}*/
+
 
 select:focus {
     outline: none;
@@ -217,7 +70,7 @@ select:focus {
 
 .form-section {
     margin: 30px 70px 50px 70px;
-    border-radius: 15px;
+    border-radius: 10px;
     padding: 0px 20px 30px 20px;
     border: 1px solid #a9a9a9;
     position: relative;
@@ -238,7 +91,8 @@ select:focus {
 
 input:focus {
     outline: none;
-    border: 2px solid #023e8ac7;
+    /*    border: 2px solid #023e8ac7;*/
+    border: 2px solid #c34949;
     box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.5);
 }
 
@@ -259,6 +113,15 @@ input:focus {
     }
 
     .form-row input {
+        flex: 1;
+        padding: 5px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box; /* Ensures padding doesn't affect width */
+        margin-right: 10px;
+    }
+
+    .form-row textarea {
         flex: 1;
         padding: 5px;
         border: 1px solid #ccc;
@@ -300,7 +163,7 @@ input:focus {
 
     .button-container button {
         padding: 10px 20px;
-        background-color: #023e8ac7;
+        background-color: #c34949;
         color: white;
         border: none;
         border-radius: 4px;
@@ -308,9 +171,7 @@ input:focus {
         margin: 0 10px;
         width: 150px
     }
-/*button:hover {
-    background-color: #0056b3;
-}*/
+
 
 table {
     width: 100%;
@@ -331,8 +192,26 @@ th {
     color: white;
 }
 
-.actions button {
-    margin-right: 5px;
-    padding: 4px 6px;
-    font-size: 12px;
+.actions{
+    display:flex;
+}
+    .actions button {
+        border-radius:5px;
+        background: #c34949;
+        color:white;
+        border:none;
+        margin-right: 5px;
+        padding: 4px 6px;
+        font-size: 12px;
+    }
+
+.tab-button {
+    padding: 10px 20px;
+    background-color: #023e8a;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: background-color 0.3s ease, transform 0.2s ease;
 }

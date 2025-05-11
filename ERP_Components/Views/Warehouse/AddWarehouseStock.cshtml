@@ -1,0 +1,164 @@
+﻿@using ERP_Component_DAL.Models;
+
+
+@{
+    ViewBag.Title = "Add Stock";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link rel="stylesheet" href="~/css/Product.css">
+
+@model List<Product>
+
+
+<div class="header1">
+    <h4>Add Warehouse Stock</h4>
+</div>
+
+<div id="product" class="container">
+    <form method="post" asp-action="AddWarehouseStock" asp-controller="Warehouse" onsubmit="savedDetail()">
+
+        <div class="form-section">
+            <h3>Add Stock</h3>
+            <div class="form-row">
+
+                <label class="required" for="productName">Item Name:</label>
+
+                <select id="itemDropdown" name="itemId">
+                    <option selected disabled>Select Item</option>
+                    @foreach (var scheme in Model)
+                    {
+                        @foreach (var item in scheme.items)
+                        {
+                            <option value="@item.itemId">@item.itemName</option>
+                        }
+                    }
+                </select>
+
+                <label class="required" for="sku">SKU:</label>
+                <input type="text" id="sku" name="sku"  readonly/>
+            </div>
+            <div class="form-row">
+                <label class="required" for="batch">Batch Number:</label>
+                <input type="text" name="batchSeries">
+                <label class="required" for="invoice">Quantity:</label>
+                <input type="text" name="quantity" />
+                
+            </div>
+            <div class="form-row">
+                <label for="price">Unit Price:</label>
+                <input type="number" name="unitPrice" />
+
+                <label for="descr">Created Date:</label>
+                <input type="text" name="date">
+            
+            </div>
+           
+            <div class="form-row">
+                <label for="cost">Warehouse Location:</label>
+                <select name="warehouseId" id="warehouse" onChange="getZone()">
+                    <option selected disabled>Select</option>
+                    @foreach (var scheme in Model)
+                    {
+                        @foreach (var warehouse in scheme.warehouse)
+                        {
+                            <option value="@warehouse.warehouseId">@warehouse.warehouseName</option>
+                        }
+                    }
+                </select>
+                <label for="cost">Zone Name:</label>
+                <select id="zone" name="locationId">
+                    <option selected disabled>Select</option>
+                </select>
+            </div>
+
+            
+
+
+        </div>
+
+
+
+
+
+
+        <div class="button-container">
+            <button type="submit">Submit</button>
+            <button type="reset">Reset</button>
+        </div>
+    </form>
+</div> 
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('#itemDropdown').change(function () {
+            var itemId = $(this).val();
+
+            if (itemId) {
+                $.ajax({
+                    url: '/Warehouse/GetItemSKU',
+                    type: 'GET',
+                    data: { itemId: itemId },
+                    success: function (data) {
+                        // $('#sku').val(data.sku);
+                        $('#sku').val(data);
+
+                    },
+                    error: function () {
+                        alert('Failed to fetch stock');
+                    }
+                });
+            }
+        });
+    });
+</script>
+
+
+    <script>
+          function getZone() {
+          var Id = $("#warehouse").val();
+
+          $.ajax({
+              type: "GET",
+              url: "/Warehouse/GetZone",
+              contentType: "application/json; charset=utf-8",
+              dataType: "json",
+              data: { warehouseId: Id },
+              success: function (response) {
+                  if (response.length > 0) {
+                      $("#zone").empty();
+                      $("#zone").append('<option selected disabled>Select</option>');
+                      // response.forEach(function (item) {
+                      //     $("#zone").append('<option value="' + item.zone + '">' + item.zone + '</option>');
+                      // });
+                          response.forEach(function (item) {
+                       $("#zone").append('<option value="' + item.locationId +'">' + item.zoneName + '</option>');
+                         });
+
+                  } else {
+                      $("#name").empty().append('<option selected disabled>No Manager Found</option>');
+                  }
+              },
+              error: function (xhr, status, error) {
+                  console.error("AJAX Error: ", error);
+               
+                  alert("Error fetching user data. Check console for details.");
+              }
+          });
+      }
+</script>
+
+<script>
+      function savedDetail(){
+                Swal.fire({
+      position: "center",
+      icon: "success",
+      title: "Your work has been saved",
+      showConfirmButton: false,
+      timer: 1500
+    });
+    }
+</script>
+
+
+

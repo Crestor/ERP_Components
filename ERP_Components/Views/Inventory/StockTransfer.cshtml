@@ -2,23 +2,36 @@
 
 
 @{
-    ViewBag.Title = "Add Stock";
+    ViewBag.Title = " Stock Transfer";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+@model List<Product>
 <link rel="stylesheet" href="~/css/Product.css">
-
+<div class="header1">
+    <h4>Add Stock Transfer</h4>
+</div>
 
 
 <div id="product" class="container">
-    <form method="post" asp-action="AddSock" asp-controller="Inventory">
+    <form method="post" asp-action="AddStockTransfer" asp-controller="Inventory" onsubmit="return savedDetail()">
 
         <div class="form-section">
             <h3>Add Stock</h3>
             <div class="form-row">
 
-                <label class="required" for="productName">Product Name:</label>
-                <input type="text" name="productName" required />
+                <label class="required" for="itemName">Product Name:</label>
+                <select name="itemId">
+                    <option selected disabled>Select Item</option>
+                    @foreach (var scheme in Model)
+                    {
+                        @foreach (var item in scheme.items)
+                        {
+                            <option value="@item.itemId">@item.itemName</option>
+                        }
+                    }
+                </select>
+                
                 @* <input type="hidden" name="itemType" value="product" required /> *@
 
                 <label class="required" for="sku">Order Date:</label>
@@ -26,52 +39,37 @@
             </div>
             <div class="form-row">
                 <label class="required" for="supplier">Customer Name:</label>
-                <input type="text" name="supplierName" />
-                <label class="required" for="invoice">Customer Contact:</label>
-                <input type="text" name="invoice" />
+                <input type="text" name="customerName" />
+                <label class="required" for="batch">Batch Number:</label>
+                <input type="text" name="batchSeries">
+                <input type="hidden" name="type" value="1">
             </div>
             <div class="form-row">
-                <label class="required" for="batch">Batch Number:</label>
-                <input type="text" name="batchNumber">
+              
 
                 <label for="descr">Quantity Ordered:</label>
                 <input type="number" name="quantity">
-
-            </div>
-            <div class="form-row">
-                <label for="price">Selling Price:</label>
-                <input type="text" name="sellingPrice" />
                 <label for="cost">Available Stock:</label>
                 <input type="text" name="available" />
             </div>
             <div class="form-row">
-                <label for="mrp">Tax%:</label>
-                <input type="number" name="tax" />
-                <label for="selling">Discount%:</label>
-                <input type="text" name="discount" />
-            </div>
-            <div class="form-row">
-
+                <label for="price">Selling Price:</label>
+                <input type="text" name="sellingPrice" />
                 <label for="image">Total Amount:</label>
-                <input type="text"  name="total">
-                <label for="image">Payment methode:</label>
-                <input type="text" name="payment" />
+                <input type="text" name="totalPrice">
             </div>
-            <div class="form-row">
-
-                <label class="required" >Payment Status:</label>
-                <input type="text" name="paymentStatus" required />
-
-
-                <label class="required" for="sku">Order Status:</label>
-                <input type="text" name="purchaseStatus" required />
-            </div>
-            <div class="form-row">
-                <label for="image">Delivery Date:</label>
-                <input type="date" name="delivery" />
-                <label for="image">Remarks:</label>
-                <textarea name="remark"></textarea>
-                
+            <div class="form-row" style="width:50%">
+                <label for="warehouse">Warehouse:</label>
+            <select name="warehouseId">
+                <option selected disabled>Select</option>
+                @foreach (var scheme in Model)
+                {
+                    @foreach (var warehouse in scheme.warehouse)
+                    {
+                        <option value="@warehouse.warehouseId">@warehouse.warehouseName</option>
+                    }
+                }
+            </select>
             </div>
         </div>
 
@@ -85,4 +83,16 @@
             <button type="reset">Reset</button>
         </div>
     </form>
-</div> 
+</div>
+
+<script>
+      function savedDetail(){
+                Swal.fire({
+      position: "center",
+      icon: "success",
+      title: "Your work has been saved",
+      showConfirmButton: false,
+      timer: 1500
+    });
+    }
+</script>

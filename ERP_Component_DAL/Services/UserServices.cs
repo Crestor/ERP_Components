@@ -39,7 +39,7 @@ namespace ERP_Component_DAL.Services
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
 
-                    string query = @"select UserName,Password,UserRole from Users where UserName = @username And Password = @password ";
+                    string query = @"select UserName,Password,RoleId from LoginCredentials where UserName = @username And Password = @password ";
 
                     using (SqlCommand cmd = new SqlCommand(query, connection))
                     {
@@ -56,7 +56,7 @@ namespace ERP_Component_DAL.Services
                                 {
                                     userName = reader["UserName"] != DBNull.Value ? (string)reader["UserName"] : string.Empty,
                                     password = reader["Password"] != DBNull.Value ? (string)reader["Password"] : string.Empty,
-                                    role = reader["UserRole"] != DBNull.Value ? (int)reader["UserRole"] : 0,
+                                    role = reader["RoleId"] != DBNull.Value ? Convert.ToInt32(reader["RoleId"]) : 0,
                                 });
 
                             }
@@ -152,7 +152,7 @@ namespace ERP_Component_DAL.Services
             }
         }
 
-        public User HandleStaff(User users)
+        public User HandleUsers(User users)
         {
             try
             {
@@ -163,7 +163,7 @@ namespace ERP_Component_DAL.Services
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
 
-                    string query = @"select UserName,Password,Role from Users where UserName = @username ";
+                    string query = @"select UserName,Password,RoleId from LoginCredentials where UserName = @username ";
 
                     using (SqlCommand cmd = new SqlCommand(query, connection))
                     {
@@ -178,7 +178,7 @@ namespace ERP_Component_DAL.Services
 
                                 user.userName = reader["UserName"] != DBNull.Value ? (string)reader["UserName"] : string.Empty;
                                 user.password = reader["Password"] != DBNull.Value ? (string)reader["Password"] : string.Empty;
-                                user.role = reader["Role"] != DBNull.Value ? (int)reader["Role"] : 0;
+                                user.role = reader["RoleId"] != DBNull.Value ? Convert.ToInt32(reader["RoleId"]) : 0;
 
 
                             }

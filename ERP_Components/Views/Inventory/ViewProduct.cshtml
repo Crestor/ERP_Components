@@ -54,10 +54,9 @@
 
 
 
-<div>
+<div class="header1">
     <h4>View Product</h4>
 </div>
-
 <div class="container">
     <div class="tab-buttons">
         <button onclick="showSection('main')">Main Details</button>
@@ -67,8 +66,8 @@
 
     <div class="table-actions">
 
-        <button onclick="editSelected()" id="editBtn" disabled>Edit</button>
-        <button onClick="confirmDelete()" id="deleteBtn" style="background-color:#d01313c2" disabled>Delete</button>
+        <button onclick="editSelected()" style="background-color:#c34949 ;color:white" id="editBtn" disabled>Edit</button>
+        @* <button onClick="confirmDelete()" id="deleteBtn" style="background-color:#d01313c2" disabled>Delete</button> *@ 
     </div>
 
 
@@ -125,7 +124,7 @@
                     <th>Batch Series</th>
                     <th>Manufacturing Date</th>
                     <th>Expiry Date</th>
-                    <th>Delivered Date</th>
+                
 
                 </tr>
             </thead>
@@ -138,9 +137,9 @@
                         <td>@(i + 1)</td>
                         <td>@v.itemName</td>
                         <td>@v.batchSeries</td>
-                        <td>@v.manufacture.ToShortDateString()</td>
+                        <td>@v.arrival.ToShortDateString()</td>
                         <td>@v.expiry.ToShortDateString()</td>
-                        <td>@v.deliverd.ToShortDateString()</td>
+                        
 
                     </tr>
                 }
@@ -170,7 +169,7 @@
                         <td><input type="checkbox" class="row-check" onchange="toggleActionButtons(this)"></td>
                         <td>@(i + 1)</td>
                         <td>@v.itemName</td>
-                        <td>@v.warehouse</td>
+                        <td>@v.warehouseName</td>
                         <td>@v.inStock</td>
                         <td>@v.stockAlert</td>
 
@@ -207,7 +206,7 @@
     function editSelected() {
         const id = getSelectedVendorId();
         if (id) {
-            window.location.href = '@Url.Action(" EditProduct", "Inventory")' + '?itemId=' + id;
+            window.location.href = '@Url.Action("EditProduct", "Inventory")' + '?itemId=' + id;
         }
     }
 
