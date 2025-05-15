@@ -1,0 +1,44 @@
+﻿@using ERP_Component_DAL.Models;
+
+
+@{
+    ViewBag.Title = "Depreciation Tracking";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link rel="stylesheet" href="~/css/Product.css">
+
+@model List<Asset>
+
+<div class="header1">
+    <h4>Depreciation Tracker</h4>
+</div>
+<div class="table-container">
+<table class="product-table">
+
+    <thead>
+        <tr>
+            <th>Asset Name</th>
+            <th>Serial Number</th>
+            <th>Cost</th>
+            <th>Purchase Date</th>
+            <th>Depreciation / Year</th>
+            <th>Current Value</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var asset in Model)
+        {
+            <tr>
+                <td>@asset.itemName</td>
+                <td>@asset.serialNumber</td>
+                <td>₹@asset.price</td>
+                <td>@asset.assignDate.ToShortDateString()</td>
+                <td>@asset.depreciation</td>
+                <td>₹@Math.Round(@asset.currentValue, 2)</td>
+            </tr>
+        }
+    </tbody>
+</table>
+</div>
+

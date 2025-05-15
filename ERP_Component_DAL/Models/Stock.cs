@@ -17,8 +17,10 @@ namespace ERP_Component_DAL.Models
         public DateTime expiry { get; set; }
         public DateTime arrival { get; set; }
        
-        public string? invoice { get; set; }
+      
+        public string? reason { get; set; }
         public string? itemName { get; set; }
+        public string? itemType { get; set; }
         public string? warehouseName { get; set; }
         public string? batchSeries { get; set; }
         public decimal quantity { get; set; }
@@ -26,7 +28,7 @@ namespace ERP_Component_DAL.Models
         public decimal unitPrice { get; set; }
         public decimal costPrice { get; set; }
         public decimal totalPrice { get; set; }
-        public bool type { get; set; }
+        public string? type { get; set; }
 
 
         public List<Items> items { get; set; }

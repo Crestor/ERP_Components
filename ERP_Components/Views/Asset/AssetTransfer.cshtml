@@ -1,0 +1,126 @@
+﻿@using ERP_Component_DAL.Models;
+
+
+@{
+    ViewBag.Title = "Add Asset";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link rel="stylesheet" href="~/css/Product.css">
+
+@model List<Category>
+
+<div class="header1">
+    <h4>Asset Transfer</h4>
+</div>
+<div id="asset" class="container">
+
+    <form method="post" asp-action="AddAssetTransfer" asp-controller="Asset" onsubmit="savedDetail()">
+
+        <div class="form-section">
+            <h3>Asset Transfer</h3>
+            <div class="form-row">
+                <label class="required" for="category">Category:</label>
+                <select class="form-control" style="padding:10px" id="role" onchange="getName()" name="categoryId" required>
+                    <option disabled selected> select Name</option>
+                    @for (var i = 0; i < Model.Count; i++)
+                    {
+
+                        <option value="@Model[i].categoryId">@Model[i].categoryName</option>
+                    }
+                </select>
+                <label class="required" for="assetName">Asset Name:</label>
+               <select name="itemId" id="name">
+                   <option selected disabled>select</option>
+               </select>
+                <input type="hidden" name="itemType" value="asset" />
+
+
+                
+            </div>
+            <div class="form-row">
+                
+                <label class="required" for="serial">Serial Number:</label>
+                <input type="text" name="serialNumber" />
+
+                <label class="required" for="serial">Current Owner:</label>
+
+                <input type="text" name="currentOwner" />
+
+            </div>
+            <div class="form-row">
+
+
+                <label class="required" for="serial">New Owner:</label>
+                <input type="text" name="newOwner" />
+                <label for="location">Reason:</label>
+                <textarea name="description"></textarea>
+
+               
+            </div>
+
+        </div>
+
+
+        <div class="button-container">
+            <button type="submit">Submit</button>
+            <button type="reset">Reset</button>
+        </div>
+    </form>
+</div>
+
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+        function getName() {
+        var Id = $("#role").val();
+
+        $.ajax({
+            type: "GET",
+            url: "/Asset/AssetNamesBasedOnCategory",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            data: { categoryId: Id },
+                success: function (response) {
+        console.log("Subcategories response:", response);
+        if (response.length > 0) {
+            $("#name").empty();
+            $("#name").append('<option selected disabled>Select</option>');
+            response.forEach(function (item) {
+                console.log("Each item:", item);
+                $("#name").append('<option value="' + item.itemId  + '">' + item.itemName + '</option>');
+            });
+        } else {
+            $("#name").empty().append('<option selected disabled>No SubCategory Found</option>');
+        }
+    },
+
+            error: function (xhr, status, error) {
+                console.error("AJAX Error: ", error);
+                console.error("Status: ", status);
+                console.error("Response: ", xhr.responseText);
+                alert("Error fetching user data. Check console for details.");
+            }
+        });
+    }
+
+
+</script>
+
+
+
+
+
+
+
+<script>
+      function savedDetail(){
+                Swal.fire({
+      position: "center",
+      icon: "success",
+      title: "Your work has been saved",
+      showConfirmButton: false,
+      timer: 1500
+    });
+    }
+</script>

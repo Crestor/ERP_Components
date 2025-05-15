@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
@@ -805,6 +806,90 @@ namespace ERP_Component_DAL.Services
         //    }
         //}
 
+        public List<Items> GetMaterialNamesFromItems()
+        {
+            try
+            {
+                List<Items> cat = new();
+                string connectionstring = configuration.GetConnectionString("DefaultConnectionString");
+                connection = new SqlConnection(connectionstring);
+                SqlCommand cmd = new();
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.CommandText = $"Select ItemName,ItemId from Items where ItemType = 2";
+                cmd.Connection = connection;
+
+                cmd.CommandTimeout = 300;
+                connection.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    cat.Add(new Items()
+                    {
+                        itemId = reader["ItemId"] != DBNull.Value ? (Guid)reader["ItemId"] : Guid.Empty,
+
+
+                        itemName = reader["ItemName"] != DBNull.Value ? (string)reader["ItemName"] : string.Empty,
+
+
+                    });
+                }
+
+                return cat;
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                connection.Close();
+            }
+        }
+
+
+        public List<Items> GetProductNamesFromItems()
+        {
+            try
+            {
+                List<Items> cat = new();
+                string connectionstring = configuration.GetConnectionString("DefaultConnectionString");
+                connection = new SqlConnection(connectionstring);
+                SqlCommand cmd = new();
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.CommandText = $"Select ItemName,ItemId from Items where ItemType = 1";
+                cmd.Connection = connection;
+
+                cmd.CommandTimeout = 300;
+                connection.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    cat.Add(new Items()
+                    {
+                        itemId = reader["ItemId"] != DBNull.Value ? (Guid)reader["ItemId"] : Guid.Empty,
+
+
+                        itemName = reader["ItemName"] != DBNull.Value ? (string)reader["ItemName"] : string.Empty,
+
+
+                    });
+                }
+
+                return cat;
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                connection.Close();
+            }
+        }
+
+
         public List<Items> GetItemsNames()
         {
             try
@@ -845,6 +930,8 @@ namespace ERP_Component_DAL.Services
                 connection.Close();
             }
         }
+
+
 
         //public bool UpdateWarehouse(Warehouse wh)
         //{
@@ -1106,7 +1193,7 @@ namespace ERP_Component_DAL.Services
                 SqlCommand cmd2 = new SqlCommand();
                 cmd2.CommandType = System.Data.CommandType.Text;
 
-                cmd2.CommandText = $"INSERT INTO Inventory([ItemId],[InStock],[StockAlert],[InventoryType]) VALUES(@ItemId,'{item.inStock}','{item.stockAlert}','{item.type}')";
+                cmd2.CommandText = $"INSERT INTO Inventory([ItemId],[InStock],[StockAlert],[InventoryType]) VALUES(@ItemId,'{item.inStock}','{item.stockAlert}','{item.itemType}')";
 
                 cmd2.Connection = connection;
 
@@ -1319,7 +1406,7 @@ namespace ERP_Component_DAL.Services
                 cmd.CommandType = System.Data.CommandType.Text;
 
                 //cmd.CommandText = $"Insert into StockTransactions([ItemId],[ItemType]) OUTPUT Inserted.ItemId values('{asset.itemName}','{asset.itemType}')";
-                cmd.CommandText = $"INSERT INTO LotBatch([ItemId],[ArrivalDate], [ExpiryDate],[CostPrice],[Quantity]) OUTPUT Inserted.Id VALUES ('{stock.itemId}', {DateTime.Now.ToShortDateString()},'{stock.expiry}', '{stock.costPrice}', '{stock.quantity}')";
+                cmd.CommandText = $"INSERT INTO LotBatch([ItemId],[ArrivalDate], [ExpiryDate],[CostPrice],[Quantity],[Type]) OUTPUT Inserted.Id VALUES ('{stock.itemId}', {DateTime.Now.ToShortDateString()},'{stock.expiry}', '{stock.costPrice}', '{stock.quantity}','{stock.itemType}')";
 
                 cmd.Connection = connection;
 
@@ -1330,7 +1417,7 @@ namespace ERP_Component_DAL.Services
 
                 SqlCommand cmd1 = new SqlCommand();
                 cmd1.CommandType = System.Data.CommandType.Text;
-                cmd1.CommandText = $"INSERT INTO StockTransactions([ItemId],[TransactionDate], [Type],[Quantity]) VALUES ('{stock.itemId}', {DateTime.Now.ToShortDateString()},'{stock.type}', '{stock.quantity}')";
+                cmd1.CommandText = $"INSERT INTO StockTransactions([ItemId],[TransactionDate], [TransactionType],[Quantity],[Reason]) VALUES ('{stock.itemId}', {DateTime.Now.ToShortDateString()},'{stock.type}', '{stock.quantity}','{stock.reason}')";
 
                 cmd1.Connection = connection;
                 //cmd1.Parameters.AddWithValue("@Id", Id);
@@ -1340,6 +1427,14 @@ namespace ERP_Component_DAL.Services
                 cmd1.ExecuteScalar();
                 connection.Close();
 
+                SqlCommand cmd2 = new SqlCommand();
+                cmd2.CommandType = System.Data.CommandType.Text;
+                cmd2.CommandText = $"Update  Inventory Set InStock = (Select Sum(Quantity) As Quantity From LotBatch Where ItemId = '{stock.itemId}') where ItemId = '{stock.itemId}'";
+                cmd2.Connection = connection;
+                connection.Open();
+                cmd2.ExecuteScalar();
+                connection.Close();
+                return true;
 
                 return true;
 
@@ -1393,7 +1488,7 @@ namespace ERP_Component_DAL.Services
         //}
 
 
-        public List<Stock> ViewStock()
+        public List<Stock> ViewProductStock()
         {
             try
             {
@@ -1409,11 +1504,12 @@ namespace ERP_Component_DAL.Services
         s.CostPrice,
         s.ArrivalDate,
         s.ExpiryDate,
-        s.Quantity,
+        st.Quantity,
         i.ItemName
         
     FROM LotBatch s
     LEFT JOIN Items i ON s.ItemId = i.ItemId
+    LEFT JOIN StockTransactions st ON s.ItemId = st.ItemId Where st.Reason = 'product'
    
 ";
                 cmd.Connection = connection;
@@ -1456,6 +1552,76 @@ namespace ERP_Component_DAL.Services
                 connection.Close();
             }
         }
+
+
+
+
+        public List<Stock> ViewMaterialStock()
+        {
+            try
+            {
+                List<Stock> cat = new();
+                string connectionstring = configuration.GetConnectionString("DefaultConnectionString");
+                connection = new SqlConnection(connectionstring);
+                SqlCommand cmd = new();
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.CommandText = cmd.CommandText = @"
+    SELECT 
+        s.ItemId,
+        s.Id,
+        s.CostPrice,
+        s.ArrivalDate,
+        s.ExpiryDate,
+        st.Quantity,
+        i.ItemName
+        
+    FROM LotBatch s
+    LEFT JOIN Items i ON s.ItemId = i.ItemId
+    LEFT JOIN StockTransactions st ON s.ItemId = st.ItemId Where st.Reason = 'material'
+   
+";
+                cmd.Connection = connection;
+
+                cmd.CommandTimeout = 300;
+                connection.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    cat.Add(new Stock()
+                    {
+                        itemId = reader["ItemId"] != DBNull.Value ? (Guid)reader["ItemId"] : Guid.Empty,
+                        stockId = reader["Id"] != DBNull.Value ? (Guid)reader["Id"] : Guid.Empty,
+
+
+                        //quantity = reader["Quantity"] != DBNull.Value ? (int)reader["Quantity"] : 0,
+                        quantity = reader["Quantity"] != DBNull.Value ? Convert.ToDecimal(reader["Quantity"]) : 0m,
+
+                        itemName = reader["ItemName"] != DBNull.Value ? (string)reader["ItemName"] : string.Empty,
+
+                        expiry = reader["ExpiryDate"] != DBNull.Value ? ((DateTime)reader["ExpiryDate"]).Date : default(DateTime),
+                        arrival = reader["ArrivalDate"] != DBNull.Value ? ((DateTime)reader["ArrivalDate"]).Date : default(DateTime),
+
+                        costPrice = reader["CostPrice"] != DBNull.Value ? Convert.ToDecimal(reader["CostPrice"]) : 0m,
+
+
+
+                    });
+                }
+
+                return cat;
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                connection.Close();
+            }
+        }
+
+
 
 
 
@@ -1585,7 +1751,7 @@ namespace ERP_Component_DAL.Services
 
                 SqlCommand cmd1 = new SqlCommand();
                 cmd1.CommandType = System.Data.CommandType.Text;
-                cmd1.CommandText = $"INSERT INTO StockTransactions([ItemId],[TransactionDate], [Type],[Quantity]) VALUES ('{order.itemId}', {DateTime.Now.ToShortDateString()},'{order.type}', '{order.quantity}')";
+                cmd1.CommandText = $"INSERT INTO StockTransactions([ItemId],[TransactionDate], [Transaction],[Quantity]) VALUES ('{order.itemId}', {DateTime.Now.ToShortDateString()},'{order.type}', '{order.quantity}')";
 
                 cmd1.Connection = connection;
                 //cmd1.Parameters.AddWithValue("@Id", Id);
@@ -1596,7 +1762,16 @@ namespace ERP_Component_DAL.Services
                 connection.Close();
 
 
+                SqlCommand cmd2 = new SqlCommand();
+                cmd2.CommandType = System.Data.CommandType.Text;
+                cmd2.CommandText = $"Update  Inventory Set InStock = (Select Sum(Quantity) As Quantity From LotBatch Where ItemId = '{order.itemId}') where ItemId = '{order.itemId}'";
+                cmd2.Connection = connection;
+                connection.Open();
+                cmd2.ExecuteScalar();
+                connection.Close();
                 return true;
+
+
 
             }
             catch (Exception ex)
@@ -1671,7 +1846,7 @@ namespace ERP_Component_DAL.Services
        
     FROM LotBatch lb
     LEFT JOIN Items i ON lb.ItemId = i.ItemId 
-    LEFT JOIN StockTransactions st ON lb.ItemId = st.ItemId Where st.Type = 0; 
+    LEFT JOIN StockTransactions st ON lb.ItemId = st.ItemId Where st.TransactionType = 'stockOut'; 
    
 ";
                 cmd.Connection = connection;
@@ -2042,34 +2217,90 @@ namespace ERP_Component_DAL.Services
             }
         }
 
-        public bool AddStockAdjustment(Adjustment adjustment)
+        //public bool AddStockAdjustment(Order order)
+        //{
+        //    try
+        //    {
+        //        string connectionString = configuration.GetConnectionString("DefaultConnectionString");
+
+        //        using (SqlConnection connection = new SqlConnection(connectionString))
+        //        {
+        //            string query = $"INSERT INTO StockTransactions([ItemId],[SourceDC],[DestinationDC],[Quantity],[Reason],[TransactionType])  VALUES('{order.itemId}','{order.sourceDc}','{order.destinationDc}','{order.quantity}','{order.reason}','{order.type}')";
+
+
+        //            using (SqlCommand cmd = new SqlCommand(query, connection))
+        //            {
+        //                cmd.CommandType = System.Data.CommandType.Text;
+
+        //                connection.Open();
+        //                cmd.ExecuteNonQuery();
+
+        //                return true;
+        //            }
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        throw;
+
+        //    }
+        //}
+
+
+        public bool AddStockAdjustment(Order order)
         {
             try
             {
-                string connectionString = configuration.GetConnectionString("DefaultConnectionString");
+                string connectionstring = configuration.GetConnectionString("DefaultConnectionString");
+                connection = new SqlConnection(connectionstring);
+                SqlCommand cmd = new SqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
 
-                using (SqlConnection connection = new SqlConnection(connectionString))
-                {
-                    string query = $"INSERT INTO StockAdjustment([ItemId],[WarehouseId],[AdjustmentDate],[AdjustmentType],[NewStockLevel],[Reason])  VALUES('{adjustment.itemId}','{adjustment.warehouseId}','{adjustment.Date}','{adjustment.type}','{adjustment.newStock}','{adjustment.reason}')";
+                //cmd.CommandText = $"Insert into StockTransactions([ItemId],[ItemType]) OUTPUT Inserted.ItemId values('{asset.itemName}','{asset.itemType}')";
+                cmd.CommandText = $"Update  Inventory Set InStock = InStock - '{order.quantity}' where ItemId = '{order.itemId}'";
+
+                cmd.Connection = connection;
+
+                connection.Open();
+                //Guid Id = (Guid)cmd.ExecuteScalar();
+                cmd.ExecuteScalar();
+                connection.Close();
+
+                SqlCommand cmd1 = new SqlCommand();
+                cmd1.CommandType = System.Data.CommandType.Text;
+                cmd1.CommandText = $"INSERT INTO Inventory([ItemId],[InStock],[CenterId]) VALUES ('{order.itemId}', '{order.quantity}','{order.destinationDc}')";
+
+                cmd1.Connection = connection;
+                //cmd1.Parameters.AddWithValue("@Id", Id);
 
 
-                    using (SqlCommand cmd = new SqlCommand(query, connection))
-                    {
-                        cmd.CommandType = System.Data.CommandType.Text;
+                connection.Open();
+                cmd1.ExecuteScalar();
+                connection.Close();
 
-                        connection.Open();
-                        cmd.ExecuteNonQuery();
+                SqlCommand cmd2 = new SqlCommand();
+                cmd2.CommandType = System.Data.CommandType.Text;
+                cmd2.CommandText = $"INSERT INTO StockTransactions([ItemId],[SourceDC],[DestinationDC],[Quantity],[Reason],[TransactionType])  VALUES('{order.itemId}','{order.sourceDc}','{order.destinationDc}','{order.quantity}','{order.reason}','{order.type}')";
+                cmd2.Connection = connection;
+                connection.Open();
+                cmd2.ExecuteScalar();
+                connection.Close();
+                return true;
 
-                        return true;
-                    }
-                }
+                return true;
+
             }
             catch (Exception ex)
             {
-                throw;
+                throw ex;
+            }
+            finally
+            {
+                connection.Close();
 
             }
         }
+
 
         public int GetCurrentStock(Guid itemId)
         {
@@ -2143,8 +2374,55 @@ namespace ERP_Component_DAL.Services
         }
 
 
-       
 
+        public List<Items> ViewInventoryData()
+        {
+            try
+            {
+                List<Items> cat = new();
+                string connectionstring = configuration.GetConnectionString("DefaultConnectionString");
+                connection = new SqlConnection(connectionstring);
+                SqlCommand cmd = new();
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.CommandText = cmd.CommandText = @"SELECT  i.ItemId,i.ItemName, i.SKU,i.Specification,i.HSN, iv.InStock,iv.InventoryId FROM Items  LEFT JOIN Inventory iv ON i.ItemId = iv.ItemId";
+                cmd.Connection = connection;
+
+                cmd.CommandTimeout = 300;
+                connection.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    cat.Add(new Items()
+                    {
+                        itemId = reader["ItemId"] != DBNull.Value ? (Guid)reader["ItemId"] : Guid.Empty,
+                        inventoryId = reader["InventoryId"] != DBNull.Value ? (Guid)reader["InventoryId"] : Guid.Empty,
+
+                        SKU = reader["SKU"] != DBNull.Value ? Convert.ToInt32(reader["SKU"]) : 0,
+                        HSN = reader["HSN"] != DBNull.Value ? Convert.ToInt32(reader["HSN"]) : 0,
+
+                       inStock = reader["InStock"] != DBNull.Value ? (int)reader["InStock"] : 0,
+
+                        itemName = reader["ItemName"] != DBNull.Value ? (string)reader["ItemName"] : string.Empty,
+                        specification = reader["Specification"] != DBNull.Value ? (string)reader["Specification"] : string.Empty,
+                     
+
+
+
+                    });
+                }
+
+                return cat;
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                connection.Close();
+            }
+        }
 
 
 

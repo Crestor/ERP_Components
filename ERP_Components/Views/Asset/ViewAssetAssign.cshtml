@@ -1,0 +1,69 @@
+﻿@using ERP_Component_DAL.Models;
+
+
+@{
+    ViewBag.Title = "View Asset";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@model List<Asset>
+<link href="~/css/Product.css" rel="stylesheet" />
+
+<div class="header1">
+    <h4>Asset Listing</h4>
+</div>
+
+
+<div class="table-container">
+
+
+
+
+    <table class="product-table">
+        <thead>
+            <tr>
+                <th>Sno.</th>
+                <th>Asset Name</th>
+                <th>Category</th>
+                <th>Assigned To </th>
+                <th>Serial Number</th>
+                <th>Assigned Date</th>
+                <th>Expected Return Date</th>
+
+            </tr>
+        </thead>
+        <tbody id="geeks">
+
+
+            @for (var i = 0; i < Model.Count; i++)
+            {
+
+                var x = Model[i];
+                var index = i + 1;
+
+                <tr id="row-@x.">
+                    <td>@index</td>
+                    <td>@x.itemName</td>
+                    <td>@x.category</td>
+                    <td>@x.assignto</td>
+                    <td>@x.serialNumber</td>
+                    <td>@x.assignDate.ToShortDateString()</td>
+                    <td>@x.expectedReturn.ToShortDateString()</td>
+                   @*  <td>
+                        <div class="actions">
+
+                            <button onclick="location.href='@Url.Action("AssetAssign", "Asset", new { assetId = @x.assetId }, null)'">Assign</button>
+                            <button onclick="location.href='@Url.Action("DeleteAsset", "Asset", new { itemId = @x.itemId }, null)'">Discard</button>
+
+
+                        </div>
+                    </td> *@
+
+                </tr>
+            }
+        </tbody>
+
+    </table>
+</div>
+
+

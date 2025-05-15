@@ -1,0 +1,59 @@
+﻿@using ERP_Component_DAL.Models;
+<link rel="stylesheet" href="~/css/Product.css" />
+
+
+@model Category
+
+<div class="header1">
+    <h4>Edit Category</h4>
+</div>
+
+<div class="container">
+
+
+    <div style="display:flex; justify-content:center; align-items:center;margin:auto">
+        <h4>Edit Category</h4>
+    </div>
+    <form method="post" asp-action="EditCategory" asp-controller="Inventory" onsubmit="return savedDetail()">
+        <div class="form-section">
+
+            <div class="form-row">
+                <label class="required">Category Name</label>
+                <input type="text" value="@Model.categoryName" name="categoryName" placeholder="Enter Category Name" />
+                <input type="text" value="@Model.categoryId" name="categoryId" placeholder="Enter Category Name" hidden />
+
+                <label class="required">Category Code</label>
+                <input type="text" value="@Model.categoryCode" name="categoryCode" placeholder="Enter Category code" />
+            </div>
+            <div class="form-row">
+                <label class="required">Category Description</label>
+                <textarea value="@Model.categoryDescription" name="categoryDescription" placeholder="Enter product Description"></textarea>
+
+
+                <label class="required">Is Active</label>
+                <select name="isActive" value="@Model.isActive" required>
+                    <option selected disabled>select</option>
+                    <option>yes</option>
+                    <option>NO</option>
+                </select>
+            </div>
+            <div class="button-container">
+
+                <button type="submit">Submit</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<script>
+      function savedDetail(){
+                Swal.fire({
+      position: "center",
+      icon: "success",
+      title: "Your work has been saved",
+      showConfirmButton: false,
+      timer: 1500
+    });
+    }
+</script>
+

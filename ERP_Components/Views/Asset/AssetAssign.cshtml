@@ -1,0 +1,66 @@
+﻿@using ERP_Component_DAL.Models;
+
+
+@{
+    ViewBag.Title = "Add Asset";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link rel="stylesheet" href="~/css/Product.css">
+
+@model Asset
+
+<div class="header1">
+    <h4>Assign Asset</h4>
+</div>
+<div id="asset" class="container">
+
+
+
+    <form method="post" asp-action="AddAssetAssign" asp-controller="Asset" onsubmit="savedDetail()">
+
+        <div class="form-section">
+            <h3>Add Asset</h3>
+            <div class="form-row">
+
+                <label class="required" for="assetName">Assign To:</label>
+                <input type="text" value="@Model.assignto" name="assignto" readonly/>
+                <input type="hidden" value="@Model.assetId" name="assetId"/>
+
+                <label class="required" for="serial">Serial Number:</label>
+                <input type="text" value="@Model.serialNumber" name="serialNumber" readonly/>
+
+             
+            </div>
+            <div class="form-row">
+                <label class="required" for="serial">Expected Return:</label>
+                <input type="date"  name="expectedReturn"  />
+                <label for="cost">Purpose/use:</label>
+                <textarea type="number" name="description"></textarea>
+             </div>
+                <div class="form-row" style="width:50%">
+                    <label for="assign">Status:</label>
+                  <input type="text" name="status" value="@Model.status" />
+                </div>
+          
+        </div>
+
+
+        <div class="button-container">
+            <button type="submit">Submit</button>
+            <button type="reset">Reset</button>
+        </div>
+    </form>
+</div>
+
+<script>
+      function savedDetail(){
+                Swal.fire({
+      position: "center",
+      icon: "success",
+      title: "Your work has been saved",
+      showConfirmButton: false,
+      timer: 1500
+    });
+    }
+</script>

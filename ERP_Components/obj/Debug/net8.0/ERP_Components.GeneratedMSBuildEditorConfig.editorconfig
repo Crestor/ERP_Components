@@ -24,16 +24,60 @@ build_property.EnableCodeStyleSeverity =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQXNzZXRcQWRkQXNzZXQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Users/vhk/OneDrive/Documents/GitHub/ERP_Components/ERP_Components/Views/Asset/AssetAssign.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQXNzZXRcQXNzZXRBc3NpZ24uY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/vhk/OneDrive/Documents/GitHub/ERP_Components/ERP_Components/Views/Asset/AssetListing.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQXNzZXRcQXNzZXRMaXN0aW5nLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/vhk/OneDrive/Documents/GitHub/ERP_Components/ERP_Components/Views/Asset/AssetMaintenance.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQXNzZXRcQXNzZXRNYWludGVuYW5jZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/vhk/OneDrive/Documents/GitHub/ERP_Components/ERP_Components/Views/Asset/AssetMaintenanceView.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQXNzZXRcQXNzZXRNYWludGVuYW5jZVZpZXcuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/vhk/OneDrive/Documents/GitHub/ERP_Components/ERP_Components/Views/Asset/AssetTransfer.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQXNzZXRcQXNzZXRUcmFuc2Zlci5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/vhk/OneDrive/Documents/GitHub/ERP_Components/ERP_Components/Views/Asset/AssetView.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQXNzZXRcQXNzZXRWaWV3LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/vhk/OneDrive/Documents/GitHub/ERP_Components/ERP_Components/Views/Asset/Category.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQXNzZXRcQ2F0ZWdvcnkuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/vhk/OneDrive/Documents/GitHub/ERP_Components/ERP_Components/Views/Asset/Dashboard.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQXNzZXRcRGFzaGJvYXJkLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Users/vhk/OneDrive/Documents/GitHub/ERP_Components/ERP_Components/Views/Asset/DepreciationTracking.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQXNzZXRcRGVwcmVjaWF0aW9uVHJhY2tpbmcuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/vhk/OneDrive/Documents/GitHub/ERP_Components/ERP_Components/Views/Asset/EditAsset.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQXNzZXRcRWRpdEFzc2V0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/vhk/OneDrive/Documents/GitHub/ERP_Components/ERP_Components/Views/Asset/EditAssetMaintenance.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQXNzZXRcRWRpdEFzc2V0TWFpbnRlbmFuY2UuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/vhk/OneDrive/Documents/GitHub/ERP_Components/ERP_Components/Views/Asset/EditCategory.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQXNzZXRcRWRpdENhdGVnb3J5LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/vhk/OneDrive/Documents/GitHub/ERP_Components/ERP_Components/Views/Asset/ViewAssetAssign.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQXNzZXRcVmlld0Fzc2V0QXNzaWduLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/vhk/OneDrive/Documents/GitHub/ERP_Components/ERP_Components/Views/Asset/ViewCategory.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQXNzZXRcVmlld0NhdGVnb3J5LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/vhk/OneDrive/Documents/GitHub/ERP_Components/ERP_Components/Views/Home/Index.cshtml]
@@ -122,6 +166,10 @@ build_metadata.AdditionalFiles.CssScope =
 
 [C:/Users/vhk/OneDrive/Documents/GitHub/ERP_Components/ERP_Components/Views/Inventory/ViewCategory.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSW52ZW50b3J5XFZpZXdDYXRlZ29yeS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/vhk/OneDrive/Documents/GitHub/ERP_Components/ERP_Components/Views/Inventory/ViewInventoryData.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSW52ZW50b3J5XFZpZXdJbnZlbnRvcnlEYXRhLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/vhk/OneDrive/Documents/GitHub/ERP_Components/ERP_Components/Views/Inventory/ViewMaterial.cshtml]

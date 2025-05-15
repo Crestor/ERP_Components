@@ -1,0 +1,80 @@
+﻿@using ERP_Component_DAL.Models;
+<link rel="stylesheet" href="~/css/Product.css">
+
+@model List<Category>
+
+
+
+
+
+<div class="header1">
+    <h4>View Category</h4>
+</div>
+
+
+
+
+
+
+
+
+
+<div class="container">
+
+    <div style="display:flex;justify-content:center;text-align:center">
+
+
+    </div>
+
+    <div class="Table">
+        <table>
+            <thead>
+                <tr>
+                    <th>S.No.</th>
+                    <th>Category Name</th>
+                    <th>Category Code</th>
+                    <th>Category Description</th>
+                    <th>Is Active</th>
+                    <th>Date</th>
+                    <th>Action</th>
+
+                </tr>
+            </thead>
+            <tbody id="geeks">
+
+
+                @for (var i = 0; i < Model.Count; i++)
+                {
+
+                    var x = Model[i];
+                    var index = i + 1;
+
+                    <tr>
+                        <td>@index</td>
+                        <td>@x.categoryName</td>
+                        <td>@x.categoryCode</td>
+                        <td>@x.categoryDescription</td>
+                        <td>@x.isActive</td>
+                        <td>@x.createdOn.ToShortDateString()</td>
+
+                        <td>
+                            <div class="actions">
+
+                                <button onclick="location.href='@Url.Action("EditCategory", "Inventory", new { categoryId = x.categoryId }, null)'"><i class="fas fa-edit"></i></button>
+                                <button onclick="location.href='@Url.Action("DeleteCategory", "Inventory", new { categoryId = x.categoryId }, null)'"><i class="fas fa-trash"></i></button>
+
+                               
+                            </div>
+                        </td>
+
+                    </tr>
+                }
+            </tbody>
+
+
+
+        </table>
+    </div>
+    </div>
+
+

@@ -26,7 +26,24 @@
         transition: margin 0.3s ease;
         }
 
+        /* Sidebar hidden */
+        #wrapper.toggled #sidebar-wrapper {
+            display: none;
+        }
+
+        /* Adjust content when sidebar is hidden */
+        #wrapper.toggled #page-content-wrapper {
+            margin-left: 0 !important;
+        }
+
+        #wrapper.toggled nav.navbar {
+            left: 0 !important;
+        }
+
     </style>
+
+
+
 </head>
 @{
     var Role = Context.Session.GetString("Role");
@@ -35,8 +52,11 @@
 <body>
     <div class="d-flex" id="wrapper" >
         <!-- Sidebar -->
-        <div class="border-right text-light" style="background-color:#a14040; min-height: 100vh;" id="sidebar-wrapper">
-
+        @* <div class="border-right text-light" style="background-color:#a14040; min-height: 100vh;" id="sidebar-wrapper"> *@
+        <div id="sidebar-wrapper"
+             class="border-right text-light"
+             style="background-color:#a14040; width: 250px; height: 100vh; position: fixed; top: 0; left: 0; overflow-y: auto;">
+            <!-- Sidebar content -->
 
             @if (Role == "Inventory")
             {
@@ -70,10 +90,7 @@
                     </div>
 
 
-                    <!-- Inventory -->
-                    <a href="@Url.Action("Inventory", "Inventory")" class="list-group-item list-group-item-action" style="background-color:#a14040; color:white;">
-                        <i class="fas fa-boxes me-2"></i> Inventory
-                    </a>
+                   
 
                     <!-- Products -->
                     <a class="list-group-item list-group-item-action d-flex justify-content-between align-items-center"
@@ -95,6 +112,7 @@
                         </a>
                     </div>
 
+
                     <!-- Material -->
                     <a class="list-group-item list-group-item-action d-flex justify-content-between align-items-center"
                     data-bs-toggle="collapse"
@@ -115,26 +133,11 @@
                         </a>
                     </div>
 
-                    <!-- Asset -->
-                    <a class="list-group-item list-group-item-action d-flex justify-content-between align-items-center"
-                       data-bs-toggle="collapse"
-                       href="#asset"
-                       role="button"
-                       aria-expanded="false"
-                       aria-controls="productDropdown"
-                       style="background-color:#a14040; color:white;">
-                        <span> <i class="fas fa-warehouse me-2"></i>Add Asset</span>
-                        <i class="fas fa-chevron-down"></i>
-                    </a>
-                    <div class="collapse" id="asset">
-                        <a href="@Url.Action("AddAsset", "Asset")" class="list-group-item list-group-item-action ps-5" style="background-color:#c34949; color:white;">
-                            <i class="fas fa-plus-circle me-2"></i> Add Asset
-                        </a>
-                        <a href="@Url.Action("AssetView", "Asset")" class="list-group-item list-group-item-action ps-5" style="background-color:#c34949; color:white;">
-                            <i class="fas fa-eye me-2"></i> View Asset
-                        </a>
-                    </div>
-
+                  
+                   @*  <!-- View Stock -->
+                    <a href="@Url.Action("Inventory", "Inventory")" class="list-group-item list-group-item-action" style="background-color:#a14040; color:white;">
+                        <i class="fas fa-boxes me-2"></i> Inventory
+                    </a> *@
 
                     @* Category *@
                     <a class="list-group-item list-group-item-action d-flex justify-content-between align-items-center"
@@ -178,6 +181,8 @@
                         </a>
                     </div>
 
+
+                    
                     <!-- Stocks -->
                     <a class="list-group-item list-group-item-action d-flex justify-content-between align-items-center"
                     data-bs-toggle="collapse"
@@ -189,10 +194,15 @@
                         <span> <i class="fa-solid fa-boxes-stacked"></i>   Stocks</span>
                         <i class="fas fa-chevron-down"></i>
                     </a>
+
+                   
+
+
                     <div class="collapse" id="stockDropdown">
                         <a href="@Url.Action("OpeningStockEntryForm", "Inventory")" class="list-group-item list-group-item-action ps-5" style="background-color:#c34949; color:white;">
                             <i class="fas fa-plus-square me-2"></i>Add Opening Stock
-                        </a> <a href="@Url.Action("AddStock", "Inventory")" class="list-group-item list-group-item-action ps-5" style="background-color:#c34949; color:white;">
+                        </a>
+                        <a href="@Url.Action("AddStock", "Inventory")" class="list-group-item list-group-item-action ps-5" style="background-color:#c34949; color:white;">
                             <i class="fas fa-plus-square me-2"></i> Add Stock In
                         </a>
                         <a href="@Url.Action("ViewStock", "Inventory")" class="list-group-item list-group-item-action ps-5" style="background-color:#c34949; color:white;">
@@ -381,8 +391,10 @@
                 <!-- Asset Dashboard -->
                 <a href="@Url.Action("Dashboard", "Asset")" class="list-group-item list-group-item-action" style="background-color:#a14040; color:white;">
                     <i class="fas fa-tachometer-alt me-2"></i> Asset Dashboard
+                    </a> <a href="@Url.Action("DepreciationTracking", "Asset")" class="list-group-item list-group-item-action" style="background-color:#a14040; color:white;">
+                    <i class="fas fa-tachometer-alt me-2"></i> Depreciation Tracker
                 </a>
-
+                    
                 <!-- Asset -->
                 <a class="list-group-item list-group-item-action d-flex justify-content-between align-items-center"
                    data-bs-toggle="collapse"
@@ -405,7 +417,7 @@
 
 
 
-                <!-- Stocks -->
+                <!-- Category -->
                 <a class="list-group-item list-group-item-action d-flex justify-content-between align-items-center"
                    data-bs-toggle="collapse"
                    href="#stockDropdown"
@@ -413,27 +425,22 @@
                    aria-expanded="false"
                    aria-controls="stockDropdown"
                    style="background-color:#a14040; color:white;">
-                    <span> <i class="fa-solid fa-boxes-stacked"></i>Stock Management</span>
+                    <span> <i class="fa-solid fa-boxes-stacked"></i>Add Category</span>
                     <i class="fas fa-chevron-down"></i>
                 </a>
                 <div class="collapse" id="stockDropdown">
-                    <a href="@Url.Action("AddWarehouseStock", "Warehouse")" class="list-group-item list-group-item-action ps-5" style="background-color:#c34949; color:white;">
-                        <i class="fas fa-plus-square me-2"></i>Add Stock
+                    <a href="@Url.Action("Category", "Asset")" class="list-group-item list-group-item-action ps-5" style="background-color:#c34949; color:white;">
+                        <i class="fas fa-plus-square me-2"></i> Add Category
                     </a>
-                    <a href="@Url.Action("WarehouseStockView", "Warehouse")" class="list-group-item list-group-item-action ps-5" style="background-color:#c34949; color:white;">
-                        <i class="fas fa-plus-square me-2"></i>View Stock
-                    </a>
-
-                    <a href="@Url.Action("AddWarehouseStock", "Warehouse")" class="list-group-item list-group-item-action ps-5" style="background-color:#c34949; color:white;">
-                        <i class="fas fa-plus-square me-2"></i> Add Stock In
-                    </a>
-                    <a href="@Url.Action("ViewStock", "Inventory")" class="list-group-item list-group-item-action ps-5" style="background-color:#c34949; color:white;">
-                        <i class="fas fa-eye me-2"></i> View Stock
+                    <a href="@Url.Action("ViewCategory", "Asset")" class="list-group-item list-group-item-action ps-5" style="background-color:#c34949; color:white;">
+                        <i class="fas fa-plus-square me-2"></i>View Category
                     </a>
 
                 </div>
 
-                <!-- Stock Adjustment -->
+
+
+                <!-- Asset Listing -->
                 <a class="list-group-item list-group-item-action d-flex justify-content-between align-items-center"
                    data-bs-toggle="collapse"
                    href="#adjustmentDropdown"
@@ -441,19 +448,19 @@
                    aria-expanded="false"
                    aria-controls="adjustmentDropdown"
                    style="background-color:#a14040; color:white;">
-                    <span><i class="fas fa-sliders-h me-2"></i> Stock Adjustment</span>
+                    <span><i class="fas fa-sliders-h me-2"></i>Asset Listing</span>
                     <i class="fas fa-chevron-down"></i>
                 </a>
                 <div class="collapse" id="adjustmentDropdown">
-                    <a href="@Url.Action("StockAdjustment", "Inventory")" class="list-group-item list-group-item-action ps-5" style="background-color:#c34949; color:white;">
-                        <i class="fas fa-edit me-2"></i> Stock Adjustment
+                        <a href="@Url.Action("AssetListing", "Asset")" class="list-group-item list-group-item-action ps-5" style="background-color:#c34949; color:white;">
+                        <i class="fas fa-edit me-2"></i> List Asset
                     </a>
-                    <a href="@Url.Action("AddStockAdjustment", "Inventory")" class="list-group-item list-group-item-action ps-5" style="background-color:#c34949; color:white;">
-                        <i class="fas fa-plus-circle me-2"></i> Add Adjustment
+                        <a href="@Url.Action("ViewAssetAssign", "Asset")" class="list-group-item list-group-item-action ps-5" style="background-color:#c34949; color:white;">
+                        <i class="fas fa-plus-circle me-2"></i> View Assign Asset
                     </a>
                 </div>
 
-                <!-- Stock Transfer -->
+                <!-- Asset Maintenance -->
                 <a class="list-group-item list-group-item-action d-flex justify-content-between align-items-center"
                    data-bs-toggle="collapse"
                    href="#transferDropdown"
@@ -461,19 +468,35 @@
                    aria-expanded="false"
                    aria-controls="transferDropdown"
                    style="background-color:#a14040; color:white;">
-                    <span><i class="fas fa-truck-moving me-2"></i> Stock Transfer</span>
+                    <span><i class="fas fa-truck-moving me-2"></i>Asset Maintenance</span>
                     <i class="fas fa-chevron-down"></i>
                 </a>
                 <div class="collapse" id="transferDropdown">
-                    <a href="@Url.Action("StockTransfer", "Inventory")" class="list-group-item list-group-item-action ps-5" style="background-color:#c34949; color:white;">
-                        <i class="fas fa-plus me-2"></i> Add Transfer
+                        <a href="@Url.Action("AssetMaintenance", "Asset")" class="list-group-item list-group-item-action ps-5" style="background-color:#c34949; color:white;">
+                        <i class="fas fa-plus me-2"></i> Add Asset Maintenance
                     </a>
-                    <a href="@Url.Action("ViewStockTransfer", "Inventory")" class="list-group-item list-group-item-action ps-5" style="background-color:#c34949; color:white;">
-                        <i class="fas fa-eye me-2"></i> View Transfer
+                        <a href="@Url.Action("AssetMaintenanceView", "Asset")" class="list-group-item list-group-item-action ps-5" style="background-color:#c34949; color:white;">
+                        <i class="fas fa-eye me-2"></i> View Maintenance
                     </a>
                 </div>
 
-
+                    <!-- Asset Transfer -->
+                    <a class="list-group-item list-group-item-action d-flex justify-content-between align-items-center"
+                       data-bs-toggle="collapse"
+                       href="#assetTransferDropdown"
+                       role="button"
+                       aria-expanded="false"
+                       aria-controls="transferDropdown"
+                       style="background-color:#a14040; color:white;">
+                        <span><i class="fas fa-truck-moving me-2"></i>Asset Transfer</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </a>
+                    <div class="collapse" id="assetTransferDropdown">
+                        <a href="@Url.Action("AssetTransfer", "Asset")" class="list-group-item list-group-item-action ps-5" style="background-color:#c34949; color:white;">
+                            <i class="fas fa-plus me-2"></i> Add Transfer
+                        </a>
+                   
+                    </div>
 
                 <!-- Logout -->
                 <a href="@Url.Action("Index", "Home")" class="list-group-item list-group-item-action" style="background-color:#a14040; color:white;">
@@ -489,9 +512,14 @@
         </div>
 
         <!-- Page Content -->
-        <div id="page-content-wrapper">
-            
-            <nav class="navbar navbar-expand-lg border-bottom" style="background:#e7e7e7; box-shadow: 0 0 10px rgba(0,0,0,0.1);">
+        @* <div id="page-content-wrapper" > *@
+        <div id="page-content-wrapper" class="flex-grow-1"
+             style="margin-left: 250px; transition: margin-left 0.3s ease;">
+
+            <!-- Header -->
+            <nav class="navbar navbar-expand-lg border-bottom"
+                 style="background:#e7e7e7; position: fixed; top: 0; left: 250px; right: 0; height: 60px; z-index: 1000; transition: left 0.3s ease;">
+            @* <nav class="navbar navbar-expand-lg border-bottom" style="background:#e7e7e7; box-shadow: 0 0 10px rgba(0,0,0,0.1);"> *@
                 <div class="container-fluid">
                     <button class="btn" style="color:white; background:#a14040;" id="menu-toggle">
                         <i class="fa-duotone fa-solid fa-bars"></i>
@@ -534,8 +562,12 @@
             </nav>
 
             <!-- Razor Body Section -->
-            <div>
+            @* <div> *@
+
+            <div style="padding-top: 60px; height: 100vh; overflow-y: auto;">
                 <main role="main" class="pb-3">
+                   
+
                     @RenderBody()
                 </main>
             </div>
@@ -553,11 +585,17 @@
 </body>
 </html>
 
-<script>
+@* <script>
     $(document).ready(function () {
         $("#menu-toggle").click(function (e) {
             e.preventDefault();
             $("#sidebar-wrapper").toggleClass("toggled");
         });
+    });
+</script> *@
+
+<script>
+    document.getElementById("menu-toggle").addEventListener("click", function () {
+      document.getElementById("wrapper").classList.toggle("toggled");
     });
 </script>

@@ -8,6 +8,7 @@
 
 <link rel="stylesheet" href="~/css/Product.css">
 
+@model List<Category>
 
 <div class="header1">
     <h4>Add Asset</h4>
@@ -32,9 +33,14 @@
             </div>
             <div class="form-row">
                 <label class="required" for="category">Category:</label>
-               <select name="category">
-                   <option selected disabled>select</option>
-               </select>
+                <select class="form-control" style="padding:10px" name="categoryId" required>
+                    <option disabled selected> select Name</option>
+                    @for (var i = 0; i < Model.Count; i++)
+                    {
+
+                        <option value="@Model[i].categoryId">@Model[i].categoryName</option>
+                    }
+                </select>
                 <label class="required" for="serial">Serial Number:</label>
                 <input type="text" name="serialNumber" />
 
@@ -53,23 +59,19 @@
 
             <div class="form-row">
                
-                <label for="department">Department:</label>
-                <select name="department">
-                    <option selected disabled>Select</option>
-                </select>
+                <label for="department">Depreciation %:</label>
+               <input type="number" name="depreciation" />
                 <label for="assign">Assign To:</label>
-                <select name="employeeName">
-                    <option selected disabled>Select</option>
-                </select>
+                <input type="text" name="assignto" />
             </div>
 
             <div class="form-row">
                 <label for="assign">Status:</label>
                 <select name="status">
                     <option selected disabled>Select</option>
-                    <option value="1">Available</option>
-                    <option value="2">Under Inspection</option>
-                    <option value="3">Damaged</option>
+                    <option >Available</option>
+                    <option>Under Inspection</option>
+                    <option>Damaged</option>
                 </select>
                 <label for="location">Description:</label>
                 <textarea name="description"></textarea>

@@ -1,0 +1,78 @@
+﻿@using ERP_Component_DAL.Models;
+
+
+@{
+    ViewBag.Title = "Asset Maintenance";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link rel="stylesheet" href="~/css/Product.css">
+
+@model Asset
+
+<div class="header1">
+    <h4>Assign Asset</h4>
+</div>
+<div id="asset" class="container">
+
+
+
+    <form method="post" asp-action="UpdateAssetMaintenance" asp-controller="Asset" onsubmit="savedDetail()">
+
+        <div class="form-section">
+            <h3>Add Asset</h3>
+            <div class="form-row">
+
+                <label class="required" for="assetName">Assign To:</label>
+                <select class="form-control" style="padding:10px" name="itemId" required>
+                    <option disabled selected> select Name</option>
+                    @foreach (var item in Model.items)
+                    {
+
+
+                        <option value="@item.itemId">@item.itemName</option>
+
+                    }
+                </select>
+                <input type="hidden" value="@Model.maintenanceId" name="maintenanceId"/>
+
+                <label class="required" for="serial">Maintenance Date:</label>
+                <input type="date" name="type" />
+
+
+            </div>
+            <div class="form-row">
+                <label class="required" for="serial">Next Maintenance Due:</label>
+                <input type="date" name="expectedReturn" value="@Model.expectedReturn" />
+                <label for="cost">Issue Description:</label>
+                <textarea name="description"></textarea>
+             </div>
+                <div class="form-row" style="width:50%">
+                    <label for="assign" >Technician:</label>
+                  <input type="text" name="vendorName" value="@Model.vendorName" />
+                <label for="assign">Cost:</label>
+                <input type="number" name="cost" value="@Model.cost" />
+                </div>
+
+        </div>
+
+
+        <div class="button-container">
+            <button type="submit">Submit</button>
+            <button type="reset">Reset</button>
+        </div>
+    </form>
+</div>
+
+<script>
+      function savedDetail(){
+                Swal.fire({
+      position: "center",
+      icon: "success",
+      title: "Your work has been saved",
+      showConfirmButton: false,
+      timer: 1500
+    });
+    }
+</script>
+

@@ -188,7 +188,7 @@ namespace ERP_Components.Controllers
         [HttpGet]
         public IActionResult EditCategory(int categoryId)
         {
-            var category = inventoryServices.GetEditSubCategory(categoryId);
+            var category = inventoryServices.GetEditCategory(categoryId);
             return View(category);
         }
 
@@ -367,11 +367,11 @@ namespace ERP_Components.Controllers
         public IActionResult AddStock()
         {
             var product = new List<Product>
-    {
+        {
         new Product
         {
 
-            items = inventoryServices.GetItemsNames() ?? new List<Items>(),
+            items = inventoryServices.GetProductNamesFromItems() ?? new List<Items>(),
             warehouse = inventoryServices.getWarehouseName() ?? new List<Warehouse>()
 
         }
@@ -379,6 +379,23 @@ namespace ERP_Components.Controllers
             return View(product);
           
         }
+
+        public IActionResult ViewInventoryData()
+        {
+          List<Items> item =  inventoryServices.ViewInventoryData();
+            return View(item);
+        }
+
+
+
+        [HttpGet]
+        public JsonResult GetMaterialNamesFromItems()
+        {
+            List<Items> data = inventoryServices.GetMaterialNamesFromItems();
+            return Json(data);
+        }
+
+
 
 
         public IActionResult SetStock(Stock stock)
@@ -388,10 +405,18 @@ namespace ERP_Components.Controllers
         }
         public IActionResult ViewStock()
         {
-            List<Stock> stockList  = inventoryServices.ViewStock();
+            List<Stock> stockList  = inventoryServices.ViewProductStock();
             
             return View(stockList);
         }
+
+        public JsonResult ViewMaterialStock()
+        {
+            List<Stock> data = inventoryServices.ViewMaterialStock();
+            return Json(data);
+        }
+
+
         public IActionResult EditStock(Guid stockId)
         {
             // Get dropdown lists
@@ -433,7 +458,7 @@ namespace ERP_Components.Controllers
         new Product
         {
 
-            items = inventoryServices.GetItemsNames() ?? new List<Items>(),
+            items = inventoryServices.GetProductNamesFromItems() ?? new List<Items>(),
             warehouse = inventoryServices.getWarehouseName() ?? new List<Warehouse>()
 
         }
@@ -507,9 +532,9 @@ namespace ERP_Components.Controllers
             return View(product);
         }
 
-        public IActionResult SetAdjustment(Adjustment adjust)
+        public IActionResult SetAdjustment(Order order)
         {
-            inventoryServices.AddStockAdjustment(adjust);
+            inventoryServices.AddStockAdjustment(order);
             return RedirectToAction("AddStockAdjustment");
         }
 
@@ -518,6 +543,9 @@ namespace ERP_Components.Controllers
             var CurrentStock = inventoryServices.GetCurrentStock(itemId);
             return Json(CurrentStock);
         }
+
+
+      
 
 
         public IActionResult StockAdjustment()

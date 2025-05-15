@@ -48,9 +48,10 @@ namespace ERP_Component_DAL.Models
 
        
         public string? type { get; set; }
+        public int inventoryType { get; set; }
 
 
-        public string? warehouse { get; set; }
+        //public string? warehouse { get; set; }
 
         public Guid inventoryId { get; set; }
       

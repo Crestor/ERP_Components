@@ -24,7 +24,7 @@
 
 
 
-<div class="container" id="product" style="display:block">
+<div class="table-container" id="product" style="display:block">
 
     <div style="display:flex;justify-content:center;text-align:center">
         <h4>View Product SubCategories</h4>
@@ -91,7 +91,7 @@
 
 </div>
 
-<div class="container" id="material" style="display: none;">
+<div class="table-container" id="material" style="display: none;">
 
     <div style="display:flex;justify-content:center;text-align:center">
         <h4>View Material SubCategories</h4>
@@ -161,7 +161,7 @@
 <script>
 
      function showSection(sectionId) {
-        document.querySelectorAll('.container').forEach(el => el.style.display = 'none');
+        document.querySelectorAll('.table-container').forEach(el => el.style.display = 'none');
         document.getElementById(sectionId).style.display = 'block';
 
     }

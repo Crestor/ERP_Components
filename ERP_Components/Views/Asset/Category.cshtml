@@ -1,0 +1,68 @@
+﻿@using ERP_Component_DAL.Models;
+<link rel="stylesheet" href="~/css/Product.css" />
+
+@model List<Category>
+
+<div class="header1">
+    <h4>Add Category</h4>
+</div>
+
+
+
+
+
+
+
+<div class="container">
+
+
+    <div style="display:flex; justify-content:center; align-items:center;margin:auto">
+        <h3>Add Product Category</h3>
+    </div>
+    <form method="post" asp-action="AddCategory" asp-controller="Asset" onsubmit="return savedDetail()">
+        <div class="form-section">
+            <h3>Category Info</h3>
+            <div class="form-row">
+
+
+                <label class="required">Category Name</label>
+                <input type="text" name="categoryName" placeholder="Enter Category Name" />
+                <input type="hidden" name="formType" value="asset" />
+
+
+                <label class="required">Category Code</label>
+                <input type="text" name="categoryCode" placeholder="Enter Category code" />
+
+            </div>
+            <div class="form-row">
+
+
+
+                <label class="required">Category Description</label>
+                <textarea name="categoryDescription" style="width: 33%;" placeholder="Enter product Description"></textarea>
+                <label class="required">Is Active</label>
+                <select name="isActive" required>
+                    <option selected disabled>select</option>
+                    <option value="0">yes</option>
+                    <option value="1">NO</option>
+                </select>
+
+            </div>
+
+        </div>
+        <div class="button-container">
+            <button type="submit">Submit</button>
+        </div>
+    </form>
+</div>
+<script>
+      function savedDetail(){
+                Swal.fire({
+      position: "center",
+      icon: "success",
+      title: "Your work has been saved",
+      showConfirmButton: false,
+      timer: 1500
+    });
+    }
+</script>

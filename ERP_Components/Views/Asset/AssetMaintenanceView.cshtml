@@ -1,0 +1,73 @@
+﻿@using ERP_Component_DAL.Models;
+
+
+@{
+    ViewBag.Title = "View Asset";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@model List<Asset>
+<link href="~/css/Product.css" rel="stylesheet" />
+
+<div class="header1">
+    <h4>View Asset</h4>
+</div>
+
+
+<div class="table-container">
+
+
+
+
+    <table class="product-table">
+        <thead>
+            <tr>
+                <th>Sno.</th>
+                <th>Item Name</th>
+                <th>Technician</th>
+                <th>Cost</th>
+                <th>Issue</th>
+                <th>Maintenance Date</th> 
+                <th>Next Maintenance Date</th>
+               
+                <th>Action</th>
+
+            </tr>
+        </thead>
+         <tbody id="geeks">
+
+
+            @for (var i = 0; i < Model.Count; i++)
+            {
+
+                var x = Model[i];
+                var index = i + 1;
+
+                    <tr id="row-@x.">
+                        <td>@index</td>
+                        <td>@x.itemName</td>
+
+                        <td>@x.vendorName</td> 
+                        <td>@x.cost</td>
+                        <td>@x.description</td>
+                        <td>@x.assignDate.ToShortDateString()</td>
+                        <td>@x.warrantyEndDate.ToShortDateString()</td>
+                       
+                        <td>
+                            <div class="actions">
+
+                            <button onclick="location.href='@Url.Action("EditAssetMaintenance", "Asset", new { maintenanceId = @x.maintenanceId }, null)'"><i class="fas fa-edit"></i></button>
+                                <button onclick="location.href='@Url.Action("DeleteAsset", "Asset", new { itemId = @x.itemId }, null)'"><i class="fas fa-trash"></i></button>
+
+
+                            </div>
+                        </td>
+
+                    </tr>
+            }
+        </tbody>
+
+    </table>
+</div>
+
+
