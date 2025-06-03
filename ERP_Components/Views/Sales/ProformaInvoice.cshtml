@@ -1,0 +1,170 @@
+﻿@using ERP_Component_DAL.Models
+
+@{
+    ViewBag.Title = "Create ProformaInvoice";
+    Layout = "~/Views/Shared/_LayoutINV.cshtml";
+}
+
+<link rel="stylesheet" href="~/css/ProductTwo.css" />
+
+@* <div class="toggle-buttons" style="margin-left: 28px;">
+    <button type="button" class="button" onclick="showSection('basic')">Basic Details</button>
+    <button type="button" class="button" onclick="showSection('additional')" style="margin-left:10px;">Additional Details</button>
+</div>
+ *@
+<form method="post" asp-action="SetProformaInvoice" asp-controller="Sales">
+    <div class="form-section">
+
+    <h3>Basic Details</h3>
+        <div class="form-row">
+
+   
+            
+                <label for="orderSeries">OrderSeries ID</label>
+                <input type="text" id="OrderSeriesID" name="OrderSeriesID" >
+            
+                <label for="paymentTerm">Payment Term</label>
+                <input type="text" id="PaymentTerm" name="PaymentTerm" >
+        </div>
+            <div class="form-row">
+
+                <label for="customerName">Customer Name</label>
+                <input type="text" id="CustomerName" name="CustomerName">
+            
+                <label for="deliveryTerm">Delivery Term</label>
+                <input type="text" id="DeliveryTerms" name="DeliveryTerms">
+            </div>
+    </div>
+
+        <div class="form-section">
+
+    <h3 >
+        Additional Details
+    </h3>
+                <div class="form-row">
+
+                <label for="proformaRef">PO Ref Number</label>
+                <input type="text" id="POReferenceNumber" name="POReferenceNumber" >
+           
+                <label for="vendorCode">Vendor Code</label>
+                <input type="text" id="VenderCode" name="VenderCode" >
+                </div>
+                <div class="form-row">
+
+                <label for="poDate">PerformaDate</label>
+                <input type="date" id="PODate" name="PODate">
+          
+                    <label for="Jobcode">Job Code</label>
+                <input type="text" id="" name="JobCode">
+        
+        </div>
+    </div>
+    <div>
+        <button class="button" type="submit" style=" float: right;margin-top: 18px;margin-right: 52px; background-color:#138496;color: white;">
+            submit
+        </button>
+    </div>
+</form>
+<script>
+
+        document.addEventListener("DOMContentLoaded", function () {
+            const orderInput = document.getElementById("OrderSeriesID");
+            const year = new Date().getFullYear();
+            let nextNumber = 1;
+
+            // Get the last order series from localStorage
+            let lastOrder = localStorage.getItem("lastQuotationSeries");
+
+            if (lastOrder) {
+                let parts = lastOrder.split("-");
+                let lastYear = parseInt(parts[1]);
+                let lastNum = parseInt(parts[2]);
+
+                if (lastYear === year) {
+                    nextNumber = lastNum + 1;
+                }
+            }
+
+            const newSeries = `PRI-${year}-${String(nextNumber).padStart(4, "0")}`;
+
+            // Set the input values
+            orderInput.value = newSeries;
+
+            // Store the new series in localStorage
+            localStorage.setItem("lastQuotationSeries", newSeries);
+        });
+</script>
+@* 
+
+<script>
+    function showSection(section) {
+      const basic = document.getElementById('basicSection');
+      const additional = document.getElementById('additionalSection');
+
+      if (section === 'basic') {
+        basic.style.display = 'block';
+        additional.style.display = 'none';
+      } else {
+        basic.style.display = 'none';
+        additional.style.display = 'block';
+      }
+    }
+
+    // Show Basic Details section by default on page load
+    window.onload = function() {
+      showSection('basic');
+    };
+</script> *@
+
+
+
+@* <h2>Basic Details</h2>
+<div id="basicDetailsForm">
+
+
+  <div class="basicdetail1" style="padding-left: 73px;">
+
+    <div class="BasicDetails">
+        <label>Order Series:</label>
+            <input type="text" id="orderSeries" name="orderSeries" ><br>
+            <label>Customer Name:</label>
+            <input type="text" id="customerName" name="customerName" style="width: 228px !important;"><br>
+
+            <div class="Dates">
+                <label>Invoice Date</label>
+                <input type="date" id="InvoiceDate" name="InvoiceDate" />
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                <div class="termss">
+                    <div>
+                        <label>Delivery Terms:</label>
+                        <select id="deliveryTerms" name="DeliveryTerms" style="width: 11%;">
+                            <option value="">select</option>
+                            <option value="7 day">7 days</option>
+                            <option value="10 Day"> 10 Day</option>
+                            <option value="14 Day"> 14 Day</option>
+                            <option value="19 Day"> 19 Day</option>
+                            <option value="21 Day"> 21 Day</option>
+                            <option value="30 Day"> 30 Day</option>
+                        </select>
+                    </div>
+                    @* <input type="text" id="deliveryTerms" name="DeliveryTerms"><br> 
+                    <div>
+                        <label>Payment Terms:</label>
+                        <select id="paymentTerms" name="PaymentTerm" style="width: 11%;">
+
+                            <option value="">select</option>
+                            <option value="Addvance">Advance</option>
+                            <option value="cash after service"> cash after service</option>
+                        </select>
+                    </div>
+    </div>
+             
+            </div>
+
+    </div>
+   </div>
+   <h2></h2>
+
+</div>
+ *@

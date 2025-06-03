@@ -1,0 +1,157 @@
+﻿@using ERP_Component_DAL.Models
+@using ERP_Components
+@model List<QuotationModel>
+
+<link rel="stylesheet" href="~/css/ProductTwo.css" />
+
+
+    @* <style>
+        select{
+    width: 67% !important;
+        padding: 7px 10px 9px !important;
+        color: #138496;
+        }
+    </style> *@
+
+<div class="table"> 
+
+    @* <div class="header">
+        <h2>Manage Quotation</h2>
+        <button class="button" style="margin-right: 49px;" onclick="location.href='@Url.Action("AddQuotation", "Sales")'">+ New Quotation</button>
+    </div> *@
+
+    <table>
+        <thead>
+            <tr>
+                <th>Quotation Series</th>
+                <th>Date</th>
+                <th>Amount</th>
+                <th>status</th>
+                <th>CustomerName</th>
+                <th>Contact No</th>
+                <th>Action</th>
+                @* <th>QuotationValidity</th> *@
+                @* <th>Action</th> *@ 
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (var i = 0; i < Model.Count; i++)
+            {
+
+                var x = Model[i];
+                @* var index = i + 1; *@
+
+                <tr>
+                    <td>@x.QuotationSeries</td>
+                    <td>@x.QuotationDate</td>
+                    <td>@x.finalAmount</td>
+                    <td>@x.Status</td>
+                    <td>@x.CustomerName</td>
+                    <td>@x.ContactNumber</td>
+                    <td>
+
+                        <select onchange="handleActionChange(this, '@x.QuotationID')">
+                            <option selected disabled>Select</option>
+                            <option value="view">View</option>
+                            <option value="edit">Edit</option>
+                            <option value="delete">Delete</option>
+                        </select>
+                   
+                    
+
+                     @*   <button class="button2" onclick="location.href='@Url.Action("ViewQuotation", "Sales", new {QuotationID = x.QuotationID }, null)'">View</button>
+                        <button class="button1" onclick="location.href='@Url.Action("EditQuotation", "Sales", new {QuotationID = x.QuotationID }, null)'">Edit</button>
+                        <button class="button3" id="deletebutton" onclick="openRejectModal('@x.QuotationID')">Delete</button>
+                        <button class="button" onclick="ConverToInvoice('@x.QuotationID')">Convert To Invoice</button> 
+ *@                    </td>
+ <td>
+                        <button class="button" onclick="ConverToInvoice('@x.QuotationID')">Convert To Invoice</button>
+
+ </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+
+<script>
+
+    function openRejectModal(QuotationID) {
+
+          console.log(QuotationID);
+          const id = QuotationID;
+          Swal.fire({
+            title: "Are you sure?",
+            text: "You won't be able to revert this!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#138496",
+            
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, delete it!"
+          }).then((result) => {
+            if (result.isConfirmed) {
+              if (id) {
+
+                let url = `/Sales/DeleteQuota?QuotationID=${id}`;
+
+                console.log('Redirecting to', url);
+                window.location.href = url;
+              }
+            }
+          });
+
+        }
+         function ConverToInvoice(QuotationID) {
+
+          console.log(QuotationID);
+          const id = QuotationID;
+          Swal.fire({
+            title: "Are you sure?",
+            text: "You won't be able to revert this!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#138496",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, Convert it!"
+          }).then((result) => {
+            if (result.isConfirmed) {
+              if (id) {
+
+                let url = `/Sales/AddInvoice?QuotationID=${id}`;
+
+                console.log('Redirecting to', url);
+                window.location.href = url;
+              }
+            }
+          });
+
+        }
+
+
+</script>
+<script>
+    function handleActionChange(selectElement, quotationId) {
+        const action = selectElement.value;
+
+        switch (action) {
+            case "view":
+                window.location.href = `/Sales/ViewQuotation?QuotationID=${quotationId}`;
+                break;
+            case "edit":
+                window.location.href = `/Sales/EditQuotation?QuotationID=${quotationId}`;
+                break;
+            case "delete":
+                openRejectModal(quotationId);
+                break;
+            // case "convert":
+            //     ConverToInvoice(quotationId);
+            //     break;
+        }
+
+        // Reset dropdown to default
+        selectElement.selectedIndex = 0;
+    }
+</script>

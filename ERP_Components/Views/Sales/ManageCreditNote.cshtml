@@ -1,0 +1,84 @@
+﻿@using ERP_Component_DAL.Models
+
+@{
+    ViewBag.Title = "Manage CreditNote";
+    Layout = "~/Views/Shared/_LayoutINV.cshtml";
+}
+
+<link rel="stylesheet" href="~/css/ProductTwo.css" />
+
+@model List<CreditNote>
+
+
+
+    <div class="header">
+        @* <button class="button" style="margin-right: 49px;" onclick="location.href='@Url.Action("CreditNote", "Sales")'">+ New CreditNote</button> *@
+    </div>
+    <div class="table">
+    <table>
+        <thead>
+            <tr>
+                <th>S.No</th>
+                <th>Invoice Number</th>
+                <th>Customer Name</th>
+                <th>Credit Note Date</th>
+                <th>Number Of Cartons</th>
+                <th>Credit Note For</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+              @for (var i = 0; i < Model.Count; i++)
+            {
+
+                var x = Model[i];
+                var index = i + 1;
+
+                <tr>
+                    <td>@index</td>
+                    <td>@x.InvoiceNumber</td>
+                    <td>@x.CustomerName</td>
+                    <td>@x.CreatedOn</td>
+                    <td>@x.NumberOfCartons</td>
+                    <td>@x.CreditNoteFor</td>
+                
+               
+
+                    <td>
+                        <button class="button" style="background-color:#138496;color: white;" onclick="location.href='@Url.Action("EditCreditNote","Sales", new{CreditNoteId=x.CreditNoteId}, null)'">Edit</button>
+                        <button class="button" style="background-color:#138496;color: white;" onclick="Cancel('@x.CreditNoteId')">Cancel</button>
+                        @* <button class="button">EWayBill</button> *@
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+<script>
+
+    function Cancel(CreditNoteId) {
+
+          console.log(CreditNoteId);
+          const id = CreditNoteId;
+          Swal.fire({
+            title: "Are you sure?",
+            text: "You won't be able to revert this!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#138496",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, Delete it!"
+          }).then((result) => {
+            if (result.isConfirmed) {
+              if (id) {
+
+                let url = `/Sales/DeleteCreditNote?CreditNoteId=${id}`;
+
+                console.log('Redirecting to', url);
+                window.location.href = url;
+              }
+            }
+          });
+
+        }
+</script>

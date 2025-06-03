@@ -1,8 +1,6 @@
 ﻿.header1 {
     width: 100%;
-    /*    background: #a14040;*/
-    background: #c34949;
-    color: white;
+      color: #138496;
     padding: 10px;
     display: flex;
     margin: 10px 10px 30px 10px;
@@ -12,11 +10,12 @@
 
 label.required::after {
     content: "*";
-    color: red;
-        
+    color: #138496;
 }
 
-
+h4{
+    font-size:25px !important;
+}
 
 .tab-buttons {
     display: flex;
@@ -30,7 +29,7 @@ label.required::after {
     .tab-buttons button {
         padding: 8px 16px;
         border: none;
-        background-color: #c34949;
+        background-color: #138496;
         color: white;
         border-radius: 5px;
         cursor: pointer;
@@ -51,20 +50,18 @@ label.required::after {
 
 .container {
     background-color: #ffffff;
-    width: 80%;
-    background-color: #f0f0f0;
-    padding: 30px 20px;
+    width: 98%;
+    background-color: #ffffff;
     border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0.1, 0.1, 0.1, 0.1);
-    padding-bottom: 50px;
-    margin-bottom: 30px;
+/*    margin: 0px 0px 30px 0px !important;*/
+    padding: 0px;
 }
 
 .table-container {
     background-color: #ffffff;
-    width: 95%;
-    background-color: #f0f0f0;
-    padding: 30px 20px;
+    width: 98%;
+    background-color: #ffffff;
+  
     border-radius: 10px;
     box-shadow: 0 4px 10px rgba(0.1, 0.1, 0.1, 0.1);
     padding-bottom: 50px;
@@ -75,35 +72,55 @@ label.required::after {
 
 select:focus {
     outline: none;
-    border: 2px solid #023e8ac7;
+    border: 2px solid #138496;
     box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.5);
 }
 
 .form-section {
-    margin: 30px 70px 50px 70px;
+   width:94%;
+   margin-inline:35px;
     border-radius: 10px;
-    padding: 0px 20px 30px 20px;
-    border: 1px solid #a9a9a9;
+    margin-bottom:35px;
+    margin-top:25px;
+    padding: 20px 20px 30px 20px;
+    border: 1.5px solid #138496;
     position: relative;
+    box-shadow:2px 2px 3px #138496;
 }
 
     .form-section h3 {
         margin-top: 0;
         margin-bottom: 10px;
-        font-size: 1.2em;
-        color: #333;
+        font-size: 16px;
+        color: #138496;
         position: absolute;
         top: -0.7em;
         left: 10px;
-        background-color: #f0f0f0;
+        background-color: #FFFFFF;
         /*        background-color: #f9f9f9; */
         padding: 0 5px;
     }
-
+.table h3 {
+    margin-top: 0;
+    margin-bottom: 10px;
+    font-size: 16px;
+    color: #138496;
+    position: absolute;
+    top: -0.5em;
+    background-color: #f9f9f9;
+    padding: 0 5px;
+}
+h2 {
+    margin-top: 10px;
+    margin-bottom: 20px;
+    font-size: 21px;
+    color: #138496;
+    padding: 0 5px;
+}
 input:focus {
     outline: none;
     /*    border: 2px solid #023e8ac7;*/
-    border: 2px solid #c34949;
+    border: 2px solid #138496;
     box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.5);
 }
 
@@ -111,30 +128,33 @@ input:focus {
     display: flex;
     flex-direction: row;
     align-items: center;
-    margin: 30px 0px 10px 0px;
+    margin: 15px 0px 0px 0px;
 }
 
     .form-row label {
-        font-size: 15px;
+        font-size: 16px;
         font-weight: bolder;
         width: 150px;
-        text-align: right;
+        text-align: center;
         color: #555555;
         padding-right: 10px;
     }
 
     .form-row input {
+        font-size: 16px;
         flex: 1;
-        padding: 5px;
+        padding: 4px;
         border: 1px solid #ccc;
         border-radius: 4px;
         box-sizing: border-box; /* Ensures padding doesn't affect width */
         margin-right: 10px;
+        color: grey;
     }
-
     .form-row textarea {
+        font-size: 16px;
         flex: 1;
-        padding: 5px;
+        color: grey;
+        padding: 4px;
         border: 1px solid #ccc;
         border-radius: 4px;
         box-sizing: border-box; /* Ensures padding doesn't affect width */
@@ -142,14 +162,22 @@ input:focus {
     }
 
     .form-row select {
+        font-size: 16px;
         flex: 1;
-        padding: 5px;
+/*        height: 30px;*/
+        padding: 4px;
         border: 1px solid #ccc;
         border-radius: 4px;
         box-sizing: border-box; /* Ensures padding doesn't affect width */
         margin-right: 10px;
+        color: grey;
     }
-
+.form-section p {
+    margin: 0px;
+    color: #555555;
+    font-size: 16px;
+    justify-self: center;
+}
 /*    .form-row select {
         width: 200px;
     }*/
@@ -168,38 +196,86 @@ input:focus {
     }
 
 .button-container {
-    text-align: center;
+    text-align: end;
     margin-top: 20px;
 }
 
-    .button-container button {
-        padding: 10px 20px;
-        background-color: #c34949;
-        color: white;
-        border: none;
-        border-radius: 4px;
-        cursor: pointer;
-        margin: 0 10px;
-        width: 150px
+    .button {
+       width:100%;
+       display:flex;
+       justify-content:end;
+
+    }
+.buttonforeditanddelete {
+    width: 100%;
+    display: flex;
+    justify-content: end;
+    margin-right:50px;
+}
+.buttonforeditanddelete button{
+    margin:2px;
+}
+.button button {
+    display:flex;
+    width: auto;
+    background-color: #138496;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin: 0px 5px 0px 0px;
+    height: 30px;
+    padding:2px 10px 2px 10px !important;
+    justify-self:center;
+}
+button {
+    background-color: #138496;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin: 0px 5px 0px 0px;
+    width: 100px;
+    height: 30px;
+}
+    button[type=submit]{
+        margin:25px 35px 0px 0px;
     }
 
+    button[type=reset] {
+        margin: 25px 10px 0px 0px !important;
+        background-color: #e0a800;
+    }
+    button[type=button] {
+        background-color:#138496;
+        margin:0px 10px 0px 0px !important;
+    }
 
 table {
     width: 100%;
-    border-collapse: collapse;
+/*    display:block;*/
+    /*    margin-inline:35px;*/
+    /*    border-collapse: collapse;*/
     background: white;
     border-radius: 10px;
-    overflow: hidden;
+    /*    border: 1.5px solid #138496;*/
+    overflow-x: auto;
+    box-shadow: 2px 2px 3px #138496;
 }
-
+.vendor-table{
+    display:block;
+}
 th, td {
-    padding: 12px;
+    padding: 8px;
+    font-size: 16px;
     text-align: center;
     border-bottom: 1px solid #ddd;
 }
-
+td{
+    color:#555555;
+}
 th {
-    background-color: #ab4d4d;
+    background-color: #138496;
     color: white;
 }
 
@@ -209,14 +285,20 @@ th {
 }
     .actions button {
         border-radius:5px;
-        background: #c34949;
+        background: #138496;
         color:white;
         border:none;
         margin-right: 5px;
         padding: 4px 6px;
-        font-size: 12px;
+        font-size: 16px;
     }
-
+.table {
+    width: 94%;
+    margin-inline: 35px;
+    border: 1.5px solid #138496;
+    border-radius: 10px;
+    position: relative;
+}
 .tab-button {
     padding: 10px 20px;
     background-color: #023e8a;
@@ -226,4 +308,15 @@ th {
     cursor: pointer;
     font-weight: 500;
     transition: background-color 0.3s ease, transform 0.2s ease;
+}
+body{
+    font-weight:400 !important;
+}
+label {
+    font-size:16px;
+    font-weight: 400 !important;
+}
+
+p input{
+    border:none;
 }

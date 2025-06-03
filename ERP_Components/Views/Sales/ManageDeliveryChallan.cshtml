@@ -1,0 +1,88 @@
+﻿@using ERP_Component_DAL.Models
+
+@{
+    ViewBag.Title = "Delivery Challan";
+    Layout = "~/Views/Shared/_LayoutINV.cshtml";
+}
+
+<link rel="stylesheet" href="~/css/ProductTwo.css" />
+
+@model List<DeliveryChallan>
+
+<div class="table">
+
+   @*  <div class="header">
+        <button class="button" style="margin-right: 49px;background-color:#138496;color: white;" onclick="location.href='@Url.Action("DeliveryChallan", "Sales")'">+ New Delivery Challan</button>
+    </div> *@
+
+    <table>
+        <thead>
+            <tr>
+                @* <th>Delivery challan ID</th> *@
+                <th>S.No</th>
+                <th>Date</th>
+          
+                <th>Amount</th>
+                <th>Status</th>
+                <th>Customer Name</th>
+                <th>Contact Number</th>
+                <th>E-Invoice Number</th>
+                <th>E-Way Bill</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (var i = 0; i < Model.Count; i++)
+            {
+
+                var x = Model[i];
+                var index = i + 1;
+
+                <tr>
+                     <td>@index</td> 
+                    <td>@x.ChallanDate</td>
+                    <td>-</td>
+                    <td>@x.Status</td>
+                    <td>@x.CustomerName</td>
+                    <td>-</td>
+                    <td>-</td>
+                    <td>-</td>
+
+                    <td>
+                        @* <button class="button" onclick="location.href='@Url.Action("ViewInvoice","Home", new{=x.}, null)'">View</button> *@
+                        <button class="button" onclick="location.href='@Url.Action("EditDeliveryChallan","Sales", new{DeliveryChallanID=x.DeliveryChallanID}, null)'" style="background-color:#138496;color: white;">Edit</button>
+                        <button class="button" onclick="Cancel('@x.DeliveryChallanID')" style="background-color:#138496;color: white;">Delete</button>
+                         @* <button class="button">EWayBill</button>  *@
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+<script>
+    function Cancel(DeliveryChallanID) {
+
+          console.log(DeliveryChallanID);
+          const id = DeliveryChallanID;
+          Swal.fire({
+            title: "Are you sure?",
+            text: "You won't be able to revert this!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#138496",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, Delete it!"
+          }).then((result) => {
+            if (result.isConfirmed) {
+              if (id) {
+
+                    let url = `/Sales/DeleteDeliveryChallan?DeliveryChallanID=${id}`;
+
+                console.log('Redirecting to', url);
+                window.location.href = url;
+              }
+            }
+          });
+
+        }
+</script>

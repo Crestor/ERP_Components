@@ -3,73 +3,69 @@
 
 @{
     ViewBag.Title = " Stock Transfer";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    Layout = "~/Views/Shared/_LayoutINV.cshtml";
 }
 
 @model List<Product>
 <link rel="stylesheet" href="~/css/Product.css">
-<div class="header1">
-    <h4>Add Stock Transfer</h4>
-</div>
+ 
+    @* <h4>Add Stock Transfer</h4> *@
 
 
+@* 
 <div id="product" class="container">
     <form method="post" asp-action="AddStockTransfer" asp-controller="Inventory" onsubmit="return savedDetail()">
 
         <div class="form-section">
-            <h3>Add Stock</h3>
+            <h3>Add Stock Transfer</h3>
             <div class="form-row">
 
-                <label class="required" for="itemName">Product Name:</label>
-                <select name="itemId">
-                    <option selected disabled>Select Item</option>
-                    @foreach (var scheme in Model)
-                    {
-                        @foreach (var item in scheme.items)
-                        {
-                            <option value="@item.itemId">@item.itemName</option>
-                        }
-                    }
-                </select>
-                
-                @* <input type="hidden" name="itemType" value="product" required /> *@
-
-                <label class="required" for="sku">Order Date:</label>
-                <input type="date" name="orderDate" required />
+                <label class="required" for="sku">Reason for Item Entry:</label>
+                <input type="text" name="stockDate" value="By Purchase" readonly />
+                <label for="date">Date:</label>
+                <input type="date" name="date" value="@DateTime.Now.ToString("yyyy-MM-dd")" />
             </div>
             <div class="form-row">
-                <label class="required" for="supplier">Customer Name:</label>
-                <input type="text" name="customerName" />
+                <label class="required" for="supplier">Product Code:</label>
+                <input type="text" id="currentStock" name="inStock" />
+                <label class="required" for="itemName">Product Name:</label>
+                <select name="itemId">
+
+                    <option selected disabled>Select Item</option>
+                    @for (var i = 0; i < Model.Count; i++)
+                    {
+
+                    }
+                </select>
+
+             </div>
+            <div class="form-row">
                 <label class="required" for="batch">Batch Number:</label>
                 <input type="text" name="batchSeries">
+                <label for="cost">Available Stock:</label>
+                <input type="text" name="available" />
                 <input type="hidden" name="type" value="stockOut">
             </div>
             <div class="form-row">
               
 
-                <label for="descr">Quantity Ordered:</label>
+                <label for="descr">Quantity Allocated:</label>
                 <input type="number" name="quantity">
-                <label for="cost">Available Stock:</label>
+                <label for="cost">Remaining Stock:</label>
                 <input type="text" name="available" />
             </div>
             <div class="form-row">
-                <label for="price">Selling Price:</label>
-                <input type="text" name="sellingPrice" />
-                <label for="image">Total Amount:</label>
+                <label for="image">Current Owner:</label>
                 <input type="text" name="totalPrice">
+                <label for="image">Assign To:</label>
+                <input type="text" name="totalPrice">
+
+            
             </div>
-            <div class="form-row" style="width:50%">
-                <label for="warehouse">Warehouse:</label>
-            <select name="warehouseId">
-                <option selected disabled>Select</option>
-                @foreach (var scheme in Model)
-                {
-                    @foreach (var warehouse in scheme.warehouse)
-                    {
-                        <option value="@warehouse.warehouseId">@warehouse.warehouseName</option>
-                    }
-                }
-            </select>
+
+            <div class="button">
+                <button type="reset">Reset</button>
+                <button type="submit">Submit</button>
             </div>
         </div>
 
@@ -77,14 +73,34 @@
 
 
 
-
-        <div class="button-container">
-            <button type="submit">Submit</button>
-            <button type="reset">Reset</button>
-        </div>
     </form>
 </div>
+ *@<div class="table">
+    <table>
+        <thead>
+            <tr>
+                <th>S.No.</th>
+                <th>Date</th>
+                <th> Req. Series</th>
+                <th>Description</th>
+                <th>Action</th>
+            </tr>
+        </thead>
 
+
+
+        <tbody id="geeks">
+            <tr>
+                <td>1</td>
+                <td>2-2-2025</td>
+                <td>ABC_2025/1</td>
+                <td>Description</td>
+                <td><button type="button">View MR</button></td>
+            </tr>
+        </tbody>
+
+    </table>
+</div>
 <script>
       function savedDetail(){
                 Swal.fire({

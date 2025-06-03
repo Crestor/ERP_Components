@@ -1,7 +1,12 @@
 
 body {
-    overflow-x: hidden;
-    background-color: #f8f1f1; 
+    /*overflow-x: hidden;*/
+    /*    background-color: #f8f1f1; */
+    width: 78%;
+    padding: 20px;
+    font-family: 'Cambria Math' !important;
+    font-size: 1rem !important;
+    font-weight:500 !important;
 }
 
 /* Sidebar wrapper */
@@ -67,7 +72,7 @@ body {
 /* Dropdown inside sidebar */
 #sidebar-wrapper .collapse a {
     transition: background 0.2s ease;
-    background-color: #ad4b4b;
+    background-color: #138496;
     color: white;
 }
 

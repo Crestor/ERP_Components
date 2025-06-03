@@ -35,33 +35,30 @@
 
 
 <div class="text-center">
-<main class="form-signin" style="border-radius: 10px; background: #FFFFFF; height: 500px; box-shadow: 0px 0px 3px 0px; margin-top: 7%">
+<main class="form-signin" style="border-radius: 10px; background: #FFFFFF; height: 450px; box-shadow: 2px 2px 3px #138496;">
     <form id="loginForm" style="display:grid; justify-content:center;" onsubmit="return Validate();">
-        <div style="width:20px;margin:auto; display:flex;justify-content:center;align-items:center">
-                <img style="width:250px;margin-top:40px" src="/images/cg_logo.png" />
-        </div>
-
-        <div style=" display:flex;justify-content:center;text-align:center">
-
-       <h2>ERP Management System</h2>
+        <div style="width:150px;margin:auto; display:flex;justify-content:center;align-items:center">
+                <img style="width: 150px;margin:35px 0px 20px 0px;height: 120px;display: flex;justify-content: center;align-items: center;" src="/images/logo.png" />
         </div>
 
 
-        <div id="error-message" style="color: red; margin-top: 10px; display: none;"></div>
+
+
+        <div id="error-message" style="color: red; display: none;"></div>
 
         <div class="form-floating" style="margin-top:30px">
                 <label style="font-size:14px; font-weight:500" for="username">User Name</label>
-                <input type="text" class="form-control" id="username" name="userName" placeholder="UserName" required style="padding: 10px 5px;margin-top:7px;border:1px solid #ad4b4b;border-radius:5px">
+                <input type="text" class="form-control" id="username" name="userName" placeholder="Username" required style="padding: 10px 5px;margin-top:7px;border:1px solid #138496;border-radius:5px">
         </div>
 
         <div class="form-floating" style="margin-top:5%">
                 <label style="font-size:14px;font-weight:500" for="password">Password</label>
-                <input type="password" class="form-control" id="password" name="password" placeholder="Password" required style="margin-top:7px;padding: 10px 5px;border:1px solid #ad4b4b;border-radius:5px">
+                <input type="password" class="form-control" id="password" name="password" placeholder="Password" required style="margin-top:7px;padding: 10px 5px;border:1px solid #138496;border-radius:5px">
            <i class="fa-solid fa-eye-slash eye-icon" onclick="togglePassword('password', this)"></i> 
         </div>
 
-        <div style="margin-top:30px">
-                <button type="submit" class="btn btn-primary" style=" width:100%; padding:15px;background-color:#ad4b4b; color:white; z-index: 99999; border-radius:0.25rem; border:none; outline: none; box-shadow: none;">Log In</button>
+        <div style="display:flex;justify-content:center; margin-top:25px;">
+                <button type="submit" >Log In</button>
         </div>
 
     </form>

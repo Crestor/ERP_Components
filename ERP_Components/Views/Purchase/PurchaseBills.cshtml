@@ -1,0 +1,66 @@
+﻿@using ERP_Component_DAL.Models;
+
+@{
+	ViewBag.Title = "Purchase Order";
+	Layout = "~/Views/Shared/_LayoutINV.cshtml";
+}
+<link rel="stylesheet" href="/css/Product.css" />
+
+
+
+
+@model List<Vendor>
+
+<div class="table">
+
+	<table>
+		<thead>
+			<tr>
+				<th>S.No.</th>
+				<th>Vendor Name</th>
+				<th>Vendor Code</th>
+				<th>Bill Number</th>
+				<th>Created At</th>
+				<th>Paid Amount</th>
+				<th>Actions</th>
+			</tr>
+		</thead>
+
+
+
+		<tbody id="geeks">
+
+
+			@for (var i = 0; i < Model.Count; i++)
+			{
+
+				var x = Model[i];
+				var index = i + 1;
+
+				<tr id="row-@x.vendorId; @x.purchaseOrderId">
+
+					<td>@index</td>
+					<td>@x.vendorName</td>
+					<td>@x.vendorCode</td>
+					<td>@x.invoiceNumber</td>
+					<td>@x.createdAt.ToShortDateString()</td>
+					<td>@x.amount</td>
+					<td>
+						<div class="actions">
+
+							<button onclick="location.href='@Url.Action("GeneratePurchaseInvoice", "Purchase", new { vendorId = @x.vendorId, purchaseOrderID = @x.purchaseOrderId }, null)'">View Purchase Bills</button>
+							@* <button type="button" class="convert-btn" data-purchase-id="@x.purchaseOrderId">Convert To Bill</button> *@
+
+						</div>
+					</td>
+
+				</tr>
+			}
+		</tbody>
+
+	</table>
+
+
+
+
+</div>

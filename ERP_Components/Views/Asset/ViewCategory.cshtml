@@ -4,11 +4,15 @@
 @model List<Category>
 
 
+@{
+    ViewBag.Title = "View Category";
+    Layout = "~/Views/Shared/_LayoutINV.cshtml";
+}
 
 
 
-<div class="header1">
-    <h4>View Category</h4>
+ 
+    @* <h4>View Category</h4> *@
 </div>
 
 
@@ -34,7 +38,7 @@
                     <th>Category Name</th>
                     <th>Category Code</th>
                     <th>Category Description</th>
-                    <th>Is Active</th>
+                    @* <th>Is Active</th> *@
                     <th>Date</th>
                     <th>Action</th>
 
@@ -54,7 +58,7 @@
                         <td>@x.categoryName</td>
                         <td>@x.categoryCode</td>
                         <td>@x.categoryDescription</td>
-                        <td>@x.isActive</td>
+                        @* <td>@x.isActive</td> *@
                         <td>@x.createdOn.ToShortDateString()</td>
 
                         <td>

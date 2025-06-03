@@ -1,0 +1,75 @@
+﻿@using ERP_Component_DAL.Models;
+
+
+@{
+    ViewBag.Title = "View Asset";
+    Layout = "~/Views/Shared/_LayoutINV.cshtml";
+}
+
+@model List<AddCustomer>
+<link rel="stylesheet" href="~/css/ProductTwo.css" />
+
+ 
+    @* <h3>View Contact Details</h3> *@
+
+
+<div class="table">
+
+
+
+
+    <table class="product-table">
+        <thead>
+            <tr>
+                <th>Sno.</th>
+                <th>Customer Name</th>
+                <th>Contact Number</th>
+                <th>Alternate Contact Number</th>
+                <th>Email</th>
+                <th>Company Email</th>
+
+                <th>Social Media Account</th>
+                <th>Whatsapp Number</th>
+                <th>Action</th>
+
+            </tr>
+        </thead>
+        <tbody id="geeks">
+
+
+            @for (var i = 0; i < Model.Count; i++)
+            {
+
+                var x = Model[i];
+                var index = i + 1;
+
+                <tr id="row-@x.">
+                    <td>@index</td>
+                    <td>@x.CustomerName</td>
+
+                    <td>@x.ContactNo</td>
+                    <td>@x.alternate</td>
+                    <td>@x.Email</td>
+                    <td>@x.CompanyEmail</td>
+
+                    <td>@x.social</td>
+                    <td>@x.whatsapp</td>
+                    <td>
+                        <div class="actions">
+
+                            <button onclick="location.href='@Url.Action("EditContactDetails", "Customer", new { contactDetailId = @x.ContactDetailId}, null)'"><i class="fas fa-edit"></i></button>
+                            <button onclick="location.href='@Url.Action("DeleteContactDetails", "Customer", new { contactDetailId = @x.ContactDetailId }, null)'"><i class="fas fa-trash"></i></button>
+
+
+                        </div>
+                    </td>
+
+                </tr>
+            }
+        </tbody>
+
+    </table>
+</div>
+
+
+

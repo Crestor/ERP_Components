@@ -1,0 +1,131 @@
+﻿@using ERP_Component_DAL.Models
+@{
+    ViewBag.Title = "CustomerHistory";
+    Layout = "~/Views/Shared/_LayoutINV.cshtml";
+}
+
+@* <link rel="stylesheet" href="~/css/ListQuotation.css">
+<link rel="stylesheet" href="~/css/AddQuotation.css" /> *@
+<link rel="stylesheet" href="~/css/ProductTwo.css" />
+
+
+
+<div class="form-section">
+    <h3>Coustomer History</h3>
+    <div class="form-row">
+            <label for="startDate">Start Date</label>
+            <input type="date" id="startDate" name="startDate">
+       
+       
+            <label for="endDate">End Date</label>
+            <input type="date" id="endDate" name="endDate" >
+    
+
+    </div>
+       <div class="form-row" style="width:50%">
+
+            <label for="customerName">Customer Name</label>
+            @* <input type="text" id="customerName" name="CustomerName"> *@
+            <select class="form-control" id="customerName" name="CustomerName" >
+                <option selected disabled>Select</option>
+                @foreach (var product in Model)
+                {
+                    <option value="@product.CustomerName">@product.CustomerName</option>
+                }
+
+            </select>
+     </div>
+  </div>
+
+
+   <div>
+    <button class="button" onclick="filterTable()" style="margin-bottom: 50px;margin-top: -10px;margin-left: 91%; background-color:#138496;color: white;">
+        Search
+    </button>
+   </div>
+
+@model List<CustomerHistory>
+@* <div class="cntr1" style="height: 336px;padding-inline: 56px">
+<div>
+    <label for="startDate">Start Date</label>
+    <input type="date" id="startDate" name="startDate" style="width: 151px;">
+</div>
+<div>
+    <label for="endDate">End Date</label>
+    <input type="date" id="endDate" name="endDate" style="width: 151px;">
+</div>
+<div>
+    <label for="customerName">Customer Name</label>
+    @* <input type="text" id="customerName" name="CustomerName"> 
+    <select class="form-control" id="customerName" name="CustomerName" style="width:230px">
+        <option selected disabled>Select</option>
+        @foreach (var product in Model)
+        {
+            <option value="@product.CustomerName">@product.CustomerName</option>
+        }
+
+    </select>
+</div> *@
+
+
+<table id="historyTable">
+    <thead>
+        <tr>
+            <th>S.No</th>
+            <th>Customer Name</th>
+            <th>Total Taxable Amount</th>
+            <th>Gross Amount</th>
+            <th>Invoice Date</th>
+            <th>view Order </th>
+          
+        </tr>
+    </thead>
+    <tbody>
+        @for (var i = 0; i < Model.Count; i++)
+        {
+
+            var x = Model[i];
+            var index = i + 1;
+
+            <tr>
+                <td>@index</td>
+                <td>@x.CustomerName</td>
+                <td>@x.TotalTaxableAmount</td>
+                <td>@x.GrossTotal</td>
+                <td>@x.InvoiceDate</td>
+                <td>
+                    <button class="button" onclick="location.href='@Url.Action("ViewInvoice","Sales", new{InvoiceID=x.InvoiceID,QuotationID=x.QuotationID}, null)'">View</button>
+                </td>
+              
+            </tr>
+        }
+    </tbody>
+</table>
+
+<script>
+    function filterTable() {
+        const startDate = new Date(document.getElementById("startDate").value);
+        const endDate = new Date(document.getElementById("endDate").value);
+        const customerName = document.getElementById("customerName").value.toLowerCase();
+
+        const rows = document.querySelectorAll("#historyTable tbody tr");
+
+        rows.forEach(row => {
+            const nameText = row.children[1].textContent.toLowerCase(); // Customer Name is column 2 (index 1)
+            const dateText = row.children[4].textContent; // Invoice Date is column 8 (index 7)
+            const rowDate = new Date(dateText);
+
+            const inDateRange =
+                (!isNaN(startDate) ? rowDate >= startDate : true) &&
+                (!isNaN(endDate) ? rowDate <= endDate : true);
+
+            const nameMatches = customerName ? nameText.includes(customerName) : true;
+
+            if (inDateRange && nameMatches) {
+                row.style.display = "";
+            } else {
+                row.style.display = "none";
+            }
+        });
+    }
+</script>

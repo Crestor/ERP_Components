@@ -1,0 +1,242 @@
+﻿@using ERP_Component_DAL.Models;
+@{
+    ViewBag.Title = "View Customer";
+    Layout = "~/Views/Shared/_LayoutINV.cshtml";
+}
+
+
+<link rel="stylesheet" href="~/css/ProductTwo.css" />
+<link rel="stylesheet" href="~/css/ListQuotation.css" />
+
+ @model List<AddCustomer>
+
+
+
+ 
+
+
+<div class="table">
+    <div class="tab-buttons" style="padding-left: 40px;padding-top: 17px;">
+        <button class="button" onclick="showSection('main')" style="background-color:#138496;color: white;">Basic Details</button>
+        <button class="button" onclick="showSection('address')" style="background-color:#138496;color: white;">Address</button>
+        <button class="button" onclick="showSection('bank')" style="background-color:#138496;color: white;">Account Details</button>
+    </div>
+
+    <div class="table-actions" style="float: right;margin-bottom: 16px;padding-right: 38px;">
+
+        <button onclick="editSelected()" style="background-color:#138496;color: white;" id="editbutton" disabled>Edit</button>
+        <button onClick="confirmDelete()" id="deletebutton" style="background-color:#138496;color: white;" disabled>Delete</button>
+    </div>
+
+
+    <div class="vendor-section" id="main" style="display: block;">
+        <table class="vendor-table">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>S.No.</th>
+                    <th>Customer Name</th>
+                    <th>Contact Name</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>Gst</th>
+                    <th>Pan</th>
+                    <th>Balance</th>
+                    <th>Created On</th>
+               
+                </tr>
+            </thead>
+            <tbody>
+                @for (var i = 0; i < Model.Count; i++)
+                {
+                    var v = Model[i];
+                    <tr data-id="@v.CustomerId">
+                        <td><input type="checkbox" class="row-check" onchange="toggleActionButtons(this)"></td>
+                        <td>@(i + 1)</td>
+                        <td>@v.CustomerName</td>
+                        <td>@v.ContactName</td>
+                        <td>@v.Email</td>
+                        <td>@v.ContactNo</td>
+                        <td>@v.GstIn</td>
+                        <td>@v.PAN</td>
+                        <td>@v.Balance</td>
+                        <td>@v.OpeningDate.ToShortDateString()</td>
+                       
+
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+
+    <div class="vendor-section" id="address" style="display: none;">
+        <table class="vendor-table">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>S.No.</th>
+                    <th>Address</th>
+                  
+                    <th>Street</th>
+                    <th>Country</th>
+                    <th>State</th>
+                    <th>District</th>
+                    <th>City</th>
+                    
+                
+
+                </tr>
+            </thead>
+            <tbody>
+                @for (var i = 0; i < Model.Count; i++)
+                {
+                    var v = Model[i];
+                    <tr data-id="@v.AddressId">
+                        <td><input type="checkbox" class="row-check" onchange="toggleActionButtons(this)"></td>
+                        <td>@(i + 1)</td>
+                        <td>@v.Address</td>
+                       
+                        <td>@v.Street</td>
+                        <td>@v.Country</td>
+                        <td>@v.State</td>
+                        <td>@v.District</td>
+                        <td>@v.City</td>
+                        
+
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+
+    <div class="vendor-section" id="bank" style="display: none;">
+        <table class="vendor-table">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>S.No.</th>
+                    <th>Account Holder Name</th>
+                    <th>Account Number</th>
+                    <th>Branch Name</th>
+                    <th>IFSC Code</th>
+
+                </tr>
+            </thead>
+            <tbody>
+                @for (var i = 0; i < Model.Count; i++)
+                {
+                    var v = Model[i];
+                    <tr data-id="@v.AccountId">
+                        <td><input type="checkbox" class="row-check" onchange="toggleActionButtons(this)"></td>
+                        <td>@(i + 1)</td>
+                        <td>@v.AccountHolderName</td>
+                        <td>@v.AccountNo</td>
+                        <td>@v.BranchName</td>
+                        <td>@v.IfscCode</td>
+
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+
+<script>
+    function showSection(sectionId) {
+        document.querySelectorAll('.vendor-section').forEach(el => el.style.display = 'none');
+        document.getElementById(sectionId).style.display = 'block';
+        clearCheckboxes();
+    }
+
+    function toggleActionButtons(checkbox) {
+        document.querySelectorAll('.row-check').forEach(cb => {
+            if (cb !== checkbox) cb.checked = false;
+        });
+        const selected = document.querySelector('.row-check:checked');
+        document.getElementById("editbutton").disabled = !selected;
+        document.getElementById("deletebutton").disabled = !selected;
+    }
+
+    function getSelectedVendorId() {
+        const row = document.querySelector('.row-check:checked')?.closest('tr');
+        return row?.getAttribute('data-id');
+    }
+
+    function editSelected() {
+        const id = getSelectedVendorId();
+        if (id) {
+            window.location.href = '@Url.Action("EditCustomer", "Customer")' + '?customerId=' + id;
+        }
+    }
+
+    function confirmDelete() {
+        const customerId = getSelectedVendorId();
+
+            if (customerId) {
+             Swal.fire({
+            title: "Are you sure?",
+            text: "You won't be able to revert this!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#138496",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, delete it!"
+          }).then((result) => {
+            if (result.isConfirmed) {
+                  if (customerId) {
+
+
+                            let url = `/Customer/DeleteCustomer?customerId=${customerId}`;
+
+                console.log('Redirecting to', url);
+                window.location.href = url;
+              }
+            }
+          });
+
+        }
+    }
+
+
+    function clearCheckboxes() {
+        document.querySelectorAll('.row-check').forEach(cb => cb.checked = false);
+        toggleActionButtons(null);
+    }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

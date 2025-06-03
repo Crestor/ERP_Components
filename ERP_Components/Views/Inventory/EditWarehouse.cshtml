@@ -3,14 +3,14 @@
 
 
 @{
-    ViewBag.Title = "Warehouses";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Edit Warehouses";
+    Layout = "~/Views/Shared/_LayoutINV.cshtml";
 }
 
 <link rel="stylesheet" href="~/css/Product.css">
  @model Warehouse
-<div class="header1">
-    <h4>Edit Warehouse</h4>
+ 
+    @* <h4>Edit Warehouse</h4> *@
 </div>
 <div class="container">
     <form id="vendorForm" method="post" asp-action="EditWarehouse" asp-controller="Inventory" onsubmit=" return savedDetail()">

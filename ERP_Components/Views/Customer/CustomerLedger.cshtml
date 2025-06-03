@@ -1,0 +1,184 @@
+﻿@using ERP_Component_DAL.Models
+
+
+<link rel="stylesheet" href="~/css/ProductTwo.css" />
+@{
+    ViewBag.Title = "Customer Ledger";
+    Layout = "~/Views/Shared/_LayoutINV.cshtml";
+}
+
+@model List<AddCustomer>
+
+ 
+
+<div class="container">
+    <form id="ledgerForm">
+        <div class="form-data" style="display:grid">
+            <div class="form-row">
+                <label for="customerName">Customer Name:</label>
+
+                <select class="form-control" id="userName"  name="UserName" required>
+                    <option disabled selected> Select Vendor</option>
+                    @for (var i = 0; i < Model.Count; i++)
+                    {
+                        <option value="@Model[i].CustomerId">@Model[i].CustomerName</option>
+                    }
+                </select>
+
+            </div>
+
+            <div class="form-row">
+                <label for="StartDate">Start Date:</label>
+                <input type="date" id="startDate" style="padding:10px" name="StartDate">
+            </div>
+
+            <div class="form-row">
+                <label for="EndDate">End Date:</label>
+                <input type="date" id="endDate" style="padding:10px" name="EndDate">
+            </div>
+        </div>
+
+
+        <div class="button-container" style="float: right;padding: 13px;">
+            <button type="submit">Search</button>
+            <button type="reset">Reset</button>
+            <button type="button" id="exportbutton">Export to Excel</button>
+        </div>
+    </form>
+
+    <div id="ledgerSection" style="display: none;">
+        <h3 id="displayUsername" style="text-align: center; margin-top:40px;"></h3>
+
+        <table id="ledgerTableContainer" class="table">
+            <thead>
+                <tr>
+                    <th>S.No</th>
+                    <th>Date</th>
+                    <th>Entry Type</th>
+                    <th>Entry Id</th>
+                    <th>Debit</th>
+                    <th>Credit</th>
+               
+                    <th>Project</th>
+                    <th>Balance</th>
+                </tr>
+            </thead>
+            <tbody id="ledgerTable"></tbody>
+        </table>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        $("#ledgerForm").submit(function (e) {
+            e.preventDefault();
+
+            var userName = $("#userName").val();
+            var startDate = $("#startDate").val();
+            var endDate = $("#endDate").val();
+
+            if (!userName || !startDate || !endDate) {
+                alert("Please enter all fields.");
+                return;
+            }
+
+            $.ajax({
+                url: `/Benifitiary/GetVendorLedger`,
+                type: "GET",
+                data: { userName, startDate, endDate },
+                dataType: "json",
+                success: function (response) {
+                    let table = $("#ledgerTable");
+                    table.html("");
+
+                    if (!Array.isArray(response) || response.length === 0) {
+                        table.html("<tr><td colspan='9'>No data available.</td></tr>");
+                        return;
+                    }
+
+                    $("#ledgerSection").show();
+                    $("#displayUsername").text(`Ledger Transactions for ${userName}`);
+
+                    let rows = "";
+                    response.forEach((x, index) => {
+                        let transactionDate = new Date(x.transactionDate).toISOString().split('T')[0];
+                        let debitAmount = parseFloat(x.debitAmount) || 0;
+                        let creditAmount = parseFloat(x.creditAmount) || 0;
+                        let balanceDisplay = x.balance >= 0 ? `${x.balance.toFixed(2)} DR` : `${Math.abs(x.balance).toFixed(2)} CR`;
+
+                        let row = `
+                            <tr>
+                                <td>${index + 1}</td>
+                                <td data-type="date">${transactionDate}</td>
+                                <td>${x.transactionType || 'N/A'}</td>
+                                <td>${x.transactionId || 'N/A'}</td>
+                                <td>${debitAmount.toFixed(2)}</td>
+                                <td>${creditAmount.toFixed(2)}</td>
+                      
+                                <td>${x.project || 'N/A'}</td>
+                                <td>${balanceDisplay}</td>
+                            </tr>`;
+                        rows += row;
+                    });
+
+                    table.append(rows);
+                },
+                error: function (xhr, status, error) {
+                    console.error("Error fetching data:", error);
+                    alert("Failed to fetch ledger data.");
+                }
+            });
+        });
+
+              $("#exportbutton").click(function () {
+        let table = document.getElementById("ledgerTableContainer");
+
+        if (!table || table.rows.length < 2) {
+            alert("No data available to export.");
+            return;
+        }
+
+        let wb = XLSX.utils.book_new();
+        let ws = XLSX.utils.table_to_sheet(table);
+
+        let range = XLSX.utils.decode_range(ws["!ref"]);
+
+
+        for (let row = range.s.r + 1; row <= range.e.r; row++) {
+            let cellRef = XLSX.utils.encode_cell({ r: row, c: 1 });
+            if (ws[cellRef] && ws[cellRef].v) {
+                let dateValue = new Date(ws[cellRef].v);
+                if (!isNaN(dateValue.getTime())) {
+                    ws[cellRef].v = (dateValue - new Date("1899-12-30")) / 86400000;
+                    ws[cellRef].t = "n";
+                    ws[cellRef].z = "yyyy-mm-dd";
+                }
+            }
+        }
+
+        XLSX.utils.book_append_sheet(wb, ws, "Vendor Ledger");
+        XLSX.writeFile(wb, "Vendor_Ledger.xlsx");
+    });
+
+
+    });
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

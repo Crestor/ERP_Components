@@ -1,0 +1,332 @@
+﻿@using ERP_Component_DAL.Models
+
+@* @model Sales_Management_System.Models.QuotationViewModel *@
+@{
+    ViewBag.Title = "";
+    Layout = "~/Views/Shared/_LayoutINV.cshtml";
+}
+
+<link rel="stylesheet" href="~/css/ProductTwo.css" />
+
+@model List<QuotationModel>
+@* <form method="post" asp-action="" asp-controller="">  *@
+<div class="form-section">
+    <h3>Basic Details</h3>
+    <div class="form-row">
+               <input type="number" name="QuotationID" value="@Model[0].QuotationID" hidden/>
+            <label>Quotation Series:</label>
+            <input type="text" id="QuotationSeries" name="QuotationSeries" value="@Model[0].QuotationSeries" readonly><br>
+               
+                <label>Customer Name:</label>
+            <input type="text" id="customerName" name="customerName" value="@Model[0].CustomerName" onchange="pass()"><br>
+            </div>
+    <div class="form-row" style="width:50%">
+                <label>Date</label>
+                <input  id="date" name="date" value="@Model[0].QuotationDate" readonly />
+    </div>
+
+</div>
+
+    <h2>Item Details</h2>
+    <div class="table">
+        <div id="orderDetailsForm">
+            <table id="orderTable">
+                <thead>
+                    <tr>
+                        <th>S.No</th>
+                        <th>Item Name</th>
+                        <th>HSN Code</th>
+                        <th>Quantity</th>
+                        <th>UnitOFMeasure</th>
+                        <th>Unit Price Rate</th>
+                        <th>Discount Rate (%)</th>
+                        <th>Discount Amount</th>
+                        <th>Taxable Amount</th>
+                        <th>CGST (%)</th>
+                        <th>SGST (%)</th>
+                    <th>IGST (%)</th>
+                        <th>Total</th>
+                        <th>Update</th>
+                    </tr>
+                </thead>
+               
+             <tbody>  
+                                 
+                      
+
+                    @for (var i = 0; i < Model.Count; i++)  
+                    {  
+                       var x = Model[i];  
+                       var index = i + 1;
+                    
+                 <tr >  
+                                          <td>@index</td>
+                        <td><input id="itemName_@i" name="ItemName" value="@x.ItemName" style=" width: 140px;" readonly></td>
+                        <td><input type="number" id="HSN_@i" name="HSN" value="@x.HSN"></td>
+                        <td><input type="number" id="Quantity_@i" name="Quantity" value="@x.Quantity" oninput="calculateRow(this)" style=" width:50px;"></td>
+                        <td><input type="text" id="UnitOFMeasure_@i" name="UnitOFMeasure" value="@x.UnitOFMeasure"></td>
+                        <td><input type="number" id="SellingPrice_@i" name="SellingPrice" oninput="calculateRow(this)" value="@x.SellingPrice" readonly></td>
+                        <td><input type="number" id="discountRate_@i" name="discountRate" value="@x.discountRate" oninput="calculateRow(this)" style=" width:50px;"></td>
+                        <td><input type="number" id="discountAmount_@i" name="discountAmount" value="@x.DiscountAmount"></td>
+                        <td><input type="number" id="taxableAmount_@i" name="taxableAmount" value="@x.TaxableAmount" style=" width: 85px;" readonly></td>
+                                     
+                            <td>
+                            <input type="number" id="cgst_@i" name="cgst" value="@x.CGST" style="width:50px;" readonly>
+                           
+
+
+                            </td>  
+                                           <td>
+                            <input type="number" id="sgst_@i" name="sgst" value="@x.SGST" style="width:50px;" readonly>
+                              
+                                               
+                                           </td>  
+                                           <td>
+                            <input type="number" id="igst_@i" name="igst" value="@x.IGST" style="width:50px;" readonly>
+                              
+                                               
+                                           </td>
+                        <td><input id="total_@i" type="number" name="TotalAmount" value="@x.TotalAmount" style=" width: 85px;" readonly></td>
+                            <td>
+                            <button type="submit" id="update" class="button1" onclick="UpdateProduct(@i)" style="background-color:#138496;color: white;">
+                                    Update
+                                </button>
+                            </td>
+                        <td><input type="hidden" id="ProductID_@i" name="ProductID" value="@x.ProductID" /></td>
+                                       </tr>  
+                                   }  
+                               </tbody>  
+                           </table>  
+                       </div>  
+                   </div>  
+
+                  @*  <div style="text-align: center; margin-top: 30px; display:flex;justify-content:end">  
+                       <button type="submit" id="update" class="button">  
+                           Update Product
+                       </button>  
+                   </div>   *@
+    @* </form>     *@
+
+
+<form method="post" asp-action="EditQuotationform" asp-controller="Sales">
+
+
+    <input type="hidden" name="QuotationSeries" id="hiddenQuotationSeries" value="" />
+    <input type="hidden" name="customerName" id="hiddenCustomerName" value="" />
+    <input type="hidden" name="date" id="hiddendate" value="" />
+    <input type="hidden" name="QuotationID" value="@Model[0].QuotationID"  />
+    <input type="hidden" name="TermConditionID" value="@Model[0].TermConditionID" />
+    <input type="hidden" name="GrossTotal" id="grossTotal" />
+
+    @* <h2>Summary</h2> *@
+   
+    <div class="form-section">
+          <div class="form-row">
+            <label>Delivery Terms:</label>
+            <input type="text" id="deliveryTerms" name="DeliveryTerms" value="@Model[0].DeliveryTerms"><br>
+
+            <label>Payment Terms:</label>
+            <input type="text" id="paymentTerms" name="PaymentTerm" value="@Model[0].PaymentTerm"><br>
+            </div>
+            <div class="form-row" style="width:50%">
+                 <label>Other:</label>
+             <input type="text" id="other" name="Other"><br> 
+        </div>
+    </div>
+
+    @* <div> *@
+ 
+        @* <div class="totalamounss">
+
+            <label>Total Amount Before Discount:</label>
+            <input type="number" id="totalPriceBeforeDiscount" name="totalPriceBeforeDiscount" value="" readonly><br>
+
+            <label>Total Discount (%):</label>
+            <input type="number" id="totalDiscountPercent" name="TotalDiscountPercent" value="" readonly><br>
+
+            <label>Total Discount Amount:</label>
+            <input type="number" id="totalDiscountAmount" name="TotalDiscountAmount" value=""  readonly><br>
+            *@
+            @* <label>Gross Total:</label> *@
+            @* <input type="number" id="grossTotal" name="GrossTotal" readonly value="@Model[0].GrossTotal"><br> *@
+
+       
+
+
+    
+  
+
+
+    <div style="text-align: center; margin-top: 30px;">
+        <button type="submit" class="button" style="background-color:#138496;color: white;">
+            submit Quotation
+        </button>
+    </div>
+</form>
+
+
+
+
+<script>
+
+   
+
+
+
+
+        function pass() {
+              const customerName = document.getElementById("customerName").value;
+             document.getElementById("hiddenCustomerName").value = customerName;
+             const QuotationSeries = document.getElementById("QuotationSeries").value;
+             document.getElementById("hiddenQuotationSeries").value = QuotationSeries;
+
+          const date = document.getElementById("date").value;
+             document.getElementById("hiddendate").value = date;
+       };
+
+
+
+
+
+    function SetPriceFromDropdown(event) {
+        const dropdown = event.target;
+        const selectedOption = dropdown.options[dropdown.selectedIndex];
+        const SellingPrice = selectedOption.getAttribute("data-price");
+
+        const row = dropdown.closest('tr');
+        const SellingPriceInput = row.querySelector('[name="SellingPrice"]');
+        SellingPriceInput.value = SellingPrice;
+
+        calculateRow(SellingPriceInput);
+    }
+
+
+   
+
+
+
+    function calculateRow(input) {
+        const row = input.closest('tr');
+
+        const qty = parseFloat(row.querySelector('[name="Quantity"]').value) || 0;
+        const SellingPrice = parseFloat(row.querySelector('[name="SellingPrice"]').value) || 0;
+        const discountRate = parseFloat(row.querySelector('[name="discountRate"]').value) || 0;
+        const cgst = parseFloat(row.querySelector('[name="cgst"]').value) || 0;
+        const sgst = parseFloat(row.querySelector('[name="sgst"]').value) || 0;
+
+        const gross = qty * SellingPrice;
+        const discountAmount = gross * (discountRate / 100);
+        const taxable = gross - discountAmount;
+        const TotalAmount = taxable + (taxable * cgst / 100) + (taxable * sgst / 100);
+
+        row.querySelector('[name="discountAmount"]').value = discountAmount.toFixed(2);
+        row.querySelector('[name="taxableAmount"]').value = taxable.toFixed(2);
+        row.querySelector('[name="TotalAmount"]').value = TotalAmount.toFixed(2);-
+
+        calculateAmount()
+
+    }
+   
+
+</script>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+        function UpdateProduct (index)
+            {
+                // var Quotation = document.getElementById("QuotationID_"+index).value;
+
+
+            var productData = {
+                QuotationID: $("#QuotationID_" + index).val(),
+                ProductID: $("#ProductID_" + index).val(),
+                ItemName: $("#itemName_"+index).val(),
+                HSN: $("#HSN_"+index).val(),
+                Quantity: parseInt($("#Quantity_"+index).val()),
+                UnitOFMeasure: $("#UnitOFMeasure_"+index).val(),
+                SellingPrice: parseFloat($("#SellingPrice_"+index).val()),
+                discountRate: parseFloat($("#discountRate_"+index).val()),
+                DiscountAmount: parseFloat($("#discountAmount_"+index).val()),
+                TaxableAmount: parseFloat($("#taxableAmount_"+index).val()),
+                CGST: parseFloat($("#cgst_"+index).val()),
+                SGST: parseFloat($("#sgst_"+index).val()),
+                IGST: parseFloat($("#igst_"+index).val()),
+                TotalAmount: parseFloat($("#total_"+index).val()),
+                
+            };
+            $.ajax({
+                type: "POST",
+                url: "/Sales/EditQuotationDetails",
+                data: productData,
+                success: function (response) {
+                    console.log("Success:", response);
+                    alert("!");
+                  
+                },
+                error: function (xhr, status, error) {
+                    console.error("Error:", xhr.responseText);
+                    alert(" ");
+                }
+            });
+        }
+    // });
+
+</script>
+
+
+
+<script>
+    function calculateGrossTotal() {
+        let grossTotal = 0;
+
+        // Loop through all inputs with name="TotalAmount"
+        document.querySelectorAll('[name="TotalAmount"]').forEach(input => {
+            const value = parseFloat(input.value) || 0;
+            grossTotal += value;
+        });
+
+        // If you have an input field to display the gross total, update it here
+        const grossTotalField = document.getElementById("grossTotal");
+        if (grossTotalField) {
+            grossTotalField.value = grossTotal.toFixed(2);
+        }
+
+        return grossTotal;
+    }
+
+    function calculateAmount() {
+        calculateGrossTotal(); // Just triggers gross total recalc
+    }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

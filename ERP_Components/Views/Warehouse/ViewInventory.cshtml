@@ -1,0 +1,74 @@
+﻿@using ERP_Component_DAL.Models;
+@{
+	ViewBag.Title = "View Inventory";
+	Layout = "~/Views/Shared/_LayoutINV.cshtml";
+}
+
+<link rel="stylesheet" href="/css/Product.css" />
+
+
+@model List<Items>
+
+<div class="table">
+
+
+
+	<table >
+		<thead>
+			<tr>
+				<th>S.No.</th>
+				<th>Item Names</th>
+				<th>SKU</th>
+				<th>HSN</th>
+				<th>GST Rate</th>
+				<th>Specification</th>
+				<th>Unit Of Measurement</th>
+				<th>In Stock</th>
+				<th>Stock Alert</th>
+			</tr>
+		</thead>
+
+
+
+		<tbody id="geeks">
+
+
+			@for (var i = 0; i < Model.Count; i++)
+			{
+
+				var x = Model[i];
+				var index = i + 1;
+
+					<tr id="row-@x.">
+						<td>@index</td>
+						<td>@x.itemName</td>
+						<td>@x.SKU</td>
+						<td>@x.HSN</td>
+						<td>@x.gst</td>
+						<td>@x.specification</td>
+						<td>@x.UOM</td>
+						<td>@x.inStock</td>
+						<td>@x.stockAlert</td>
+						@* <td>
+							<div class="actions">
+
+
+								<button onclick="location.href='@Url.Action("VendorQuotation", "Purchase", new { requisitionId = @x.RequisitionId }, null)'">Create Quotation</button>
+
+
+
+							</div>
+						</td> *@
+
+					</tr>
+			}
+		</tbody>
+
+	</table>
+
+
+
+
+</div>
+
+

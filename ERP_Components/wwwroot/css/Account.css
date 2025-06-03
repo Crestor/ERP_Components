@@ -1,0 +1,349 @@
+﻿.label{
+    display:grid;
+    gap:10px;
+
+}
+label{
+    font-size:14px !important;
+}
+.label select,select{
+    width:150px;
+    height:30px;
+}
+form button{
+   background-color:#138496;
+   color:white;
+   margin-top:20px;
+}
+h3{
+    color:#138496 !important;
+}
+.over {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    border: 1.5px solid #138496;
+    border-radius: 5px;
+    padding: 25px 30px 25px 50px;
+    justify-self: center;
+    width: 95%;
+    margin-bottom: 25px;
+    box-shadow: 2px 2px 3px #138496;
+}
+.over2 {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #138496;
+    border-radius: 5px;
+    padding: 25px 30px 25px 50px;
+    justify-self: center;
+    width: 95%;
+    margin-bottom: 50px;
+    float: left;
+    margin-inline: 25px;
+    box-shadow: 2px 2px 3px #138496;
+}
+button {
+    background-color: #138496;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin: 0 10px;
+    width: 100px;
+    height: 30px;
+}
+h2 {
+
+    color: #138496;
+    margin-bottom: 30px;
+    
+}
+.h2 {
+    position: absolute;
+    top: -0.7em;
+    color: #138496;
+    background-color: #ffffff;
+    margin-bottom: 30px;
+    left: 10px;
+    font-size:16px;
+}
+.h3 {
+    color: #138496;
+    
+    font-size:16px;
+}
+h1 {
+    color: #138496;
+    
+}
+table {
+    margin-bottom:50px;
+}
+thead,th{
+    background-color:#138496 !important;
+    color:white !important;
+}
+thead, tbody {
+    height: 40px;
+    padding: 5px;
+}
+th,tr,td{
+    padding:5px;
+}
+/*#scrol{
+    display:none;
+}*/
+
+:root {
+    --theme-color: #138496; /* Primary theme color var(--theme-color); */
+
+    --secondary-color: #138496; /* Secondary color var(--secondary-color); */
+    --third-color: #15D47C; /* Danger color var(--third-color); */
+    --fourth-color: #1AE487; /* Danger color var(--fourth-color); */
+    --fifth-color: #10F189; /* Danger color var(--fifth-color); */
+
+
+    --firstbackgound-color: #138496; /*  color var(--firstbackgound-color); */
+    --secondbackground-color: #E6E6CE; /* Secondary color var(--secondbackground-color); */
+
+
+    --dangerbackground-color: #d9534f; /* third color  var(--dangerbackground-color); */
+
+
+    --text-color: #333; /* Text color */
+    --background-color: #f4f4f4; /* Background color */
+}
+
+body {
+    font-family:'Cambria Math' !important;
+    font-size:1rem !important;
+    font-weight:400 !important;
+}
+
+#sidebar-wrapper {
+    min-height: 100vh;
+    margin-left: -15rem;
+    transition: margin 0.25s ease-out;
+}
+
+    #sidebar-wrapper .sidebar-heading {
+        padding: 0.875rem 1.25rem;
+        font-size: 1.2rem;
+        font-weight: bold;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    #sidebar-wrapper .list-group {
+        width: 15rem;
+    }
+
+#page-content-wrapper {
+    min-width: 100vw;
+}
+
+#wrapper.toggled #sidebar-wrapper {
+    margin-left: 0;
+}
+
+#menu-toggle {
+    cursor: pointer;
+}
+
+.list-group-item {
+    border: none;
+    padding: 0.75rem 1.25rem;
+}
+
+    .list-group-item.active {
+        background-color: #0d6efd; /* Bootstrap primary color */
+        border-color: #0d6efd;
+    }
+
+.list-group-item-action:focus,
+.list-group-item-action:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: #fff;
+}
+
+/* Responsive adjustments */
+@media (min-width: 768px) {
+    #sidebar-wrapper {
+        margin-left: 0;
+    }
+
+    #page-content-wrapper {
+        min-width: 0;
+        width: 100%;
+    }
+
+    #wrapper.toggled #sidebar-wrapper {
+        margin-left: -15rem;
+    }
+}
+
+
+#sidebar-wrapper .collapse a {
+    transition: background 0.2s ease;
+    background-color: rgb(1, 1, 1);
+    color: white;
+}
+
+    #sidebar-wrapper .collapse a:hover {
+        background-color: rgb(26, 26, 26);
+    }
+
+.list-group-item list-group-item-action {
+    background-color: red;
+}
+
+.section {
+    display: flex;
+    height: 150px;
+    justify-content: space-between;
+}
+.section2 {
+    display: flex;
+    height: 50px;
+    justify-content: space-between;
+}
+.image{
+    width:20%
+}
+.info{
+    width:60%
+}
+.logo{
+    width:20%
+}
+.address{
+    display:flex;
+}
+.container {
+    max-width: 1000px;
+    margin: auto;
+}
+
+header {
+    display: flex;
+    text-align: center;
+    border-bottom: 2px solid #000;
+    margin-bottom: 20px;
+}
+
+.quotation-info,
+.receiver-info,
+.totals,
+.bank-details {
+    margin: 5px 0;
+}
+.totals{
+    width:50%;
+}
+
+table {
+    width: 98%;
+    border-collapse: collapse;
+    font-size: 14px;
+    border-radius:5px;
+}
+
+
+th, td {
+    padding: 8px;
+    text-align: left;
+}
+
+h1 {
+    font-size: 24px;
+    margin-bottom: 5px;
+}
+
+h3 {
+    margin-top: 20px;
+    font-size: 18px;
+    color:#138496;
+}
+.overp{
+    display:flex;
+}
+p{
+    margin-bottom:0px;
+}
+
+.btn{
+    background-color:#138496;
+    color:white;
+}
+.overbutton{
+    display:flex;
+    justify-content:end;
+    margin-top:60px;
+    gap:15px;
+}
+.para1 {
+    display: flex;
+    float: left;
+    font-size: 40px;
+    align-items: center;
+    height: 100%;
+    color: #138496;
+    margin-left: 20px;
+    border:none;
+}
+table td input{
+    width:55px;
+    padding:0px;
+    border:none;
+}
+table td select{
+    width:80px !important;
+    border:none;
+}
+p input{
+    border:none;
+    background-color:#ffffff;
+}
+#debited,#credited{
+    display:none;
+    float:right;
+
+}
+.section3 {
+    display: flex;
+    height: 100px;
+    justify-content: space-between;
+    box-shadow: 0px 1px 4px grey;
+    padding: 20px;
+}
+.section4 {
+    display: flex;
+    height: 80px;
+    justify-content: space-between;
+    padding: 20px;
+}
+label.required ::after {
+    content:"*";
+        color:#138496;
+}
+.additional {
+    display:flex;
+    justify-content:space-between;
+    margin-bottom:25px;
+}
+.Branchsection{
+    display:grid;
+    gap:20px;
+}
+.branchform {
+    position:relative;
+    display: flex;
+    justify-content: space-between;
+    width: 70%;
+    border: 1px solid #138496;
+    border-radius: 5px;
+    padding:30px;
+    align-items:center;
+    justify-self:center;
+}

@@ -39,6 +39,7 @@ namespace ERP_Components.Controllers
 
         [HttpPost]
         public IActionResult Login(User users)
+        
         {
 
             HttpContext.Session.Clear();
@@ -61,18 +62,33 @@ namespace ERP_Components.Controllers
                     return HandleManagerLogin(users);
                 }
               
-                else if (x.role == 6 && x.userName == users.userName && x.password == users.password)
+                else if (x.role == 9 && x.userName == users.userName && x.password == users.password)
                 {
                     return HandleInventoryLogin(users);
                 } 
-                else if (x.role == 7 && x.userName == users.userName && x.password == users.password)
+                else if (x.role == 5 && x.userName == users.userName && x.password == users.password)
                 {
                     return HandleWarehouseLogin(users);
-                } else if (x.role == 8 && x.userName == users.userName && x.password == users.password)
+                } else if (x.role == 4 && x.userName == users.userName && x.password == users.password)
                 {
                     return HandleAssetLogin(users);
                 }
-
+                else if (x.role == 6 && x.userName == users.userName && x.password == users.password)
+                {
+                    return HandleSalesLogin(users);
+                }
+                else if (x.role == 7 && x.userName == users.userName && x.password == users.password)
+                {
+                    return HandleAccountLogin(users);
+                }
+                else if (x.role == 8 && x.userName == users.userName && x.password == users.password)
+                {
+                    return HandlePurchaseLogin(users);
+                }
+                else if (x.role == 10 && x.userName == users.userName && x.password == users.password)
+                {
+                    return HandleProductionLogin(users);
+                }
             }
             if (users.userName != null)
             {
@@ -112,17 +128,37 @@ namespace ERP_Components.Controllers
             {
                 return Json(new { status = false, message = "User does not exist, please enter a valid username" });
             }
-            //SuperAdmin 
-            var user = userServices.HandleManager(users);
+            
+            var user = userServices.HandleUsers(users);
 
-            if (user != null && user.password == user.password && user.role == 1)
+            if (user != null && user.password == user.password && user.role == 2)
             {
                 SetManagerSession(user);
-                return Json(new { status = true, url = Url.Action("MakerDashboard", "Dashboard") });
+                return Json(new { status = true, url = Url.Action("Dashboard", "Manager") });
             }
 
             return Json(new { status = false, message = "Invalid credentials or you are not a registered Admin, Sign Up to use this service" });
         }
+
+        private JsonResult HandleProductionLogin(User users)
+        {
+            if (string.IsNullOrEmpty(users.userName))
+            {
+                return Json(new { status = false, message = "User does not exist, please enter a valid username" });
+            }
+
+            var user = userServices.HandleUsers(users);
+
+            if (user != null && user.password == user.password && user.role == 10)
+            {
+                SetProductionSession(user);
+                return Json(new { status = true, url = Url.Action("ProductionDashboard", "Production") });
+            }
+
+            return Json(new { status = false, message = "Invalid credentials or you are not a registered Admin, Sign Up to use this service" });
+        }
+
+
         private JsonResult HandleInventoryLogin(User users)
         {
             if (string.IsNullOrEmpty(users.userName))
@@ -132,7 +168,7 @@ namespace ERP_Components.Controllers
             //SuperAdmin 
             var user = userServices.HandleUsers(users);
 
-            if (user != null && user.password == user.password && user.role == 6)
+            if (user != null && user.password == user.password && user.role == 9)
             {
                 SetInventorySession(user);
                 return Json(new { status = true, url = Url.Action("Dashboard", "Inventory") });
@@ -150,7 +186,7 @@ namespace ERP_Components.Controllers
             //SuperAdmin 
             var user = userServices.HandleUsers(users);
 
-            if (user != null && user.password == user.password && user.role == 7)
+            if (user != null && user.password == user.password && user.role == 5)
             {
                 SetWarehouseSession(user);
                 return Json(new { status = true, url = Url.Action("Dashboard", "Warehouse") });
@@ -168,7 +204,7 @@ namespace ERP_Components.Controllers
             //SuperAdmin 
             var user = userServices.HandleUsers(users);
 
-            if (user != null && user.password == user.password && user.role == 8)
+            if (user != null && user.password == user.password && user.role == 4)
             {
                 SetAssetSession(user);
                 return Json(new { status = true, url = Url.Action("Dashboard", "Asset") });
@@ -176,6 +212,60 @@ namespace ERP_Components.Controllers
 
             return Json(new { status = false, message = "Invalid credentials or you are not a registered Admin, Sign Up to use this service" });
         }
+
+
+        private JsonResult HandleSalesLogin(User users)
+        {
+            if (string.IsNullOrEmpty(users.userName))
+            {
+                return Json(new { status = false, message = "User does not exist, please enter a valid username" });
+            }
+            //SuperAdmin 
+            var user = userServices.HandleUsers(users);
+
+            if (user != null && user.password == user.password && user.role == 6)
+            {
+                SetSalesSession(user);
+                return Json(new { status = true, url = Url.Action("Dashboard", "Inventory") });
+            }
+
+            return Json(new { status = false, message = "Invalid credentials or you are not a registered Admin, Sign Up to use this service" });
+        }
+        private JsonResult HandleAccountLogin(User users)
+        {
+            if (string.IsNullOrEmpty(users.userName))
+            {
+                return Json(new { status = false, message = "User does not exist, please enter a valid username" });
+            }
+            //SuperAdmin 
+            var user = userServices.HandleUsers(users);
+
+            if (user != null && user.password == user.password && user.role == 7)
+            {
+                SetAccountSession(user);
+                return Json(new { status = true, url = Url.Action("Dashboard", "Account") });
+            }
+
+            return Json(new { status = false, message = "Invalid credentials or you are not a registered Admin, Sign Up to use this service" });
+        }
+        private JsonResult HandlePurchaseLogin(User users)
+        {
+            if (string.IsNullOrEmpty(users.userName))
+            {
+                return Json(new { status = false, message = "User does not exist, please enter a valid username" });
+            }
+            //SuperAdmin 
+            var user = userServices.HandleUsers(users);
+
+            if (user != null && user.password == user.password && user.role == 8)
+            {
+                SetPurchaseSession(user);
+                return Json(new { status = true, url = Url.Action("Dashboard", "Purchase") });
+            }
+
+            return Json(new { status = false, message = "Invalid credentials or you are not a registered Admin, Sign Up to use this service" });
+        }
+
 
         private void SetAdminSession(User user)
         {
@@ -191,11 +281,18 @@ namespace ERP_Components.Controllers
             HttpContext.Session.SetString("Role", "Manager");
            
         }
+        private void SetProductionSession(User user)
+        {
+            HttpContext.Session.SetString("UserId", Convert.ToString(user.userId));
+            HttpContext.Session.SetString("UserName", user.userName);
+            HttpContext.Session.SetString("Role", "Production");
+           
+        }
         private void SetInventorySession(User user)
         {
             HttpContext.Session.SetString("UserId", Convert.ToString(user.userId));
             HttpContext.Session.SetString("UserName", user.userName);
-            HttpContext.Session.SetString("Role", "Inventory");
+            HttpContext.Session.SetString("Role", "store");
             
         }
         private void SetWarehouseSession(User user)
@@ -210,9 +307,29 @@ namespace ERP_Components.Controllers
             HttpContext.Session.SetString("UserId", Convert.ToString(user.userId));
             HttpContext.Session.SetString("UserName", user.userName);
             HttpContext.Session.SetString("Role", "Asset");
+        } 
+        private void SetSalesSession(User user)
+        {
+            HttpContext.Session.SetString("UserId", Convert.ToString(user.userId));
+            HttpContext.Session.SetString("UserName", user.userName);
+            HttpContext.Session.SetString("Role", "Sales");
+
+        }
+        private void SetAccountSession(User user)
+        {
+            HttpContext.Session.SetString("UserId", Convert.ToString(user.userId));
+            HttpContext.Session.SetString("UserName", user.userName);
+            HttpContext.Session.SetString("Role", "Accounts");
 
         }
 
+        private void SetPurchaseSession(User user)
+        {
+            HttpContext.Session.SetString("UserId", Convert.ToString(user.userId));
+            HttpContext.Session.SetString("UserName", user.userName);
+            HttpContext.Session.SetString("Role", "Purchase");
+
+        }
 
 
 
@@ -224,7 +341,7 @@ namespace ERP_Components.Controllers
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            return View();
         }
     }
 }

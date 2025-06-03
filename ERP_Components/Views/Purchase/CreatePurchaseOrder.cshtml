@@ -1,0 +1,68 @@
+﻿@using ERP_Component_DAL.Models;
+
+@{
+	ViewBag.Title = "Create Purchase Order";
+	Layout = "~/Views/Shared/_LayoutINV.cshtml";
+}
+
+<link rel="stylesheet" href="/css/Product.css" />
+
+
+
+@model List<AddPurchaseRequisition>
+
+<div class="table">
+
+
+
+	<table>
+		<thead>
+			<tr>
+				<th>S.No.</th>
+				<th>Req. Series</th>
+				<th>Description</th>
+				<th>Date</th>
+				<th>Total Amount</th>
+				<th>Actions</th>
+			</tr>
+		</thead>
+
+
+
+		<tbody id="geeks">
+
+
+			@for (var i = 0; i < Model.Count; i++)
+			{
+
+				var x = Model[i];
+				var index = i + 1;
+
+				<tr id="row-@x.">
+					<td>@index</td>
+					<td>@x.requisitionSeries</td>
+					<td>@x.Descripion</td>
+					<td>@x.Date.ToShortDateString()</td>
+					<td>@x.TotalAmount</td>
+					<td>
+						<div class="actions">
+
+
+							<button onclick="location.href='@Url.Action("PurchaseOrder", "Purchase", new { requisitionId = @x.RequisitionId }, null)'">Create Order</button>
+							@* <button onclick="location.href='@Url.Action("DeleteRequisition", "Home", new { RequisitionId = @x.RequisitionId }, null)'">Reject</button> *@
+
+
+						</div>
+					</td>
+
+				</tr>
+			}
+		</tbody>
+
+	</table>
+
+
+
+
+</div>
+

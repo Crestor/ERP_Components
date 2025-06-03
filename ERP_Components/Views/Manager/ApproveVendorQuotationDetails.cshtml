@@ -1,0 +1,183 @@
+﻿@using ERP_Component_DAL.Models;
+@{
+	ViewBag.Title = "Vendor Quotation";
+	Layout = "~/Views/Shared/_LayoutINV.cshtml";
+}
+
+@model Vendor
+
+<link rel="stylesheet" href="~/css/Product.css">
+
+
+<style>
+	.styled-checkbox {
+		width: 18px;
+		height: 18px;
+		accent-color: #28a745; /* Bootstrap success green */
+		cursor: pointer;
+	}
+</style>
+
+	<h2>List Of Items</h2>
+<div class="table">
+	<table>
+	<thead>
+		<tr>
+			<th>S.No</th>
+			<th>Item Name</th>
+			<th>Category</th>
+			<th>Specification</th>
+			<th>UOM</th>
+			<th>Item Type</th>
+			<th>HSN</th>
+			<th>Quantity</th>
+			<th>Unit Price</th>
+			<th>Total Amount</th>
+		</tr>
+	</thead>
+	<tbody id="geeks">
+
+			@{
+				decimal finalAmount = 0;
+			}
+			@for (var i = 0; i < Model.Items.Count; i++)
+			{
+				var x = Model.Items[i];
+				var index = i + 1;
+				finalAmount += x.TotalAmount;
+
+				<tr id="row-@i">
+					<td>@index</td>
+					<td>@x.itemName</td>
+					<td>@x.category</td>
+					<td>@x.specification</td>
+					<td>@x.unitofmeasure</td>
+					<td>@x.itemtype</td>
+					<td>@x.hsn</td>
+					<td>@x.quantity</td>
+					<td>@x.unitPrice</td>
+					<td>@x.TotalAmount</td>
+					@* <td></td> *@
+				</tr>
+			}
+	</tbody>
+</table>
+	<div style="float:right;margin-right: 70px;">
+		<p>Final Amount: @finalAmount</p>
+	</div>
+</div>
+
+
+@* <form asp-action="ChangePurchaseStatus" asp-controller="Purchase"> *@
+
+		<h2>Quotation</h2>
+	<div class="table">
+
+	<table>
+			<thead>
+				<tr>
+					<th>Field</th>
+					<th>Vendor 1</th>
+					<th>Vendor 2</th>
+					<th>Vendor 3</th>
+				</tr>
+			</thead>
+			<tbody id="quotationTableBody">
+				<tr>
+					<td>Vendor Name</td>
+					@for (int i = 0; i < 3; i++)
+					{
+							<td id="v@(i+1)_name">@((Model.lists.Count > i) ? Model.lists[i].vendorName : "")</td>
+					}
+				</tr>
+				<tr>
+					<td>Quotation Amount</td>
+					@for (int i = 0; i < 3; i++)
+					{
+							<td id="v@(i+1)_amt">@((Model.lists.Count > i) ? Model.lists[i].amount.ToString() : "")</td>
+					}
+				</tr>
+				<tr>
+					<td>Discount Amount</td>
+					@for (int i = 0; i < 3; i++)
+					{
+							<td id="v@(i+1)_disc">@((Model.lists.Count > i) ? Model.lists[i].discountAmount.ToString() : "")</td>
+					}
+				</tr>
+				<tr>
+					<td>Final Amount</td>
+					@for (int i = 0; i < 3; i++)
+					{
+							<td id="v@(i+1)_final">@((Model.lists.Count > i) ? Model.lists[i].finalAmount.ToString() : "")</td>
+					}
+				</tr>
+				<tr>
+					<td>Advance Amount</td>
+					@for (int i = 0; i < 3; i++)
+					{
+							<td id="v@(i+1)_adv">@((Model.lists.Count > i) ? Model.lists[i].advancedAmount.ToString() : "")</td>
+					}
+				</tr>
+				<tr>
+					<td>Delivery Terms</td>
+					@for (int i = 0; i < 3; i++)
+					{
+							<td id="v@(i+1)_del">@((Model.lists.Count > i) ? Model.lists[i].deliveryTerms : "")</td>
+					}
+				</tr>
+				<tr>
+					<td>Credit Period</td>
+					@for (int i = 0; i < 3; i++)
+					{
+							<td id="v@(i+1)_cred">@((Model.lists.Count > i) ? Model.lists[i].paymentTerms : "")</td>
+					}
+				</tr>
+
+			<tr>
+				<td>Action</td>
+				@for (int i = 0; i < 3; i++)
+				{
+					if (Model.lists.Count > i)
+					{
+						<td>
+							<form method="post" asp-action="ApproveVendor" asp-controller="Manager" style="display:inline;">
+								<input type="hidden" name="vendorId" value="@Model.lists[i].vendorId" />
+								<input type="hidden" name="requisitionId" value="@Model.lists[i].requisitionId" />
+								<div class="button">
+									<button class="btn">Approve</button>
+								</div>
+								
+							</form>
+						</td>
+					}
+					else
+					{
+						<td></td>
+					}
+				}
+			</tr>
+
+
+			</tbody>
+
+
+		</table>
+	
+		
+
+	</div>
+
+
+
+
+	<script>
+		window.onload = function () {
+			let total = 0;
+			document.querySelectorAll('.total-amount').forEach(cell => {
+				total += parseFloat(cell.textContent) || 0;
+			});
+			document.querySelector('#final-amount').textContent = total.toFixed(2);
+		};
+	</script>
+
+

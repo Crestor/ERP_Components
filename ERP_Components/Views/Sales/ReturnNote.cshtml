@@ -1,0 +1,168 @@
+﻿@using ERP_Component_DAL.Models
+
+@{
+    ViewBag.Title = "Return Note ";
+    Layout = "~/Views/Shared/_LayoutINV.cshtml";
+}
+
+<link rel="stylesheet" href="~/css/ProductTwo.css" />
+
+@model List<ReturnNote>
+@{
+    var a = ViewBag.loaded;
+}
+<form method="post" asp-action="SetReturnNote" asp-controller="Sales">
+<div class="form-section">
+<h3>Basic Details</h3>
+        <div class="form-row" style="width:50%">
+            <label>Delivery Challan ID :</label>
+        <input type="text" id="DeliveryChallanID" name="DeliveryChallanID" >
+</div>
+</div>
+
+<div class="table">
+    <table>
+        <thead>
+            <tr>
+                <th>S.No</th>
+                <th>Item</th>
+
+                <th>Quantity</th>
+                <th>UOM</th>
+				<th>Returnable Quantity</th>
+                <th>Action</th> 
+               
+            </tr>
+        </thead>
+        <tbody>
+         
+
+                <tr>
+                    <td>1</td>
+                    <td><input type="text" id="" name="ItemName" style="width:200px" /> </td>
+                    <td><input type="text" id="" name="Quantity" /> </td>
+                    <td><input type="text" id="" name="UOM" /> </td>
+                    <td><input type="text" id="" name="ReturnableQuantity" /> </td>
+                    @* <td><input type="text" id="" name="" /> </td> *@
+                  <td><div></div>
+                        <button type="submit" class="button" style="background-color:#138496;color: white;" onclick="savedDetail()">Add</button>
+
+                        @* <button type="submit" class="button">Add</button>  *@
+                    </td>
+                </tr>
+             @* }  *@
+        </tbody>
+    </table>
+	</div>
+</form>
+ <div id="returnNoteTable" class="table" style="display: none;"> 
+    <table>
+        <thead>
+            <tr>
+                <th>S.No</th>
+                <th>Return Note date</th>
+                <th>Delivery Challan ID</th>
+                <th>Custome Name</th>
+                <th>Contact Number</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (var i = 0; i < Model.Count; i++)
+            {
+                var x = Model[i];
+                var index = i + 1;
+
+                <tr>
+                    <td>@index</td>
+                     <td>@x.ReturnNotedate</td>
+                    <td>@x.DeliveryChallanID</td>
+                    <td>-</td>
+                    <td>-</td> 
+                    <td>
+                        <button class="button" style="background-color:#138496;color: white;" onclick="DeleteButton('@x.ReturnNoteId')">Delete</button>
+
+                        <button class="button" style="background-color:#138496;color: white;" onclick="UpdateButton('@x.ReturnNoteId')">Update</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+ </div> 
+
+<script>
+      var a = "@a";
+    // document.getElementById('returnNoteTable').style.display = 'block';
+    if(a=="True"){
+         document.getElementById('returnNoteTable').style.display = 'block';
+    }
+    else{
+
+    }
+
+
+    
+      function savedDetail(){
+                Swal.fire({
+      position: "center",
+      icon: "success",
+      title: "Your work has been saved",
+      showConfirmButton: false,
+      timer: 1500
+    });
+    }
+
+        function DeleteButton(ReturnNoteId) {
+
+          console.log(ReturnNoteId);
+          const id = ReturnNoteId;
+          Swal.fire({
+            title: "Are you sure?",
+            text: "You won't be able to revert this!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#138496",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, Delete it!"
+          }).then((result) => {
+            if (result.isConfirmed) {
+              if (id) {
+
+                let url = `/Sales/DeleteReturnNote?ReturnNoteId=${id}`;
+
+                console.log('Redirecting to', url);
+                window.location.href = url;
+              }
+            }
+          });
+
+        }
+
+
+
+        function UpdateButton(ReturnNoteId) {
+
+          console.log(ReturnNoteId);
+          const id = ReturnNoteId;
+          Swal.fire({
+            title: "Are you sure?",
+            // text: "You won't be able to revert this!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#138496",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, Update it!"
+          }).then((result) => {
+            if (result.isConfirmed) {
+              if (id) {
+
+                let url = `/Sales/EditReturnNote?ReturnNoteId=${id}`;
+
+                console.log('Redirecting to', url);
+                window.location.href = url;
+              }
+            }
+          });
+
+        }
+</script> 

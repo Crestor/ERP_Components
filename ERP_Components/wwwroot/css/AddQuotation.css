@@ -1,0 +1,391 @@
+﻿/*.container {
+    background-color: #fff;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    padding: 30px;
+    border-radius: 15px;
+    margin-bottom: 40px;
+}*/
+#date, #customerName, #orderSeries, #deliveryTerms, #paymentTerms, #other, #grossTotal, #totalPriceBeforeDiscount, #totalDiscountAmount, #totalDiscountPercent {
+    width: 250px !important;
+}
+
+#HSNCode, #UOM {
+    width: 110px !important;
+}
+
+#Quantity, #discountRate {
+    width: 70px !important;
+}
+
+#cgst, #sgst, #igst {
+    width: 70px !important;
+}
+
+input {
+    width: 135px !important;
+    height: 35px;
+}
+
+h2 {
+    /*    color: #138496;*/
+    /*padding:13px 15px;*/
+    display: flex;
+    color: #138496;
+    /*    height: 50px;*/
+}
+
+h3 {
+    display: flex;
+    color: white;
+    height: 50px;
+    border-radius: 6px;
+    background-color: #138496;
+    justify-content: center;
+    align-items: center;
+}
+
+.ctnr {
+    padding: 7px 13px 7px 14px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    border-radius: 10px
+}
+
+label {
+    display: block;
+    margin: 12px 0 6px;
+    font-weight: 500;
+    color: #444;
+    color: #333;
+}
+
+input {
+    width: 200px;
+    height: 30px;
+    border-radius: 5px;
+}
+
+.ctnr.label {
+    display: block;
+    margin: 12px 0 6px;
+    font-weight: 500;
+    color: #444;
+    color: #333;
+}
+
+.termss {
+    /*    margin-bottom: 200px;*/
+    padding: 7px 0px 7px 70px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    border-radius: 10px;
+    /*    padding-bottom: 95px;
+    padding-left: 100px;*/
+    justify-content: center;
+    width: 100%;
+}
+
+.totalamounss {
+    padding: 7px 70px 33px 115px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    border-radius: 10px
+}
+
+input[type="text"],
+input[type="date"],
+input[type="number"],
+select {
+    width: 100%;
+    padding: 10px 12px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 15px;
+    box-sizing: border-box;
+    background-color: #fff;
+    transition: border 0.3s ease;
+}
+
+    input:focus,
+    select:focus {
+        outline: none;
+        border: 1.5px solid #138496;
+        box-shadow: 0 0 3px rgba(173, 75, 75, 0.3);
+    }
+
+.btn {
+    background-color: #138496;
+    color: white;
+    padding: 10px 18px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: all 0.3s ease;
+}
+
+    .btn:hover {
+        background-color: white;
+        color: #138496;
+        border: 1px solid #138496;
+    }
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: white;
+    margin-top: 15px;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+th, td {
+    padding: 12px 14px;
+    text-align: center;
+    border-bottom: 1px solid #eee;
+}
+
+thead th {
+    background-color: #138496;
+    color: white;
+    font-weight: 500;
+    font-size: 14px;
+}
+
+
+tbody tr:hover {
+    background-color: #fceeee;
+}
+
+#orderDetailsForm {
+    overflow-x: auto;
+    width: 100%;
+}
+
+#orderDetailsForm1 {
+    /*    overflow-x: auto;*/
+    width: 100%;
+}
+
+#orderTable {
+    min-width: 1200px;
+    border: 1px solid #ddd;
+}
+
+    #orderTable th,
+    #orderTable td input,
+    #orderTable td select {
+        font-size: 14px;
+    }
+
+#basicDetailsForm,
+#orderDetailsForm,
+#summaryDetails {
+    margin-bottom: 30px;
+}
+
+#basicDetailsForm {
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.basicdetail1 {
+    display: flex;
+    justify-content: space-between;
+    padding-inline: 100px;
+}
+
+#basicDetailsForm.input {
+    width: 200px;
+    height: 30px;
+    border-radius: 5px;
+}
+
+.cntr1 {
+    height: 521px;
+    padding: 7px 13px 7px 7px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 7px;
+}
+
+#tdsPopup {
+    margin-left: 10px;
+}
+
+
+@media (max-width: 768px) {
+    input, select {
+        font-size: 14px;
+    }
+
+    table {
+        font-size: 12px;
+    }
+
+    .btn {
+        width: 100%;
+        margin-top: 10px;
+    }
+}
+/*-----*/
+/* Style for square-shaped radio buttons */
+input[type="radio"] {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 16px;
+    height: 16px;
+    border: 2px solid #555;
+    border-radius: 2px; /* Square */
+    outline: none;
+    cursor: pointer;
+    position: relative;
+}
+
+    input[type="radio"]:checked::before {
+        content: '';
+        display: block;
+        width: 10px;
+        height: 10px;
+        background-color: #555;
+        position: absolute;
+        top: 2px;
+        left: 2px;
+    }
+
+#tdsPopup {
+    margin-top: 15px;
+    padding: 10px;
+    border: 1px solid #aaa;
+    /*    background-color: #f9f9f9;*/
+    display: none;
+    width: 200px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    border-radius: 10px
+}
+
+.shipping-options .btn {
+    margin: 27px;
+    padding: 9px 74px;
+    cursor: pointer;
+}
+
+
+.shipping-form {
+    display: none; /* Hide forms by default */
+    margin-top: 20px;
+    /*    border: 1px solid #ccc;*/
+    padding: 15px;
+    /*    width: 300px;*/
+    /*    background-color: #f9f9f9;*/
+}
+
+    .shipping-form .input {
+        display: block;
+        /*        margin: 10px 0;*/
+        width: 100%;
+        width: 250px !important;
+    }
+
+
+    .shipping-form .row {
+        display: flex;
+        /*        gap: 20px;*/
+        margin-bottom: 15px;
+        align-items: center;
+        flex-wrap: wrap;
+    }
+
+.footer {
+    /*    text-align: right;*/
+    /*    margin-top: 30px;*/
+    font-weight: bold;
+    padding-top: 100px;
+    padding-left: 420px;
+}
+
+.viewDoc {
+    background: #fff;
+    padding: 30px;
+    max-width: 1258px;
+    margin: auto;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+}
+
+.cntr2 {
+    height: 226px;
+    padding: 7px 17px 7px 7px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 7px;
+}
+
+#returnNoteTable {
+    display: none;
+}
+
+/*-------*/
+.section {
+    display: flex;
+    height: 150px;
+    justify-content: space-between;
+}
+
+.section2 {
+    display: flex;
+    height: 50px;
+    justify-content: space-between;
+}
+
+.image {
+    width: 20%
+}
+
+.info {
+    width: 60%
+}
+
+.logo {
+    width: 20%
+}
+
+.address {
+    display: flex;
+}
+
+/*.container {
+    max-width: 1000px;
+    margin: auto;
+}
+*/
+header {
+    display: flex;
+    text-align: center;
+    border-bottom: 2px solid #000;
+    margin-bottom: 20px;
+}
+
+.overp {
+    display: flex;
+}
+
+h1 {
+    font-size: 24px;
+    margin-bottom: 5px;
+}
+
+h4 {
+    margin-top: 20px;
+    font-size: 18px;
+    color: #138496;
+}
+
+.quotation-info,
+.receiver-info,
+.totals,
+.bank-details {
+    margin: 5px 0;
+}
+
+.totals {
+    width: 50%;
+}

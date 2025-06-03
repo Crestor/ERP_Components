@@ -1,0 +1,76 @@
+﻿
+@using ERP_Component_DAL.Models;
+
+
+@{
+    ViewBag.Title = "Stocks";
+    Layout = "~/Views/Shared/_LayoutINV.cshtml";
+}
+
+<link rel="stylesheet" href="~/css/Product.css">
+
+<div class="table">
+	<table>
+		<thead>
+			<tr>
+				<th>S.No</th>
+				<th>Item Name</th>
+				<th>Category</th>
+				<th>Specification</th>
+				<th>UOM</th>
+				<th>HSN</th>
+				<th>Unit Price</th>
+				<th>Quantity</th>
+				<th>Actual Receive</th>
+				<th>Difference</th>
+
+			</tr>
+		</thead>
+
+		<tbody id="TableBody">
+			<tr>
+                <td>1</td>
+				<td>Item</td>
+				<td>Category</td>
+				<td>Specification</td>
+				<td>UOM</td>
+				<td>HSN</td>
+				<td>10</td>
+				<td>20</td>
+				<td>19</td>
+                <td>1</td>
+			</tr>
+            <tr>
+                <td>2</td>
+                <td>Item 2</td>
+                <td>Category 2</td>
+                <td>Specification 2</td>
+                <td>UOM 2</td>
+                <td>HSN 2</td>
+                <td>15</td>
+                <td>30</td>
+                <td>28</td>
+                <td>2</td>
+            </tr>
+            <tr>
+                <td>3</td>
+                <td>Item 3</td>
+                <td>Category 3</td>
+                <td>Specification 3</td>
+                <td>UOM 3</td>
+                <td>HSN 3</td>
+                <td>25</td>
+                <td>50</td>
+                <td>48</td>
+                <td>2</td>
+            </tr>
+		</tbody>
+
+	</table>
+</div>
+
+				<div class="button">
+					<button type="reset">Create PR</button>
+					<button type="submit">Add Stock</button>
+
+				</div>

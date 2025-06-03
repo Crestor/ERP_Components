@@ -2,44 +2,46 @@
 
 
 @{
-    ViewBag.Title = "Add Stock";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Stocks";
+    Layout = "~/Views/Shared/_LayoutINV.cshtml";
 }
 
 <link rel="stylesheet" href="~/css/Product.css">
 
-@model List<Product>
+ @model List<Product> 
+
+@* @model List<AddPurchaseRequisition> *@
 
 
+ 
+    @* <h4>Add Stock</h4> *@
+@* </div> *@
 
-<div class="header1">
-    <h4>Add Stock</h4>
-</div>
+@* <div class="tab-buttons"> *@
+@*     <button class="tab-button" onclick="showSection('product')"> *@
+@*         Add Product Category *@
+@*     </button> *@
+@*     <button class="tab-button" onclick="showSection('material')"> *@
+@*         Add Material Category *@
+@*     </button> *@
+@* </div> *@
 
-<div class="tab-buttons">
-    <button class="tab-button" onclick="showSection('product')">
-        Add Product Category
-    </button>
-    <button class="tab-button" onclick="showSection('material')">
-        Add Material Category
-    </button>
-</div>
-
-
-<div id="product" class="container" style="display:block">
+@* 
     <form method="post" asp-action="SetStock" asp-controller="Inventory" onsubmit="return savedDetail()">
-
-        <div style="display:flex; justify-content:center; align-items:center;margin:auto">
-            <h3>Add Product Stock</h3>
-        </div>
-
-
 
         <div class="form-section">
             <h3>Add Stock</h3>
-            <div class="form-row">
 
-                <label class="required" for="productName">Item Name:</label>
+           <div class="form-row" style="width:50%;">
+
+            <label class="required" for="sku">Reason for Item Entry:</label>
+            <input type="text" name="stockDate" value="By Purchase" readonly />
+          </div>
+            <div class="form-row">
+               
+            <label class="required" for="sku">Product Code:</label>
+            <input type="text" name="stockDate" required />
+                <label class="required" for="productName">Product Name:</label>
   
                 <select name="itemId">
                     <option selected disabled>Select Item</option>
@@ -52,50 +54,47 @@
                     }
                 </select>
             
-                <label class="required" for="sku">Purchase Date:</label>
-                <input type="date" name="stockDate" required />
+          
                 <input type="hidden" name="type" value="stockIn" required />
             </div>
             <div class="form-row">
-               
-                <label class="required" for="invoice">Invoice Number:</label>
-                <input type="text" name="invoice" />
-                <label class="required" for="batch">Batch Number:</label>
-                <input type="text" name="batchSeries">
-                <input type="hidden" value="batch" name="itemType">
-            </div>
-            <div class="form-row">
  
-                <label for="descr">Quantity Purchased:</label>
-                <input type="number" name="quantity">
-                <label for="price">Unit Price:</label>
+                <label for="descr">Invoice Date:</label>
+            <input type="date" name="quantity" value="@DateTime.Now.ToString("yyyy-MM-dd")" >
+                <label for="price">Invoice No:</label>
                 <input type="text" name="costPrice" />
             </div>
             <div class="form-row">
-
-                <label class="required" for="sku">Manufacturing Date:</label>
-                <input type="date" name="manufacture" required />
-                <label class="required" for="sku">Expiry Date:</label>
-                <input type="date" name="expiry" required />
+                
+                  <label for="descr">Quantity Purchased:</label>
+                <input type="number" name="quantity">
+                   <label for="price">Unit Price:</label>
+                  <input type="text" name="UnitPrice" />
+            
             </div>
             <div class="form-row">
-                <label for="price">Total Price:</label>
-                <input type="text" name="totalPrice" />
-                <input type="hidden" name="reason" value="product" />
-                <label for="cost">Warehouse Location:</label>
-                <select name="warehouseId">
-                    <option selected disabled>Select</option>
-                    @foreach (var scheme in Model)
+
+            <label class="required" for="sku">Expiry Date:</label>
+            <input type="date" name="expiry" required />
+            <label for="cost">Warehouse Location:</label>
+            <select name="warehouseId">
+                <option selected disabled>Select</option>
+                @foreach (var scheme in Model)
+                {
+                    @foreach (var warehouse in scheme.warehouse)
                     {
-                        @foreach (var warehouse in scheme.warehouse)
-                        {
-                            <option value="@warehouse.warehouseId">@warehouse.warehouseName</option>
-                        }
+                        <option value="@warehouse.warehouseId">@warehouse.warehouseName</option>
                     }
-                </select>
-            </div>
-           
+                }
+            </select>
+                <input type="hidden" name="reason" value="product" />
             
+            </div>
+
+            <div class="button">
+                <button type="reset">Reset</button>
+                <button type="submit">Submit</button>
+            </div>
         </div>
 
 
@@ -103,12 +102,7 @@
         
 
 
-        <div class="button-container">
-            <button type="submit">Submit</button>
-            <button type="reset">Reset</button>
-        </div>
-    </form>
-</div> 
+    </form> 
 
 
 
@@ -149,7 +143,7 @@
             </div>
             <div class="form-row">
 
-                <label class="required" for="sku">Manufacturing Date:</label>
+                <label class="required" for="sku">Invoice Date:</label>
                 <input type="date" name="manufacture" required />
                 <label class="required" for="sku">Expiry Date:</label>
                 <input type="date" name="expiry" required />
@@ -185,7 +179,33 @@
         </div>
     </form>
 </div>
+ *@
+<div class="table">
+    <table>
+        <thead>
+            <tr>
+                <th>S.No.</th>
+                <th>Date</th>
+                <th>Req. Series</th>
+                <th>Description</th>
+                <th>Action</th>
+            </tr>
+        </thead>
 
+
+
+        <tbody id="geeks">
+            <tr>
+                <td>1</td>
+                <td>2-2-2025</td>
+                <td>ABC_2025/1</td>
+                <td>Description</td>
+                <td><button onclick="location.href='@Url.Action("ViewPrStock","Inventory")'" type="button">View Stock</button></td>
+            </tr>
+        </tbody>
+
+    </table>
+</div>
 <script>
 
      function showSection(sectionId) {

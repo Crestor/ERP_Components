@@ -1,0 +1,132 @@
+﻿@using ERP_Component_DAL.Models;
+
+@{
+    ViewBag.Title = "Add Purchase Order";
+    Layout = "~/Views/Shared/_LayoutINV.cshtml";
+}
+<link rel="stylesheet" href="/css/Product.css" />
+
+
+
+@model Vendor
+
+
+
+<div id="material">
+    <form method="post" asp-action="UpdateRequisitionStatusToClosed" asp-controller="Purchase">
+
+
+        <div class="form-section">
+            <h3>Vendor Info</h3>
+            <div class="form-row">
+
+                <label class="required" for="productName">Vendor Name:</label>
+                <input type="text" name="vendorName" value="@Model.vendorName" required readonly />
+                <input type="hidden" name="vendorId" value="@Model.vendorId" required readonly />
+
+
+                <label class="required" for="sku">Amount:</label>
+                <input type="text" id="totalTaxableAmount" name="amount" value="@Model.amount" required readonly />
+                <input type="hidden" name="requisitionId" value="@Model.requisitionId" required readonly />
+            </div>
+            <div class="form-row">
+                <label class="required" for="hsn">Payment Terms:</label>
+                <input type="text" name="paymentTerms" value="@Model.paymentTerms" readonly />
+                <label for="uom">Delivery Terms:</label>
+                <input type="text" name="deliveryTerms" value="@Model.deliveryTerms" readonly />
+
+            </div>
+            <div class="form-row" style="width:50%">
+                <label class="required" for="hsn">Description:</label>
+                <textarea type="text" name="description"></textarea>
+
+
+            </div>
+
+        </div>
+
+        <div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>S.No.</th>
+                        <th>Item Name</th>
+                        <th>Quantity</th>
+                        <th>Rate</th>
+
+                        <th>Taxable Value</th>
+
+                    </tr>
+                </thead>
+                <tbody id="geeks">
+                    @for (var i = 0; i < Model.Items.Count; i++)
+                    {
+                        var item = Model.Items[i];
+                        <tr>
+                            <td>@(i + 1)</td>
+                            <td>
+                                <input type="text" name="Items[@i].itemName" value="@item.itemName" readonly />
+                                <input type="hidden" name="Items[@i].itemId" value="@item.itemId" />
+                            </td>
+                            <td>
+                                <input type="number" name="Items[@i].quantity" value="@item.quantity"
+                                       class="quantity" data-index="@i" />
+                            </td>
+                            <td>
+                                <input type="number" name="Items[@i].unitPrice" value="@item.unitPrice"
+                                       class="unit-price" data-index="@i" />
+                            </td>
+                            <td>
+                                <input type="number" name="Items[@i].TotalAmount" value="@item.TotalAmount"
+                                       class="total-amount" data-index="@i" readonly />
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+
+               
+            </table>
+        </div>
+
+        <div class="button-container" style="display:flex; justify-content:center">
+            <button type="submit">Submit</button>
+            <button type="reset">Reset</button>
+        </div>
+
+    </form>
+</div>
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        function updateTotals() {
+            let totalTaxable = 0;
+
+            const rows = document.querySelectorAll('tbody#geeks tr');
+            rows.forEach((row, index) => {
+                const quantityInput = row.querySelector('.quantity');
+                const priceInput = row.querySelector('.unit-price');
+                const totalInput = row.querySelector('.total-amount');
+
+                const quantity = parseFloat(quantityInput.value) || 0;
+                const price = parseFloat(priceInput.value) || 0;
+
+                const total = quantity * price;
+                totalInput.value = total.toFixed(2);
+                totalTaxable += total;
+            });
+
+            document.getElementById('totalTaxableAmount').value = totalTaxable.toFixed(2);
+        }
+
+       
+        document.querySelectorAll('.quantity, .unit-price').forEach(input => {
+            input.addEventListener('input', updateTotals);
+        });
+
+        
+        updateTotals();
+    });
+</script>
+
+

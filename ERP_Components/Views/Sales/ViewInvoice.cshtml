@@ -1,0 +1,289 @@
+﻿@using ERP_Component_DAL.Models
+
+@{
+    ViewBag.Title = "";
+    Layout = "~/Views/Shared/_LayoutINV.cshtml";
+}
+
+<link rel="stylesheet" href="~/css/ViewInvoiceDoc.css">
+@model InvoiceView
+
+<div class ="viewDoc" id="details-container">
+     <div class="container" id="container"> 
+        <header>
+            <div class="image"></div>
+            <div class="info">
+                <h1>Countrees Services And Technologies Private Limited </h1>  
+                <p style="margin-left: 6px;">01 Thakurpur Rd, Prem Nagar,</p>
+                <p style="margin-top: -2px;margin-left: 6px;">Dehradun,  Uttarakhand, 248007</p>
+                <div class="overp">
+                    <p style="text-align:left;font-size:14px;margin-left: 8px;"><strong>Email :</strong> Countrees123@gmail.com <br /><strong>Phone :</strong> +917000001234  <br />countreestech.com </p>
+                    <p style="text-align:left;margin-left: 21px;font-size: 14px;"><strong>GST :</strong>GSTIN1818 <br /><strong>CIN :</strong>112322 </p>
+                </div>
+            </div>
+            <div class="logo"></div>
+        </header>
+          <div class="section">
+            <section class="quotation-info">
+                <h4>Receiver Details</h4>
+                <p><strong>Name:</strong> <span style="margin-left: 10px;"></span> Name</p>
+                <p><strong>Address:</strong> <span style="margin-left: 10px;"></span>Address1</p>
+                <p><strong>District:</strong> <span style="margin-left: 10px;"></span>Dehradun</p>
+                <p><strong>State:</strong>  <span style="margin-left: 10px;"></span>uttrakhand</p>
+                <p><strong>Postal Code:</strong> <span style="margin-left: 10px;"></span> 47474</p>
+                <p><strong>GSTIN/PAN:</strong> <span style="margin-left: 10px;"></span> 23434DFDFD3423</p>
+            </section>
+            <section class="quotation-info">
+                <h4>Consignee Details</h4>
+                <p><strong>Name :</strong> <span style="margin-left: 10px;"></span> Name</p>
+                <p><strong>Address:</strong> <span style="margin-left: 10px;"></span>Address1</p>
+                <p><strong>District</strong> <span style="margin-left: 10px;"></span>Dehradun</p>
+                <p><strong>State:</strong> <span style="margin-left: 10px;"></span> uttrakhand</p>
+                <p><strong>Postal Code:</strong>  <span style="margin-left: 10px;"></span>47474</p>
+                <p><strong>GSTIN/PAN:</strong> <span style="margin-left: 10px;"></span> 23434DFDFD3423</p>
+            </section>
+            <section class="receiver-info">
+                <h4>GST Invoice</h4>
+                <p><strong>Invoice No.:</strong> <span style="margin-left: 10px;"></span> FG/1231</p>
+                <p>Original for Recipient</p>
+                <p><strong>Date :</strong> <span style="margin-left: 10px;"></span> 2 may 2025</p>
+            </section>
+        </div>
+
+        </div>
+
+ 
+
+    <h2 style="margin-top:40px;margin-bottom: -22px; margin-left: 394px;">
+        Basic Details
+    </h2>
+    <div class="cntr">
+
+        <div style="margin-top: 35px;">
+            <strong>Invoice Number:</strong>
+            <span style="margin-left: 10px;">@Model.ListView[0].InvoiceNumber</span><br>
+        </div>
+
+        <div style="margin-top: 16px; margin-bottom: 10px;">
+            <strong>Customer Name:</strong>
+            <span style="margin-left: 10px;">@Model.ListView[0].CustomerName</span><br>
+        </div>
+
+        <div class="Dates" style="float: right; margin-right: 5px; margin-bottom:10px;">
+            <strong>Invoice Date:</strong>
+            <span style="margin-left: 10px;">@Model.ListView[0].InvoiceDate</span><br>
+        </div>
+
+        <h2>Item Details</h2>
+        <div id="orderDetailsForm1">
+            <table id="orderTable" border="1" cellpadding="5" class="table-bordered">
+                <thead>
+                    <tr>
+                        <th>S.No</th>
+                        <th>Item</th>
+                        <th>Quantity</th>
+                        <th>UOM</th>
+                        <th>Unit Price</th>
+                        <th>Discount (%)</th>
+                        <th>Discount Amount</th>
+                        <th>Taxable Amount</th>
+                        <th>CGST (%)</th>
+                        <th>SGST (%)</th>
+                        <th>IGST (%)</th>
+                        <th>Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (var i = 0; i < Model.ProductView.Count; i++)
+                    {
+                        var x = Model.ProductView[i];
+                        var index = i + 1;
+                        <tr>
+
+                            <td>@index</td>
+                            <td> @x.ItemName</td>
+                            @* <td>@x.Quantity</td> *@
+                            <td class="quantity">@x.Quantity</td>
+                            <td>@x.UnitOFMeasure</td>  @*if we want space of two column  colspan="2" *@
+                            @* <td>@x.SellingPrice</td> *@
+                            <td class="selling-price">@x.SellingPrice</td>
+                            <td>@x.discountRate</td>
+                            <td class="discount-amount">@x.DiscountAmount</td>
+
+                            @* <td>@x.DiscountAmount</td> *@
+                            @* <td>@x.TaxableAmount</td> *@
+                            <td class="taxable-amount">@x.TaxableAmount</td>
+                            <td> @x.CGST</td>
+                            <td> @x.SGST</td>
+                            <td>@x.IGST</td>
+                            <td>@x.TotalAmount</td>
+
+
+
+                            
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+
+
+
+
+
+
+
+        <div class="rgt">
+
+            <strong>Payment Mode:</strong>
+            <span style="margin-left: 10px;">@Model.ListView[0].PaymentMode</span><br>
+            <strong>Reference Number:</strong>
+            <span style="margin-left: 10px;">@Model.ListView[0].ReferenceNumber</span><br>
+            <strong>Payment Type:</strong>
+            <span style="margin-left: 10px;">@Model.ListView[0].PaymentType</span><br>
+        </div>
+
+        <div class="amount" style="padding-left: 220px;">
+            <strong>Total Amount:</strong><span id="totalPriceBeforeDiscount" style="margin-left: 10px;"></span><br />
+            <strong>Total Discount (%):</strong><span id="totalDiscountPercent"></span><br>
+            <strong>Total Discount Amount:</strong><span id="totalDiscountAmount"></span><br>
+            <strong>Total Taxable Amount:</strong><span id="totalTaxableAmount" style="margin-left: 10px;"></span><br />
+
+            <strong>Gross Total:</strong>
+            <span style="margin-left: 10px;">
+                @Model.ListView[0].GrossTotal
+            </span><br>
+        </div>
+
+
+        @* <div class="VDQ" >
+            <h2>Shipped To Details</h2>
+
+            <strong>Company Name:</strong> @Model.ListView[1].CompanyName<br>
+            <strong>State:</strong> @Model.ListView[1].State<br>
+            <strong>Pin Code:</strong> @Model.ListView[1].Pincode<br>
+            <strong>District:</strong> @Model.ListView[1].District<br>
+            <strong>Contact Number:</strong>@Model.ListView[1].ContactNumber<br>
+            <strong>GSTIN:</strong> @Model.ListView[1].GSTIN<br>
+        </div>
+
+        <div class="transport">
+            <h2>Transport Details</h2>
+            <strong>Transporter Name:</strong> @Model.ListView[2].TransporterName<br>
+            <strong>Vehicle Type:</strong> @Model.ListView[2].VehicleType<br>
+            <strong>Distance (KM):</strong> @Model.ListView[2].Distance<br>
+            <strong>Vehicle Number:</strong> @Model.ListView[2].VehicleNumber<br>
+        
+        </div> *@
+        <div class="shipping-transport-wrapper">
+            <div class="VDQ">
+                <h2>Shipped To Details</h2>
+                <strong>Company Name:</strong> @Model.ListView[1].CompanyName<br>
+                <strong>State:</strong> @Model.ListView[1].State<br>
+                <strong>Pin Code:</strong> @Model.ListView[1].Pincode<br>
+                <strong>District:</strong> @Model.ListView[1].District<br>
+                <strong>Contact Number:</strong>@Model.ListView[1].ContactNumber<br>
+                <strong>GSTIN:</strong> @Model.ListView[1].GSTIN<br>
+            </div>
+
+            <div class="transport">
+                <h2 >Transport Details</h2>
+                <div class="T" >
+                <strong>Transporter Name:</strong> @Model.ListView[2].TransporterName<br>
+                <strong>Vehicle Type:</strong> @Model.ListView[2].VehicleType<br>
+                <strong>Distance (KM):</strong> @Model.ListView[2].Distance<br>
+                <strong>Vehicle Number:</strong> @Model.ListView[2].VehicleNumber<br>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="footer">
+        <div >Regards,</div>
+        <b>Countrees AI Technologies Private Limited</b>
+    </div>
+</div>
+
+<div class="button" style="margin-left: 38%;margin-bottom: 10px;">
+    <button class="button" id="download-button">Download PDF</button>
+    <button class="button" id="print-button">Print</button>
+</div>
+
+<script>
+    window.onload = function () {
+        let totalPriceBeforeDiscount = 0;
+        let totalDiscountAmount = 0;
+        let totalTaxableAmount = 0;
+
+        const rows = document.querySelectorAll("#orderTable tbody tr");
+
+        rows.forEach(row => {
+            const sellingPrice = parseFloat(row.querySelector(".selling-price")?.textContent || 0);
+            const quantity = parseFloat(row.querySelector(".quantity")?.textContent || 0);
+            const discountAmount = parseFloat(row.querySelector(".discount-amount")?.textContent || 0);
+            const taxableAmount = parseFloat(row.querySelector(".taxable-amount")?.textContent || 0);
+
+            totalPriceBeforeDiscount += sellingPrice * quantity;
+            totalDiscountAmount += discountAmount;
+            totalTaxableAmount += taxableAmount;
+        });
+
+        const totalDiscountPercent = totalPriceBeforeDiscount === 0
+            ? 0
+            : (totalDiscountAmount / totalPriceBeforeDiscount) * 100;
+
+        // Update the DOM
+        document.getElementById("totalPriceBeforeDiscount").textContent = totalPriceBeforeDiscount.toFixed(2);
+        document.getElementById("totalDiscountAmount").textContent = totalDiscountAmount.toFixed(2);
+        document.getElementById("totalDiscountPercent").textContent = totalDiscountPercent.toFixed(2) + " %";
+        document.getElementById("totalTaxableAmount").textContent = totalTaxableAmount.toFixed(2);
+    };
+</script>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+
+            $("#download-button").click(async function () {
+        const { jsPDF } = window.jspdf;
+        const element = document.querySelector("#details-container");
+
+        const canvas = await html2canvas(element, {
+            scale: 3,
+            useCORS: true,
+            windowWidth: element.scrollWidth,
+            windowHeight: element.scrollHeight,
+        });
+
+        const imgData = canvas.toDataURL("image/png");
+        const pdf = new jsPDF("p", "mm", "a4");
+
+        const pdfWidth = pdf.internal.pageSize.getWidth();
+        const pdfHeight = pdf.internal.pageSize.getHeight();
+
+        pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, (canvas.height * pdfWidth) / canvas.width);
+        pdf.save("PFMS_Form.pdf");
+    });
+
+
+</script>
+
+<script>
+    $(document).ready(function () {
+        $("#print-button").click(function () {
+            var printContents = document.getElementById("details-container").innerHTML;
+            var originalContents = document.body.innerHTML;
+
+            document.body.innerHTML = printContents;
+            window.print();
+            document.body.innerHTML = originalContents;
+            location.reload();
+        });
+    });
+  
+</script>
+

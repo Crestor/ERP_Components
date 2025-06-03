@@ -1,0 +1,69 @@
+﻿@using ERP_Component_DAL.Models;
+
+@{
+	ViewBag.Title = "“Receive” Order";
+	Layout = "~/Views/Shared/_LayoutINV.cshtml";
+}
+<link rel="stylesheet" href="/css/Product.css" />
+
+
+
+
+@model List<Vendor>
+
+<div class="table">
+
+
+
+	<table>
+		<thead>
+			<tr>
+				<th>S.No.</th>
+				<th>Vendor Name</th>
+				<th>Vendor Code</th>
+				<th>Description</th>
+				<th>Created At</th>
+				<th>Taxable Amount</th>
+				<th>Actions</th>
+			</tr>
+		</thead>
+
+
+
+		<tbody id="geeks">
+
+
+			@for (var i = 0; i < Model.Count; i++)
+			{
+
+				var x = Model[i];
+				var index = i + 1;
+
+				<tr id="row-@x.vendorId; @x.purchaseOrderId">
+
+					<td>@index</td>
+					<td>@x.vendorName</td>
+					<td>@x.vendorCode</td>
+					<td>@x.description</td>
+					<td>@x.createdAt.ToShortDateString()</td>
+					<td>@x.amount</td>
+					<td>
+						<div class="button">
+
+							<button onclick="location.href='@Url.Action("PurchaseOrderForm", "Purchase", new { vendorId = @x.vendorId }, null)'">Receive Order</button>
+							
+
+						</div>
+					</td>
+
+				</tr>
+			}
+		</tbody>
+
+	</table>
+
+
+
+
+</div>
+

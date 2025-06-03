@@ -325,7 +325,7 @@ namespace ERP_Component_DAL.Services
                 connection = new SqlConnection(connectionstring);
                 SqlCommand cmd = new();
                 cmd.CommandType = System.Data.CommandType.Text;
-                cmd.CommandText = $"select * from Categories Where Type = 'asset'";
+                cmd.CommandText = $"select CategoryID,CategoryName,CategoryCode,CategoryDescription,CreatedOn from Categories Where Type = 'asset'";
                 cmd.Connection = connection;
 
                 cmd.CommandTimeout = 300;
@@ -339,7 +339,7 @@ namespace ERP_Component_DAL.Services
                         categoryName = reader["CategoryName"] != DBNull.Value ? (string)reader["CategoryName"] : string.Empty,
                         categoryCode = reader["CategoryCode"] != DBNull.Value ? (string)reader["CategoryCode"] : string.Empty,
                         categoryDescription = reader["CategoryDescription"] != DBNull.Value ? (string)reader["CategoryDescription"] : string.Empty,
-                        isActive = reader["IsActive"] != DBNull.Value ? (string)reader["IsActive"] : string.Empty,
+                        //isActive = reader["IsActive"] != DBNull.Value ? (string)reader["IsActive"] : string.Empty,
                         createdOn = reader["CreatedOn"] != DBNull.Value ? ((DateTime)reader["CreatedOn"]).Date : default(DateTime),
 
 
@@ -881,6 +881,7 @@ LEFT JOIN Items i ON am.itemId = i.ItemId
                                     currentValue = reader["CurrentValue"] != DBNull.Value ? Convert.ToDecimal(reader["CurrentValue"]) : 0,
                                     price = reader["Price"] != DBNull.Value ? Convert.ToDecimal(reader["Price"]) : 0,
                                     depreciation = reader["Depreciation"] != DBNull.Value ? Convert.ToInt32(reader["Depreciation"]) : 0,
+                                    assignDate = reader["CreatedOn"] != DBNull.Value ? ((DateTime)reader["CreatedOn"]).Date : default(DateTime),
 
                                 });
                             }

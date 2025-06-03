@@ -1,0 +1,265 @@
+﻿@using ERP_Component_DAL.Models 
+
+@{
+    ViewBag.Title = "Receive Payment";
+    Layout = "~/Views/Shared/_LayoutINV.cshtml";
+}
+@* <h2 style="  text-shadow: 1px 5px 5px grey;color:#138496"> Receive Payment</h2> *@
+<link rel="stylesheet" href="~/css/Product.css" />
+@model Expense
+<div class="form-section">
+    <h3>Receive Details</h3>
+         <div class="form-row" style="width:50%">
+            <label for="date">Date</label>
+            <input type="date" id="date" name="date" required />
+         </div>
+            <div class="form-row">
+                <label for="customerName">Customer Name</label>
+                <select name="customerName" id="customerName" oninput="show()">
+                    <option selected disabled value="value">text</option>
+                    <option value="customer">Customer1</option>
+                </select>
+                <label for="project">Project :</label>
+                <input type="text" id="project" name="project" required />
+            </div>
+ </div>
+<div id="outstanding" style=" width:100%;display:none">
+    <h2>Outstanding Summary</h2>
+    <div class="table">
+        <table>
+            <thead>
+                <tr>
+                    <th>Particular</th>
+                    <th>Debited</th>
+                    <th>Credited</th>
+                </tr>
+            </thead>
+            <tbody>
+
+                <tr>
+                    <td>Amount Paid in advance:</td>
+                    <td>1000</td>
+                    <td>0</td>
+                </tr>
+
+                <tr>
+                    <td>Outstanding Invoice Amount:</td>
+                    <td>0</td>
+                    <td>1000</td>
+                </tr>
+                <tr>
+                    <td>Debit Note Amount:</td>
+                    <td>0</td>
+                    <td>1000</td>
+                </tr>
+                <tr>
+                    <td>Credit Note Amount:</td>
+                    <td>0</td>
+                    <td>1000</td>
+                </tr>
+                <tr>
+                    <td>Unsettled Additional charges</td>
+                    <td>0</td>
+                    <td>1000</td>
+                </tr>
+                <tr>
+                    <td>Total Amount</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            </tbody>
+    </table>
+  </div>
+    <div style="margin-bottom:25px;margin-left:25px">
+        <label id="pendingsettle" class="required" for="bill"> You have outstanding payment of ₹@Model.balance , Are you here to settle this?  </label>
+        <input type="radio" name="taxtype" value="yes" required oninput="paymentsettle(),billsettlement()" />Yes
+        <input type="radio" name="taxtype" value="no" required oninput="advancepayment()" />No
+    </div>
+    <div id="bill" style="display:none">
+        <div style="display:flex; justify-content:space-between; margin-left:25px;">
+            <div class="label" style="height:50px;">
+                <label for="payment">Payment Released</label>
+                <input type="text" id="payment" name="payment" oninput="paymentrelease(),billsettlement()" required />
+            </div>
+            <div>
+                <p id=""> Payment to be made: <input type="text" id="" value="₹@Model.balance" readonly /></p>
+                <p id=""> Amount of payment: <input type="text" id="" readonly /></p>
+                <p id=""> Journal Amount: <input type="text" id="" readonly /></p>
+                <p id=""> Amount in hand: <input type="text" id="debitedTotal" readonly /></p>
+
+            </div>
+        </div>
+        <h2>Invoice of Settlement</h2>
+        <div class="table">
+            <table id="dataTable">
+                <thead>
+                    <tr>
+                        <th>Id.</th>
+                        <th>date</th>
+                        <th>Amount</th>
+                        <th>Amount Due</th>
+                        <th>payment</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+
+</div>
+
+<div id="Advancepayment" style="display:none;margin-left:25px">
+    <label id="pendingpayment" class="required" for="advance ">  Do you want to add advance amount to this customer ?  </label>
+    <input type="radio" name="taxtype" value="yes" required oninput="paymentbill()" />Yes
+    <input type="radio" name="taxtype" value="no" required />No
+</div>
+<div id="paymenttable" style="display:none;width:95%;margin-left:25px">
+    <div style="display:flex; justify-content:space-between;margin-bottom:25px;">
+        <div class="label" style="height:80px;">
+            <label for="payment">Mode of Payment </label>
+            <input type="text" id="payment" name="payment" required />
+        </div>
+        <div class="label" style="height:80px;">
+            <label for="payment">Payment date</label>
+            <input type="date" id="payment" name="payment" required />
+        </div>
+        <div class="label" style="height:80px;">
+            <label for="payment">Payment Reference</label>
+            <input type="text" id="payment" name="payment" required />
+        </div>
+        <div class="label" style="height:80px;">
+            <label for="payment">Payment Amount</label>
+            <input type="text" id="payment" name="payment" required />
+        </div>
+        <div style="display:flex; align-items:center;justify-content:center;">
+            <button onclick="showpayment()" style="background-color:#138496;color:white;">submit</button>
+        </div>
+
+    </div>
+    <div id="showpayment" style="display:none">
+
+        <h2>Payment Details</h2>
+        <div class="table">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Id.</th>
+                        <th>date</th>
+                        <th>Amount</th>
+                        <th>Mode of payment</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    <tr>
+                        <td>1</td>
+                        <td>2-2-2025</td>
+                        <td>1000</td>
+                        <td>COD</td>
+                    </tr>
+
+
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+</div>
+<script>
+          const out = document.getElementById("outstanding");
+          const advance = document.getElementById("Advancepayment");
+           const pay = document.getElementById("bill");
+           const bill = document.getElementById("paymenttable");
+                    let payment = document.getElementById("payment");
+
+    function showpayment(){
+          document.getElementById("showpayment").style.display = "block";
+    }
+
+        function show(){
+          out.style.display= "block";
+        }
+      function paymentsettle(){
+        pay.style.display = "grid";
+      }
+      function paymentbill(){
+         bill.style.display = "grid";
+      }
+      function advancepayment(){
+          advance.style.display = "block";
+          pay.style.display = "none";
+
+      }
+      function paymentrelease(){
+
+         document.getElementById("debitedTotal").value = document.getElementById("payment").value;
+      }
+            const data = [
+            { sr:1, date: "2-2-2025", Amount: 200, Amountdue: 100, status:"complete"},
+            {sr:2,  date: "2-3-2023", Amount: 300, Amountdue: 200,status:"inprogress" },
+            {sr:3, date: "2-4-2025", Amount: 222, Amountdue:50 ,status:"inprogress"},
+            {sr:4, date: "2-4-2025", Amount: 222, Amountdue: 20,status:"inprogress"},
+            {sr:5, date: "2-4-2025", Amount: 222, Amountdue: 30,status:"inprogress"}
+          ];
+         function billsettlement(){
+
+          const tableBody = document.querySelector("#dataTable tbody");
+                tableBody.innerHTML = "";
+
+          data.forEach((item,index) => {
+            const row = document.createElement("tr");
+            const sr = document.createElement("td");
+            sr.textContent = index+1;
+           row.appendChild(sr);
+
+
+            const nameCell = document.createElement("td");
+            nameCell.textContent = item.date;
+            row.appendChild(nameCell);
+
+            const ageCell = document.createElement("td");
+            ageCell.textContent = item.Amount;
+            row.appendChild(ageCell);
+
+            const cityCell = document.createElement("td");
+            cityCell.textContent = item.Amountdue;
+            row.appendChild(cityCell);
+
+            const Status = document.createElement("td");
+
+           const button = document.createElement("button");
+           button.style.margin = "0px";
+          let paymentValue = parseFloat(payment.value);
+
+          if(item.Amountdue <= paymentValue){
+              button.textContent = "Fully Paid";
+              Status.appendChild(button);
+          } else {
+              button.textContent = "Partially Paid";
+              Status.appendChild(button);
+          }
+          button.dataset.index = index;
+
+                    button.addEventListener("click", function (e) {
+                  const idx = e.target.dataset.index;
+                   paymentValue -= data[idx].Amountdue;
+                      if (paymentValue !== null && !isNaN(paymentValue)) {
+                        data[idx].Amountdue = 0;
+                            document.getElementById("debitedTotal").value=paymentValue;
+                            payment.value = paymentValue;
+                    billsettlement();
+                  }
+                });
+
+            row.appendChild(Status);
+            if(item.Amountdue == 0){
+
+            }
+            else{
+            tableBody.appendChild(row);
+            }
+          });
+      }
+</script>

@@ -1,0 +1,42 @@
+﻿@using ERP_Component_DAL.Models
+
+<link rel="stylesheet" href="~/css/Product.css" />
+@{
+	ViewBag.Title = "Material Requisition";
+	Layout = "~/Views/Shared/_LayoutINV.cshtml";
+}
+ @model List<AddPurchaseRequisition> 
+<div class="table">
+	<table>
+		<thead>
+			<tr>
+				<th>S.No.</th>
+				<th>Date</th>
+				<th>Req. Series</th>
+				<th>Description</th>
+				<th>Actions</th>
+			</tr>
+		</thead>
+
+
+
+		<tbody>
+		 @for (var i = 0; i < Model.Count; i++)
+			{
+				var x = Model[i];
+				var index = i + 1;
+
+				<tr>
+					<td>@index</td>
+					<td>@x.CreatedAt</td>
+					<td>@x.RequisitionSeries</td>
+					<td>@x.Descripion</td>
+					<td>
+						<button class="button2" onclick="location.href='@Url.Action("ViewMaterialRequisitionItems","Sales", new{RequisitionID=x.RequisitionId}, null)'">View</button>
+
+					</td>
+				</tr>
+			} 
+		</tbody>
+	</table>
+</div>

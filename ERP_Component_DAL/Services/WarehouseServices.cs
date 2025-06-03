@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -102,7 +103,7 @@ namespace ERP_Component_DAL.Services
                 connection = new SqlConnection(connectionstring);
                 SqlCommand cmd = new();
                 cmd.CommandType = System.Data.CommandType.Text;
-                cmd.CommandText = $"Select WarehouseName, warehouseId from Warehouses";
+                cmd.CommandText = $"Select CenterName, CenterId from DistributionCenter";
                 cmd.Connection = connection;
 
                 cmd.CommandTimeout = 300;
@@ -112,10 +113,10 @@ namespace ERP_Component_DAL.Services
                 {
                     cat.Add(new Warehouse()
                     {
-                        warehouseId = reader["warehouseId"] != DBNull.Value ? (Guid)reader["warehouseId"] : Guid.Empty,
+                        warehouseId = reader["CenterId"] != DBNull.Value ? (Guid)reader["CenterId"] : Guid.Empty,
 
 
-                        warehouseName = reader["WarehouseName"] != DBNull.Value ? (string)reader["WarehouseName"] : string.Empty,
+                        warehouseName = reader["CenterName"] != DBNull.Value ? (string)reader["CenterName"] : string.Empty,
 
 
                     });
@@ -181,6 +182,328 @@ namespace ERP_Component_DAL.Services
             }
         }
 
+        public List<Items> ViewWarehouseInventory()
+        {
+            try
+            {
+                List<Items> item = new();
+                string connectionstring = configuration.GetConnectionString("DefaultConnectionString");
+                connection = new SqlConnection(connectionstring);
+                SqlCommand cmd = new();
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.CommandText = $"   SELECT it.ItemId, it.ItemName, it.SKU, it.HSN,it.GstRate, it.Specification, it.UnitOfMeasure, iv.InventoryId, iv.InStock, iv.StockAlert FROM Items it JOIN Inventory iv ON it.ItemId = iv.ItemId Where iv.InventoryCenter = 2";
+                ;
+                cmd.Connection = connection;
+
+                cmd.CommandTimeout = 300;
+                connection.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    item.Add(new Items()
+                    {
+                        itemId = reader["ItemId"] != DBNull.Value ? (Guid)reader["ItemId"] : Guid.Empty,
+                        inventoryId = reader["InventoryId"] != DBNull.Value ? (Guid)reader["InventoryId"] : Guid.Empty,
+                        SKU = reader["SKU"] != DBNull.Value ? Convert.ToInt32(reader["SKU"]) : 0,
+                        HSN = reader["HSN"] != DBNull.Value ? Convert.ToInt32(reader["HSN"]) : 0,
+                        inStock = reader["InStock"] != DBNull.Value ? (int)reader["InStock"] : 0,
+                        stockAlert = reader["StockAlert"] != DBNull.Value ? (int)reader["StockAlert"] : 0,
+                        gst = reader["GstRate"] != DBNull.Value ? Convert.ToInt32(reader["GstRate"]) : 0,
+                        itemName = reader["ItemName"] != DBNull.Value ? (string)reader["ItemName"] : string.Empty,
+                        specification = reader["Specification"] != DBNull.Value ? (string)reader["Specification"] : string.Empty,
+                        UOM = reader["UnitOfMeasure"] != DBNull.Value ? (string)reader["UnitOfMeasure"] : string.Empty,
+                    });
+                }
+
+                return item;
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                connection.Close();
+            }
+
+
+        }
+
+
+
+        public List<AddPurchaseRequisition> ViewSalesForCasting()
+        {
+            try
+            {
+                List<AddPurchaseRequisition> prod = new();
+                string connectionstring = configuration.GetConnectionString("DefaultConnectionString");
+                connection = new SqlConnection(connectionstring);
+                SqlCommand cmd = new();
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.CommandText = $"Select RequisitionID, RequisitionSeries,Description,CreatedAt From Requisitions  Where RequisitionStatus = 1 AND RequisitionType = 1";
+                cmd.Connection = connection;
+
+
+                cmd.CommandTimeout = 300;
+                connection.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    prod.Add(new AddPurchaseRequisition
+                    {
+                        RequisitionId = reader["RequisitionID"] != DBNull.Value ? (Guid)reader["RequisitionID"] : Guid.Empty,
+                        Descripion = reader["Description"] != DBNull.Value ? (string)reader["Description"] : string.Empty,
+                        requisitionSeries = reader["RequisitionSeries"] != DBNull.Value ? (string)reader["RequisitionSeries"] : string.Empty,
+                        Date = reader["CreatedAt"] != DBNull.Value ? ((DateTime)reader["CreatedAt"]).Date : default(DateTime),
+
+                    });
+                }
+
+                return prod;
+
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+
+            }
+            finally
+            {
+                connection.Close();
+            }
+        }
+
+
+
+        public List<AddPurchaseRequisition> ViewCompletedProductionOrder()
+        {
+            try
+            {
+                List<AddPurchaseRequisition> prod = new();
+                string connectionstring = configuration.GetConnectionString("DefaultConnectionString");
+                connection = new SqlConnection(connectionstring);
+                SqlCommand cmd = new();
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.CommandText = $"SELECT r.RequisitionID, r.Description, r.RequisitionSeries, r.CreatedAt FROM Requisitions r JOIN ProductionOrder po ON po.SalesForcastID = r.RequisitionID WHERE r.RequisitionType = 1 AND r.RequisitionStatus = 4 GROUP BY r.RequisitionID, r.Description, r.RequisitionSeries,r.CreatedAt HAVING COUNT(*) = SUM(CASE WHEN po.ProductionStatus = 4 THEN 1 ELSE 0 END)";
+                cmd.Connection = connection;
+
+
+                cmd.CommandTimeout = 300;
+                connection.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    prod.Add(new AddPurchaseRequisition
+                    {
+                        RequisitionId = reader["RequisitionID"] != DBNull.Value ? (Guid)reader["RequisitionID"] : Guid.Empty,
+                        Descripion = reader["Description"] != DBNull.Value ? (string)reader["Description"] : string.Empty,
+                        requisitionSeries = reader["RequisitionSeries"] != DBNull.Value ? (string)reader["RequisitionSeries"] : string.Empty,
+                        Date = reader["CreatedAt"] != DBNull.Value ? ((DateTime)reader["CreatedAt"]).Date : default(DateTime),
+
+                    });
+                }
+
+                return prod;
+
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+
+            }
+            finally
+            {
+                connection.Close();
+            }
+        }
+
+        public List<AddPurchaseRequisition> ViewSentRequisitions()
+        {
+            try
+            {
+                List<AddPurchaseRequisition> prod = new();
+                string connectionstring = configuration.GetConnectionString("DefaultConnectionString");
+                connection = new SqlConnection(connectionstring);
+                SqlCommand cmd = new();
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.CommandText = $"Select RequisitionID, RequisitionSeries,Description,CreatedAt From Requisitions  Where RequisitionStatus = 4";
+                cmd.Connection = connection;
+
+
+                cmd.CommandTimeout = 300;
+                connection.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    prod.Add(new AddPurchaseRequisition
+                    {
+                        RequisitionId = reader["RequisitionID"] != DBNull.Value ? (Guid)reader["RequisitionID"] : Guid.Empty,
+                        Descripion = reader["Description"] != DBNull.Value ? (string)reader["Description"] : string.Empty,
+                        requisitionSeries = reader["RequisitionSeries"] != DBNull.Value ? (string)reader["RequisitionSeries"] : string.Empty,
+                        Date = reader["CreatedAt"] != DBNull.Value ? ((DateTime)reader["CreatedAt"]).Date : default(DateTime),
+
+                    });
+                }
+
+                return prod;
+
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+
+            }
+            finally
+            {
+                connection.Close();
+            }
+        }
+
+
+
+
+        public List<AddPurchaseRequisition> GetRequisitionItemsListData(Guid RequisitionID)
+        {
+            try
+            {
+                List<AddPurchaseRequisition> prod = new();
+                string connectionstring = configuration.GetConnectionString("DefaultConnectionString");
+                connection = new SqlConnection(connectionstring);
+                SqlCommand cmd = new();
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.CommandText = $" SELECT  it.ItemName, it.HSN, it.Specification, it.UnitOfMeasure,ri.RequisitionID, ri.Quantity FROM Items it JOIN RequisitionItems ri ON it.ItemId = ri.ItemId Where ri.RequisitionID = '{RequisitionID}'";
+                cmd.Parameters.AddWithValue("@RequisitionID", RequisitionID);
+                cmd.Connection = connection;
+
+                cmd.CommandTimeout = 300;
+                connection.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    prod.Add(new AddPurchaseRequisition
+                    {
+
+                        RequisitionId = reader["RequisitionID"] != DBNull.Value ? (Guid)reader["RequisitionID"] : Guid.Empty,
+
+                        itemName = reader["ItemName"] != DBNull.Value ? (string)reader["ItemName"] : string.Empty,
+                     
+                        hsn = reader["HSN"] != DBNull.Value ? (string)reader["HSN"] : string.Empty,
+
+
+                        quantity = reader["Quantity"] != DBNull.Value ? Convert.ToDecimal(reader["Quantity"]) : 0m,
+                        specification = reader["Specification"] != DBNull.Value ? (string)reader["Specification"] : string.Empty,
+                        unitofmeasure = reader["UnitOFMeasure"] != DBNull.Value ? (string)reader["UnitOFMeasure"] : string.Empty,
+
+                    });
+                }
+
+                return prod;
+
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+
+            }
+            finally
+            {
+                connection.Close();
+            }
+        }
+
+
+
+        public List<AddPurchaseRequisition> GetRequisitionItemsListStatus(Guid RequisitionID)
+        {
+            try
+            {
+                List<AddPurchaseRequisition> prod = new();
+                string connectionstring = configuration.GetConnectionString("DefaultConnectionString");
+                connection = new SqlConnection(connectionstring);
+                SqlCommand cmd = new();
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.CommandText = $"SELECT  it.ItemName, it.HSN, it.Specification,ps.StatusName, it.UnitOfMeasure,ri.RequisitionID, ri.Quantity FROM Items it  JOIN ProductionOrder po ON it.ItemId = po.ProductID LEFT JOIN ProductionStatuses ps ON po.ProductionStatus =ps.ProductionStatus LEFT JOIN RequisitionItems ri ON po.SalesForcastID = ri.RequisitionID Where po.SalesForcastID  = '{RequisitionID}'";
+                cmd.Parameters.AddWithValue("@RequisitionID", RequisitionID);
+                cmd.Connection = connection;
+
+                cmd.CommandTimeout = 300;
+                connection.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    prod.Add(new AddPurchaseRequisition
+                    {
+
+                        RequisitionId = reader["RequisitionID"] != DBNull.Value ? (Guid)reader["RequisitionID"] : Guid.Empty,
+
+                        itemName = reader["ItemName"] != DBNull.Value ? (string)reader["ItemName"] : string.Empty,
+
+                        hsn = reader["HSN"] != DBNull.Value ? (string)reader["HSN"] : string.Empty,
+
+
+                        quantity = reader["Quantity"] != DBNull.Value ? Convert.ToDecimal(reader["Quantity"]) : 0m,
+                        specification = reader["Specification"] != DBNull.Value ? (string)reader["Specification"] : string.Empty,
+                         status = reader["StatusName"] != DBNull.Value ? (string)reader["StatusName"] : string.Empty,
+                        unitofmeasure = reader["UnitOFMeasure"] != DBNull.Value ? (string)reader["UnitOFMeasure"] : string.Empty,
+
+                    });
+                }
+
+                return prod;
+
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+
+            }
+            finally
+            {
+                connection.Close();
+            }
+        }
+
+
+
+
+
+        public bool UpdateRequisitionTypeAndSentToProduction(Guid RequisitionId)
+        {
+            try
+            {
+                String ConnectionString = configuration.GetConnectionString("DefaultConnectionString");
+                connection = new SqlConnection(ConnectionString);
+                SqlCommand cmd = new SqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.CommandText = $"Update Requisitions Set  RequisitionStatus = 4 where RequisitionID = '{RequisitionId}'";
+
+
+
+                cmd.Connection = connection;
+                connection.Open();
+                cmd.ExecuteScalar();
+                connection.Close();
+
+
+
+                return true;
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                connection.Close();
+            }
+        }
 
         public Warehouse GetWarehouseLocation(int locationId)
         {
@@ -230,6 +553,38 @@ namespace ERP_Component_DAL.Services
 
 
         }
+
+
+
+        public bool CreateProductionOrder(Guid RequisitionId)
+        {
+            try
+            {
+                string connectionstring = configuration.GetConnectionString("DefaultConnectionString");
+
+                using (SqlConnection connection = new SqlConnection(connectionstring))
+                {
+                    using (SqlCommand cmd = new SqlCommand("CreateProductionOrder", connection))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+
+
+                        cmd.Parameters.AddWithValue("@RequisitionId", RequisitionId);
+
+                        connection.Open();
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+
 
         public bool UpdateWarehouseLocation(Warehouse warehouse)
         {
@@ -544,6 +899,40 @@ namespace ERP_Component_DAL.Services
                 connection.Close();
             }
         }
+
+
+
+        public bool AllocateToSalesFromWarehouse(Guid salesForcastId)
+        {
+
+            try
+            {
+                string connectionstring = configuration.GetConnectionString("DefaultConnectionString");
+
+                using (SqlConnection connection = new SqlConnection(connectionstring))
+                {
+                    using (SqlCommand cmd = new SqlCommand("AllocateToSalesFromWarhouse", connection))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+
+                        cmd.Parameters.AddWithValue("SalesForecastID", salesForcastId);
+
+
+                        connection.Open();
+                        cmd.ExecuteNonQuery();
+
+
+                    }
+                }
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
+
 
     }
 }

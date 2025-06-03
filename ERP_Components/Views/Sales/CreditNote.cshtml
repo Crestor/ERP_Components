@@ -1,0 +1,181 @@
+﻿@using ERP_Component_DAL.Models
+@{
+    ViewBag.Title = "AddCreditNote";
+    Layout = "~/Views/Shared/_LayoutINV.cshtml";
+}
+
+<link rel="stylesheet" href="~/css/ProductTwo.css" />
+
+@* 
+<div class="toggle-buttons" style="margin-left: 28px;">
+    <button type="button" class="button" onclick="showSection('basic')">Basic Details</button>
+    <button type="button" class="button" onclick="showSection('additional')" style="margin-left:10px;">Additional Details</button>
+</div> *@
+
+<form method="" asp-action="SetCreditNote" asp-controller="Sales">
+
+    <!-- BASIC DETAILS SECTION -->
+    <div class="form-section">
+        <h3>Basic Details</h3>
+        <div class="form-row">
+                <label for="orderSeries">OrderSeries ID</label>
+                <input type="text" id="orderSeriesID" name="OrderSeriesID" >
+           
+            
+                <label for="creditNoteFor">Credit Note For</label>
+                <select id="creditNoteFor" name="CreditNoteFor" >
+                    <option selected value="">Select</option>
+
+                    <option value="customer">Customer</option>
+                    <option value="vendor">Vendor</option>
+                </select>
+            </div>
+        <div class="form-row">
+                <label for="creditNoteType">Credit Note Type</label>
+                <select id="creditNoteType" name="CreditNoteType">
+                    <option  selected value="">Select</option>
+                    <option value="sales return">Sales Return</option>
+                    <option value="post sales discount">Post Sales Discount</option>
+                    <option value="Deficiency in same">Deficiency in same</option>
+                    <option value="Correcting In Invoice">Correcting In Invoice</option>
+                    <option value="Change in POS">Change in POS</option>
+
+                    <option value="other">Other</option>
+                </select>
+
+                <label for="creditNote">Credit Note Date</label>
+                <input type="date" id="creditNoteDate" name="CreditNoteDate">
+         
+       </div>
+        <div class="form-row">
+        @* <div class="form-row" style="display: flex; justify-content: space-between; padding-left: 72px; padding-right: 209px;"> *@
+                <label for="customerName">Customer Name</label>
+                <input type="text" id="customerName" name="CustomerName" >
+            
+       
+                <label for="invoiceNumber">Invoice Number</label>
+                <input type="text" id="invoiceNumber" name="InvoiceNumber" >
+        
+     </div>
+
+   </div>
+        <!-- SHIPPING DETAILS SECTION -->
+    <div class="form-section">
+        
+        <h3>Shipping Details</h3>
+        <div class="form-row">
+   
+                <label for="numberOfCartons">Number of Cartons</label>
+                <input type="number" id="numberOfCartons" name="NumberOfCartons" >
+       
+                <label for="lorryReceiptNumber">Lorry Receipt Number</label>
+                <input type="text" id="lorryReceiptNumber" name="LorryReceiptNumber">
+            </div>
+        <div class="form-row">
+                <label for="lorryReceiptDate">Lorry Receipt Date</label>
+                <input type="date" id="lorryReceiptDate" name="LorryReceiptDate">
+      
+        
+                <label for="modeOfShipment">Mode of Shipment</label>
+                <input type="text" id="modeOfShipment" name="ModeOfShipment" >
+            </div>
+        <div class="form-row" style="width:50%">
+                <label for="remarks">Remarks</label>
+                <input type="text" id="remarks" name="Remarks" >
+       
+    </div>
+    </div>
+    <!-- ADDITIONAL DETAILS SECTION -->
+    <div class="form-section">
+
+        <h3>Additional Details</h3>
+        <div class="form-row">
+ 
+                <label for="costCenter">Cost Center</label>
+                <select id="costCenter" name="CostCenter">
+                    <option value="">-- Select Cost Center --</option>
+                    <option value="Account">Account</option>
+                    <option value="Products">Products</option>
+                    <option value="Service">Service</option>
+                    @* <option value="admin">Admin</option> *@
+                </select>
+            
+                <label for="location">Location</label>
+                <input type="text" id="location" name="Location">
+             </div>
+        <div class="form-row" style="width:50%">
+                <label for="noteId">Customer/Vendor Note ID</label>
+                <input type="text" id="noteId" name="VenderNoteId">
+            </div>
+       
+</div>
+    <div>
+        <button class="button" type="submit" style=" float: right;margin-top: 18px;margin-right: 47px; margin-bottom: 13px;  background-color:#138496;color: white;">
+            submit
+        </button>
+    </div>
+
+</form>
+
+
+<script>
+
+    document.addEventListener("DOMContentLoaded", function () {
+        const orderInput = document.getElementById("orderSeriesID");
+        const year = new Date().getFullYear();
+        let nextNumber = 1;
+
+        // Get the last order series from localStorage
+        let lastOrder = localStorage.getItem("lastQuotationSeries");
+
+        if (lastOrder) {
+            let parts = lastOrder.split("-");
+            let lastYear = parseInt(parts[1]);
+            let lastNum = parseInt(parts[2]);
+
+            if (lastYear === year) {
+                nextNumber = lastNum + 1;
+            }
+        }
+
+        const newSeries = `CDN-${year}-${String(nextNumber).padStart(4, "0")}`;
+
+        // Set the input values
+        orderInput.value = newSeries;
+
+        // Store the new series in localStorage
+        localStorage.setItem("lastQuotationSeries", newSeries);
+    });
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+@* <script>
+    function showSection(section) {
+        const basic = document.getElementById('basicSection');
+        const additional = document.getElementById('additionalSection');
+
+        if (section === 'basic') {
+            basic.style.display = 'block';
+            additional.style.display = 'none';
+        } else {
+            basic.style.display = 'none';
+            additional.style.display = 'block';
+        }
+    }
+
+    // Default view is Basic Section
+    window.onload = function () {
+        showSection('basic');
+    };
+</script> *@
+

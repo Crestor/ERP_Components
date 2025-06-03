@@ -1,0 +1,60 @@
+﻿@using ERP_Component_DAL.Models
+
+@{
+    ViewBag.Title = "";
+    Layout = "~/Views/Shared/_LayoutINV.cshtml";
+}
+
+<link rel="stylesheet" href="~/css/ProductTwo.css" />
+
+@model List<ReturnNote>
+@{
+    var a = ViewBag.loaded;
+}
+<form method="post" asp-action="SetReturnNote" asp-controller="SalesController">
+    <h2>Basic Details</h2>
+    <div class="cntr" style="display:flex;margin-left: 32px;">
+        <label>Delivery Challan ID :</label>
+        <input type="text" id="DeliveryChallanID" name="DeliveryChallanID" style="margin-left: 156px; margin-top:11px; width: 228px !important;">
+    </div>
+
+
+    <div class="cntr">
+        <table>
+            <thead>
+                <tr>
+                    <th>S.No</th>
+                    <th>Item</th>
+
+                    <th>Quantity</th>
+                    <th>UOM</th>
+                    <th>Returnable Quantity</th>
+                    <th>Action</th>
+
+                </tr>
+            </thead>
+            <tbody>
+                @*  @for (var i = 0; i < Model.Count; i++)
+            {
+
+                var x = Model[i];
+                var index = i + 1;  *@
+
+                <tr>
+                    <td>1</td>
+                    <td><input type="text" id="" name="ProductName" /> </td>
+                    <td><input type="text" id="" name="Quantity" /> </td>
+                    <td><input type="text" id="" name="UOM" /> </td>
+                    <td><input type="text" id="" name="ReturnableQuantity" /> </td>
+                    @* <td><input type="text" id="" name="" /> </td> *@
+                    <td>
+                        
+
+                    </td>
+                </tr>
+                 }  
+            </tbody>
+        </table>
+                       
+    </div>
+</form>

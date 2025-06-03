@@ -1,0 +1,137 @@
+﻿@using ERP_Component_DAL.Models;
+@{
+    ViewBag.Title = "Production Order";
+    Layout = "~/Views/Shared/_LayoutINV.cshtml";
+}
+
+@model List<Production>
+<link rel="stylesheet" href="~/css/Product.css">
+
+<div class="button-container" style="margin-bottom:20px; display:flex; justify-content:space-around">
+    <button onclick="showSection('pending')">Pending</button>
+    <button onclick="showSection('complete')">Complete</button>
+    <button onclick="showSection('inprogress')">In Progress</button>
+</div>
+
+<div class="vendor-section">
+
+    @* Pending Orders *@
+    @{
+        var pendingOrders = Model.Where(x => x.productStatus == 1).ToList();
+    }
+    <div class="table" id="pending" style="display: block;">
+      
+        <table>
+            <thead>
+                <tr>
+                    <th>Sr no.</th>
+                    <th>Product Name</th>
+                    <th>Quantity</th>
+                    <th>Order Date</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (var i = 0; i < pendingOrders.Count; i++)
+                {
+                    var x = pendingOrders[i];
+                    var index = i + 1;
+                    <tr id="row-@x.productionOrderId">
+                        <td>@index</td>
+                        <td>@x.productName</td>
+                        <td>@x.quantity</td>
+                        <td>@x.createdAt.ToShortDateString()</td>
+                        <td>
+                            <div class="button">
+                            <button onclick="location.href='@Url.Action("ViewProductionOrderDetail","Production", new { ProductionOrderId = x.productionOrderId })'">View Material</button>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    @* Completed Orders *@
+    @{
+        var completedOrders = Model.Where(x => x.productStatus == 3).ToList();
+    }
+    <div class="table" id="complete" style="display: none;">
+        <table>
+            <thead>
+                <tr>
+                    <th>Sr no.</th>
+                    <th>Product Name</th>
+                    <th>Quantity</th>
+                    <th>Order Date</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (var i = 0; i < completedOrders.Count; i++)
+                {
+                    var x = completedOrders[i];
+                    var index = i + 1;
+                    <tr id="row-@x.productionOrderId">
+                        <td>@index</td>
+                        <td>@x.productName</td>
+                        <td>@x.quantity</td>
+                        <td>@x.createdAt.ToShortDateString()</td>
+                        <td>
+                            <div class="button">
+                                <button onclick="location.href='@Url.Action("DispatchProductionOrder","Production", new { ProductionOrderId = x.productionOrderId, productId = @x.productId })'">Dispatch</button>
+                       </div>
+
+                       </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    @* In Progress Orders *@
+    @{
+        var inProgressOrders = Model.Where(x => x.productStatus == 2).ToList();
+    }
+    <div class="table" id="inprogress" style="display: none;">
+        <table>
+            <thead>
+                <tr>
+                    <th>Sr no.</th>
+                    <th>Product Name</th>
+                    <th>Quantity</th>
+                    <th>Order Date</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (var i = 0; i < inProgressOrders.Count; i++)
+                {
+                    var x = inProgressOrders[i];
+                    var index = i + 1;
+                    <tr id="row-@x.productionOrderId, @x.productId">
+                        <td>@index</td>
+                        <td>@x.productName</td>
+                        <td>@x.quantity</td>
+                        <td>@x.createdAt.ToShortDateString()</td>
+                        <td>
+                            <div class="button">
+                                <button onclick="location.href='@Url.Action("UpdateProductionStage","Production", new { ProductionOrderId = x.productionOrderId, productId = x.productId})'">View Stages</button>
+                       </div>
+                        
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+ 
+</div>
+
+<script>
+    function showSection(sectionId) {
+        document.querySelectorAll('.vendor-section > div').forEach(el => el.style.display = 'none');
+        document.getElementById(sectionId).style.display = 'block';
+    }
+</script>
+

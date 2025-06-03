@@ -1,0 +1,105 @@
+﻿@using ERP_Component_DAL.Models;
+@* @model List<Contact> *@
+@{
+    ViewBag.Title = "View Customer";
+    Layout = "~/Views/Shared/_LayoutINV.cshtml";
+}
+
+<link rel="stylesheet" href="~/css/CustomerTables.css" />
+
+<div class="container">
+    <h1 class="page-title">Customer List</h1>zz
+    <div class="section" style="display:flex;">
+        <div class="field">
+
+            <select id="Customer" name="CustomerName">
+                <option disabled selected>Search Customer Name</option>
+                @* @foreach (var i in Model) *@
+                @* { *@
+                @*     <option value="@i.CustomerName">@i.CustomerName</option> *@
+                @* } *@
+            </select>
+
+            <button class="button-search" type="submit">Search</button>
+            <button class="button-reset" type="submit">Reset</button>
+
+
+        </div>
+
+    </div>
+
+    <table id="myTable" class="styled-table">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Customer Name</th>
+                <th>Contact No</th>
+                <th>AlterNate Contact No</th>
+                <th>Email </th>
+                <th>Alternate ContactNo</th>
+                <th>Social Media Account</th>
+                <th>Whatshapp No</th>
+
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+           @*  @for (var i = 0; i < Model.Count; i++)
+            {
+                var x = Model[i];
+                <tr>
+                    <td>@(i + 1)</td>
+
+                    <td>@x.CustomerName</td>
+                    <td>@x.ContactNo</td>
+                    <td>@x.AlterContactNo</td>
+                    <td>@x.Email</td>
+                    <td>@x.CompanyEmail</td>
+                    <td>@x.Social</td>
+                    <td>@x.Whatsapp</td>
+                    <td class="action-buttons">
+
+                        <button class="button-edit" onclick="location.href='@Url.Action("EditContact", "Home", new { CustomerId = x.CustomerId })'">Edit</button>
+                        <button class="button-delete" onclick="openDeleteModal('@x.CustomerId')">Delete</button>
+
+                    </td>
+                </tr>
+            } *@
+        </tbody>
+    </table>
+</div>
+
+
+
+<div id="deleteModal" class="modal" style="display: none;">
+
+    <div class="modal-content">
+        <h3>Confirm Delete</h3>
+        <p>Are you sure you want to delete this Customer?</p>
+        <input type="hidden" id="CustomerId">
+
+        <div class="modal-buttons">
+            <button onclick="closeModal()">Cancel</button>
+            <button onclick="DeleteCustomer()">Confirm</button>
+
+        </div>
+    </div>
+</div>
+
+
+<script>
+
+    function openDeleteModal(CustomerId) {
+        document.getElementById("CustomerId").value = CustomerId;
+        document.getElementById("deleteModal").style.display = "flex";
+    }
+
+    function closeModal() {
+        document.getElementById("deleteModal").style.display = "none";
+    }
+
+    function DeleteCustomer() {
+        var id = document.getElementById("CustomerId").value;
+        window.location.href = '/Home/DeleteContactDetails?CustomerId=' + id;
+    }
+</script>

@@ -2,34 +2,37 @@
 <link rel="stylesheet" href="~/css/Product.css" />
 
 @model List<Category>
+@{
+    ViewBag.Title = "Master";
+    Layout = "~/Views/Shared/_LayoutINV.cshtml";
+}
 
-<div class="header1">
-    <h4>Add Category</h4>
-</div>
-
-
-<div class="tab-buttons">
-    <button class="tab-button" onclick="showSection('product')">
-        Add Product Category
-    </button>
-    <button class="tab-button" onclick="showSection('material')">
-        Add Material Category
-    </button>
-</div>
+ 
+    @* <h4>Add Category</h4> *@
 
 
+@* <div class="tab-buttons"> *@
+@*     <button class="tab-button" onclick="showSection('product')"> *@
+@*         Add Product Category *@
+@*     </button> *@
+@*     <button class="tab-button" onclick="showSection('material')"> *@
+@*         Add Material Category *@
+@*     </button> *@
+@* </div> *@
 
 
-<div class="container" id="product" style="display: block;">
 
 
-    <div style="display:flex; justify-content:center; align-items:center;margin:auto">
-        <h3>Add Product Category</h3>
-    </div>
+@* <div class="container" id="product" style="display: block;"> *@
+
+
+    @* <div style="display:flex; justify-content:center; align-items:center;margin:auto"> *@
+    @*     <h3>Add Product Category</h3> *@
+    @* </div> *@
     <form method="post" asp-action="AddCategory" asp-controller="Inventory" onsubmit="return savedDetail()">
         <div class="form-section">
-            <h3>Category Info</h3>
-            <div class="form-row">
+            <h3>Add Category </h3>
+            <div class="form-row" style="width:50%">
 
               
                 <label class="required">Category Name</label>
@@ -37,36 +40,22 @@
                 <input type="hidden" name="formType" value="product" />
 
 
-                <label class="required">Category Code</label>
-                <input type="text" name="categoryCode" placeholder="Enter Category code" />
+                @* <label class="required">Category Code</label> *@
+                @* <input type="text" name="categoryCode" placeholder="Enter Category Code" /> *@
               
             </div>
-            <div class="form-row">
-
-            
-
-                <label class="required">Category Description</label>
-                <textarea name="categoryDescription" style="width: 33%;" placeholder="Enter product Description"></textarea>
-                <label class="required">Is Active</label>
-                <select name="isActive" required>
-                    <option selected disabled>select</option>
-                    <option>yes</option>
-                    <option>NO</option>
-                </select>
-
-            </div>
            
-        </div>
-            <div class="button-container">
+            <div class="button">
                 <button type="submit">Submit</button>
             </div>
+        </div>
     </form>
-</div>
+@* </div> *@
 
 
 
 
-
+@* 
 
 <div class="container" id="material" style="display: none;">
 
@@ -107,8 +96,34 @@
             <button type="submit">Submit</button>
         </div>
     </form>
-</div>
+</div> *@
 
+
+
+<div class="table">
+    <table>
+        <thead>
+            <tr>
+                <th>S.No.</th>
+                <th>Category Name</th>
+               
+
+            </tr>
+        </thead>
+ 
+            <tbody>
+            @for (var i = 0; i < Model.Count; i++)
+            {
+                var x = Model[i];
+                <tr>
+                    <td>@(i + 1)</td>
+                    <td>@x.categoryName</td>
+                   
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
 
 <script>
 

@@ -1,0 +1,70 @@
+﻿@using ERP_Component_DAL.Models
+
+@{
+    ViewBag.Title = " Edit Return Note";
+    Layout = "~/Views/Shared/_LayoutINV.cshtml";
+}
+
+<link rel="stylesheet" href="~/css/ProductTwo.css" />
+
+@model ReturnNote
+
+<form method="post" asp-action="UpdateReturnNote" asp-controller="Sales">
+
+    <div class="form-section">
+        <h3>Basic Details</h3>
+        <div class="form-row" style="width:50%">
+            <label>Delivery Challan ID :</label>
+        <input type="text" id="DeliveryChallanID" name="DeliveryChallanID" value="@Model.DeliveryChallanID" >
+        </div>
+    </div>
+
+<div class="table">
+    <table>
+        <thead>
+            <tr>
+                <th>S.No</th>
+                <th>Item</th>
+
+                <th>Quantity</th>
+                <th>UOM</th>
+                <th>Returnable Quantity</th>
+                <th>Action</th> 
+
+            </tr>
+        </thead>
+        <tbody>
+            
+                <tr>
+                    <td>1</td>
+                    <td><input type="text" id="" name="ItemName" value="@Model.ItemName" style="width:200px" /> </td>
+                    <td><input type="number" id="" name="Quantity" value="@Model.Quantity" /> </td>
+                    <td><input type="text" id="" name="UOM" value="@Model.UOM" /> </td>
+                    <td><input type="number" id="" name="ReturnableQuantity" value="@Model.ReturnableQuantity" /> </td>
+                    @* <td><input type="text" id="" name="" /> </td> *@
+                  <td>
+                        <button type="submit" class="button" style="background-color:#138496;color: white;">Update</button>
+
+                        @* <button type="submit" class="button">Add</button>  *@
+                    </td>
+                </tr>
+                @* }  *@
+        </tbody>
+    </table>
+        <input type="text" name="ReturnNoteId" value="@Model.ReturnNoteId" hidden />
+    </div>
+</form>
+@* <script>
+   
+      function savedDetail(){
+                Swal.fire({
+      position: "center",
+      icon: "success",
+      title: "Your work has been saved",
+      showConfirmButton: false,
+      timer: 10000
+    });
+    }
+</script>
+ *@
+

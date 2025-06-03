@@ -1,0 +1,60 @@
+﻿@using ERP_Component_DAL.Models;
+@model Contact;
+<link rel="stylesheet" href="~/css/Customer.css" />
+
+@{
+    ViewBag.Title = "Customer";
+    Layout = "~/Views/Shared/_LayoutINV.cshtml";
+}
+@* <h3>Contact Details</h3> *@
+<form asp-action="EditContact" asp-controller="Home">
+    <div class="personal">
+        <div class="row">
+            <div class="field">
+                <label for="contactNo">Contact Number<span class="required">*</span></label>
+                <input type="number" id="contactNo" name="ContactNo" placeholder="Enter Contact No" required>
+            </div>
+            <div class="field">
+                <label for="contactNo">Alternate Contact Number<span class="required">*</span></label>
+                <input type="number" id="contactNo" name="AlterContactNo" placeholder="Enter AlternateContact "equired>
+            </div>
+            <div class="field">
+                <label for="Email">Email<span class="required">*</span></label>
+
+                <input type="email" name="Email" placeholder="Enter email" >
+
+            </div>
+        </div>
+        <div class="row">
+            <div class="field">
+                <label for="Email">Company Email</label>
+
+                <input type="email" name="CompanyEmail" placeholder="Enter Company email" >
+
+            </div>
+
+            <div class="field">
+                <label for="Social">Social Media Account</label>
+
+                <input type="text" name="Social" placeholder="Enter Social Media Account" >
+            </div>
+            <div class="field">
+                <label for="Social">Whatsapp Number</label>
+
+                <input type="text" name="Whatsapp" placeholder="Enter your Whatsapp number" >
+            </div>
+            <div class="row">
+                <div class="field">
+                    <label for="CustomerName">Customer Name</label>
+                    <input id="Customer" name="CustomerName"  />
+                </div>
+            </div>
+            <div class="button">
+                <button type="submit">Submit</button>
+            </div>
+
+        </div>
+    </div>
+</form>
+
+

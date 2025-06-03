@@ -2,81 +2,59 @@
 
 @{
     ViewBag.Title = "Stock Adjustments";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    Layout = "~/Views/Shared/_LayoutINV.cshtml";
 
     }
 
-    <link href="~/css/Stock.css" rel="stylesheet" />
+    <link href="~/css/Product.css" rel="stylesheet" />
 
 
-<div class="adjustment-section">
-    <div class="header1">
-        <h4>Stock Adjustment</h4>
-    </div>
-
+<div class="table">
+    
     @* @if (TempData["Message"] != null) *@
     @* { *@
     @*     <div class="message">@TempData["Message"]</div> *@
     @* } *@
-
-    <table class="adjustment-table">
+    <table>
         <thead>
             <tr>
-                <th>ID</th>
-                <th>Product</th>
-                <th>Warehouse</th>
-                <th>Quantity Change</th>
+                <th>Item ID</th>
+                <th>Item Name</th>
+                <th>Previous Quantity</th>
+                <th>Adjusted Quantity</th>
+                <th>New Quantity</th>
                 <th>Reason</th>
-                <th>Adjustment Date</th>
-                <th colspan="2">Action</th>
+                <th>Date</th>
             </tr>
         </thead>
         <tbody>
-            @* @for (int i = 0; i < Model.Count; i++) *@
-            @* { *@
-                <tr>
-                    <form asp-action="UpdateStockAdjustment" asp-controller="Home" method="post">
-                    <td>
-                            @* @Model[i].AdjustmentId *@
-                        <input type="hidden" name="AdjustmentId"
-                            @* value="@Model[i].AdjustmentId"  *@
-
-                            />
-                    </td>
-                    <td>
-                        @* @Model[i]. *@
-                        ProductName</td>
-                    <td>
-                        <input type="text" name="WarehouseName" 
-                            @* value="@Model[i].WarehouseName" required  *@
-                                />
-                    </td>
-                    <td>
-                        <input type="number" name="QuantityChange" 
-                            @* value="@Model[i].QuantityChange" required  *@
-                                />
-                    </td>
-                    <td>
-                        <input type="text" name="Reason"
-                            @* value="@Model[i].Reason" required  *@
-                        />
-                    </td>
-                    <td>
-                        @* @Model[i].AdjustmentDate.ToString("yyyy-MM-dd HH:mm") *@
-</td>
-                    <td>
-                        <button type="submit" class="btn-update">Update</button>
-                    </td>
-                    </form>
-
-                    <form asp-action="DeleteStockAdjustment" asp-controller="Home" method="post" onsubmit="return confirm('Delete this adjustment?');">
-                    <td>
-                        <input type="hidden" name="AdjustmentId"  />
-                        <button type="submit" class="btn-delete">Delete</button>
-                    </td>
-                    </form>
-                </tr>
-            @* } *@
+            <tr>
+                <td>1001</td>
+                <td>Wireless Mouse</td>
+                <td>50</td>
+                <td>-5</td>
+                <td>45</td>
+                <td>Damaged</td>
+                <td>2025-05-29</td>
+            </tr>
+            <tr>
+                <td>1002</td>
+                <td>Mechanical Keyboard</td>
+                <td>30</td>
+                <td>+10</td>
+                <td>40</td>
+                <td>Restock</td>
+                <td>2025-05-30</td>
+            </tr>
+            <tr>    
+                <td>1003</td>
+                <td>Gaming Headset</td>
+                <td>20</td>
+                <td>-2</td>
+                <td>18</td>
+                <td>Lost Item</td>
+                <td>2025-05-31</td>
+             </tr>
         </tbody>
     </table>
 </div>

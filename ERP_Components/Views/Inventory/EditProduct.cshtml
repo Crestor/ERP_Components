@@ -2,13 +2,13 @@
 
 
 @{
-    ViewBag.Title = "Add Material";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Edit Product";
+    Layout = "~/Views/Shared/_LayoutINV.cshtml";
 }
 <link rel="stylesheet" href="~/css/Product.css">
 @model Items
-<div class="header1">
-    <h4>Edit Product</h4>
+ 
+    @* <h4>Edit Product</h4> *@
 </div>
 
 <div id="material" class="container">
@@ -54,7 +54,7 @@
             <div class="form-row">
                 <label for="price">Unit Price:</label>
                 <input type="text" name="unitPrice" value="@Model.unitPrice" />
-                <label for="cost">Cost Price:</label>
+                <label for="cost">unit Price:</label>
                 <input type="text" name="costPrice" value="@Model.costPrice" />
             </div>
             <div class="form-row">

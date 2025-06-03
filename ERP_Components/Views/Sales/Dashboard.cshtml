@@ -1,0 +1,101 @@
+﻿@using ERP_Component_DAL.Models
+@using ERP_Components
+@{
+    ViewBag.Title = "DashBoard";
+    Layout = "~/Views/Shared/_LayoutINV.cshtml";
+}
+
+<link rel="stylesheet" href="~/css/Product.css">
+
+<div class="container-fluid mt-4">
+    <h2 class=" mb-4">Sales Management Dashboard</h2>
+
+    <div class="row mb-4">
+        <div class="col-md-3">
+            <div class="card ">
+                <div class="card-body">
+                    <h5>Total Sales</h5>
+                    <h3 style="color:#ad4b4b">₹1,20,000</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card ">
+                <div class="card-body">
+                    <h5>Customers</h5>
+                    <h3 style="color:#ad4b4b">350</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card">
+                <div class="card-body">
+                    <h5>Orders</h5>
+                    <h3 style="color:#ad4b4b">680</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card ">
+                <div class="card-body">
+                    <h5>Pending Orders</h5>
+                    <h3 style="color:#ad4b4b">24</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">Monthly Revenue Trend</h5>
+                    <canvas id="revenueChart" height="100"></canvas>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">Top Selling Products</h5>
+                    <ul class="list-group">
+                        <li class="list-group-item">Product A - ₹50,000</li>
+                        <li class="list-group-item">Product B - ₹30,000</li>
+                        <li class="list-group-item">Product C - ₹20,000</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        const ctx = document.getElementById('revenueChart').getContext('2d');
+        const revenueChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May'],
+                datasets: [{
+                    label: 'Revenue (₹)',
+                    data: [10000, 20000, 15000, 30000, 40000],
+                    borderColor: 'dark',
+                    backgroundColor: '#ad4b4b',
+                    fill: true,
+                    tension: 0.3
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    </script>
+}
+
+

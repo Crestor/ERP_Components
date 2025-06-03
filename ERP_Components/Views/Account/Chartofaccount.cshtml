@@ -1,0 +1,94 @@
+﻿@{
+    ViewBag.Title = "Chart Of Account";
+    Layout = "~/Views/Shared/_LayoutINV.cshtml";
+}
+
+
+<link rel="stylesheet" href="~/css/Product.css" />
+<form asp-action="addaccount" asp-controller="Account" method="post">
+    <div class="form-section" style="margin-bottom: 0px;
+    border-bottom: 0px;
+    box-shadow: 0px 0px 0px;">
+        <h3>Basic Details</h3>
+               <div class="form-row">
+                <label class="required" for="accountcode"> Account Code : </label>
+                <input type="text" name="accountcode" required />
+                <label class="required" for="Accountname"> Account Name : </label>
+                <input type="text" name="Accountname" required />
+              </div>
+            <div class="form-row"style="width:50%">
+                <label class="required" for="groupname"> Group Name : </label>
+                <select class="form-control" name="groupname" id="AccountGroupDropdown" onchange="GroupSelectEvent()">
+                    <option value="">Select</option>
+                    <option value="Advances From Customers">Advances From Customers</option>
+                    <option value="Bank Account">Bank Account</option>
+                    <option value="Bank OD/OCC Account">Bank OD/OCC Account</option>
+                    <option value="Branch/Division">Branch/Division</option>
+                    <option value="Capital Account">Capital Account</option>
+                    <option value="Cash In Hand">Cash In Hand</option>
+                    <option value="Current Assets">Current Assets</option>
+                    <option value="Current Liabilities">Current Liabilities</option>
+                    <option value="Deposit Assets">Deposit Assets</option>
+                    <option value="Direct Expenses">Direct Expenses</option>
+                    <option value="Direct Income">Direct Income</option>
+                    <option value="Duties &amp; Taxes">Duties &amp; Taxes</option>
+                    <option value="Fixed Assets">Fixed Assets</option>
+                    <option value="Interest Account">Interest Account</option>
+                    <option value="Indirect Expenses">Indirect Expenses</option>
+                    <option value="Indirect Income">Indirect Income</option>
+                    <option value="Investment">Investment</option>
+                    <option value="Loan & Advances Assets">Loan & Advances Assets</option>
+                    <option value="Misc. Expenses Assets">Misc. Expenses Assets</option>
+                    <option value="Provisions">Provisions</option>
+                    <option value="Purchase">Purchase</option>
+                    <option value="Reserves &amp; Surplus">Reserves &amp; Surplus</option>
+                    <option value="Sales">Sales</option>
+                    <option value="Secured Loan">Secured Loan</option>
+                    <option value="Suspense Account">Suspense Account</option>
+                    <option value="Unsecured Loan">Unsecured Loan</option>
+
+                </select>
+
+            </div>
+    </div>
+    <div class="form-section" style="margin-top: 0px;
+    border-top: 0px;
+    box-shadow: 0px 3px 2px #138496;">
+        <h3>Additional Details</h3>
+            <div class="form-row">
+                    <label class="required" for="bank"> Bank : </label>
+                    <input type="text" name="bank" required />
+                    <label class="required" for="branch"> Branch : </label>
+                    <input type="text" name="branch" required />
+                </div>
+                <div class="form-row">
+                    <label class="required" for="Accountholdername"> Account holder Name : </label>
+                    <input type="text" name="Accountholdername" required />
+                    <label class="required" for="accountnumber"> Account No : </label>
+                    <input type="text" name="accountnumber" required />
+                </div>
+                <div class="form-row">
+                    <label class="required" for="ifsc"> IFSC Code : </label>
+                    <input type="text" name="ifsc" required />
+                    <label class="required" for="balance"> Opening Balance : </label>
+                    <input type="text" name="balance" required />
+                </div>
+            <div class="form-row" style="justify-content:space-evenly;height:70px;align-items:center">
+                <div>
+                    <label style="width:151px" class="required" for="applicable"> Is GST Applicable:</label>
+                    <input type="radio" name="applicable" value="yes" required />Yes
+                    <input type="radio" name="applicable" value="no" required />No
+                </div>
+                   <div>
+                    <label class="required" for="taxtype"> Tax Type : </label>
+                    <input type="radio" name="taxtype" value="tds" required />TDS
+                    <input type="radio" name="taxtype" value="tcs" required />TCS
+                  </div>
+            </div>
+    <button style="float:right;margin:-20px 15px 10px 0px" type="submit">Submit</button>
+    </div>
+</form>
+<script>
+
+
+</script>

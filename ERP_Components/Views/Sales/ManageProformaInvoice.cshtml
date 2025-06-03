@@ -1,0 +1,81 @@
+﻿@using ERP_Component_DAL.Models
+
+@{
+    ViewBag.Title = " List  ProformaInvoice";
+    Layout = "~/Views/Shared/_LayoutINV.cshtml";
+}
+
+<link rel="stylesheet" href="~/css/ProductTwo.css" />
+
+@model List<ProformaInvoice>
+
+<div class="table">
+
+   @*  <div class="header">
+        <h2>Manage ProformaInvoice</h2>
+        <button class="button" style="margin-right: 49px;" onclick="location.href='@Url.Action("ProformaInvoice", "Sales")'">+ New ProformaInvoice</button>
+    </div> *@
+
+    <table>
+        <thead>
+            <tr>
+                <th>S.No</th>
+                <th>Customer Name</th>
+                <th>PO Date</th>
+                  <th>Status</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (var i = 0; i < Model.Count; i++)
+            {
+
+                var x = Model[i];
+                var index = i + 1;
+
+                <tr>
+                    <td>@index</td>
+                    <td>@x.CustomerName</td>
+                    <td>@x.PODate</td>
+                    <td>@x.Status</td>
+                
+
+                    <td>
+                        <button class="button" onclick="location.href='@Url.Action("EditProforma","Sales", new{ProformaInvoiceID=x.ProformaInvoiceID}, null)'" style="background-color:#138496;color: white;">Edit</button>
+                        <button class="button" onclick="Cancel('@x.ProformaInvoiceID')" style="background-color:#138496;color: white;">Delete</button>
+                        
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<script>
+
+    function Cancel(ProformaInvoiceID) {
+
+          console.log(ProformaInvoiceID);
+          const id = ProformaInvoiceID;
+          Swal.fire({
+            title: "Are you sure?",
+            text: "You won't be able to revert this!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#138496",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, Delete it!"
+          }).then((result) => {
+            if (result.isConfirmed) {
+              if (id) {
+
+                let url = `/Sales/DeleteProformaInvoice?ProformaInvoiceID=${id}`;
+
+                console.log('Redirecting to', url);
+                window.location.href = url;
+              }
+            }
+          });
+
+        }
+</script>

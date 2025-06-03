@@ -1,0 +1,121 @@
+﻿@using ERP_Component_DAL.Models
+
+@{
+    ViewBag.Title = "Manage Invoice";
+    Layout = "~/Views/Shared/_LayoutINV.cshtml";
+}
+<link rel="stylesheet" href="~/css/ProductTwo.css" />
+
+@model List<Invoice>
+
+    <div class="table">
+
+   @*  <div class="header">
+        <h2>Manage Invoice</h2>
+         <button class="button" onclick="location.href='@Url.Action("AddInvoice", "Home")'">+ New Invoice</button> 
+    </div> *@
+
+    <table>
+        <thead>
+            <tr>
+                <th>S No</th>
+                <th>Date</th>
+                <th>Due Date</th>
+                <th>Amount</th>
+                <th>Status</th>
+                <th>Customer Name</th>
+                <th>Contact Number</th>
+                <th>E-Invoice Number</th>
+                <th>E-Way Bill</th>
+                @* <th></th> *@
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (var i = 0; i < Model.Count; i++)
+            {
+
+                var x = Model[i];
+                var index = i + 1;
+
+                <tr>
+                    <td>@index</td>
+                    <td>@x.InvoiceDate</td>
+                    <td>-</td>
+                    <td>@x.GrossTotal</td>
+                    <td>@x.Status</td>
+                    <td>@x.CustomerName</td>
+                    <td>@x.ContactNumber</td>
+                    <td>@x.InvoiceNumber</td>
+                    <td>-</td>
+           
+                    <td>
+                        <select onchange="handleActionChange(this, '@x.InvoiceID', '@x.QuotationID')">
+                            <option selected disabled>Select</option>
+                            <option value="view">View</option>
+                            <option value="edit">Edit</option>
+                            <option value="delete">Delete</option>
+                        </select>
+
+                        @* <button class="button2" onclick="location.href='@Url.Action("ViewInvoice","Sales", new{InvoiceID=x.InvoiceID,QuotationID=x.QuotationID}, null)'">View</button>
+                        <button class="button1" onclick="location.href='@Url.Action("EditInvoice","Sales", new{InvoiceID=x.InvoiceID}, null)'">Edit</button>
+                        <button class="button3" onclick="CancelInvoice('@x.InvoiceID')">Cancel</button> *@
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<script>
+    function handleActionChange(selectElement, invoiceId, quotationId) {
+        const action = selectElement.value;
+
+        switch (action) {
+            case "view":
+                window.location.href = `/Sales/ViewInvoice?InvoiceID=${invoiceId}&QuotationID=${quotationId}`;
+                break;
+            case "edit":
+                window.location.href = `/Sales/EditInvoice?InvoiceID=${invoiceId}`;
+                break;
+            case "delete":
+                openRejectModal(invoiceId);
+                break;
+        }
+
+        // Reset dropdown to default
+        selectElement.selectedIndex = 0;
+    }
+</script>
+
+
+
+
+<script>
+
+    function CancelInvoice(InvoiceID) {
+
+          console.log(InvoiceID);
+          const id = InvoiceID;
+          Swal.fire({
+            title: "Are you sure?",
+            text: "You won't be able to revert this!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#138496",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, Cancel it!"
+          }).then((result) => {
+            if (result.isConfirmed) {
+              if (id) {
+
+                let url = `/Sales/CancelInvoice?InvoiceID=${id}`;
+
+                console.log('Redirecting to', url);
+                window.location.href = url;
+              }
+            }
+          });
+
+        }
+ </script>

@@ -43,19 +43,14 @@ namespace ERP_Components.Controllers
         //<----------------------Product-------------------->
 
         [HttpGet]
-        public IActionResult Product()
-        {
-            var product = new List<Product>
-    {
-        new Product
-        {
+        public IActionResult Product() { 
 
-            category = inventoryServices.getProductCategoriesName() ?? new List<Category>(),
-            warehouse = inventoryServices.getWarehouseName() ?? new List<Warehouse>()
 
-        }
-    };
-            return View(product);
+
+            List<Category> category = inventoryServices.getProductCategoriesName();
+         
+        
+            return View(category);
         }
 
         [HttpGet]
@@ -160,8 +155,8 @@ namespace ERP_Components.Controllers
         //<---------------------Category------------>
         public IActionResult Category()
         {
-         
-            return View();
+            List<Category> category = inventoryServices.ViewCategory();
+            return View(category);
        
         }
 
@@ -172,11 +167,11 @@ namespace ERP_Components.Controllers
             return RedirectToAction("Category");
         }
 
-        public IActionResult ViewCategory()
-        {
-            List<Category> category = inventoryServices.ViewProductCategory();
-            return View(category);
-        }
+        //public IActionResult ViewCategory()
+        //{
+        //    List<Category> category = inventoryServices.ViewProductCategory();
+        //    return View(category);
+        //}
 
         public JsonResult ViewMaterialCategories()
         {
@@ -210,7 +205,9 @@ namespace ERP_Components.Controllers
         //<-------------------SubCategory-------------->
         public IActionResult SubCategory()
         {
-            List<Category> category = inventoryServices.CategoryProductNames();
+            var category = new Category();
+            category.names = inventoryServices.CategoryProductNames();
+            category.list = inventoryServices.ViewSubCategory();
             return View(category);
         }
 
@@ -221,11 +218,11 @@ namespace ERP_Components.Controllers
         }
 
 
-        public JsonResult ViewMaterialSubCategories()
-        {
-            List<Category> data = inventoryServices.ViewMaterialSubCategory();
-            return Json(data);
-        }
+        //public JsonResult ViewMaterialSubCategories()
+        //{
+        //    //List<Category> data = inventoryServices.ViewMaterialSubCategory();
+        //    return Json();
+        //}
 
 
         [HttpPost]
@@ -556,6 +553,109 @@ namespace ERP_Components.Controllers
 
 
 
+        //<----------Material Order from Production------------>
+
+
+        public IActionResult MaterialOrderList()
+        {
+            List<AddPurchaseRequisition> materialList = inventoryServices.MaterialRequisitionList();
+            return View(materialList);
+        }
+
+        public IActionResult ViewMaterialRequisitionItems(Guid requisitionId)
+        {
+            List<AddPurchaseRequisition> material = inventoryServices.CheckMaterial(requisitionId);
+
+           
+            return View(material);
+        }
+
+
+        public IActionResult AllocateToProductionFromStore(Guid requisitionId)
+        {
+            inventoryServices.AllocateToProductionFromStore(requisitionId);
+           return RedirectToAction("MaterialOrderList");
+        }
+       
+
+
+
+
+        //<---------------Purchase Requisition ------------->
+
+        public IActionResult AddPurchaseRequisition(Guid RequisitionId)
+
+        {
+
+           
+            var requisition = new AddPurchaseRequisition();
+        
+            requisition.listItesms =   inventoryServices.RequisitionListItems(RequisitionId);
+            inventoryServices.UpdateMaterialRequisitionStatus(RequisitionId);
+
+            return View(requisition);
+
+        }
+
+
+        [HttpPost]
+        public IActionResult AddPurchaseRequisition(AddPurchaseRequisition requisition)
+        {
+            requisition.RequisitionId = inventoryServices.AddRequisition(requisition);
+
+            HttpContext.Session.SetString("RequisitionID", requisition.RequisitionId.ToString());
+
+
+            foreach (var mat in requisition.listItesms)
+            {
+                var item = new AddPurchaseRequisition
+                {
+
+                    RequisitionId = requisition.RequisitionId,
+                    itemId = mat.itemId,
+                    quantity= mat.quantity,
+                    unitPrice= requisition.unitPrice
+                };
+
+                inventoryServices.AddPurchaseRequisition(item);
+            }
+
+
+            return RedirectToAction("MaterialOrderList");
+
+            
+        }
+
+    public IActionResult RecievePurchaseOrder()
+        {
+            List<Vendor> vendor = inventoryServices.RecievePurchaseOrder();
+            return View(vendor);
+        }
+
+
+        public IActionResult AllocateToProduction()
+        {
+            List<AddPurchaseRequisition> materialList = inventoryServices.MaterialRequisitionListSeven();
+            return View(materialList);
+        }
+
+        public IActionResult ViewMaterialRequisitionItemsSeven(Guid requisitionId)
+        {
+            List<AddPurchaseRequisition> material = inventoryServices.CheckMaterial(requisitionId);
+
+
+            return View(material);
+        }
+
+
+        public IActionResult AllocateToProductionFromStoreSeven(Guid requisitionId)
+        {
+            inventoryServices.AllocateToProductionFromStore(requisitionId);
+            return RedirectToAction("MaterialOrderList");
+        }
+
+
+
         //[HttpPost]
         //public IActionResult Product(Product p)
         //{
@@ -650,7 +750,7 @@ namespace ERP_Components.Controllers
 
 
 
-        
+
 
         //[HttpPost]
 

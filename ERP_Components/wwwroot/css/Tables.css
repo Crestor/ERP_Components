@@ -1,0 +1,103 @@
+﻿/*Theme the Tabulator element*/
+#example-table-theme {
+    /*    background-color: #ccc;
+    border: 1px solid #333;
+    border-radius: 10px;*/
+}
+
+    /*Theme the header*/
+    #example-table-theme .tabulator-header {
+        color: white;
+        height: 40px;
+        background-color: var(--theme-color);
+    }
+
+        /*Allow column header names to wrap lines*/
+        #example-table-theme .tabulator-header .tabulator-col,
+        #example-table-theme .tabulator-header .tabulator-col-row-handle {
+            white-space: normal;
+            color: white;
+            background-color: var(--theme-color);
+        }
+
+    /*Color the table rows*/
+    #example-table-theme .tabulator-tableholder .tabulator-table .tabulator-row {
+        /*        color: #fff;
+        background-color: #666;*/
+    }
+
+        /*Color even rows*/
+        #example-table-theme .tabulator-tableholder .tabulator-table .tabulator-row:nth-child(even) {
+            background-color: #4d55526e;
+        }
+
+
+
+.dashboard-tabs {
+    display: flex;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #ddd !important;
+}
+
+.dashboard-tab {
+    height: 40px;
+    width: 100px;
+    padding: 10px 20px;
+    cursor: pointer;
+    background-color: #f8f9fa;
+    border: 1px solid #ddd !important;
+    border-bottom: none !important;
+    margin-right: 5px;
+    border-radius: 5px 5px 0 0 !important;
+    font-weight: 500;
+}
+
+    .dashboard-tab.active {
+        background-color: #fff;
+        border-bottom: 1px solid #fff !important;
+        margin-bottom: -1px;
+        color: #3F8CF8;
+        border-top: 2px solid #3F8CF8 !important;
+    }
+
+.dashboard-content {
+    display: none;
+}
+
+    .dashboard-content.active {
+        display: block;
+    }
+
+.column-toggle-wrapper {
+    position: relative;
+    display: inline-block;
+}
+
+.icon-columns {
+    cursor: pointer;
+    color: #555;
+    transition: color 0.2s ease-in-out;
+}
+
+    .icon-columns:hover {
+        color: #007bff;
+    }
+
+.column-dropdown {
+    display: none;
+    position: relative;
+    background-color: white;
+    border: 1px solid #ddd;
+    padding: 10px;
+    z-index: 999;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+    border-radius: 4px;
+    min-width: 150px;
+    top: 30px;
+    right: 0;
+}
+
+button {
+    height: 30px;
+    border-radius: 5px;
+}

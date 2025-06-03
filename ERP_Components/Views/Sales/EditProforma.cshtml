@@ -1,0 +1,130 @@
+﻿@using ERP_Component_DAL.Models
+
+@{
+    ViewBag.Title = "Edit ProformaInvoice";
+    Layout = "~/Views/Shared/_LayoutINV.cshtml";
+}
+
+<link rel="stylesheet" href="~/css/ProductTwo.css" />
+ 
+ @model ProformaInvoice
+<form method="post" asp-action="UpdateEdit" asp-controller="Sales">
+@*     <h2>Basic Details</h2>
+
+    <div id="basicSection" class="cntr2">
+        <div class="form-row" style=" display: flex;justify-content: space-between;padding-left: 72px; padding-right: 209px;">
+            <div class="form-group">
+                <label for="orderSeries">OrderSeries ID</label>
+                <input type="text" id="" name="OrderSeriesID" value="@Model.OrderSeriesID" style=" width: 228px !important;">
+            </div>
+            <div class="form-group">
+                <label for="paymentTerm">Payment Term</label>
+                <input type="text" id="PaymentTerm" name="PaymentTerm"  value="@Model.PaymentTerm"style=" width: 228px !important;">
+            </div>
+        </div>
+        <div class="form-row" style=" display: flex;justify-content: space-between;padding-left: 72px; padding-right: 209px;" >
+            <div class="form-group">
+                <label for="customerName">Customer Name</label>
+                <input type="text" id="CustomerName" name="CustomerName" value="@Model.CustomerName" style=" width: 228px !important;">
+            </div>
+            <div class="form-group">
+                <label for="deliveryTerm">Delivery Term</label>
+                <input type="text" id="DeliveryTerms" name="DeliveryTerms" value="@Model.DeliveryTerms" style=" width: 228px !important;">
+            </div>
+        </div>
+    </div>
+
+    <h2 style=" margin-top: 16px;margin-bottom: 16px;">
+        Additional Details
+    </h2>
+    <div id="additionalSection" class="cntr2">
+        <div class="form-row" style=" display: flex;justify-content: space-between;padding-left: 72px; padding-right: 209px;">
+            <div class="form-group">
+                <label for="proformaRef">PO Ref Number</label>
+                <input type="text" id="POReferenceNumber" name="POReferenceNumber" value="@Model.POReferenceNumber" style=" width: 228px !important;">
+            </div>
+            <div class="form-group">
+                <label for="vendorCode">Vendor Code</label>
+                <input type="text" id="VenderCode" name="VenderCode" value="@Model.VenderCode" style=" width: 228px !important;">
+            </div>
+        </div>
+        <div class="form-row" style=" display: flex;justify-content: space-between;padding-left: 72px; padding-right: 209px;">
+
+            <div class="form-group">
+                <label for="poDate">PerformaDate</label>
+                <input type="text" id="PODate" name="PODate" value="@Model.PODate" readonly >
+            </div>
+            <div class="form-group">
+                <label for="JobCode">JobCode</label>
+                <input type="text" id="" name="JobCode" value="@Model.JobCode" style=" width: 228px !important;">
+            </div>
+        </div>
+
+    </div>
+    <input type="text" value="@Model.ProformaInvoiceID" name="ProformaInvoiceID" hidden />
+    <input type="hidden" value="@Model.TermConditionID" name="TermConditionID" hidden />
+    <div>
+        <button class="button" type="submit" style=" float: right;margin-top: 18px;margin-right: 13px;">submit</button>
+    </div>
+
+ *@
+
+
+
+
+
+
+    <div class="form-section">
+
+        <h3>Basic Details</h3>
+        <div class="form-row">
+
+
+
+            <label for="orderSeries">OrderSeries ID</label>
+            <input type="text" id="" name="OrderSeriesID" value="@Model.OrderSeriesID" >
+
+            <label for="paymentTerm">Payment Term</label>
+            <input type="text" id="PaymentTerm" name="PaymentTerm" value="@Model.PaymentTerm">
+        </div>
+        <div class="form-row">
+
+            <label for="customerName">Customer Name</label>
+            <input type="text" id="CustomerName" name="CustomerName" value="@Model.CustomerName" >
+
+            <label for="deliveryTerm">Delivery Term</label>
+            <input type="text" id="DeliveryTerms" name="DeliveryTerms" value="@Model.DeliveryTerms">
+        </div>
+    </div>
+
+    <div class="form-section">
+
+        <h3>
+            Additional Details
+        </h3>
+        <div class="form-row">
+
+            <label for="proformaRef">PO Ref Number</label>
+            <input type="text" id="POReferenceNumber" name="POReferenceNumber" value="@Model.POReferenceNumber" >
+
+            <label for="vendorCode">Vendor Code</label>
+            <input type="text" id="VenderCode" name="VenderCode" value="@Model.VenderCode" >
+        </div>
+        <div class="form-row">
+
+            <label for="poDate">PerformaDate</label>
+            <input type="text" id="PODate" name="PODate" value="@Model.PODate" readonly>
+
+            <label for="Jobcode">Job Code</label>
+            <input type="text" id="" name="JobCode" value="@Model.JobCode" >
+
+        </div>
+    </div>
+    <input type="text" value="@Model.ProformaInvoiceID" name="ProformaInvoiceID" hidden />
+    <input type="hidden" value="@Model.TermConditionID" name="TermConditionID" hidden />
+    <div>
+        <button class="button" type="submit" style=" float: right;margin-top: 18px;margin-right: 52px; background-color:#138496;color: white;">
+            submit
+        </button>
+    </div>
+</form>

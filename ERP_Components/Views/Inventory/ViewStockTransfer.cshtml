@@ -2,74 +2,66 @@
 
 
 @{
-    ViewBag.Title = "Stock List";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "View Transfer Stock ";
+    Layout = "~/Views/Shared/_LayoutINV.cshtml";
 }
 
 @model List<Order>
 <link href="~/css/Product.css" rel="stylesheet" />
 
-<div class="header1">
-    <h4>View Transfered Stock</h4>
-</div>
-<div class="table-container">
-   
+ 
+    @* <h4>View Transfered Stock</h4> *@
+<div class="table">
 
 
-
-    <table class="product-table" style="margin:0px 15px">
+    <table>
         <thead>
             <tr>
-                <th>Sno.</th>
+                <th>Transfer ID</th>
+                <th>Item ID</th>
                 <th>Item Name</th>
-                <th>Quantity Ordered</th>
-                <th>Selling Price</th>
-        
-                <th>Ordered Date</th>
-                <th>Expiry Date</th>
-                
-                <th>Actions</th>
+                <th>From Location</th>
+                <th>To Location</th>
+                <th>Quantity Transferred</th>
+                <th>Transfer Date</th>
+                <th>Remarks</th>
             </tr>
         </thead>
-        <tbody id="geeks">
-
-
-            @for (var i = 0; i < Model.Count; i++)
-            {
-
-                var x = Model[i];
-                var index = i + 1;
-
-                <tr id="row-@x.OrderId">
-                    <td>@index</td>
-                    <td>@x.itemName</td>
-
-                    <td>@x.quantity</td>
-                    @* <td>@x.unitPrice</td> *@
-                    <td>@x.sellingPrice</td>
-                    <td>@x.orderDate.ToShortDateString()</td>
-                    <td>@x.expiry.ToShortDateString()</td>
-                    
-
-                    <td>
-                        <div class="actions">
-
-                            <button onclick="location.href='@Url.Action("EditStockTransfer", "Inventory", new { orderId = @x.OrderId }, null)'"><i class="fas fa-edit"></i></button>
-                            <button onclick="openRejectModal('@x.OrderId')"><i class="fas fa-trash"></i></button>
-
-                            @*  <button style="background-color:#007bff; color:white; text-align:center;border:none; border-radius:10px; padding:4px 10px" onclick="location.href='@Url.Action("EditSubCategory", "Inventory", new { subCategoryId = x.SubCategoryId }, null)'">Edit</button>
-
-
-                                <button style="background-color:#d01313c2;color:white; text-align:center;border:none; border-radius:10px; padding:4px 10px" onclick="location.href='@Url.Action("DeleteSubCategory", "Inventory", new { subCategoryId = x.SubCategoryId }, null)'">Delete</button> *@
-
-                        </div>
-                    </td>
-
-                </tr>
-            }
+        <tbody>
+            <tr>
+                <td>TX001</td>
+                <td>1005</td>
+                <td>LED Monitor 24"</td>
+                <td>Warehouse A</td>
+                <td>Warehouse B</td>
+                <td>20</td>
+                <td>2025-05-29</td>
+                <td>Urgent Reallocation</td>
+            </tr>
+            <tr>
+                <td>TX002</td>
+                <td>1006</td>
+                <td>Wireless Router</td>
+                <td>Warehouse C</td>
+                <td>Warehouse D</td>
+                <td>15</td>
+                <td>2025-05-30</td>
+                <td>Stock Replenishment</td>
+             </tr>
+            <tr>
+                <td>TX003</td>
+                <td>1007</td>
+                <td>USB-C Hub</td>
+                <td>Warehouse E</td>
+                <td>Warehouse F</td>
+                <td>10</td>
+                <td>2025-05-31</td>
+                <td>Routine Transfer</td>
+            </tr>
         </tbody>
-
     </table>
+
+
 </div>
 
 <script>

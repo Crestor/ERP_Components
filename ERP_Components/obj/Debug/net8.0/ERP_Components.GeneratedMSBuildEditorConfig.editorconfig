@@ -9,249 +9,601 @@ build_property.EnforceExtendedAnalyzerRules =
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = ERP_Components
 build_property.RootNamespace = ERP_Components
-build_property.ProjectDir = C:\Users\vhk\OneDrive\Documents\GitHub\ERP_Components\ERP_Components\
+build_property.ProjectDir = C:\Users\vhk\OneDrive\Documents\ERP_Components\ERP_Components\ERP_Components\
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = 
 build_property.RazorLangVersion = 8.0
 build_property.SupportLocalizedComponentNames = 
 build_property.GenerateRazorMetadataSourceChecksumAttributes = 
-build_property.MSBuildProjectDirectory = C:\Users\vhk\OneDrive\Documents\GitHub\ERP_Components\ERP_Components
+build_property.MSBuildProjectDirectory = C:\Users\vhk\OneDrive\Documents\ERP_Components\ERP_Components\ERP_Components
 build_property._RazorSourceGeneratorDebug = 
 build_property.EffectiveAnalysisLevelStyle = 8.0
 build_property.EnableCodeStyleSeverity = 
 
-[C:/Users/vhk/OneDrive/Documents/GitHub/ERP_Components/ERP_Components/Views/Asset/AddAsset.cshtml]
+[C:/Users/vhk/OneDrive/Documents/ERP_Components/ERP_Components/ERP_Components/Views/Account/Chartofaccount.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxDaGFydG9mYWNjb3VudC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/vhk/OneDrive/Documents/ERP_Components/ERP_Components/ERP_Components/Views/Account/Dashboard.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxEYXNoYm9hcmQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/vhk/OneDrive/Documents/ERP_Components/ERP_Components/ERP_Components/Views/Account/Expense.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxFeHBlbnNlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/vhk/OneDrive/Documents/ERP_Components/ERP_Components/ERP_Components/Views/Account/JournalEntry.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxKb3VybmFsRW50cnkuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/vhk/OneDrive/Documents/ERP_Components/ERP_Components/ERP_Components/Views/Account/Make_Payment.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxNYWtlX1BheW1lbnQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/vhk/OneDrive/Documents/ERP_Components/ERP_Components/ERP_Components/Views/Account/Payable.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxQYXlhYmxlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/vhk/OneDrive/Documents/ERP_Components/ERP_Components/ERP_Components/Views/Account/Receivable.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxSZWNlaXZhYmxlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/vhk/OneDrive/Documents/ERP_Components/ERP_Components/ERP_Components/Views/Account/Receive_Payment.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxSZWNlaXZlX1BheW1lbnQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/vhk/OneDrive/Documents/ERP_Components/ERP_Components/ERP_Components/Views/Account/Showacount.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxTaG93YWNvdW50LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/vhk/OneDrive/Documents/ERP_Components/ERP_Components/ERP_Components/Views/Asset/AddAsset.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQXNzZXRcQWRkQXNzZXQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/vhk/OneDrive/Documents/GitHub/ERP_Components/ERP_Components/Views/Asset/AssetAssign.cshtml]
+[C:/Users/vhk/OneDrive/Documents/ERP_Components/ERP_Components/ERP_Components/Views/Asset/AssetAssign.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQXNzZXRcQXNzZXRBc3NpZ24uY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/vhk/OneDrive/Documents/GitHub/ERP_Components/ERP_Components/Views/Asset/AssetListing.cshtml]
+[C:/Users/vhk/OneDrive/Documents/ERP_Components/ERP_Components/ERP_Components/Views/Asset/AssetListing.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQXNzZXRcQXNzZXRMaXN0aW5nLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/vhk/OneDrive/Documents/GitHub/ERP_Components/ERP_Components/Views/Asset/AssetMaintenance.cshtml]
+[C:/Users/vhk/OneDrive/Documents/ERP_Components/ERP_Components/ERP_Components/Views/Asset/AssetMaintenance.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQXNzZXRcQXNzZXRNYWludGVuYW5jZS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/vhk/OneDrive/Documents/GitHub/ERP_Components/ERP_Components/Views/Asset/AssetMaintenanceView.cshtml]
+[C:/Users/vhk/OneDrive/Documents/ERP_Components/ERP_Components/ERP_Components/Views/Asset/AssetMaintenanceView.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQXNzZXRcQXNzZXRNYWludGVuYW5jZVZpZXcuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/vhk/OneDrive/Documents/GitHub/ERP_Components/ERP_Components/Views/Asset/AssetTransfer.cshtml]
+[C:/Users/vhk/OneDrive/Documents/ERP_Components/ERP_Components/ERP_Components/Views/Asset/AssetTransfer.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQXNzZXRcQXNzZXRUcmFuc2Zlci5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/vhk/OneDrive/Documents/GitHub/ERP_Components/ERP_Components/Views/Asset/AssetView.cshtml]
+[C:/Users/vhk/OneDrive/Documents/ERP_Components/ERP_Components/ERP_Components/Views/Asset/AssetView.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQXNzZXRcQXNzZXRWaWV3LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/vhk/OneDrive/Documents/GitHub/ERP_Components/ERP_Components/Views/Asset/Category.cshtml]
+[C:/Users/vhk/OneDrive/Documents/ERP_Components/ERP_Components/ERP_Components/Views/Asset/Category.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQXNzZXRcQ2F0ZWdvcnkuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/vhk/OneDrive/Documents/GitHub/ERP_Components/ERP_Components/Views/Asset/Dashboard.cshtml]
+[C:/Users/vhk/OneDrive/Documents/ERP_Components/ERP_Components/ERP_Components/Views/Asset/Dashboard.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQXNzZXRcRGFzaGJvYXJkLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/vhk/OneDrive/Documents/GitHub/ERP_Components/ERP_Components/Views/Asset/DepreciationTracking.cshtml]
+[C:/Users/vhk/OneDrive/Documents/ERP_Components/ERP_Components/ERP_Components/Views/Asset/DepreciationTracking.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQXNzZXRcRGVwcmVjaWF0aW9uVHJhY2tpbmcuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/vhk/OneDrive/Documents/GitHub/ERP_Components/ERP_Components/Views/Asset/EditAsset.cshtml]
+[C:/Users/vhk/OneDrive/Documents/ERP_Components/ERP_Components/ERP_Components/Views/Asset/EditAsset.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQXNzZXRcRWRpdEFzc2V0LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/vhk/OneDrive/Documents/GitHub/ERP_Components/ERP_Components/Views/Asset/EditAssetMaintenance.cshtml]
+[C:/Users/vhk/OneDrive/Documents/ERP_Components/ERP_Components/ERP_Components/Views/Asset/EditAssetMaintenance.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQXNzZXRcRWRpdEFzc2V0TWFpbnRlbmFuY2UuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/vhk/OneDrive/Documents/GitHub/ERP_Components/ERP_Components/Views/Asset/EditCategory.cshtml]
+[C:/Users/vhk/OneDrive/Documents/ERP_Components/ERP_Components/ERP_Components/Views/Asset/EditCategory.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQXNzZXRcRWRpdENhdGVnb3J5LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/vhk/OneDrive/Documents/GitHub/ERP_Components/ERP_Components/Views/Asset/ViewAssetAssign.cshtml]
+[C:/Users/vhk/OneDrive/Documents/ERP_Components/ERP_Components/ERP_Components/Views/Asset/ViewAssetAssign.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQXNzZXRcVmlld0Fzc2V0QXNzaWduLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/vhk/OneDrive/Documents/GitHub/ERP_Components/ERP_Components/Views/Asset/ViewCategory.cshtml]
+[C:/Users/vhk/OneDrive/Documents/ERP_Components/ERP_Components/ERP_Components/Views/Asset/ViewCategory.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQXNzZXRcVmlld0NhdGVnb3J5LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/vhk/OneDrive/Documents/GitHub/ERP_Components/ERP_Components/Views/Home/Index.cshtml]
+[C:/Users/vhk/OneDrive/Documents/ERP_Components/ERP_Components/ERP_Components/Views/Customer/ContactDetails.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ3VzdG9tZXJcQ29udGFjdERldGFpbHMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/vhk/OneDrive/Documents/ERP_Components/ERP_Components/ERP_Components/Views/Customer/CustomerLedger.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ3VzdG9tZXJcQ3VzdG9tZXJMZWRnZXIuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/vhk/OneDrive/Documents/ERP_Components/ERP_Components/ERP_Components/Views/Customer/EditContactDetails.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ3VzdG9tZXJcRWRpdENvbnRhY3REZXRhaWxzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/vhk/OneDrive/Documents/ERP_Components/ERP_Components/ERP_Components/Views/Customer/EditCustomer.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ3VzdG9tZXJcRWRpdEN1c3RvbWVyLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/vhk/OneDrive/Documents/ERP_Components/ERP_Components/ERP_Components/Views/Customer/RegisterCustomer.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ3VzdG9tZXJcUmVnaXN0ZXJDdXN0b21lci5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/vhk/OneDrive/Documents/ERP_Components/ERP_Components/ERP_Components/Views/Customer/ViewContactDetails.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ3VzdG9tZXJcVmlld0NvbnRhY3REZXRhaWxzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/vhk/OneDrive/Documents/ERP_Components/ERP_Components/ERP_Components/Views/Customer/ViewCustomer.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ3VzdG9tZXJcVmlld0N1c3RvbWVyLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/vhk/OneDrive/Documents/ERP_Components/ERP_Components/ERP_Components/Views/Home/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/vhk/OneDrive/Documents/GitHub/ERP_Components/ERP_Components/Views/Inventory/AddStock.cshtml]
+[C:/Users/vhk/OneDrive/Documents/ERP_Components/ERP_Components/ERP_Components/Views/Inventory/AddPurchaseRequisition.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSW52ZW50b3J5XEFkZFB1cmNoYXNlUmVxdWlzaXRpb24uY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/vhk/OneDrive/Documents/ERP_Components/ERP_Components/ERP_Components/Views/Inventory/AddStock.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSW52ZW50b3J5XEFkZFN0b2NrLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/vhk/OneDrive/Documents/GitHub/ERP_Components/ERP_Components/Views/Inventory/AddStockAdjustment.cshtml]
+[C:/Users/vhk/OneDrive/Documents/ERP_Components/ERP_Components/ERP_Components/Views/Inventory/AddStockAdjustment.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSW52ZW50b3J5XEFkZFN0b2NrQWRqdXN0bWVudC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/vhk/OneDrive/Documents/GitHub/ERP_Components/ERP_Components/Views/Inventory/Category.cshtml]
+[C:/Users/vhk/OneDrive/Documents/ERP_Components/ERP_Components/ERP_Components/Views/Inventory/AllocateToProduction.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSW52ZW50b3J5XEFsbG9jYXRlVG9Qcm9kdWN0aW9uLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/vhk/OneDrive/Documents/ERP_Components/ERP_Components/ERP_Components/Views/Inventory/Category.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSW52ZW50b3J5XENhdGVnb3J5LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/vhk/OneDrive/Documents/GitHub/ERP_Components/ERP_Components/Views/Inventory/Dashboard.cshtml]
+[C:/Users/vhk/OneDrive/Documents/ERP_Components/ERP_Components/ERP_Components/Views/Inventory/Dashboard.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSW52ZW50b3J5XERhc2hib2FyZC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/vhk/OneDrive/Documents/GitHub/ERP_Components/ERP_Components/Views/Inventory/EditCategory.cshtml]
+[C:/Users/vhk/OneDrive/Documents/ERP_Components/ERP_Components/ERP_Components/Views/Inventory/EditCategory.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSW52ZW50b3J5XEVkaXRDYXRlZ29yeS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/vhk/OneDrive/Documents/GitHub/ERP_Components/ERP_Components/Views/Inventory/EditMaterial.cshtml]
+[C:/Users/vhk/OneDrive/Documents/ERP_Components/ERP_Components/ERP_Components/Views/Inventory/EditMaterial.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSW52ZW50b3J5XEVkaXRNYXRlcmlhbC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/vhk/OneDrive/Documents/GitHub/ERP_Components/ERP_Components/Views/Inventory/EditProduct.cshtml]
+[C:/Users/vhk/OneDrive/Documents/ERP_Components/ERP_Components/ERP_Components/Views/Inventory/EditProduct.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSW52ZW50b3J5XEVkaXRQcm9kdWN0LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/vhk/OneDrive/Documents/GitHub/ERP_Components/ERP_Components/Views/Inventory/EditStock.cshtml]
+[C:/Users/vhk/OneDrive/Documents/ERP_Components/ERP_Components/ERP_Components/Views/Inventory/EditStock.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSW52ZW50b3J5XEVkaXRTdG9jay5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/vhk/OneDrive/Documents/GitHub/ERP_Components/ERP_Components/Views/Inventory/EditStockTransfer.cshtml]
+[C:/Users/vhk/OneDrive/Documents/ERP_Components/ERP_Components/ERP_Components/Views/Inventory/EditStockTransfer.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSW52ZW50b3J5XEVkaXRTdG9ja1RyYW5zZmVyLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/vhk/OneDrive/Documents/GitHub/ERP_Components/ERP_Components/Views/Inventory/EditSubCategory.cshtml]
+[C:/Users/vhk/OneDrive/Documents/ERP_Components/ERP_Components/ERP_Components/Views/Inventory/EditSubCategory.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSW52ZW50b3J5XEVkaXRTdWJDYXRlZ29yeS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/vhk/OneDrive/Documents/GitHub/ERP_Components/ERP_Components/Views/Inventory/EditWarehouse.cshtml]
+[C:/Users/vhk/OneDrive/Documents/ERP_Components/ERP_Components/ERP_Components/Views/Inventory/EditWarehouse.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSW52ZW50b3J5XEVkaXRXYXJlaG91c2UuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/vhk/OneDrive/Documents/GitHub/ERP_Components/ERP_Components/Views/Inventory/Inventory.cshtml]
+[C:/Users/vhk/OneDrive/Documents/ERP_Components/ERP_Components/ERP_Components/Views/Inventory/Inventory.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSW52ZW50b3J5XEludmVudG9yeS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/vhk/OneDrive/Documents/GitHub/ERP_Components/ERP_Components/Views/Inventory/InventoryControl.cshtml]
+[C:/Users/vhk/OneDrive/Documents/ERP_Components/ERP_Components/ERP_Components/Views/Inventory/InventoryControl.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSW52ZW50b3J5XEludmVudG9yeUNvbnRyb2wuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/vhk/OneDrive/Documents/GitHub/ERP_Components/ERP_Components/Views/Inventory/InventoryDashboard.cshtml]
+[C:/Users/vhk/OneDrive/Documents/ERP_Components/ERP_Components/ERP_Components/Views/Inventory/InventoryDashboard.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSW52ZW50b3J5XEludmVudG9yeURhc2hib2FyZC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/vhk/OneDrive/Documents/GitHub/ERP_Components/ERP_Components/Views/Inventory/Material.cshtml]
+[C:/Users/vhk/OneDrive/Documents/ERP_Components/ERP_Components/ERP_Components/Views/Inventory/Material.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSW52ZW50b3J5XE1hdGVyaWFsLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/vhk/OneDrive/Documents/GitHub/ERP_Components/ERP_Components/Views/Inventory/OpeningStockEntryForm.cshtml]
+[C:/Users/vhk/OneDrive/Documents/ERP_Components/ERP_Components/ERP_Components/Views/Inventory/MaterialOrderList.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSW52ZW50b3J5XE1hdGVyaWFsT3JkZXJMaXN0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/vhk/OneDrive/Documents/ERP_Components/ERP_Components/ERP_Components/Views/Inventory/OpeningStockEntryForm.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSW52ZW50b3J5XE9wZW5pbmdTdG9ja0VudHJ5Rm9ybS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/vhk/OneDrive/Documents/GitHub/ERP_Components/ERP_Components/Views/Inventory/Product.cshtml]
+[C:/Users/vhk/OneDrive/Documents/ERP_Components/ERP_Components/ERP_Components/Views/Inventory/Product.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSW52ZW50b3J5XFByb2R1Y3QuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/vhk/OneDrive/Documents/GitHub/ERP_Components/ERP_Components/Views/Inventory/StockAdjustment.cshtml]
+[C:/Users/vhk/OneDrive/Documents/ERP_Components/ERP_Components/ERP_Components/Views/Inventory/RecievePurchaseOrder.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSW52ZW50b3J5XFJlY2lldmVQdXJjaGFzZU9yZGVyLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/vhk/OneDrive/Documents/ERP_Components/ERP_Components/ERP_Components/Views/Inventory/StockAdjustment.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSW52ZW50b3J5XFN0b2NrQWRqdXN0bWVudC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/vhk/OneDrive/Documents/GitHub/ERP_Components/ERP_Components/Views/Inventory/StockTransfer.cshtml]
+[C:/Users/vhk/OneDrive/Documents/ERP_Components/ERP_Components/ERP_Components/Views/Inventory/StockLedger.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSW52ZW50b3J5XFN0b2NrTGVkZ2VyLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/vhk/OneDrive/Documents/ERP_Components/ERP_Components/ERP_Components/Views/Inventory/StockTransfer.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSW52ZW50b3J5XFN0b2NrVHJhbnNmZXIuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/vhk/OneDrive/Documents/GitHub/ERP_Components/ERP_Components/Views/Inventory/SubCategory.cshtml]
+[C:/Users/vhk/OneDrive/Documents/ERP_Components/ERP_Components/ERP_Components/Views/Inventory/SubCategory.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSW52ZW50b3J5XFN1YkNhdGVnb3J5LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/vhk/OneDrive/Documents/GitHub/ERP_Components/ERP_Components/Views/Inventory/ViewCategory.cshtml]
+[C:/Users/vhk/OneDrive/Documents/ERP_Components/ERP_Components/ERP_Components/Views/Inventory/ViewCategory.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSW52ZW50b3J5XFZpZXdDYXRlZ29yeS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/vhk/OneDrive/Documents/GitHub/ERP_Components/ERP_Components/Views/Inventory/ViewInventoryData.cshtml]
+[C:/Users/vhk/OneDrive/Documents/ERP_Components/ERP_Components/ERP_Components/Views/Inventory/ViewInventoryData.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSW52ZW50b3J5XFZpZXdJbnZlbnRvcnlEYXRhLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/vhk/OneDrive/Documents/GitHub/ERP_Components/ERP_Components/Views/Inventory/ViewMaterial.cshtml]
+[C:/Users/vhk/OneDrive/Documents/ERP_Components/ERP_Components/ERP_Components/Views/Inventory/ViewMaterial.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSW52ZW50b3J5XFZpZXdNYXRlcmlhbC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/vhk/OneDrive/Documents/GitHub/ERP_Components/ERP_Components/Views/Inventory/ViewProduct.cshtml]
+[C:/Users/vhk/OneDrive/Documents/ERP_Components/ERP_Components/ERP_Components/Views/Inventory/ViewMaterialRequisitionItems.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSW52ZW50b3J5XFZpZXdNYXRlcmlhbFJlcXVpc2l0aW9uSXRlbXMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/vhk/OneDrive/Documents/ERP_Components/ERP_Components/ERP_Components/Views/Inventory/ViewMaterialRequisitionItemsSeven.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSW52ZW50b3J5XFZpZXdNYXRlcmlhbFJlcXVpc2l0aW9uSXRlbXNTZXZlbi5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/vhk/OneDrive/Documents/ERP_Components/ERP_Components/ERP_Components/Views/Inventory/ViewProduct.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSW52ZW50b3J5XFZpZXdQcm9kdWN0LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/vhk/OneDrive/Documents/GitHub/ERP_Components/ERP_Components/Views/Inventory/ViewStock.cshtml]
+[C:/Users/vhk/OneDrive/Documents/ERP_Components/ERP_Components/ERP_Components/Views/Inventory/ViewPrStock.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSW52ZW50b3J5XFZpZXdQclN0b2NrLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/vhk/OneDrive/Documents/ERP_Components/ERP_Components/ERP_Components/Views/Inventory/ViewStock.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSW52ZW50b3J5XFZpZXdTdG9jay5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/vhk/OneDrive/Documents/GitHub/ERP_Components/ERP_Components/Views/Inventory/ViewStockByWarehouse.cshtml]
+[C:/Users/vhk/OneDrive/Documents/ERP_Components/ERP_Components/ERP_Components/Views/Inventory/ViewStockByWarehouse.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSW52ZW50b3J5XFZpZXdTdG9ja0J5V2FyZWhvdXNlLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/vhk/OneDrive/Documents/GitHub/ERP_Components/ERP_Components/Views/Inventory/ViewStockTransfer.cshtml]
+[C:/Users/vhk/OneDrive/Documents/ERP_Components/ERP_Components/ERP_Components/Views/Inventory/ViewStockTransfer.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSW52ZW50b3J5XFZpZXdTdG9ja1RyYW5zZmVyLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/vhk/OneDrive/Documents/GitHub/ERP_Components/ERP_Components/Views/Inventory/ViewSubCategory.cshtml]
+[C:/Users/vhk/OneDrive/Documents/ERP_Components/ERP_Components/ERP_Components/Views/Inventory/ViewSubCategory.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSW52ZW50b3J5XFZpZXdTdWJDYXRlZ29yeS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/vhk/OneDrive/Documents/GitHub/ERP_Components/ERP_Components/Views/Inventory/Warehouses.cshtml]
+[C:/Users/vhk/OneDrive/Documents/ERP_Components/ERP_Components/ERP_Components/Views/Inventory/Warehouses.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSW52ZW50b3J5XFdhcmVob3VzZXMuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/vhk/OneDrive/Documents/GitHub/ERP_Components/ERP_Components/Views/Inventory/WarehouseView.cshtml]
+[C:/Users/vhk/OneDrive/Documents/ERP_Components/ERP_Components/ERP_Components/Views/Inventory/WarehouseView.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSW52ZW50b3J5XFdhcmVob3VzZVZpZXcuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/vhk/OneDrive/Documents/GitHub/ERP_Components/ERP_Components/Views/Shared/Error.cshtml]
+[C:/Users/vhk/OneDrive/Documents/ERP_Components/ERP_Components/ERP_Components/Views/Manager/ApproveVendorQuotation.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTWFuYWdlclxBcHByb3ZlVmVuZG9yUXVvdGF0aW9uLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/vhk/OneDrive/Documents/ERP_Components/ERP_Components/ERP_Components/Views/Manager/ApproveVendorQuotationDetails.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTWFuYWdlclxBcHByb3ZlVmVuZG9yUXVvdGF0aW9uRGV0YWlscy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/vhk/OneDrive/Documents/ERP_Components/ERP_Components/ERP_Components/Views/Manager/Dashboard.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTWFuYWdlclxEYXNoYm9hcmQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/vhk/OneDrive/Documents/ERP_Components/ERP_Components/ERP_Components/Views/Production/MaterialRequisition.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvZHVjdGlvblxNYXRlcmlhbFJlcXVpc2l0aW9uLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/vhk/OneDrive/Documents/ERP_Components/ERP_Components/ERP_Components/Views/Production/ProductionDashboard.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvZHVjdGlvblxQcm9kdWN0aW9uRGFzaGJvYXJkLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/vhk/OneDrive/Documents/ERP_Components/ERP_Components/ERP_Components/Views/Production/UpdateProductionStage.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvZHVjdGlvblxVcGRhdGVQcm9kdWN0aW9uU3RhZ2UuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/vhk/OneDrive/Documents/ERP_Components/ERP_Components/ERP_Components/Views/Production/ViewProductionOrder.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvZHVjdGlvblxWaWV3UHJvZHVjdGlvbk9yZGVyLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/vhk/OneDrive/Documents/ERP_Components/ERP_Components/ERP_Components/Views/Production/ViewProductionOrderDetail.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvZHVjdGlvblxWaWV3UHJvZHVjdGlvbk9yZGVyRGV0YWlsLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/vhk/OneDrive/Documents/ERP_Components/ERP_Components/ERP_Components/Views/Purchase/AddPurchaseRequisition.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHVyY2hhc2VcQWRkUHVyY2hhc2VSZXF1aXNpdGlvbi5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/vhk/OneDrive/Documents/ERP_Components/ERP_Components/ERP_Components/Views/Purchase/CreatePurchaseOrder.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHVyY2hhc2VcQ3JlYXRlUHVyY2hhc2VPcmRlci5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/vhk/OneDrive/Documents/ERP_Components/ERP_Components/ERP_Components/Views/Purchase/CreateVendorQuotation.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHVyY2hhc2VcQ3JlYXRlVmVuZG9yUXVvdGF0aW9uLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/vhk/OneDrive/Documents/ERP_Components/ERP_Components/ERP_Components/Views/Purchase/Dashboard.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHVyY2hhc2VcRGFzaGJvYXJkLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/vhk/OneDrive/Documents/ERP_Components/ERP_Components/ERP_Components/Views/Purchase/GeneratePurchaseInvoice.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHVyY2hhc2VcR2VuZXJhdGVQdXJjaGFzZUludm9pY2UuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/vhk/OneDrive/Documents/ERP_Components/ERP_Components/ERP_Components/Views/Purchase/GeneratePurchaseOrder.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHVyY2hhc2VcR2VuZXJhdGVQdXJjaGFzZU9yZGVyLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/vhk/OneDrive/Documents/ERP_Components/ERP_Components/ERP_Components/Views/Purchase/PurchaseBills.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHVyY2hhc2VcUHVyY2hhc2VCaWxscy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/vhk/OneDrive/Documents/ERP_Components/ERP_Components/ERP_Components/Views/Purchase/PurchaseOrder.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHVyY2hhc2VcUHVyY2hhc2VPcmRlci5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/vhk/OneDrive/Documents/ERP_Components/ERP_Components/ERP_Components/Views/Purchase/PurchaseOrderForm.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHVyY2hhc2VcUHVyY2hhc2VPcmRlckZvcm0uY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/vhk/OneDrive/Documents/ERP_Components/ERP_Components/ERP_Components/Views/Purchase/VendorQuotation.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHVyY2hhc2VcVmVuZG9yUXVvdGF0aW9uLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/vhk/OneDrive/Documents/ERP_Components/ERP_Components/ERP_Components/Views/Purchase/ViewPurchaseOrder.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHVyY2hhc2VcVmlld1B1cmNoYXNlT3JkZXIuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/vhk/OneDrive/Documents/ERP_Components/ERP_Components/ERP_Components/Views/Purchase/ViewRequisition.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHVyY2hhc2VcVmlld1JlcXVpc2l0aW9uLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/vhk/OneDrive/Documents/ERP_Components/ERP_Components/ERP_Components/Views/Purchase/ViewVendorQuotation.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHVyY2hhc2VcVmlld1ZlbmRvclF1b3RhdGlvbi5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/vhk/OneDrive/Documents/ERP_Components/ERP_Components/ERP_Components/Views/Sales/AddInvoice.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2FsZXNcQWRkSW52b2ljZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/vhk/OneDrive/Documents/ERP_Components/ERP_Components/ERP_Components/Views/Sales/AddQuotation.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2FsZXNcQWRkUXVvdGF0aW9uLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/vhk/OneDrive/Documents/ERP_Components/ERP_Components/ERP_Components/Views/Sales/BillsReceivable.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2FsZXNcQmlsbHNSZWNlaXZhYmxlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/vhk/OneDrive/Documents/ERP_Components/ERP_Components/ERP_Components/Views/Sales/CreditNote.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2FsZXNcQ3JlZGl0Tm90ZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/vhk/OneDrive/Documents/ERP_Components/ERP_Components/ERP_Components/Views/Sales/CustomerHistory.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2FsZXNcQ3VzdG9tZXJIaXN0b3J5LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/vhk/OneDrive/Documents/ERP_Components/ERP_Components/ERP_Components/Views/Sales/Dashboard.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2FsZXNcRGFzaGJvYXJkLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/vhk/OneDrive/Documents/ERP_Components/ERP_Components/ERP_Components/Views/Sales/DeliveryChallan.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2FsZXNcRGVsaXZlcnlDaGFsbGFuLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/vhk/OneDrive/Documents/ERP_Components/ERP_Components/ERP_Components/Views/Sales/EditContact.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2FsZXNcRWRpdENvbnRhY3QuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/vhk/OneDrive/Documents/ERP_Components/ERP_Components/ERP_Components/Views/Sales/EditCreditNote.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2FsZXNcRWRpdENyZWRpdE5vdGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/vhk/OneDrive/Documents/ERP_Components/ERP_Components/ERP_Components/Views/Sales/EditDeliveryChallan.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2FsZXNcRWRpdERlbGl2ZXJ5Q2hhbGxhbi5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/vhk/OneDrive/Documents/ERP_Components/ERP_Components/ERP_Components/Views/Sales/EditInvoice.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2FsZXNcRWRpdEludm9pY2UuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/vhk/OneDrive/Documents/ERP_Components/ERP_Components/ERP_Components/Views/Sales/EditProforma.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2FsZXNcRWRpdFByb2Zvcm1hLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/vhk/OneDrive/Documents/ERP_Components/ERP_Components/ERP_Components/Views/Sales/EditQuotation.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2FsZXNcRWRpdFF1b3RhdGlvbi5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/vhk/OneDrive/Documents/ERP_Components/ERP_Components/ERP_Components/Views/Sales/EditReturnNote.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2FsZXNcRWRpdFJldHVybk5vdGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/vhk/OneDrive/Documents/ERP_Components/ERP_Components/ERP_Components/Views/Sales/ManageCreditNote.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2FsZXNcTWFuYWdlQ3JlZGl0Tm90ZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/vhk/OneDrive/Documents/ERP_Components/ERP_Components/ERP_Components/Views/Sales/ManageDeliveryChallan.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2FsZXNcTWFuYWdlRGVsaXZlcnlDaGFsbGFuLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/vhk/OneDrive/Documents/ERP_Components/ERP_Components/ERP_Components/Views/Sales/ManageInvoice.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2FsZXNcTWFuYWdlSW52b2ljZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/vhk/OneDrive/Documents/ERP_Components/ERP_Components/ERP_Components/Views/Sales/ManageProformaInvoice.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2FsZXNcTWFuYWdlUHJvZm9ybWFJbnZvaWNlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/vhk/OneDrive/Documents/ERP_Components/ERP_Components/ERP_Components/Views/Sales/ManageQuotation.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2FsZXNcTWFuYWdlUXVvdGF0aW9uLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/vhk/OneDrive/Documents/ERP_Components/ERP_Components/ERP_Components/Views/Sales/MRList.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2FsZXNcTVJMaXN0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/vhk/OneDrive/Documents/ERP_Components/ERP_Components/ERP_Components/Views/Sales/PaymentBreakUp.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2FsZXNcUGF5bWVudEJyZWFrVXAuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/vhk/OneDrive/Documents/ERP_Components/ERP_Components/ERP_Components/Views/Sales/ProformaInvoice.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2FsZXNcUHJvZm9ybWFJbnZvaWNlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/vhk/OneDrive/Documents/ERP_Components/ERP_Components/ERP_Components/Views/Sales/ReturnNote.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2FsZXNcUmV0dXJuTm90ZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/vhk/OneDrive/Documents/ERP_Components/ERP_Components/ERP_Components/Views/Sales/SalePerson.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2FsZXNcU2FsZVBlcnNvbi5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/vhk/OneDrive/Documents/ERP_Components/ERP_Components/ERP_Components/Views/Sales/SalePurchaseSummary.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2FsZXNcU2FsZVB1cmNoYXNlU3VtbWFyeS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/vhk/OneDrive/Documents/ERP_Components/ERP_Components/ERP_Components/Views/Sales/Salesforecasting.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2FsZXNcU2FsZXNmb3JlY2FzdGluZy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/vhk/OneDrive/Documents/ERP_Components/ERP_Components/ERP_Components/Views/Sales/UpdateReturnNote.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2FsZXNcVXBkYXRlUmV0dXJuTm90ZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/vhk/OneDrive/Documents/ERP_Components/ERP_Components/ERP_Components/Views/Sales/ViewContactDetails.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2FsZXNcVmlld0NvbnRhY3REZXRhaWxzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/vhk/OneDrive/Documents/ERP_Components/ERP_Components/ERP_Components/Views/Sales/ViewInventory.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2FsZXNcVmlld0ludmVudG9yeS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/vhk/OneDrive/Documents/ERP_Components/ERP_Components/ERP_Components/Views/Sales/ViewInvoice.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2FsZXNcVmlld0ludm9pY2UuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/vhk/OneDrive/Documents/ERP_Components/ERP_Components/ERP_Components/Views/Sales/ViewMaterialRequisitionItems.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2FsZXNcVmlld01hdGVyaWFsUmVxdWlzaXRpb25JdGVtcy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/vhk/OneDrive/Documents/ERP_Components/ERP_Components/ERP_Components/Views/Sales/ViewQuotation.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2FsZXNcVmlld1F1b3RhdGlvbi5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/vhk/OneDrive/Documents/ERP_Components/ERP_Components/ERP_Components/Views/Shared/Error.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXEVycm9yLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/vhk/OneDrive/Documents/GitHub/ERP_Components/ERP_Components/Views/Shared/_loginLayout.cshtml]
+[C:/Users/vhk/OneDrive/Documents/ERP_Components/ERP_Components/ERP_Components/Views/Shared/_LayoutINV.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9MYXlvdXRJTlYuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/vhk/OneDrive/Documents/ERP_Components/ERP_Components/ERP_Components/Views/Shared/_loginLayout.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9sb2dpbkxheW91dC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/vhk/OneDrive/Documents/GitHub/ERP_Components/ERP_Components/Views/Shared/_ValidationScriptsPartial.cshtml]
+[C:/Users/vhk/OneDrive/Documents/ERP_Components/ERP_Components/ERP_Components/Views/Shared/_ValidationScriptsPartial.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/vhk/OneDrive/Documents/GitHub/ERP_Components/ERP_Components/Views/Warehouse/AddWarehouseStock.cshtml]
+[C:/Users/vhk/OneDrive/Documents/ERP_Components/ERP_Components/ERP_Components/Views/Vendor/AddVendor.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVmVuZG9yXEFkZFZlbmRvci5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/vhk/OneDrive/Documents/ERP_Components/ERP_Components/ERP_Components/Views/Vendor/EditVendor.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVmVuZG9yXEVkaXRWZW5kb3IuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/vhk/OneDrive/Documents/ERP_Components/ERP_Components/ERP_Components/Views/Vendor/MakePayment.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVmVuZG9yXE1ha2VQYXltZW50LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/vhk/OneDrive/Documents/ERP_Components/ERP_Components/ERP_Components/Views/Vendor/ShowVendorList.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVmVuZG9yXFNob3dWZW5kb3JMaXN0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/vhk/OneDrive/Documents/ERP_Components/ERP_Components/ERP_Components/Views/Vendor/UploadDocument.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVmVuZG9yXFVwbG9hZERvY3VtZW50LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/vhk/OneDrive/Documents/ERP_Components/ERP_Components/ERP_Components/Views/Vendor/VendorLedger.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVmVuZG9yXFZlbmRvckxlZGdlci5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/vhk/OneDrive/Documents/ERP_Components/ERP_Components/ERP_Components/Views/Warehouse/AddWarehouseStock.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcV2FyZWhvdXNlXEFkZFdhcmVob3VzZVN0b2NrLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/vhk/OneDrive/Documents/GitHub/ERP_Components/ERP_Components/Views/Warehouse/Dashboard.cshtml]
+[C:/Users/vhk/OneDrive/Documents/ERP_Components/ERP_Components/ERP_Components/Views/Warehouse/Dashboard.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcV2FyZWhvdXNlXERhc2hib2FyZC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/vhk/OneDrive/Documents/GitHub/ERP_Components/ERP_Components/Views/Warehouse/EditWarehouseLocation.cshtml]
+[C:/Users/vhk/OneDrive/Documents/ERP_Components/ERP_Components/ERP_Components/Views/Warehouse/EditWarehouseLocation.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcV2FyZWhvdXNlXEVkaXRXYXJlaG91c2VMb2NhdGlvbi5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/vhk/OneDrive/Documents/GitHub/ERP_Components/ERP_Components/Views/Warehouse/EditWarehouseStock.cshtml]
+[C:/Users/vhk/OneDrive/Documents/ERP_Components/ERP_Components/ERP_Components/Views/Warehouse/EditWarehouseStock.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcV2FyZWhvdXNlXEVkaXRXYXJlaG91c2VTdG9jay5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/vhk/OneDrive/Documents/GitHub/ERP_Components/ERP_Components/Views/Warehouse/WarehouseLocation.cshtml]
+[C:/Users/vhk/OneDrive/Documents/ERP_Components/ERP_Components/ERP_Components/Views/Warehouse/SalesForCasting.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcV2FyZWhvdXNlXFNhbGVzRm9yQ2FzdGluZy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/vhk/OneDrive/Documents/ERP_Components/ERP_Components/ERP_Components/Views/Warehouse/ViewCompletedProductionOrder.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcV2FyZWhvdXNlXFZpZXdDb21wbGV0ZWRQcm9kdWN0aW9uT3JkZXIuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/vhk/OneDrive/Documents/ERP_Components/ERP_Components/ERP_Components/Views/Warehouse/ViewInventory.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcV2FyZWhvdXNlXFZpZXdJbnZlbnRvcnkuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/vhk/OneDrive/Documents/ERP_Components/ERP_Components/ERP_Components/Views/Warehouse/ViewItemsStatus.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcV2FyZWhvdXNlXFZpZXdJdGVtc1N0YXR1cy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/vhk/OneDrive/Documents/ERP_Components/ERP_Components/ERP_Components/Views/Warehouse/WarehouseLocation.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcV2FyZWhvdXNlXFdhcmVob3VzZUxvY2F0aW9uLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/vhk/OneDrive/Documents/GitHub/ERP_Components/ERP_Components/Views/Warehouse/WarehouseLocationView.cshtml]
+[C:/Users/vhk/OneDrive/Documents/ERP_Components/ERP_Components/ERP_Components/Views/Warehouse/WarehouseLocationView.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcV2FyZWhvdXNlXFdhcmVob3VzZUxvY2F0aW9uVmlldy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/vhk/OneDrive/Documents/GitHub/ERP_Components/ERP_Components/Views/Warehouse/WarehouseStockView.cshtml]
+[C:/Users/vhk/OneDrive/Documents/ERP_Components/ERP_Components/ERP_Components/Views/Warehouse/WarehouseStockView.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcV2FyZWhvdXNlXFdhcmVob3VzZVN0b2NrVmlldy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/vhk/OneDrive/Documents/GitHub/ERP_Components/ERP_Components/Views/_ViewImports.cshtml]
+[C:/Users/vhk/OneDrive/Documents/ERP_Components/ERP_Components/ERP_Components/Views/_ViewImports.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdJbXBvcnRzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/vhk/OneDrive/Documents/GitHub/ERP_Components/ERP_Components/Views/_ViewStart.cshtml]
+[C:/Users/vhk/OneDrive/Documents/ERP_Components/ERP_Components/ERP_Components/Views/_ViewStart.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdTdGFydC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/vhk/OneDrive/Documents/GitHub/ERP_Components/ERP_Components/Views/Shared/_Layout.cshtml]
+[C:/Users/vhk/OneDrive/Documents/ERP_Components/ERP_Components/ERP_Components/Views/Shared/_Layout.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9MYXlvdXQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = b-33k05herxz

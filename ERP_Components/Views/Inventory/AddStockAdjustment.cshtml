@@ -3,21 +3,24 @@
 
 @{
     ViewBag.Title = "Add Stock Adjustment";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    Layout = "~/Views/Shared/_LayoutINV.cshtml";
 }
 
 <link rel="stylesheet" href="~/css/Product.css">
 
 @model List<Product>
 
-<div class="header1">
-    <h4>Add Stock Adjustment</h4>
-</div>
+ 
+    @* <h4>Add Stock Adjustment</h4> *@
 <div id="material" class="container">
     <form method="post" asp-action="SetAdjustment" asp-controller="Inventory" onsubmit="return savedDetail()">
 
         <div class="form-section">
             <h3>Stock Adjustment</h3>
+            <div class="form-row" style="width:50%">
+                <label for="date">Date:</label>
+                <input type="date" name="date" value="@DateTime.Now.ToString("yyyy-MM-dd")" />           
+            </div>
             <div class="form-row">
 
                 <label class="required" for="itemName">Product Name:</label>
@@ -32,67 +35,39 @@
                         }
                     }
                 </select>
-
-                @* <input type="hidden" name="itemType" value="product" required /> *@
-
-                <label for="warehouse">Source Distribution Center:</label>
-                <select name="sourceDc">
-                    <option selected disabled>Select</option>
-                    @foreach (var scheme in Model)
-                    {
-                        @foreach (var warehouse in scheme.warehouse)
-                        {
-                            <option value="@warehouse.warehouseId">@warehouse.warehouseName</option>
-                        }
-                    }
-                </select>
-            </div>
-            <div class="form-row">
-
-                <label for="warehouse">Destination Distribution Center:</label>
-                <select name="destinationDc">
-                    <option selected disabled>Select</option>
-                    @foreach (var scheme in Model)
-                    {
-                        @foreach (var warehouse in scheme.warehouse)
-                        {
-                            <option value="@warehouse.warehouseId">@warehouse.warehouseName</option>
-                        }
-                    }
-                </select>
-
-
-
-
                 <label class="required" for="supplier">Current Stock:</label>
                 <input type="number" id="currentStock" name="currentStock" readonly />
 
-
-                
+               
             </div>
             <div class="form-row">
-                <label class="required" for="subCategory">Quantity:</label>
-                <input type="text" name="quantity" />
-                <label for="descr">Reason For Adjustment:</label>
-                <textarea  name="reason"></textarea>
 
-            </div>
-            <div class="form-row">
-                <label for="date">Date:</label>
-                <input type="date" name="date" value="@DateTime.Now.ToString("yyyy-MM-dd")" />
-
-                <label for="uom">Reference Number:</label>
-                <input type="text" name="reference" />
+                <label class="required" for="subCategory">Quantity:(+,-)</label>
+                <input type="number" name="quantity" />
+                <label for="reason">Reason for Stock Adjustment:</label>
+                <select  id="reasons" name="Reason">
+                    <option value="Damaged Item">Damaged Item</option>
+                    <option value="Expired Stock">Expired Stock</option>
+                    <option value="Lost Item">Lost Item</option>
+                    <option value="Returned from Customer">Returned from Customer</option>
+                    <option value="Stock Count Discrepancy">Stock Count Discrepancy</option>
+                    <option value="Theft or Pilferage">Theft or Pilferage</option>
+                    <option value="Supplier Return">Supplier Return</option>
+                    <option value="Repackaging or Relabeling">Repackaging or Relabeling</option>
+                    <option value="Quality Issue">Quality Issue</option>
+                    <option value="Transfer to Another Location">Transfer to Another Location</option>
+                    <option value="Warehouse Error">Warehouse Error</option>
+                </select>
+              
             </div>
 
            
+
+            <div class="button">
+                <button type="submit">Submit</button>
+            </div>
         </div>
 
-
-        <div class="button-container">
-            <button type="submit">Submit</button>
-            <button type="reset">Reset</button>
-        </div>
     </form>
 </div>
 

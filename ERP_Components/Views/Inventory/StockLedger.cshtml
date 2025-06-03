@@ -1,0 +1,55 @@
+﻿     @using ERP_Component_DAL.Models;
+@{
+    ViewBag.Title = "Stock";
+    Layout = "~/Views/Shared/_LayoutINV.cshtml";
+}
+
+
+<link rel="stylesheet" href="~/css/Product.css">
+<div class="form-section" >
+    <h3>Stock Ledger</h3>
+    <div class="form-row" style="width:50%">
+        <label class="required" for="productName">Product Name:</label>
+        <input type="text" name="itemName" required />
+    </div>
+    <div class="form-row">
+
+        <label class="required" for="sku">Start Date:</label>
+        <input type="date" name="manufacture" required />
+        <label class="required" for="sku">End Date:</label>
+        <input type="date" name="expiry" required />
+    </div>
+</div>
+
+<div class="table">
+    <table>
+            <thead>
+                <tr>
+                    <th>Sr no </th>
+                    <th>Date</th>
+                    <th>Particular</th>
+                    <th>Stock In</th>
+                    <th>Stock Out</th>
+                    <th>Balance</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1</td>
+                    <td>10-1-2025</td>
+                    <td>By Production : sunder</td>
+                    <td>0</td>
+                    <td>15</td>
+                    <td>15</td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td>5-1-2025</td>
+                    <td>By Production : Tushar</td>
+                    <td>10</td>
+                    <td>0</td>
+                    <td>5</td>
+                </tr>
+            </tbody>
+     </table>
+</div>

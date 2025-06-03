@@ -1,0 +1,356 @@
+﻿@using ERP_Component_DAL.Models;
+
+@{
+	ViewBag.Title = "Add Requisition";
+	Layout = "~/Views/Shared/_LayoutINV.cshtml";
+}
+
+
+<link rel="stylesheet" href="/css/Product.css" />
+
+
+@model List<AddPurchaseRequisition>
+
+<div class="form-section">
+<h3>Create Requisition</h3>
+<form id="purchaseForm">
+	
+		<div class="form-row">
+			<label for="ItemName">Item Name</label>
+			@* <div class="dropdown-container" style="position: relative; width: 250px;"> *@
+				<div id="customDropdown" class="dropdown-button" onclick="toggleDropdown()" style="border: 1px solid #ccc; padding: 5px;width:38%; cursor: pointer;">
+					Select Item
+				</div>
+				<div id="dropdownList" class="dropdown-list" style="display: none; left: 0; max-height: 200px; overflow-y: auto; border: 1px solid #ccc; background: white; z-index: 1000;">
+					<input type="text" id="searchInput" onkeyup="filterItems()" placeholder="Search..." style="width: 95%; margin: 5px; padding: 5px;">
+					<ul id="itemList" style="list-style: none; padding: 0; margin: 0;" id="productIdDropdown">
+						@for (var i = 0; i < Model.Count; i++)
+						{
+							<li onclick="selectItem('@Model[i].itemId', '@Model[i].itemName')" style="padding: 8px; cursor: pointer;">@Model[i].itemName</li>
+						}
+					</ul>
+				</div>
+				<input type="hidden" id="selectedItemId" name="itemId" />
+		
+				<label for="category">Category</label>
+				<input id="cat" type="text" name="category">
+
+
+	
+
+		</div>
+
+
+	<div class="form-row">
+			<label for="sku">Unit Price</label>
+			<input id="unitPrice" type="number" name="unitPrice">
+				<label for="specification">Specification</label>
+				<input id="specf" type="text" name="specification">
+		</div>
+
+	
+
+	
+		
+
+		<div class="form-row">
+			<label for="unitofmeasure">UOM</label>
+			<input id="uom" type="text" name="unitofmeasure">
+			<label for="gst">GST %</label>
+			<input id="Gst" type="number" name="gst">
+		</div>
+
+		
+
+
+		<div class="form-row">
+			<label for="itemtype">Item Type</label>
+			<input id="itype" type="text" name="itemtype">
+			<input id="itemId" type="hidden" name="itemId">
+
+			<label for="hsncode">HSN</label>
+			<input id="hsn" type="text" name="HSN">
+		</div>
+
+	
+
+
+		<div class="form-row" style="width:50%">
+			<label for="qty">Quantity</label>
+			<input id="quantity" type="number" name="quantity">
+			<input type="hidden" id="reqId" name="RequisitionId" />
+
+		</div>
+
+
+</form>
+
+	<div class="button-container">
+
+	<button type="submit" id="addItems">Add</button>
+</div>
+</div>
+
+<form method="post" asp-action="AddRequisition" asp-controller="Purchase" style="width:95%; margin-top:80px;">
+
+
+	
+
+
+ <div class="table">
+
+		<table>
+			<thead>
+				<tr>
+					<th>Requisition Series</th>
+					<th>Description </th>
+					<th>Total Amount</th>
+					<th>Raised By</th>
+					<th>Required By</th>
+				</tr>
+
+				<tr>
+					<td><input type="text" id="RequisitionSeries" name="requisitionSeries" readonly></td>
+					<td><input type="text" name="Descripion"></td>
+					<td><input type="text" id="totalAmountInput" name="TotalAmount"></td>
+					<td><input type="text" name="RaisedBy"></td>
+					<td><input type="text" name="RequiredBy"></td>
+
+				</tr>
+		</table>
+
+	</div> 
+
+
+	<div class="button-container">
+
+		<button type="submit">Submit</button>
+	</div>
+</form>
+
+
+<div class="table">
+	<table>
+		<thead>
+			<tr>
+				<th>S.No</th>
+				<th>Item Name</th>
+				<th>Category</th>
+				<th>Specification</th>
+				<th>UOM</th>
+				<th>Item Type</th>
+				<th>HSN</th>
+				<th>Quantity</th>
+				<th>Unit Price</th>
+				<th>Total Amount</th>
+
+			</tr>
+		</thead>
+
+		<tbody id="TableBody">
+		</tbody>
+
+	</table>
+</div>
+
+
+
+
+
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+
+<script>
+	function toggleDropdown() {
+		document.getElementById("dropdownList").style.display =
+			document.getElementById("dropdownList").style.display === "none" ? "block" : "none";
+	}
+
+	function filterItems() {
+		var input = document.getElementById("searchInput");
+		var filter = input.value.toLowerCase();
+		var ul = document.getElementById("itemList");
+		var li = ul.getElementsByTagName("li");
+
+		for (var i = 0; i < li.length; i++) {
+			var txtValue = li[i].textContent || li[i].innerText;
+			li[i].style.display = txtValue.toLowerCase().indexOf(filter) > -1 ? "" : "none";
+		}
+	}
+
+	function selectItem(id, name) {
+		document.getElementById("customDropdown").innerText = name;
+		document.getElementById("selectedItemId").value = id;
+		document.getElementById("dropdownList").style.display = "none";
+
+
+		$('#selectedItemId').trigger('change');
+	}
+
+
+	document.addEventListener('click', function (event) {
+		const dropdown = document.querySelector('.dropdown-container');
+		if (!dropdown.contains(event.target)) {
+			document.getElementById("dropdownList").style.display = "none";
+		}
+	});
+</script>
+<script>
+	function selectItem(id, name) {
+		document.getElementById("customDropdown").innerText = name;
+		document.getElementById("selectedItemId").value = id;
+		document.getElementById("dropdownList").style.display = "none";
+
+
+		if (id) {
+			$.ajax({
+				url: "/Purchase/AddpurchaseData",
+				type: "GET",
+				data: { itemId: id },
+				success: function (data) {
+					if (data) {
+						$('#itemId').val(data.itemId);
+						$('#reqId').val(data.reqId);
+						$('#iname').val(data.itemname);
+					  $('#unitPrice').val(data.unitPrice);
+						$('#cat').val(data.category);
+						$('#specf').val(data.specification);
+						$('#uom').val(data.unitofmeasure);
+						$('#Gst').val(data.gst);
+						$('#itype').val(data.itemtype);
+						$('#hsn').val(data.hsn);
+					} else {
+						alert("Product not found");
+					}
+				},
+				error: function() {
+					alert("Error fetching item data");
+				}
+			});
+		}
+	}
+
+</script>
+
+<script>
+	$(document).ready(function () {
+		$("#addItems").click(function () {
+			var formData = {
+				itemId: $('#itemId').val(),
+				Itemname: $('#iname').val(),
+				unitPrice: $('#unitPrice').val(),
+				category: $('#cat').val(),
+				specification: $('#specf').val(),
+				unitofmeasure: $('#uom').val(),
+				gst: $('#Gst').val(),
+				itemtype: $('#itype').val(),
+				hsn: $('#hsn').val(),
+				quantity: $('#quantity').val()
+			};
+
+			$.ajax({
+				type: 'POST',
+				url: '/Purchase/AddRequisitionItems',
+				data: formData,
+					success: function (response) {
+		console.log("Success:", response);
+
+		let tableBody = document.getElementById("TableBody");
+		let totalAmountSum = 0;
+		tableBody.innerHTML = "";
+
+		$(response.listItesms).each(function (index, item) {
+			var seq = index + 1;
+			totalAmountSum += parseFloat(item.totalAmount);
+
+			const tr = document.createElement("tr");
+			tr.innerHTML = `
+				<td>${seq}</td>
+				<td>${item.itemName}</td>
+				<td>${item.categoryName}</td>
+				<td>${item.specification}</td>
+				<td>${item.unitofmeasure}</td>
+				<td>${item.itemType}</td>
+				<td>${item.hsn}</td>
+				<td>${item.quantity}</td>
+				<td>${item.unitPrice}</td>
+				<td>${item.totalAmount}</td>
+			`;
+			tableBody.appendChild(tr);
+		});
+
+		$("#totalAmountInput").val(totalAmountSum.toFixed(2));
+
+	
+		$("#iname").val("");
+		$("#itemId").val("");
+		$("#unitPrice").val("");
+		$("#cat").val("");
+		$("#specf").val("");
+		$("#uom").val("");
+		$("#Gst").val("");
+		$("#itype").val("");
+		$("#hsn").val("");
+		$("#quantity").val("");
+		$("#customDropdown").text("Select Item");
+		$("#selectedItemId").val("");
+	},
+
+				
+				error: function (xhr, status, error) {
+					console.error("Error:", xhr.responseText);
+					alert("Failed to add item.");
+				}
+			});
+		});
+	});
+</script>
+
+
+
+
+<script>
+	document.addEventListener("DOMContentLoaded", function () {
+		const orderInput = document.getElementById("RequisitionSeries");
+		const hiddenInput = document.getElementById("hiddenQuotationSeries");
+
+		const year = new Date().getFullYear();
+		let nextNumber = 1;
+
+	
+		let lastOrder = localStorage.getItem("lastQuotationSeries");
+
+		if (lastOrder) {
+			let parts = lastOrder.split("-");
+			let lastYear = parseInt(parts[1]);
+			let lastNum = parseInt(parts[2]);
+
+			if (lastYear === year) {
+				nextNumber = lastNum + 1;
+			}
+		}
+
+		const newSeries = `REQ-${year}-${String(nextNumber).padStart(4, "0")}`;
+
+
+		orderInput.value = newSeries;
+		hiddenInput.value = newSeries;
+
+		localStorage.setItem("lastQuotationSeries", newSeries);
+	});
+	
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+

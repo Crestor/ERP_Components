@@ -1,0 +1,65 @@
+﻿@using ERP_Component_DAL.Models;
+
+@{
+    ViewBag.Title = "Add Contact Details";
+    Layout = "~/Views/Shared/_LayoutINV.cshtml";
+}
+<link rel="stylesheet" href="~/css/ProductTwo.css" />
+ @model List<AddCustomer> 
+
+<div class="container">
+    <form asp-action="AddContactDetails" asp-controller="Customer">
+    <div class="form-section">
+            <h3>Contact Details</h3>
+        <div class="form-row">
+                <label for="CustomerName">Customer Name</label>
+                <select id="Customer" name="CustomerId">
+                    <option disabled selected> select Name</option>
+                    @for (var i = 0; i < Model.Count; i++)
+                    {
+
+                        <option value="@Model[i].CustomerId">@Model[i].CustomerName</option>
+                    }
+                </select>
+                <label for="contactNo">Contact Number</label>
+                <input type="number" id="contactNo" name="ContactNo" placeholder="Enter Contact No" required>
+           
+                
+          </div>
+            <div class="form-row">
+                <label for="contactNo">Alternate Contact Number</label>
+                <input type="number" id="contactNo" name="alternate" placeholder="Enter AlternateContact No" required>
+
+                <label for="Email">Email<span class="required">*</span></label>
+
+                <input type="email" name="Email" placeholder="Enter email">
+                
+            </div>
+
+
+
+        <div class="form-row">
+                <label for="Email">Company Email</label>
+                <input type="email" name="CompanyEmail" placeholder="Enter Company email">
+
+                <label for="Social">Social Media Account</label>
+                <input type="text" name="social" placeholder="Enter Social Media Account">
+            
+                
+            </div>
+        <div class="form-row" style="width:50%"> 
+                <label for="Social">Whatsapp Number</label>
+                <input type="text" name="whatsapp" placeholder="Enter your Whatsapp number">
+                  
+                </div>
+            </div>
+        <div class="button-container" style="padding-right: 33px;float: right;">
+            <button type="submit">Submit</button>
+            <button type="reset">Reset</button>
+        </div>
+        
+    
+</form>
+</div>
+
+

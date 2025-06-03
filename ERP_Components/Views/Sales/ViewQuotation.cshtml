@@ -1,0 +1,250 @@
+﻿@using ERP_Component_DAL.Models
+
+@{
+    ViewBag.Title = "Quotation Document";
+    Layout = "~/Views/Shared/_LayoutINV.cshtml";
+}
+
+<link rel="stylesheet" href="~/css/ViewDoc.css">
+ @model List<QuotationModel>
+
+
+
+<div class="viewDoc" id="details-container">
+<div class="container" id="details-container">
+        <header>
+            @* <div class="image"></div> *@
+            <div class="info">
+                <h1>Countrees Services And Technologies Private Limited </h1> 
+                <p style="margin-left: 6px;">01 Thakurpur Rd, Prem Nagar,</p>
+                <p style="margin-top: -2px;margin-left: 6px;">Dehradun,  Uttarakhand, 248007</p>
+
+                <div class="overp">
+                    <p style="text-align:left;font-size:14px;margin-left: 8px;"><strong>Email :</strong> Countrees123@gmail.com <br /><strong>Phone :</strong> +917000001234  <br />countreestech.com </p>
+                    <p style="text-align:left;margin-left: 21px;font-size: 14px;"><strong>GST :</strong>GSTIN1818 <br /><strong>CIN :</strong>112322 </p>
+                </div>
+            </div>
+            @* <div class="logo"></div> *@
+        </header>
+        <div class="section">
+            <section class="quotation-info">
+                <p><strong>Quotation No:</strong> 0752</p>
+                <p><strong>Date:</strong> 21 May 2025</p>
+                <p><strong>Valid till:</strong> 28 May 2025</p>
+                <p><strong>Served by:</strong> Countrees</p>
+            </section>
+
+            <section class="receiver-info">
+                <p><strong>To:</strong> Executive Engineer, Rural Works Department</p>
+                <p><strong>Address:</strong> Dehradun, Uttarakhand</p>
+                <p><strong>GSTIN:</strong> 05AAICC703081DZ</p>
+            </section>
+        </div>
+
+   
+
+<h2 style="margin-top:4px">Basic Details</h2>
+
+<div class="cntr">
+
+   
+
+        <div style="margin-top: 35px;">
+                <strong>Quotation Series :</strong>
+            <span style="margin-left: 10px;">@Model[0].QuotationSeries</span><br>
+          
+        </div>
+       
+
+
+
+
+        <div  style="margin-top:16px; margin-bottom:10px;">
+            <strong>Customer Name :</strong><span style="margin-left: 10px;"> @Model[0].CustomerName</span><br>
+        </div>
+
+        <div class="Dates" style="float: right;margin-right: 216px;margin-bottom:10px;">
+            <strong>Date :</strong><span style="margin-left: 10px;"> @Model[0].QuotationDate</span><br>
+        </div>
+    
+
+<h2>Item Details</h2>
+        <div id="orderDetailsForm1">
+        <table id="orderTable" border="1" cellpadding="5" class="table-bordered">
+            <thead>
+                <tr>
+                    <th>S.No</th>
+                    <th>Item Name</th>
+                    <th>HSN Code</th>
+                    <th>Quantity</th>
+                    <th>UnitOFMeasure</th>
+                    <th>Unit Price Rate</th>
+                    <th>Discount Rate (%)</th>
+                    <th>Discount Amount</th>
+                    <th>Taxable Amount</th>
+                    <th>CGST (%)</th>
+                    <th>SGST (%)</th>
+                    <th>IGST (%)</th>
+                    <th>Total</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+
+                
+                @for (var i = 0; i < Model.Count; i++)
+                {
+                    var x = Model[i];
+                    var index = i + 1;
+
+                    <tr>
+
+                             
+
+                        <td>@index</td>
+                        <td> @x.ItemName</td>
+                        <td>@x.HSN</td>
+                                <td class="quantity">@x.Quantity</td>
+                            <td>@x.UnitOFMeasure</td> 
+                                <td class="selling-price">@x.SellingPrice</td>
+                        <td>@x.discountRate</td>
+                                <td class="discount-amount">@x.DiscountAmount</td>
+
+                     
+                                <td class="taxable-amount">@x.TaxableAmount</td>
+                        <td> @x.CGST</td>
+                        <td> @x.SGST</td>
+                        <td>@x.IGST</td>
+                        <td>@x.TotalAmount</td>
+                        
+                    
+                           
+                       
+                       
+                    </tr>
+                }
+            </tbody>
+        </table>
+              </div>
+
+        <div class="rgt" style="display: inline-table;margin-top: 5%;">
+        <strong>Delivery Terms:</strong>
+            <span style="margin-left: 10px;">@Model[0].DeliveryTerms</span><br>
+   
+        <strong>Payment Terms:</strong> <span style="margin-left: 10px;">@Model[0].PaymentTerm</span><br>
+
+            <strong>Other:</strong> <span style="margin-left: 10px;">@Model[0].Other</span><br />
+ 
+      
+        </div>
+
+
+        <div class="VDQ" style="margin-top: 5%;float: right;">
+     
+                <strong>Total Amount:</strong><span id="totalPriceBeforeDiscount" style="margin-left: 10px;"></span><br />
+                <strong>Total Discount (%):</strong><span id="totalDiscountPercent"></span><br>
+                <strong>Total Discount Amount:</strong><span id="totalDiscountAmount"></span><br>
+                <strong>Total Taxable Amount:</strong><span id="totalTaxableAmount" style="margin-left: 10px;"></span><br />
+
+
+            <strong>Gross Total:</strong><span style="margin-left: 10px;">
+                @Model[0].GrossTotal</span><br>
+        </div>
+
+   
+   </div>
+
+   
+   <div class="footer">
+        <div style="margin-left: 115px;">
+            Regards,
+        </div>
+        <b> Countrees AI Technologies Private Limited </b>
+      
+ </div>
+
+    </div>
+</div>
+  
+<div style="margin-top: 30px;margin-left: 398px;margin-bottom: 8px; ">
+<button class="button"  id="download-button">Download PDF</button>
+    <button class="button" id="print-button">Print</button>
+</div>
+<script>
+    window.onload = function () {
+        let totalPriceBeforeDiscount = 0;
+        let totalDiscountAmount = 0;
+        let totalTaxableAmount = 0;
+
+        const rows = document.querySelectorAll("#orderTable tbody tr");
+
+        rows.forEach(row => {
+            const sellingPrice = parseFloat(row.querySelector(".selling-price")?.textContent || 0);
+            const quantity = parseFloat(row.querySelector(".quantity")?.textContent || 0);
+            const discountAmount = parseFloat(row.querySelector(".discount-amount")?.textContent || 0);
+            const taxableAmount = parseFloat(row.querySelector(".taxable-amount")?.textContent || 0);
+
+            totalPriceBeforeDiscount += sellingPrice * quantity;
+            totalDiscountAmount += discountAmount;
+            totalTaxableAmount += taxableAmount;
+        });
+
+        const totalDiscountPercent = totalPriceBeforeDiscount === 0
+            ? 0
+            : (totalDiscountAmount / totalPriceBeforeDiscount) * 100;
+
+        // Update the DOM
+        document.getElementById("totalPriceBeforeDiscount").textContent = totalPriceBeforeDiscount.toFixed(2);
+        document.getElementById("totalDiscountAmount").textContent = totalDiscountAmount.toFixed(2);
+        document.getElementById("totalDiscountPercent").textContent = totalDiscountPercent.toFixed(2) + " %";
+        document.getElementById("totalTaxableAmount").textContent = totalTaxableAmount.toFixed(2);
+    };
+</script>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+
+            $("#download-button").click(async function () {
+        const { jsPDF } = window.jspdf;
+        const element = document.querySelector("#details-container");
+
+        const canvas = await html2canvas(element, {
+            scale: 3,
+            useCORS: true,
+            windowWidth: element.scrollWidth,
+            windowHeight: element.scrollHeight,
+        });
+
+        const imgData = canvas.toDataURL("image/png");
+        const pdf = new jsPDF("p", "mm", "a4");
+
+        const pdfWidth = pdf.internal.pageSize.getWidth();
+        const pdfHeight = pdf.internal.pageSize.getHeight();
+
+        pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, (canvas.height * pdfWidth) / canvas.width);
+        pdf.save("PFMS_Form.pdf");
+    });
+
+
+</script>
+
+<script>
+    $(document).ready(function () {
+        $("#print-button").click(function () {
+            var printContents = document.getElementById("details-container").innerHTML;
+            var originalContents = document.body.innerHTML;
+
+            document.body.innerHTML = printContents;
+            window.print();
+            document.body.innerHTML = originalContents;
+            location.reload();
+        });
+    });
+</script>
+
+

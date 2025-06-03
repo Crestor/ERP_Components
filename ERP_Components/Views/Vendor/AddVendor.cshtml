@@ -1,0 +1,580 @@
+﻿@using ERP_Component_DAL.Models;
+
+
+@{
+    ViewBag.Title = "Vendor";
+    Layout = "~/Views/Shared/_LayoutINV.cshtml";
+}
+
+<link rel="stylesheet" href="/css/Product.css" />
+<style>
+    /* body { */
+    /*     font-family: Arial, sans-serif; */
+    /*     background-color: #e0e0e0; */
+    /*     margin: 0; */
+    /*     padding: 0; */
+    /* } */
+
+
+
+    /* .container { */
+    /*     /* width: 95%; */ */
+    /*     max-width: 1400px; */
+    /*     margin: 30px auto; */
+    /*     background-color: #fff; */
+    /*     /* padding: 40px; */ */
+    /*     border-radius: 15px; */
+       
+    /* } */
+
+  
+    /* h3 { */
+        
+    /*     padding: 13px 15px; */
+    /*     color: #ad4b4b; */
+    /*     font-size: 1.5rem; */
+        
+    /* } */
+
+    /* Form rows and layout */
+    .row {
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    /* Input field block */
+    .field {
+        flex: 1 1 30%;
+        min-width: 280px;
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 10px;
+    }
+
+    /* Labels */
+    /* label { */
+    /*     font-weight: 500; */
+    /*     color: #333; */
+    /*     display: block; */
+    /*     margin: 2px 0.6px; */
+    /*     font-size: 15px; */
+    /* } */
+
+
+    /* input[type='file'] { */
+    /*     color: rgba(0, 0, 0, 0) */
+    /* } */
+
+
+
+    /* Inputs and selects */
+    /* input[type="text"], */
+    /* input[type="date"], */
+    /* input[type="number"], */
+    /* select { */
+    /*     width: 100%; */
+    /*     padding: 10px 12px; */
+    /*     margin-bottom: 10px; */
+    /*     border: 1px solid #ccc; */
+    /*     border-radius: 6px; */
+    /*     font-size: 15px; */
+    /*     box-sizing: border-box; */
+    /*     background-color: #fff; */
+    /*     transition: border 0.3s ease; */
+    /* } */
+
+    /* input, select { */
+    /*     width: 300px !important; */
+    /*     height: 38px; */
+    /* } */
+
+    .error-message {
+        color: red;
+        font-size: 12px;
+        margin-top: 2px;
+        /* height: 14px; */
+    }
+
+    #vendorDropdown {
+        margin-right: 26rem;
+        position: absolute;
+        right: 274px;
+        width: 200px;
+        height: 100px;
+    }
+
+
+    
+/* 
+        button:hover {
+            background-color: white;
+            color: #ad4b4b;
+            border: 1px solid #ad4b4b;
+        }
+ */
+    .required {
+        color: #138496;
+    }
+
+
+    /* .personal { */
+    /*     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); */
+    /*     border-radius: 10px; */
+    /*     padding: 7px 13px 7px 14px; */
+    /*     width: 77rem; */
+    /*     max-width: 1320px */
+    /* } */
+
+
+    .container2 {
+        box-shadow: 0 5px 22px rgba(0, 0, 0, 0.1);
+    }
+
+    #otherVendorTypeContainer {
+        margin-left: 28rem;
+    }
+</style>
+
+
+<h2>Add Vendor</h2>
+
+<form id="vendorForm" asp-action="AddVendor" asp-controller="Vendor" enctype="multipart/form-data">
+
+    <div class="form-section">
+        <h3>Personal Details</h3>
+        <div class="row">
+            <div class="field">
+                <label class="form-label" for="gst">GST No</label>
+                <input type="text" class="form-control" id="gstin" name="GST" maxlength="15" pattern="[0-9A-Z]{15}" placeholder="Enter a valid GST" />
+                <div id="gstError" class="error-message"></div>
+            </div>
+
+            <div class="field">
+                <label class="form-label" for="pan">PAN No</label>
+                <input type="text" class="form-control" id="panno" name="PAN" maxlength="10" pattern="[A-Z]{5}[0-9]{4}[A-Z]{1}" placeholder="Enter a valid PAN (e.g., ABCDE1234F)" />
+                <div id="panError" class="error-message"></div>
+            </div>
+
+            <div class="field">
+                <label class="form-label" for="vendorName">Vendor Name<span class="required">*</span></label>
+                <input type="text" class="form-control" id="vendorName" name="VendorName" placeholder="Enter Vendor Name" required>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="field">
+                <label class="form-label" for="vendorCode">Vendor Code<span class="required">*</span></label>
+                <input type="text" class="form-control" id="vendorCode" name="VendorCode" placeholder="Enter vendor code">
+                <span id="vendorCodeMsg"></span>
+            </div>
+            <div class="field">
+                <label class="form-label" for="contactPerson">Contact Person</label>
+                <input type="text" class="form-control" id="contactPerson" name="ContactName" placeholder="Enter Contact Person" required>
+            </div>
+            <div class="field">
+                <label class="form-label" for="contactNo">Contact Number<span class="required">*</span></label>
+                <input type="text" class="form-control" id="contactNo" name="Phone" placeholder="Enter Contact No" required>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="field">
+                <label class="form-label" for="paymentTerms">Payment Terms (Days)</label>
+                <input type="number" class="form-control" id="paymentTerms" name="PaymentTermsDays" placeholder="Enter Payment Terms">
+            </div>
+            <div class="field">
+                <label class="form-label" for="VendorType">Vendor Type</label>
+                <select class="form-select" id="VendorType" name="VendorIndustry" required onchange="toggleOtherInput(this)">
+                    <option value="">-- Select --</option>
+                    <option value="manufacturer">Manufacturer</option>
+                    <option value="wholesaler">Wholesaler</option>
+                    <option value="retailer">Retailer</option>
+                    <option value="service_provider">Service Provider</option>
+                    <option value="others">Others</option>
+                </select>
+            </div>
+            <div class="field">
+                <label class="form-label" for="email">Email</label>
+                <input type="email" class="form-control" name="Email" placeholder="Enter Email">
+            </div>
+        </div>
+    </div>
+
+    <div class="form-section">
+        <h3>Opening Balance</h3>
+        <div class="row">
+            <div class="field">
+                <label class="form-label" for="date">Date (As On)<span class="required">*</span></label>
+                <input type="date" class="form-control" id="date" name="OpeningDate" required>
+            </div>
+            <div class="field">
+                <label class="form-label" for="amount">Amount</label>
+                <input type="text" class="form-control" id="amount" name="Balance">
+            </div>
+            <div class="field" id="modeRow">
+                <label class="form-label" for="mode">Mode</label>
+                <select class="form-select" id="mode" name="Mode">
+                    <option selected disabled>-Select-</option>
+                    <option value="Credit">Credit</option>
+                    <option value="Debit">Debit</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-section">
+        <h3>Address Details</h3>
+        <div class="row">
+            <div class="field">
+                <label class="form-label" for="country">Country<span class="required">*</span></label>
+                <select class="form-select" id="country" name="Country" required>
+                    <option selected disabled>-Select-</option>
+                    <option value="India">India</option>
+                </select>
+            </div>
+            <div class="field">
+                <label class="form-label" for="state">State<span class="required">*</span></label>
+                <select class="form-select" id="state" name="State" required></select>
+            </div>
+            <div class="field">
+                <label class="form-label" for="district">District<span class="required">*</span></label>
+                <select class="form-select" id="district" name="District" required></select>
+            </div>
+        </div>
+        <div class="row">
+            <div class="field">
+                <label class="form-label" for="city">City<span class="required">*</span></label>
+                <input type="text" class="form-control" id="city" name="City" />
+            </div>
+            <div class="field">
+                <label class="form-label" for="pin">Pin Code<span class="required">*</span></label>
+                <input type="text" class="form-control" id="pin" name="Pincode" required>
+            </div>
+            <div class="field">
+                <label class="form-label" for="address">Address (Line1)<span class="required">*</span></label>
+                <input type="text" class="form-control" id="address" name="AddressLine" required>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-section">
+        <h3>Bank Details</h3>
+        <div class="row">
+            <div class="field">
+                <label class="form-label" for="accountHolder">Account Holder Name<span class="required">*</span></label>
+                <input type="text" class="form-control" id="accountHolder" name="AccountHolderName" required>
+            </div>
+            <div class="field">
+                <label class="form-label" for="bankName">Bank Name<span class="required">*</span></label>
+                <input type="text" class="form-control" id="bankName" name="BankName" required>
+            </div>
+            <div class="field">
+                <label class="form-label" for="branchName">Branch Name<span class="required">*</span></label>
+                <input type="text" class="form-control" id="branchName" name="BranchName" required>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="field">
+                <label class="form-label" for="accountNo">Account Number<span class="required">*</span></label>
+                <input type="text" class="form-control" id="AccountNumber" name="AccountNumber" required>
+            </div>
+            <div class="field">
+                <label class="form-label" for="reconfirm">Re-confirm Account Number<span class="required">*</span></label>
+                <input type="text" class="form-control" id="ConfirmAccountNumber" name="reconfirm" required>
+            </div>
+            <div class="field">
+                <label class="form-label" for="ifsc">IFSC<span class="required">*</span></label>
+                <input type="text" class="form-control" id="ifsc" name="IFSCCode" required>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-section">
+        <h3>Upload Document (Optional)</h3>
+        <div class="row">
+            <div class="field">
+                <label class="form-label" for="GstCertificate">Upload GST Certificate</label>
+                <input name="GSTCertificate" type="file" />
+            </div>
+            <div class="field">
+                <label class="form-label" for="PanCard">Upload PAN Card</label>
+                <input name="PANCard" type="file" />
+            </div>
+            <div class="field">
+                <label class="form-label" for="Other">Other</label>
+                <input type="file" name="OtherDocument" />
+            </div>
+        </div>
+    </div>
+
+    <div class="button-container" style="display: flex; justify-content: center;">
+        <button type="submit">Submit</button>
+    </div>
+
+</form>
+
+
+
+<script>
+    function validateForm() {
+       const gst = document.getElementById('gst').value.trim();
+    // const gst = document.getElementById('gstin').value.trim();
+
+        const pan = document.getElementById('pan').value.trim();
+    const accountNo = document.getElementById('AccountNumber').value.trim();
+    const reconfirm = document.getElementById('ConfirmAccountNumber').value.trim();
+
+        if (gst === "" && pan === "") {
+            alert("Please enter either GST No or PAN No.");
+            return false;
+        }
+
+        if (accountNo === "" || reconfirm === "") {
+            alert("Please fill both Account Number and Re-confirm Account Number.");
+            return false;
+        }
+
+        if (accountNo !== reconfirm) {
+            alert("Account Number and Re-confirm Account Number do not match.");
+            return false;
+        }
+
+        return true;
+    }
+
+
+</script>
+<script>
+         let statesData = null;
+
+         async function fetchData(url) {
+        try {
+            const response = await fetch(url);
+            statesData = await response.json();
+            console.log("Fetched data:", statesData);
+        } catch (error) {
+            console.error("Error fetching data:", error);
+        }
+    }
+
+        async function populateStates() {
+            console.log("Populating states...");
+            await fetchData("/Json/city.json");
+
+            const stateSelect = document.getElementById("state");
+            if (statesData && statesData.states) {
+                statesData.states.forEach((state) => {
+                    let option = new Option(state.name, state.name);
+                    stateSelect.add(option);
+                });
+            }
+        }
+
+
+
+
+        async function updateDistricts() {
+            const stateName = document.getElementById("state").value;
+            const districtSelect = document.getElementById("district");
+            districtSelect.innerHTML = '<option value="">-Select District-</option>';
+
+            if (!stateName) return;
+
+            const selectedState = statesData.states.find(state => state.name === stateName);
+            if (selectedState && selectedState.districts) {
+                selectedState.districts.forEach((district) => {
+                    let option = new Option(district.name, district.name);
+                    districtSelect.add(option);
+                });
+            }
+        }
+
+
+
+        async function updateCities() {
+            const stateName = document.getElementById("state").value;
+            const districtName = document.getElementById("district").value;
+            const citySelect = document.getElementById("city");
+
+            citySelect.innerHTML = '<option value="">-Select City-</option>';
+
+            if (!stateName || !districtName) return;
+
+            const selectedState = statesData.states.find(state => state.name === stateName);
+            const selectedDistrict = selectedState.districts.find(district => district.name === districtName);
+
+            if (selectedDistrict && selectedDistrict.cities) {
+                selectedDistrict.cities.forEach(city => {
+                    let option = new Option(city, city);
+                    citySelect.add(option);
+                });
+            }
+
+            citySelect.add(new Option("Other", "other"));
+        }
+
+
+
+
+    function checkOtherCity(select) {
+        if (select.value === "other") {
+            document.getElementById("cityModal").style.display = "flex";
+            select.value = "";
+        }
+    }
+
+    function closeCityModal() {
+        document.getElementById("cityModal").style.display = "none";
+        document.getElementById("newCity").value = "";
+    }
+
+    document.getElementById("state").addEventListener("change", updateDistricts);
+    document.getElementById("district").addEventListener("change", updateCities);
+
+
+    window.onload = populateStates;
+</script>
+
+<script>
+         async function addNewCity() {
+        const newCity = document.getElementById("newCity").value.trim();
+        const stateName = document.getElementById("state").value;
+        const districtName = document.getElementById("district").value;
+
+        if (!newCity || stateName === "" || districtName === "") {
+            alert("Please enter a valid city name and select a state and district.");
+            return;
+        }
+
+        const requestData = {
+            StateName: stateName,
+            DistrictName: districtName,
+            NewCity: newCity
+        };
+
+        console.log("Sending Request:", requestData);
+
+        try {
+            const response = await fetch("/Benifitiary/AddCity", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(requestData)
+            });
+
+            if (!response.ok) {
+                throw new Error("Failed to add city");
+            }
+
+            const result = await response.json();
+            console.log("Response Data:", result);
+
+            if (result.success) {
+                alert("City added successfully!");
+
+                // Add new city to the dropdown
+                const citySelect = document.getElementById("city");
+                let newOption = new Option(newCity, newCity);
+                citySelect.add(newOption);
+
+                closeCityModal();
+            } else {
+                alert("Error adding city: " + result.message);
+            }
+        } catch (error) {
+            console.error("Error:", error);
+            alert("Something went wrong!");
+        }
+    }
+
+</script>
+<script>
+    document.getElementById('gstin').addEventListener('input', function () {
+        const gstInput = this.value;
+        const gstPattern = /^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[1-9A-Z]{1}[Z]{1}[0-9A-Z]{1}$/;
+        const errorDiv = document.getElementById('gstError');
+
+        if (gstInput.length === 15 && !gstPattern.test(gstInput)) {
+            errorDiv.textContent = "Invalid GSTIN format. Please enter a valid 15-character GST number.";
+        } else {
+            errorDiv.textContent = "";
+        }
+    });
+
+
+        function limitLength(input, maxLength) {
+        if (input.value.length > maxLength) {
+            input.value = input.value.slice(0, maxLength);
+        }
+    }
+</script>
+<script>
+    document.getElementById('panno').addEventListener('input', function () {
+        const panInput = this.value;
+        const panPattern = /^[A-Z]{5}[0-9]{4}[A-Z]{1}$/;
+        const errorDiv = document.getElementById('panError');
+        1
+        if (gstInput.length === 10 && !gstPattern.test(gstInput)) {
+            errorDiv.textContent = "Invalid Pan format. Please enter a valid 10-character Pan number.";
+        } else {
+            errorDiv.textContent = "";
+        }
+    });
+
+       document.getElementById('panno').addEventListener('input', function () {
+
+        function limitLength(input, maxLength) {
+        if (input.value.length > maxLength) {
+            input.value = input.value.slice(0, maxLength);
+        }
+    }
+
+    document.getElementById('gstin').addEventListener('input', function () {
+        this.value = this.value.toUpperCase();
+    });
+    document.getElementById("panno").addEventListener('input',function(){
+        this.value=this.value.toUpperCase();
+    })
+
+</script>
+<script>
+    document.getElementById("vendorCode").addEventListener("change", function () {
+        var code = this.value.trim();
+        if (!code) return;
+
+        fetch(`/Home/VendorCodeAvailable?code=${encodeURIComponent(code)}`)
+            .then(res => res.json())
+            .then(isAvailable => {
+                if (isAvailable) {
+                    document.getElementById("vendorCodeMsg").innerText = "Code is available";
+                    document.getElementById("vendorCodeMsg").style.color = "green";
+                } else {
+                    document.getElementById("vendorCodeMsg").innerText = "Code already exists";
+                    document.getElementById("vendorCodeMsg").style.color = "red";
+                }
+            });
+    });
+</script>
+<script>
+    function toggleOtherInput(selectElement) {
+        const otherInputContainer = document.getElementById('otherVendorTypeContainer');
+        const otherInput = document.getElementById('OtherVendorType');
+
+        if (selectElement.value === 'others') {
+            otherInputContainer.style.display = 'block';
+            otherInput.setAttribute('name', 'VendorType');
+            selectElement.removeAttribute('name');
+        } else {
+            otherInputContainer.style.display = 'none';
+            otherInput.removeAttribute('required');
+            otherInput.removeAttribute('name');
+            selectElement.setAttribute('name', 'VendorType');
+        }
+    }
+</script>
+
+
+
+
+
+

@@ -29,5 +29,22 @@ namespace ERP_Component_DAL.Models
 
         public List<Items> items { get; set; }
         public List<Warehouse> warehouse { get; set; }
+
+
+
+
+        public string? Category { get; set; }
+        public string? ProductName { get; set; }
+        public string? ProductDetail { get; set; }
+        
+        public int ProductQuantity { get; set; }
+        public decimal ProductUnitPrice { get; set; }
+        public decimal TaxableAmount { get; set; }
+        public decimal ProductGstAmount { get; set; }
+        public decimal TotalAmount { get; set; }
+        public decimal FinalAmount { get; set; }
+        public decimal DiscountAmount { get; set; }
+        public decimal DiscountRate { get; set; }
+        public decimal ProductGSTRate { get; set; }
     }
 }

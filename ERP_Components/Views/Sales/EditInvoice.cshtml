@@ -1,0 +1,458 @@
+﻿@using ERP_Component_DAL.Models
+
+@{
+    ViewBag.Title = "Edit Invoice";
+    Layout = "~/Views/Shared/_LayoutINV.cshtml";
+}
+
+<link rel="stylesheet" href="~/css/ProductTwo.css" />
+
+@model List<Invoice>
+<form method="post" asp-action="UpdateEditInvoice" asp-controller="Sales">
+
+    <div class="form-section">
+    <h3>Basic Details</h3>
+
+
+
+
+
+    <div class="form-row">
+                    <label>Customer Name:</label>
+                    <input type="text" id="customerName" name="customerName" value="@Model[0].CustomerName" readonly ><br>
+                    <label>E-Invoice Number</label>
+                    <input type="text" id="eInvoiceNumber" name="InvoiceNumber"  value="@Model[0].InvoiceNumber"><br>
+                </div>
+    <div class="form-row" >
+        <label>Invoice Date</label>
+                    <input type="text" id="InvoiceDate" name="InvoiceDate" value="@Model[0].InvoiceDate" readonly/>
+            <label>Invoice Series</label>
+            <input type="text" id="eInvoiceNumber" name="InvoiceNumber">
+                </div>
+          
+        </div>
+
+    <div class="form-section">
+        <h3>Remark</h3>
+
+       
+                <div class="form-row">
+                    <label>Delivery Terms:</label>
+                     <select id="deliveryTerms" name="DeliveryTerms" style=" width: 200px;">
+                        <option value="">select</option>
+                        <option selected value="@Model[0].DeliveryTerms">@Model[0].DeliveryTerms</option>
+                        <option value="7 day">7 days</option>
+                        <option value="10 Day"> 10 Day</option>
+                        <option value="14 Day"> 14 Day</option>
+                        <option value="19 Day"> 19 Day</option>
+                        <option value="21 Day"> 21 Day</option>
+                        <option value="30 Day"> 30 Day</option>
+                    </select>
+                    <label>Payment Terms:</label>
+                     <select id="paymentTerms" name="PaymentTerm" style=" width: 200px;">
+                        <option value="">select</option>
+                        <option selected value="@Model[0].PaymentTerm">@Model[0].PaymentTerm</option>
+                        <option value="Addvance">Advance</option>
+                        <option value="cash after service"> cash after service</option>
+                    </select>
+                </div>
+                @* <input type="text" id="deliveryTerms" name="DeliveryTerms"><br> *@
+
+
+        <div class="form-row" style="width:50%">
+                <label>Other:</label>
+                <input type="text" id="other" name="Other" value="@Model[0].Other">
+                </div>
+
+            </div>
+            @*  <div class="termss">
+        <label>Terms & Condition:</label>
+        <input type="text" id="deliveryTerms" name="DeliveryTerms" value="@Model[0].DeliveryTerms" readonly><br>
+
+        <label>Additional remark:</label>
+        <input type="text" id="paymentTerms" name="PaymentTerm" value="@Model[0].PaymentTerm" readonly><br>
+        </div> *@
+            @* <div>
+
+                <div class="totalamounss" style=" padding-top: 91px;">
+
+                    <label>Total Discount (%):</label>
+                    <input type="number" id="totalDiscountPercent" name="TotalDiscountPercent" value="@Model[0].TotalDiscountPercent" readonly><br>
+
+                    <label>Round off :</label>
+                    <input type="number" id="" name="" readonly value="" style="padding:10px 123px;"><br>
+                </div>
+            </div> *@
+                    <input type="hidden" name="InvoiceID" value="@Model[0].InvoiceID" />
+      
+
+
+@* 
+        <!-- Tax Section -->
+        <div class="ctnr" style="padding-left: 69px;">
+            <section class="mb-5">
+                <div class="row align-items-center g-3">
+                    <div class="col-auto">
+                        <label class="form-label">Gross Total:</label>
+                        <input type="number" class="form-control" id="grossTotal"  value="@Model[0].GrossTotal" readonly>
+                    </div>
+                    <div class="col-auto" style="padding-left: 75%;margin-top: -60px;">
+
+                        @* style="width:-webkit-fill-available !important;" *@
+        @*         <div class="">
+                            <label class="" for="applyTCS">apply TCS</label>
+                            <input class="" type="radio" name="applyTax" id="applyTCS" style="width: 16px !important;">
+                        </div>
+                        <div class="">
+                            <label class="" for="applyTDS">apply TDS</label>
+                            <input class="" type="radio" name="applyTDS" id="applyTDS" style="width: 16px !important;">
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+        <!-- TDS Modal -->
+        <div class="modal fade tax-modal" id="tdsModal" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">TDS Details</h5>
+                        <button type="button" class="button-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label class="form-label">Applied %</label>
+                            <input type="number" class="form-control" id="tdsPercentage">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Deduct Amount</label>
+                            <input type="number" class="form-control" id="tdsAmount" readonly>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="button button-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="button custom-bg-primary text-white" id="tdsSubmit">Save changes</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+ *@
+
+
+        @* 
+<div class="ctnr" style="padding-left: 69px;">
+    <label>Gross Total:</label>
+    <input type="number" id="grossTotal" name="grossTotal" readonly>
+
+
+    <div >
+    <label>Apply:</label>
+    <label for="applyTCS">TCS</label>
+        <input type="radio" id="applyTCS" name="applyTax" value="TCS" style="width: 16px !important;">
+    <label for="applyTDS">TDS</label>
+        <div style="display: flex;align-items: baseline; flex-direction: row; margin-bottom: 13px;">
+        <input type="radio" id="applyTDS" name="applyTax" value="TDS" style="width: 16px !important;">
+@* </div> 
+
+        <div id="tdsPopup">
+            @* style="display: block;margin-left: 134px;margin-bottom: 16px;" 
+    <label>Applied %:</label>
+    <input type="number" id="tdsPercentage" name="tdsPercentage">
+    <br>
+    <label>Deduct Amount:</label>
+    <input type="number" id="tdsAmount" name="tdsAmount" readonly>
+    <br><br>
+    <button class="button" id="tdsSubmit">Submit</button>
+            </div>
+    </div>
+</div>
+</div> *@
+
+    <div class="form-section">
+        <h3>Payment Details</h3>
+
+        <div class="form-row" >
+          
+                <label>Payment Mode:</label>
+                <input type="text" id="paymentMode" name="PaymentMode" value="@Model[0].PaymentMode">
+           
+
+          
+                <label>Reference Number:</label>
+                <input type="text" id="referenceNumber" name="ReferenceNumber" value="@Model[0].ReferenceNumber">
+          
+
+           </div>
+            <div class="form-row" style="width:50%">
+                <label>Payment Type:</label>
+                <select id="paymentType" name="PaymentType" style="width: 11%;">
+                    <option value="">select</option>
+                    <option selected value="@Model[0].PaymentType">@Model[0].PaymentType</option>
+                    <option value="Full">Full</option>
+                    <option value="Partial">Partial</option>
+                </select>
+            </div>
+        
+   </div>
+        @* </div> *@
+        @* </form> *@
+        <h2>Shipping Details</h2>
+    <div class="ctnr">
+        <div class="sd">
+            <button class="btn" type="button" id="option1">Shipped To</button>
+            <button class="btn" type="button" id="option2" >Transport/E-Way Bill</button>
+            <button class="btn" type="button" id="option3" >Dispatch Form</button>
+            <button class="btn" type="button" id="option4" >Courier Details</button>
+        </div>
+
+        <div id="form1" class="shipping-form" style="display: block;">
+            <div style="display: flex;margin-left: 73px;">
+                <div class="row">
+                        <label>Company Name:</label>
+                        <input type="text" id="CompanyName" name="CompanyName" value="@Model[1].CompanyName" style="width: 250px !important;" placeholder="Enter name">
+                        <label>State:</label>
+                        <input type="text" id="State" name="State" value="@Model[1].State" style="width: 250px !important;" placeholder="Enter State">
+                        <label>Pin Code:</label>
+                        <input type="text" id="PinCode" name="PinCode" value="@Model[1].Pincode" style="width: 250px !important;" placeholder="Enter Pin code">
+
+                        <label>Consignment Number:</label>
+                        <input type="text" id="ConsignmentNumber" value="@Model[1].ConsignmentNumber" name="ConsignmentNumber" style="width: 250px !important;" placeholder="Enter Consignment Number">
+                    </div>
+
+                    <div class="row">
+                        <label>Branch:</label>
+                        <input type="text" id="Branch" name="Branch" value="@Model[1].Branch" style="width: 250px !important;" placeholder="Enter Branch">
+
+                        <label>Districts:</label>
+                        <input type="text" id="Districts" name="Districts" value="@Model[1].District" style="width: 250px !important;" placeholder="Enter Districts">
+                        <label>Contact Number:</label>
+                        <input type="number" id="ContactNumber" name="ContactNumber" value="@Model[1].ContactNumber" style="width: 250px !important;" placeholder="Enter Contact Number">
+                        <label>GSTIN:</label>
+                        <input type="text" id="GSTIN" name="GSTIN" value="@Model[1].GSTIN" style="width: 250px !important;" placeholder="Enter GSTIN">
+                    </div>
+
+                    <div class="row">
+                        <label>Area:</label>
+                        <input type="text" id="Area" name="Area" value="@Model[1].Area" style="width: 250px !important;" placeholder="Enter Area">
+
+                        <label>City:</label>
+                        <input type="text" id="City" name="City" value="@Model[1].City" style="width: 250px !important;" placeholder="Enter City">
+                        <label>Shipping Remote:</label>
+                        <input type="text" id="ShippingRemote" name="ShippingRemote" value="@Model[1].ShippingRemote" style="width: 250px !important;">
+                        <label>Other References:</label>
+                        <input type="text" id="OtherReferences" name="OtherReferences" value="@Model[1].OtherReferences" style="width: 250px !important;" placeholder="Enter References">
+                    </div>
+                </div>
+
+            </div>
+            @*  </form>
+   <form> *@
+            <div id="form2" class="shipping-form" style="display: none;">
+                @* Transport/E-Way Bill Form Content  *@
+                <div style="display: flex;margin-left: 73px;">
+                    <div class="row">
+                        <label>Transporter ID:</label>
+                        <input type="text" id="TransporterID" name="TransporterID" value="@Model[2].TransporterID" style="width: 250px !important;" placeholder="Enter Transporter ID">
+                        @* <label>Mode Of Shipment:</label> *@
+                        @* <input type="text" style="width: 250px !important;" placeholder="Enter State"> *@
+                        <label>Mode Of Shipment:</label>
+                        <select id="ModeOfShipment" name="ModeOfShipment" style="padding: 5px;width: 250px !important;">
+                            <option selected value="@Model[2].ModeOfShipment">@Model[2].ModeOfShipment</option>
+                            <option value="Air">Air</option>
+                            <option value="Road">Road</option>
+                            <option value="Rail">Rail</option>
+                            <option value="Sea">Sea</option>
+                        </select>
+
+                        <label>Transport Document Number:</label>
+                        <input type="text" id="" name="TransporterDocumentNumber" value="@Model[2].TransporterDocumentNumber" style="width: 250px !important;"readonly>
+                        <label>GR.Number:</label>
+                        <input type="text" id="GRNumber" name="GRNumber" value="@Model[2].GRNumber" style="width: 250px !important;" placeholder="Enter GR Number">
+                        <label>Number Of Cartons:</label>
+                        <input type="number" id="NumberOfCartons" name="NumberOfCartons" value="@Model[2].NumberOfCartons" style="width: 250px !important;" placeholder="Enter Cartons">
+                    </div>
+
+                    <div class="row">
+                        <label>Transporter Name:</label>
+                        <input type="text" id="TransporterName" name="TransporterName" value="@Model[2].TransporterName" style="width: 250px !important;" placeholder="Enter Transporter Name">
+
+                        <label>Vehicle Type:</label>
+                        <input type="text" id="VehicleType" name="VehicleType" value="@Model[2].VehicleType" style="width: 250px !important;" placeholder="Enter Type Of Vehicle">
+                        <label>Transporter Document Date:</label>
+                        <input type="text" id="" name="TransporterDocumentDate" value="@Model[2].TransporterDocumentDate" style="width: 250px !important;" readonly>
+                        <label>Net Weight:</label>
+                        <input type="number" id="NetWeight" name="NetWeight" value="@Model[2].NetWeight" style="width: 250px !important;" placeholder="Enter Net Weight">
+                        <label>Transaction Type:</label>
+                        <input type="text" id="TransactionType" name="TransactionType" value="@Model[2].TransactionType" style="width: 250px !important;" placeholder="Enter Transaction Type">
+                    </div>
+
+                    <div class="row">
+                        <label>Distance (KM):</label>
+                        <input type="number" id="Distance" name="Distance" value="@Model[2].Distance" style="width: 250px !important;" placeholder="Enter Distance(KM)">
+
+                        <label>Vehicle Number:</label>
+                        <input type="text" id="VehicleNumber" name="VehicleNumber" value="@Model[2].VehicleNumber" style="width: 250px !important;" placeholder="Enter Vehicle Number">
+                        <label> Time Of Supply :</label>
+                        <input type="text" id="TimeOfSupply" name="TimeOfSupply" value="@Model[2].TimeOfSupply" style="width: 250px !important;" readonly>
+                        <label>Gross Weight:</label>
+                        <input type="number" id="GrossWeight" name="GrossWeight" value="@Model[2].GrossWeight" style="width: 250px !important;" placeholder="Enter Gross Weight">
+
+                        <label>Freight charges:</label>
+                        <select id="FreightCharges" name="FreightCharges" style="padding: 5px;width: 250px !important;">
+                            <option selected value="@Model[2].FreightCharges">@Model[2].FreightCharges</option>
+                            <option value="Paid">Paid</option>
+                            <option value="Unpaid">Unpaid</option>
+
+                        </select>
+
+                    </div>
+                </div>
+               
+            </div>
+            @* </form>
+    <form  method="post"> *@
+            <div id="form3" class="shipping-form" style="display: none;">
+                <!-- Dispatch Form Content -->
+
+
+
+                <div style="display: flex;margin-left: 73px;">
+                    <div class="row">
+                        <label>Location Name:</label>
+                        <input type="text" id="LocationName" name="LocationName" value="@Model[3].AddressLine1" style="width: 250px !important;" placeholder="Enter Location">
+                        <label>Districts:</label>
+                        <input type="text" id="DispatchDistrict" name="DispatchDistrict" value="@Model[3].District" style="width: 250px !important;" placeholder="Enter Districts">
+
+                    </div>
+
+                    <div class="row">
+                        <label>Area :</label>
+                        <input type="text" id="DispatchArea" name="DispatchArea" value="@Model[3].Area" style="width: 250px !important;" placeholder="Enter Area">
+
+                        <label>City:</label>
+                        <input type="text" id="DispatchCity" name="DispatchCity" value="@Model[3].City" style="width: 250px !important;" placeholder="Enter City">
+
+
+                    </div>
+
+                    <div class="row">
+                        <label>State:</label>
+                        <input type="text" id="DispatchState" name="DispatchState" value="@Model[3].State" style="width: 250px !important;" placeholder="Enter State">
+
+                        <label>PIN Code:</label>
+                        <input type="text" id="DispatchPINCode" name="DispatchPINCode" value="@Model[3].Pincode" style="width: 250px !important;" placeholder="Enter PIN Code">
+
+                    </div>
+                </div>
+
+    
+
+
+            </div>
+            @*   </form>
+<form  method="post"> *@
+        <div id="form4" class="shipping-form" style="display: none;">
+
+
+
+
+            <div style="display: flex;margin-left: 73px;">
+                <div class="row">
+                        <label>Corrier Details:</label>
+                        <input type="text" id="CourierDetail" name="CourierDetail" value="@Model[4].CourierDetail" style="width: 250px !important;" placeholder="Enter Corrier Details">
+
+                    </div>
+
+                    <div class="row">
+                        <label>Corrier Company:</label>
+                        <input type="text" id="CourierCompany" name="CourierCompany" value="@Model[4].CourierCompany" style="width: 250px !important;" placeholder="Enter Company">
+
+
+
+                    </div>
+
+                    <div class="row">
+                        <label>Tracking Number:</label>
+                        <input type="text" id="TrackingNumber" name="TrackingNumber" value="@Model[4].TrackingNumber" style="width: 250px !important;" placeholder="Enter Tracking Number">
+
+
+                    </div>
+                </div>
+
+
+            </div>
+
+            @*  </form> *@
+        </div>
+        <div>
+        <button class="button" style="margin-top: 22px;margin-left: 41%; background-color:#138496;color: white;"> Update Invoice </button>
+        </div>
+    </div>
+</form>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const buttons = {
+            option1: "form1",
+            option2: "form2",
+            option3: "form3",
+            option4: "form4"
+        };
+
+        for (let btnId in buttons) {
+            document.getElementById(btnId).addEventListener("click", function () {
+                // Hide all forms
+                document.querySelectorAll(".shipping-form").forEach(form => {
+                    form.style.display = "none";
+                });
+
+                // Show the corresponding form
+                const targetForm = document.getElementById(buttons[btnId]);
+                if (targetForm) {
+                    targetForm.style.display = "block";
+                }
+            });
+        }
+    });
+</script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+
+        // Function to calculate the sum of all taxable amounts
+        function getTotalTaxableAmount() {
+            let sum = 0;
+            document.querySelectorAll(".taxable-amount").forEach(cell => {
+                const value = parseFloat(cell.textContent || cell.innerText) || 0;
+                sum += value;
+            });
+            return sum;
+        }
+
+        // When TDS radio is selected, show modal and populate taxable total
+        document.getElementById("applyTDS").addEventListener("change", function () {
+            if (this.checked) {
+                const tdsModal = new bootstrap.Modal(document.getElementById("tdsModal"));
+                tdsModal.show();
+
+                const totalTaxable = getTotalTaxableAmount();
+                document.getElementById("tdsPercentage").value = "";
+                document.getElementById("tdsAmount").value = "";
+
+                // Store totalTaxable in a hidden field or in memory
+                document.getElementById("tdsModal").dataset.totalTaxable = totalTaxable;
+            }
+        });
+
+        // When user types percentage, calculate and show TDS amount
+        document.getElementById("tdsPercentage").addEventListener("input", function () {
+            const percentage = parseFloat(this.value) || 0;
+            const totalTaxable = parseFloat(document.getElementById("tdsModal").dataset.totalTaxable) || 0;
+            const tdsAmount = (totalTaxable * percentage) / 100;
+            document.getElementById("tdsAmount").value = tdsAmount.toFixed(2);
+        });
+
+        // Optional: Handle modal save button if needed
+        document.getElementById("tdsSubmit").addEventListener("click", function () {
+            // You can use tdsAmount value here if you want to update net payable, etc.
+        });
+    });
+</script>

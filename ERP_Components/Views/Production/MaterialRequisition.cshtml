@@ -1,0 +1,110 @@
+﻿@using ERP_Component_DAL.Models
+<link rel="stylesheet" href="~/css/Product.css" />
+
+
+@model Production
+
+<form method="post" asp-action="SaveRequisition" asp-controller="Production">
+    <div class="form-section">
+        <h3>Items</h3>
+        <div class="form-row">
+            <label for="SalesSeries">Material Series</label>
+            <input type="text" name="RequisitionSeries" id="RequisitionSeries"  readonly />
+
+            <label for="ItemName">ItemName</label>
+            <input type="text"  name="productName" value="@Model.productName">
+        </div>
+        <div class="form-row" style="width:50%">
+            <label for="Description">Description</label>
+            <input type="text" name="Description" id="Description"  />
+       
+        </div>
+        <input type="text" id="ItemId" name="ItemId" value="" hidden />
+    </div>
+
+
+
+<div class="table1">
+    <table>
+        <thead>
+            <tr>
+                @* <th>S.No</th> *@
+                <th>Material Name</th>
+               
+                <th>Required Quantity</th>
+
+            </tr>
+        </thead>
+        <tbody>
+
+                @if (Model.materials != null && Model.materials.Any())
+                {
+                    for (var i = 0; i < Model.materials.Count; i++)
+                    {
+                        var v = Model.materials[i];
+                        <tr>
+                            <td>
+                                <input type="hidden" name="materials[@i].materialId" value="@v.materialId" />
+                                @v.materialName
+                            </td>
+                            <td>
+                                <input type="hidden" name="materials[@i].quantityRequired" value="@v.quantityRequired" />
+                                @v.quantityRequired
+                            </td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr><td colspan="2">No materials found.</td></tr>
+                }
+
+            
+        </tbody>
+    </table>
+</div>
+
+<div class="button-container">
+    <button type="submit" class=".btn-sm" style="margin-top: 64px;margin-left: 43%;">
+        submit
+    </button>
+    </div>
+</form>
+
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const orderInput = document.getElementById("RequisitionSeries");
+        const hiddenInput = document.getElementById("hiddenQuotationSeries");
+
+        const year = new Date().getFullYear();
+        let nextNumber = 1;
+
+
+        let lastOrder = localStorage.getItem("lastQuotationSeries");
+
+        if (lastOrder) {
+            let parts = lastOrder.split("-");
+            let lastYear = parseInt(parts[1]);
+            let lastNum = parseInt(parts[2]);
+
+            if (lastYear === year) {
+                nextNumber = lastNum + 1;
+            }
+        }
+
+        const newSeries = `MAR-${year}-${String(nextNumber).padStart(4, "0")}`;
+
+
+        orderInput.value = newSeries;
+        hiddenInput.value = newSeries;
+
+        localStorage.setItem("lastQuotationSeries", newSeries);
+    });
+
+</script>
+
+
+
+
+

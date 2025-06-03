@@ -1,0 +1,55 @@
+﻿@using ERP_Component_DAL.Models;
+@{
+    ViewBag.Title = "Production Order";
+    Layout = "~/Views/Shared/_LayoutINV.cshtml";
+}
+@model List<AddPurchaseRequisition>
+
+<link rel="stylesheet" href="~/css/Product.css">
+<div class="form-section">
+    <h3>Production Order Details</h3>
+    <div class="form-row">
+        <label for="Description">Description :</label>
+        <input type="text" id="Description" name="Description" value="@Model[0].Descripion" readonly />
+        <label for="RequisitionSeries">Requisition Series:</label>
+        <input type="number" id="" name="" value="@Model[0].RequisitionSeries" readonly />
+    </div>
+    <div class="form-row" style="width:50%">
+        <label for="orderDate">Order Date:</label>
+        <input type="date" id="orderDate" name="orderDate" value="@DateTime.Now.ToString("yyyy-MM-dd")" readonly />
+    </div>
+                    
+    <h2> Details </h2>
+    <div class="table">
+		<table>
+			<thead>
+				<tr>
+                    <th>Material Name</th>
+                    <th>Required</th>
+                    <th>Available</th>
+				</tr>
+			</thead>
+
+
+
+			<tbody>
+				@for (var i = 0; i < Model.Count; i++)
+				{
+					var x = Model[i];
+
+					<tr>
+						<td>@x.itemName</td>
+						<td>@x.RequiredQuantity</td>
+						<td>@x.AvaiableQuantity</td>
+						
+					</tr>
+				}
+			</tbody>
+		</table>
+    </div>
+    <div class="button">
+        <button type="submit">Create PR</button>
+        <button style="width: 200px" type="submit">Start Production</button>
+
+    </div>
+</div>

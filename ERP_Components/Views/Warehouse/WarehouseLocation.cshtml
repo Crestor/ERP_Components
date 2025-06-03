@@ -2,17 +2,16 @@
 
 
 @{
-    ViewBag.Title = "Add Material";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Add Warehouse Location";
+    Layout = "~/Views/Shared/_LayoutINV.cshtml";
 }
 
 <link rel="stylesheet" href="~/css/Product.css">
 
 @model List<Warehouse>
 
-<div class="header1">
-    <h4>Add Warehouse</h4>
-</div>
+ 
+    @* <h4>Add Warehouse</h4> *@
 <div id="material" class="container">
     <form method="post" asp-action="AddWarehouseLocation" asp-controller="Warehouse" onsubmit="savedDetail()">
 
@@ -21,7 +20,7 @@
             <div class="form-row">
 
                 <label class="required" for="Name">Warehouse Name:</label>
-                <select class="form-control" style="padding:10px" name="warehouseId" required>
+                <select class="form-control" name="warehouseId" required>
                     <option disabled selected> select Name</option>
                     @for (var i = 0; i < Model.Count; i++)
                     {
@@ -46,6 +45,11 @@
                 <textarea style="width:33%" name="description"></textarea>
 
             </div>
+
+                <div class="button">
+                    <button type="submit">Submit</button>
+                    <button type="reset">Reset</button>
+                </div>
            
         </div>
 
@@ -53,11 +57,6 @@
 
         
 
-
-        <div class="button-container">
-            <button type="submit">Submit</button>
-            <button type="reset">Reset</button>
-        </div>
     </form>
 </div>
 

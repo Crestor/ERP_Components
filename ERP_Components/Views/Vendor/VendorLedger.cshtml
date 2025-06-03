@@ -1,0 +1,47 @@
+﻿@using ERP_Component_DAL.Models;
+<link rel="stylesheet" href="~/css/Product.css" />
+@{
+    ViewBag.Title = "Vendor";
+    Layout = "~/Views/Shared/_LayoutINV.cshtml";
+}
+
+<form method="post" asp-action="" asp-controller="">
+    <div class="form-section">
+        <h3>Vendor Ledger</h3>
+        <div class="form-row">
+            <label class="required" for="startDate">Start Date: </label>
+            <input type="date" name="StartDate" />
+            <label class="required" for="EndDate">End Date: </label>
+            <input type="date" name="EndDate" />
+        </div>
+
+        <div class="form-row" style="width:50%">
+
+            <label class="required" for="LedgerAccount">Ledger Account </label>
+            <input type="text" name="" />
+        </div>
+        <div class="button">
+            <button type="submit">Search</button>
+            <button type="reset">Reset</button>
+        </div>
+    </div>
+</form>
+<div class="table">
+    <table>
+        <thead>
+            <tr>
+                <th>Sr no</th>
+                <th>PaymentId</th>
+                <th>Vendor Name</th>
+                <th> Date</th>
+                <th>Payment Mode </th>
+                <th>Debit</th>
+                <th>Credit</th>
+                <th>Paid Amount</th>
+                <th>Remaining-Balance</th>
+            </tr>
+        </thead>
+
+    </table>
+</div>
+

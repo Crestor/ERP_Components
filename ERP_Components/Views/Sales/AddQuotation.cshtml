@@ -1,0 +1,514 @@
+﻿@model ERP_Component_DAL.Models.QuotationViewModel
+@{
+    ViewBag.Title = "AddQuotation";
+    Layout = "~/Views/Shared/_LayoutINV.cshtml";
+}
+
+<link rel="stylesheet" href="~/css/ProductTwo.css" />
+
+
+
+<form method="post" asp-action="" asp-controller="">
+    <div class="form-section">
+        <h3>Basic Details</h3>
+     <div class="form-row">
+
+      
+                <label>Quotation Series:</label>
+                <input type="text" id="QuotationSeries" name="QuotationSeries" onchange="pass()"><br>
+        <label>Customer Name:</label>
+        <input type="text" id="customerName" name="customerName" onchange="pass()"><br>
+        </div> 
+	   <div class="form-row" style="width:50%">
+		<label>Date</label>
+                <input type="text" id="date" name="date" value="@DateTime.Now.ToString("yyyy-mm-dd")" onchange="pass()" />
+       </div>
+   
+  </div>
+   
+    <h2>Item Details</h2>
+    <div class="table">
+    <div id="orderDetailsForm">
+        <table id="orderTable">
+            <thead>
+                <tr>
+                   
+                    <th>Product</th>
+                    <th>HSN</th>
+                    <th>Qty</th>
+                    <th>UOM</th>
+                    <th>Unit Price</th>
+                    <th>Disc (%)</th>
+                    <th>Discount Amount</th>
+                    <th>Taxable Amount</th>
+                    <th>CGST (%)</th>
+                    <th>SGST (%)</th>
+                    <th>IGST (%)</th>
+                    <th>Total</th>
+                </tr>
+            </thead>
+            <tbody id="TableBody2">
+                <tr>
+                    
+                    <td>
+                        @* <select id=${rowCount.ItemName} class="form-control" name="ItemName" onchange="SetPriceFromDropdown(event)" style="width:135px;"> *@
+
+                        <select id="ItemName"  name="ItemName" onchange="SetPriceFromDropdown(event)" >
+                            <option selected disabled>Select Product</option>
+                            @foreach (var product in Model.ItemNames)
+                            {
+                             <option value="@product.ItemName" data-price="@product.SellingPrice" data-HSN="@product.HSN" data-UOM="@product.UnitOFMeasure" data-ItemId="@product.ItemId">@product.ItemName</option>
+                            }
+                        </select>
+                    </td>
+                    @* <td><input type="text"  id=${rowCount.HSN} name="HSN"></td> *@
+
+                    @* <td><input type="number" id=${rowCount.Quantity} name="Quantity" oninput="calculateRow(this)"></td> *@
+                    @* <td><input type="text" id=${rowCount.UnitOFMeasure} name="UnitOFMeasure"></td> *@
+                    @* <td><input type="number" id=${UnitPric} name="SellingPrice" oninput="calculateRow(this)"></td> *@
+                    @* <td><input type="number" id=${discountRate} name="discountRate" oninput="calculateRow(this)"></td> *@
+                    @* <td><input type="number" id=${discountAmount} name="discountAmount" readonly></td> *@
+                    @* <td><input type="number" id=${taxableAmount} name="taxableAmount" readonly></td> *@
+                    <td><input type="text" id="HSN" name="HSN"></td>
+                    <td><input type="number" id="Quantity" name="Quantity" oninput="calculateRow(this)"></td>
+                    <td><input type="text" id="UnitOFMeasure" name="UnitOFMeasure"></td>
+                    <td><input type="number" id="SellingPrice" name="SellingPrice" oninput="calculateRow(this)"></td>
+                    <td><input type="number" id="discountRate" name="discountRate" oninput="calculateRow(this)"></td>
+                    <td><input type="number" id="discountAmount" name="discountAmount" readonly></td>
+                    <td><input type="number" id="taxableAmount" name="taxableAmount" readonly></td>
+                    <td>
+                            <select id="cgst" name="cgst" style="width: 40px;" onchange="syncGST()">
+                            <option value="0">0%</option>
+                            @* <option value="2.5">2.5%</option> *@
+                            <option value="5">5%</option>
+                            <option value="9">9%</option>
+                            <option value="12">12%</option>
+                            <option value="18">18%</option>
+                            <option value="28">28%</option>
+                        </select>
+                    </td>
+                    <td>
+                            <select id="sgst" name="sgst" style="width: 40px;" onchange="calculateRow(this)">
+                            <option value="0">0%</option>
+                            @* <option value="2.5">2.5%</option> *@
+                            <option value="5">5%</option>
+                            <option value="9">9%</option>
+                            <option value="12">12%</option>
+                            <option value="18">18%</option>
+                            <option value="28">28%</option>
+                        </select>
+                    </td>
+                        <td>
+                            <select id="igst" name="igst" style="width: 40px;" onchange="calculateRow(this)">
+                                <option value="0">0%</option>
+                                @* <option value="2.5">2.5%</option> *@
+                                <option value="5">5%</option>
+                                <option value="9">9%</option>
+                                <option value="12">12%</option>
+                                <option value="18">18%</option>
+                                <option value="28">28%</option>
+                            </select>
+                        </td>
+
+                    <td><input id="total" type="number" name="TotalAmount" readonly></td>
+                </tr>
+            </tbody>
+        </table>
+        @* <button type="button" class="button" id="addNewRow" onclick="AddProduct()">Add Row</button> *@
+            @* onclick="location.href='@Url.Action("QuotationOrder", "Home")'" *@
+        
+    </div>
+                        <input type="text" id="ItemId" name="ItemId" hidden />
+
+    </div>
+     
+
+  </form>
+<div style="text-align: center; margin-top: 15px; display:flex;justify-content:end; margin-right: 29px;padding-bottom: 8px;">
+    <button type="submit" id="addItem" class="button" style="background-color:#138496;color: white;margin-right: 9px;">
+
+        Add item
+    </button>
+</div>
+
+   <div class="table">   
+   <table >   
+       <thead>   
+           <tr>  
+                  <th>S.No</th>  
+                   <th>Item</th>   
+                   <th>HSN</th>   
+                   <th>Qty</th>   
+                   <th>UOM</th>   
+                   <th>Unit Price</th>  
+                   <th>Discount(%)</th>  
+                   <th>Discount Amount</th>   
+                   <th>Taxable Amount</th>   
+                   <th>CGST(%)</th>   
+                   <th>SGST(%)</th>   
+                   <th>Total</th>   
+           </tr>   
+     </thead>
+        <tbody id="TableBody">
+       
+       </tbody>   
+   </table>   
+   </div>   
+<form method="post" asp-action="QuotationFinal" asp-controller="Sales">
+
+
+    <input type="hidden" name="QuotationSeries" id="hiddenQuotationSeries" value=""/>
+    <input type="hidden" name="customerName" id="hiddenCustomerName" value="" />
+    <input type="hidden" name="date" id="hiddendate" value=""/>
+
+    @* <h2>Summary</h2> *@
+    
+    <div class="form-section">
+         <div class="form-row">
+            <label for="DeliveryTerms"> Delivery Terms:</label>
+            <input list="deliveryTerms" name="DeliveryTerms" value="" />
+            <datalist id="deliveryTerms" style="width: 11%;">
+                <option value="">select</option>
+                <option value="7 day">7 days</option>
+                <option value="10 Day"> 10 Day</option>
+                <option value="14 Day"> 14 Day</option>
+                <option value="19 Day"> 19 Day</option>
+                <option value="21 Day"> 21 Day</option>
+                <option value="30 Day"> 30 Day</option>
+            </datalist>
+            <label>Total Discount (%):</label>
+            <input type="number" id="totalDiscountPercent" name="TotalDiscountPercent" value="@Model.TotalDiscountPercent" readonly><br>
+        
+      
+            
+          </div>
+        <div class="form-row">
+            <label>Payment Terms:</label>
+            <select id="paymentTerms" name="PaymentTerm" style="width: 11%;">
+                <option value="">select</option>
+                <option value="advanced">advanced</option>
+                <option value="cash after service"> cash after service</option>
+            </select>
+            <label>Total Discount Amount:</label>
+            <input type="number" id="totalDiscountAmount" name="TotalDiscountAmount" value="@Model.TotalDiscountAmount" readonly><br>
+        </div>
+
+        <div class="form-row">
+            <label>Other:</label>
+            <input type="text" id="other" name="Other"><br> 
+            <label>Gross Total:</label>
+            <input type="number" id="grossTotal" name="GrossTotal" value="@Model.GrossTotal" readonly><br>
+       </div>
+               
+
+      </div>
+
+
+    <div style="text-align: center; margin-top: 30px;">
+        <button type="submit" class="button" style="background-color:#138496; color:white;    margin-left: 79%;">
+            submit Quotation
+        </button>
+    </div>
+</form>
+
+@* </div> *@
+
+
+
+<script>
+       
+     function syncGST() {
+        var cgst = document.getElementById("cgst").value;
+        document.getElementById("sgst").value = cgst;
+        calculateRow(document.getElementById("sgst")); // Trigger calculation if needed
+    }
+
+
+
+
+        function pass() {
+              const customerName = document.getElementById("customerName").value;
+             document.getElementById("hiddenCustomerName").value = customerName;
+             const QuotationSeries = document.getElementById("QuotationSeries").value;
+             document.getElementById("hiddenQuotationSeries").value = QuotationSeries;
+          
+          const date = document.getElementById("date").value;
+             document.getElementById("hiddendate").value = date;
+       };
+
+
+       
+
+    function SetPriceFromDropdown(event) {
+        const dropdown = event.target;
+        const selectedOption = dropdown.options[dropdown.selectedIndex];
+        const SellingPrice = selectedOption.getAttribute("data-price");
+		const HSN = selectedOption.getAttribute("data-HSN");
+		const UnitOFMeasure = selectedOption.getAttribute("data-UOM");
+
+        const row = dropdown.closest('tr');
+        const SellingPriceInput = row.querySelector('[name="SellingPrice"]');
+		const HSNInput = row.querySelector('[name="HSN"]');
+		const UnitOFMeasureInput = row.querySelector('[name="UnitOFMeasure"]');
+        SellingPriceInput.value = SellingPrice;
+        HSNInput.value = HSN;
+		UnitOFMeasureInput.value = UnitOFMeasure;
+
+        calculateRow(SellingPriceInput);
+    }
+
+
+    function calculateRow(input) {
+        const row = input.closest('tr');
+
+        const qty = parseFloat(row.querySelector('[name="Quantity"]').value) || 0;
+        const SellingPrice = parseFloat(row.querySelector('[name="SellingPrice"]').value) || 0;
+        const discountRate = parseFloat(row.querySelector('[name="discountRate"]').value) || 0;
+        const cgst = parseFloat(row.querySelector('[name="cgst"]').value) || 0;
+        const sgst = parseFloat(row.querySelector('[name="sgst"]').value) || 0;
+        const igst = parseFloat(row.querySelector('[name="igst"]').value) || 0;
+
+        const gross = qty * SellingPrice;
+        const discountAmount = gross * (discountRate / 100);
+        const taxable = gross - discountAmount;
+        const TotalAmount = taxable + (taxable * cgst / 100) + (taxable * sgst / 100) + (taxable * igst /100);
+
+        row.querySelector('[name="discountAmount"]').value = discountAmount.toFixed(2);
+        row.querySelector('[name="taxableAmount"]').value = taxable.toFixed(2);
+        row.querySelector('[name="TotalAmount"]').value = TotalAmount.toFixed(2);-
+
+        calculateSummary();
+    }
+    // --new
+   
+
+
+    // old
+    function calculateSummary() {
+        const discountAmountFields = document.querySelectorAll('[name="discountAmount"]');
+        const totalFields = document.querySelectorAll('[name="TotalAmount"]');
+        const discountRateFields = document.querySelectorAll('[name="discountRate"]');
+        const SellingPriceFields = document.querySelectorAll('[name="SellingPrice"]');
+        const qtyFields = document.querySelectorAll('[name="Quantity"]');
+
+
+
+
+
+
+
+
+
+
+        // let totalDiscountAmount = 0;
+        // let totalGross = 0;
+        // let totalDiscountPercent = 0;
+
+        // for (let i = 0; i < discountAmountFields.length; i++) {
+        //     const discountAmount = parseFloat(discountAmountFields[i].value) || 0;
+        //     const qty = parseFloat(qtyFields[i].value) || 0;
+        //     const SellingPrice = parseFloat(SellingPriceFields[i].value) || 0;
+        //     const discountRate = parseFloat(discountRateFields[i].value) || 0;
+
+        //     totalDiscountAmount += discountAmount;
+        //     totalGross += qty * SellingPrice;
+        //     totalDiscountPercent += discountRate;
+        // }
+
+        // const grossTotal = Array.from(totalFields).reduce((sum, field) => sum + (parseFloat(field.value) || 0), 0);
+
+        // document.getElementById('totalDiscountPercent').value = totalDiscountPercent.toFixed(2);
+        // document.getElementById('totalDiscountAmount').value = totalDiscountAmount.toFixed(2);
+        // document.getElementById('grossTotal').value = Math.round(grossTotal).toFixed(2);
+
+
+
+
+
+
+
+    }
+
+
+      // document.addEventListener("DOMContentLoaded", function () {
+      //      Only generate a new order number if there isn't one already set
+      //      let orderInput = document.getElementById('QuotationSeries');
+      //      if (!orderInput.value) {
+      //          let lastOrder = localStorage.getItem('lastOrderNumber') || "ORD000";
+      //          orderInput.value = lastOrder;
+      //      }
+      //  });
+
+      //  This runs when the form is submitted
+      //  document.querySelector('form[asp-action="QuotationOrder"]').addEventListener('submit', function () {
+      //      let currentOrder = document.getElementById('QuotationSeries').value;
+
+      //      Increment order number for next use
+      //      let number = parseInt(currentOrder.substring(3)) + 1;
+      //      let newOrder = "ORD" + number.toString().padStart(3, '0');
+
+      //      localStorage.setItem('lastOrderNumber', newOrder);
+      //  });
+
+</script>
+
+
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+           $(document).ready(function () {
+        $("#addItem").click(function () {
+            var productData = {
+                QuotationID: $("#QuotationID").val(),
+                ItemId:$('#ItemId').val(),
+                ItemName: $("#ItemName").val(),
+                HSN: $("#HSN").val(),
+                Quantity: parseInt($("#Quantity").val()),
+                UnitOFMeasure: $("#UnitOFMeasure").val(),
+                SellingPrice: parseFloat($("#SellingPrice").val()),
+                discountRate: parseFloat($("#discountRate").val()),
+                DiscountAmount: parseFloat($("#discountAmount").val()),
+                TaxableAmount: parseFloat($("#taxableAmount").val()),
+                CGST: parseFloat($("#cgst").val()),
+                SGST: parseFloat($("#sgst").val()),
+                IGST: parseFloat($("#igst").val()),
+                TotalAmount: parseFloat($("#total").val()),
+
+				
+            };
+            $.ajax({
+                type: "POST",
+                url: "/Sales/SetQuotation",
+                data: productData,
+                success: function (response) {
+                    console.log("Success:", response);
+                    items();
+                    // alert("Item added successfully!");
+                    let tableBody = document.getElementById("TableBody");
+                    tableBody.innerHTML = "";
+                    $(response.orderList).each(function (index, item) {
+                        var seq = index + 1;                   
+                        console.log(item);
+
+                        const tr = document.createElement("tr");
+                        tr.innerHTML = `<td>${seq}</td>
+                          <td>${item.itemName}</td>
+                            <td>${item.hsn}</td>
+                          <td>${item.quantity}</td>
+                               <td>${item.unitOFMeasure}</td>
+                            <td>${item.sellingPrice}</td>
+                          <td>${item.discountRate}</td>
+                            <td>${item.discountAmount}</td>
+                              <td>${item.taxableAmount}</td>
+                                   <td>${item.cgst} </td>
+                                    <td>${item.sgst} </td>
+                            <td>${item.totalAmount}</td>`;
+                        document.getElementById("totalDiscountAmount").value= response.totalDiscountAmount;
+                        document.getElementById("totalDiscountPercent").value= response.totalDiscountPercent;
+                        document.getElementById("grossTotal").value=response.grossTotal;
+                        // document.getElementById("totalPriceBeforeDiscount").value=response.totalPriceBeforeDiscount;
+                        // document.getElementById("TotalAmountAfterDiscount").value=response.totalAmountAfterDiscount;    
+                        tableBody.appendChild(tr);
+                        // addRow();
+                    });
+                    
+					// Clear the input fields after adding the item
+					$("#ItemName").val("");
+					$("#HSN").val("");
+					$("#Quantity").val("");
+					$("#UnitOFMeasure").val("");
+					$("#SellingPrice").val("");
+					$("#discountRate").val("");
+					$("#discountAmount").val("");
+					$("#taxableAmount").val("");
+					$("#cgst").val("0");
+					$("#sgst").val("0");
+					$("#total").val("");
+                },
+                error: function (xhr, status, error) {
+                    console.error("Error:", xhr.responseText);
+                    alert("Failed ");
+                }
+            });
+        });
+    });
+
+</script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const orderInput = document.getElementById("QuotationSeries");
+        const hiddenInput = document.getElementById("hiddenQuotationSeries");
+
+        const year = new Date().getFullYear();
+        let nextNumber = 1;
+
+        // Get the last order series from localStorage
+        let lastOrder = localStorage.getItem("lastQuotationSeries");
+
+        if (lastOrder) {
+            let parts = lastOrder.split("-");
+            let lastYear = parseInt(parts[1]);
+            let lastNum = parseInt(parts[2]);
+
+            if (lastYear === year) {
+                nextNumber = lastNum + 1;
+            }
+        }
+
+        const newSeries = `ORD-${year}-${String(nextNumber).padStart(4, "0")}`;
+
+        // Set the input values
+        orderInput.value = newSeries;
+        hiddenInput.value = newSeries;
+
+        // Store the new series in localStorage
+        localStorage.setItem("lastQuotationSeries", newSeries);
+    });
+</script>
+
+<script>
+     function items(){
+            Swal.fire({
+      title: "Items successfully Added ",
+      text: "",
+      icon: "success"
+    });
+    }
+
+    function SQuotation(){
+        Swal.fire({
+      title: "Drag me!",
+      icon: "success",
+      draggable: true
+    });
+    }
+
+
+ 
+
+    // function AddQuotation() {
+
+          
+    //       Swal.fire({
+    //          title: "Drag me!",
+    //           icon: "success",
+          
+    //         confirmButtonColor: "#138496",
+         
+    //         confirmButtonText: "Yes, OK!"
+    //       }).then((result) => {
+    //         if (result.isConfirmed) {
+              
+
+    //             let url = `/Sales/QuotationFinal`;
+
+    //             console.log('Redirecting to', url);
+    //             window.location.href = url;
+              
+    //         }
+    //       });
+
+    //     }
+
+</script>

@@ -3,6 +3,10 @@
 
 @model List<Items>
 
+@{
+    ViewBag.Title = "View Product";
+    Layout = "~/Views/Shared/_LayoutINV.cshtml";
+}
 <style>
     .tab-buttons {
         display: flex;
@@ -54,8 +58,8 @@
 
 
 
-<div class="header1">
-    <h4>View Product</h4>
+ 
+    @* <h4>View Product</h4> *@
 </div>
 <div class="table-container">
     <div class="tab-buttons">
@@ -82,7 +86,7 @@
                     <th>HSN</th>
                     <th>Specification</th>
                     <th>Unit Price</th>
-                    <th>Cost Price</th>
+                    <th>unit Price</th>
                     <th>Mrp</th>
                     <th>Selling Price</th>
                     <th>Unit Of Measurement</th>

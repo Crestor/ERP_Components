@@ -2,15 +2,15 @@
 
 
 @{
-    ViewBag.Title = "Add Stock";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Edit Warehouse Stock";
+    Layout = "~/Views/Shared/_LayoutINV.cshtml";
 }
 
 <link rel="stylesheet" href="~/css/Product.css">
 
 @model WarehouseNew
-<div class="header1">
-    <h4>Edit Warehouse Stock</h4>
+ 
+    @* <h4>Edit Warehouse Stock</h4> *@
 </div>
 <div id="product" class="container">
     <form method="post" asp-action="UpdateWarehouseStock" asp-controller="Warehouse" onsubmit="savedDetail()">

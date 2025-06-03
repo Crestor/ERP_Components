@@ -1,15 +1,12 @@
 ﻿@* @model List<Warehouse> *@
 
 @{
-    ViewBag.Title = "Warehouses";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Add Warehouses";
+    Layout = "~/Views/Shared/_LayoutINV.cshtml";
 }
 
 <link rel="stylesheet" href="~/css/Product.css">
 
-<div class="header1">
-    <h4>Add Warehouse</h4>
-</div>
 
 <div class="container">
     <form id="vendorForm" method="post" asp-action="AddWarehouses" asp-controller="Inventory" onsubmit="savedDetail()">

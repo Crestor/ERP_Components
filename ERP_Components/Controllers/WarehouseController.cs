@@ -77,6 +77,65 @@ namespace ERP_Components.Controllers
             return RedirectToAction("WarehouseLocationView");
         }
 
+        //<------------------------Order From Sales---------------------------->
+
+
+        public IActionResult ViewInventory()
+        {
+            List<Items> items = warehouseServices.ViewWarehouseInventory();
+            return View(items);
+        }
+
+        public IActionResult SalesForCasting()
+        {
+            List<AddPurchaseRequisition> requisitions = warehouseServices.ViewSalesForCasting();
+            return View(requisitions);
+        }
+
+
+        public JsonResult ViewRequisitionItems(Guid requisitionId)
+        {
+
+            List<AddPurchaseRequisition> lists = warehouseServices.GetRequisitionItemsListData(requisitionId);
+            return Json(new { list = lists });
+        }
+
+        public IActionResult SentToProduction(Guid RequisitionId)
+        {
+            warehouseServices.CreateProductionOrder(RequisitionId);
+            warehouseServices.UpdateRequisitionTypeAndSentToProduction(RequisitionId);
+            return RedirectToAction("SalesForCasting");
+        }
+
+
+
+        public IActionResult ViewItemsStatus()
+        {
+            List<AddPurchaseRequisition> requisitions = warehouseServices.ViewSentRequisitions();
+            return View(requisitions);
+        }
+
+        public JsonResult ViewRequisitionItemsStatus(Guid requisitionId)
+        {
+
+            List<AddPurchaseRequisition> lists = warehouseServices.GetRequisitionItemsListStatus(requisitionId);
+            return Json(new { list = lists });
+        }
+
+
+
+
+        public IActionResult ViewCompletedProductionOrder()
+        {
+            List<AddPurchaseRequisition> requisitions = warehouseServices.ViewCompletedProductionOrder();
+            return View(requisitions);
+        }
+
+        public IActionResult AllocateToSalesFromWarehouse(Guid salesForcastId)
+        {
+            warehouseServices.AllocateToSalesFromWarehouse(salesForcastId);
+            return RedirectToAction("ViewCompletedProductionOrder");
+        }
 
         //<---------------------------------Stock Management---------------------------------->
 

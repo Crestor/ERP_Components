@@ -1,0 +1,60 @@
+﻿@using ERP_Component_DAL.Models
+
+@{
+    ViewBag.Title = "EditDeliveryChallan";
+    Layout = "~/Views/Shared/_LayoutINV.cshtml";
+}
+
+<link rel="stylesheet" href="~/css/ProductTwo.css" />
+
+@model DeliveryChallan
+<form method="post" asp-action="UpdateDeliveryChallan" asp-controller="Sales">
+  <div class="form-section">
+    <h3> Basic Details</h3>
+    <div class="form-row">
+                <label for="">Delivery Challan Type</label>
+                <select id="" name="DeliveryChallanType" style="width: 228px !important;">
+                    <option selected value="@Model.DeliveryChallanType">@Model.DeliveryChallanType</option>
+                    <option value="Normal Gate Pass">Normal Gate Pass</option>
+                    <option value="Return Gate Pass">Return Gate Pass</option>
+                    <option value=""></option>
+                </select>
+            
+                <label for="">Branch</label>
+                <input type="text" id="" name="Branch" value="@Model.Branch" style="width:228px !important;">
+            </div>
+        <div class="form-row">
+                <label for="OrderSeries">Order Series ID</label>
+                <input type="text" id="" name="OrderSeriesID" value="@Model.OrderSeriesID" style="width:228px !important;">
+
+        
+        
+                <label> Security Seal number</label>
+                <input type="text" id="" name="SecuritySealNumber" value="@Model.SecuritySealNumber" style="width: 228px !important;">
+            </div>
+
+
+            @* <div class="form-row" style="display: flex; justify-content: space-between; padding-left: 72px; padding-right: 209px;"> *@
+        <div class="form-row">
+                <label for="customerName">Customer Name</label>
+                <input type="text" id="customerName" name="CustomerName" value="@Model.CustomerName" style="width:228px !important;">
+           
+           
+                <label for="ChallanDate">Challan Date</label>
+                <input type="text" id="" name="ChallanDate" value="@Model.ChallanDate" style="width: 228px !important;">
+            </div>
+        <div class="form-row" style="width:50%;">
+        <input type="text" name="DeliveryChallanID" value="@Model.DeliveryChallanID" hidden />
+         </div>
+      </div>
+
+
+     <div>
+        <button class="button" type="submit" style=" float: right;margin-top: 18px;margin-right: 13px;background-color:#138496;color: white;">
+            submit
+        </button>
+    </div>
+
+
+
+</form>

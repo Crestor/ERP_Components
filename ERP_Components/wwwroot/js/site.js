@@ -1,4 +1,17 @@
 ﻿// Dummy Quick Action Functions
+
+function showLoading() {
+
+    document.getElementById("popup").style.display = 'block';
+    return;
+}
+
+function hideLoading() {
+    document.getElementById("popup").style.display = 'none';
+}
+
+
+
 function addItem() {
     alert('Add New Item clicked!');
 }
@@ -6,40 +19,82 @@ function addItem() {
 function createPurchaseOrder() {
     alert('Create Purchase Order clicked!');
 }
+(() => {
+    "use strict";
 
-// Chart.js - Stock In/Out Trends
-//const ctx = document.getElementById('stockChart').getContext('2d');
-//const stockChart = new Chart(ctx, {
-//    type: 'line',
-//    data: {
-//        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
-//        datasets: [
-//            {
-//                label: 'Stock In',
-//                data: [120, 190, 300, 500, 200, 300],
-//                backgroundColor: 'rgba(54, 162, 235, 0.2)',
-//                borderColor: 'rgba(54, 162, 235, 1)',
-//                borderWidth: 2
-//            },
-//            {
-//                label: 'Stock Out',
-//                data: [80, 150, 250, 450, 150, 250],
-//                backgroundColor: 'rgba(255, 99, 132, 0.2)',
-//                borderColor: 'rgba(255, 99, 132, 1)',
-//                borderWidth: 2
-//            }
-//        ]
-//    },
-//    options: {
-//        responsive: true,
-//        plugins: {
-//            legend: {
-//                position: 'top',
-//            },
-//            title: {
-//                display: true,
-//                text: 'Stock In/Out Trends (Last 6 Months)'
-//            }
-//        }
-//    }
-//});
+    const storedTheme = localStorage.getItem("theme");
+
+    const getPreferredTheme = () => {
+        if (storedTheme) {
+            return storedTheme;
+        }
+
+        return window.matchMedia("(prefers-color-scheme: dark)").matches
+            ? "dark"
+            : "light";
+    };
+
+    const setTheme = function (theme) {
+        if (
+            theme === "auto" &&
+            window.matchMedia("(prefers-color-scheme: dark)").matches
+        ) {
+            document.documentElement.setAttribute("data-bs-theme", "dark");
+        } else {
+            document.documentElement.setAttribute("data-bs-theme", theme);
+        }
+    };
+
+    setTheme(getPreferredTheme());
+
+    const showActiveTheme = (theme, focus = false) => {
+        const themeSwitcher = document.querySelector("#bd-theme");
+
+        if (!themeSwitcher) {
+            return;
+        }
+
+        const themeSwitcherText = document.querySelector("#bd-theme-text");
+        const activeThemeIcon = document.querySelector(".theme-icon-active i");
+        const btnToActive = document.querySelector(
+            `[data-bs-theme-value="${theme}"]`
+        );
+        const svgOfActiveBtn = btnToActive.querySelector("i").getAttribute("class");
+
+        for (const element of document.querySelectorAll("[data-bs-theme-value]")) {
+            element.classList.remove("active");
+            element.setAttribute("aria-pressed", "false");
+        }
+
+        btnToActive.classList.add("active");
+        btnToActive.setAttribute("aria-pressed", "true");
+        activeThemeIcon.setAttribute("class", svgOfActiveBtn);
+        const themeSwitcherLabel = `${themeSwitcherText.textContent} (${btnToActive.dataset.bsThemeValue})`;
+        themeSwitcher.setAttribute("aria-label", themeSwitcherLabel);
+
+        if (focus) {
+            themeSwitcher.focus();
+        }
+    };
+
+    window
+        .matchMedia("(prefers-color-scheme: dark)")
+        .addEventListener("change", () => {
+            if (storedTheme !== "light" || storedTheme !== "dark") {
+                setTheme(getPreferredTheme());
+            }
+        });
+
+    window.addEventListener("DOMContentLoaded", () => {
+        showActiveTheme(getPreferredTheme());
+
+        for (const toggle of document.querySelectorAll("[data-bs-theme-value]")) {
+            toggle.addEventListener("click", () => {
+                const theme = toggle.getAttribute("data-bs-theme-value");
+                localStorage.setItem("theme", theme);
+                setTheme(theme);
+                showActiveTheme(theme, true);
+            });
+        }
+    });
+})();

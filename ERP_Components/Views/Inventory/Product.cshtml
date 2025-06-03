@@ -2,81 +2,85 @@
 
 
 @{
-    ViewBag.Title = "Add Product";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Master";
+    Layout = "~/Views/Shared/_LayoutINV.cshtml";
 }
 
 <link rel="stylesheet" href="~/css/Product.css">
 
-@model List<Product>
+@model List<Category>
 
-<div class="header1">
-    <h4>Add Product</h4>
-</div>
 
 <div id="product"  class="container">
     <form method="post" asp-action="AddProduct" asp-controller="Inventory" onsubmit="return savedDetail()">
         
                 <div class="form-section">
-            <h3>Product Info</h3>
+            <h3>Add Item</h3>
             <div class="form-row">
-
-                <label class="required" for="productName">Product Name:</label>
-                <input type="text"  name="itemName" required />
-                <input type="hidden"  name="itemType" value="1" required />
-                
-                <label class="required" for="sku">Stack Keeping Unit(SKU):</label>
-                <input type="number"  name="SKU"  required />
-            </div>
-            <div class="form-row">
-                <label class="required" for="hsn">HSN:</label>
-                <input type="number"  name="HSN"/>
-                <label class="required" for="category">Category:</label>
-                <select name="categoryId" id="role" onchange="getName()">
-                    <option disabled selected>Select</option>
-                @foreach (var scheme in Model)
-                {
-                    @foreach (var category in scheme.category)
+                <label class="required">Category Name</label>
+                <select class="form-control" name="categoryId" id="role" onchange="getName()" required>
+                  <option selected disabled>Select</option>
+                    @for (var i = 0; i < Model.Count; i++)
                     {
-                        <option value="@category.categoryId">@category.categoryName</option>
+
+                        <option value="@Model[i].categoryId">@Model[i].categoryName</option>
                     }
-                }
-                </select>          
-                </div>
-            <div class="form-row">
-                <label class="required" for="subCategory">Sub-category:</label>
+                </select>
+
+
+                <label class="required">Sub Category Name</label>
                 <select id="name" name="subCategoryId">
                     <option selected disabled>Select</option>
 
                 </select>
-                <label for="descr">Specification:</label>
-                <textarea style="width:33%" name="specification"></textarea>
-               
             </div>
             <div class="form-row">
-               
-                <label for="cost">Cost Price:</label>
-                <input type="text" name="costPrice" />
-                <label for="mrp">MRP:</label>
-                <input type="text" name="mrp" />
-            </div>
-            <div class="form-row">
-              
-                <label for="selling">Selling Price:</label>
-                <input type="text" name="sellingPrice" />
-                <input type="hidden" name="type" value="batch" />
 
-                <label for="image">Unit Of Measurement:</label>
-                <input type="text" name="UOM" />
+                
+                <label class="required" for="sku">Product Code:</label>
+                <input type="number"  name="SKU"  required />
+                <label class="required" for="productName">Product Name:</label>
+                <input type="text"  name="itemName" required />
+                <input type="hidden"  name="itemType" value="1" required />
             </div>
             <div class="form-row">
+                <label class="required" for="hsn">HSN:</label>
+                <input type="number"  name="HSN"/>
+                        
+                <label for="descr">Specification:</label>
+                <textarea style="width:32%;" name="specification"></textarea>
                
-                <label for="image">GST:</label>
-                <input type="number" name="gst" />
-                <label class="required" for="msl">Expiry Date:</label>
-                <input type="date" name="expiry" />
-                <input type="hidden" name="type" value="batch" required />
+                </div>
+            <div class="form-row">
+               
+                <label for="cost">Minimum Stock Level:</label>
+                <input type="text" name="inStock" />
+                @* <label for="mrp">MRP:</label> *@
+               
+                <label for="image">GST Rate:</label>
+                <select id="" name="gst">
+                    <option value="0">0%</option>
+                    <option value="5">5%</option>
+                    <option value="9">9%</option>
+                    <option value="12">12%</option>
+                    <option value="18">18%</option>
+                    <option value="28">28%</option>
+                </select>
+
+            </div>
+            @* <div class="form-row"> *@
+            @*     <label class="required" for="msl">Expiry Date:</label> *@
+            @*     <input type="date" name="expiry" /> *@
+            @*     <input type="hidden" name="type" value="batch" required /> *@
               
+            @* </div> *@
+            @* <div class="form-row" style="width:50%;">  *@
+            @*     <label class="required" for="Idate">Invoice Date:</label> *@
+            @*     <input type="date" name="Idate" /> *@
+            @*     <div></div> *@
+            @* </div> *@
+            <div class="button">
+                <button type="submit">Submit</button>
             </div>
          </div>
 
@@ -84,39 +88,36 @@
 
                
 
-              <div class="form-section">
-        <h3>Stock Details</h3>
-        <div class="form-row">
+    @*           <div class="form-section"> *@
+    @*     <h3>Stock Details</h3> *@
+    @*     <div class="form-row"> *@
 
-                <label class="required" for="costPrice">In Stock:</label>
-            <input type="number" name="inStock" required/>
+    @*             <label class="required" for="costPrice">In Stock:</label> *@
+    @*         <input type="number" name="inStock" required/> *@
 
-                <label class="required" for="sellingPrice">Stock Alert:</label>
-            <input type="number" name="stockAlert" required/>
-        </div>
-            <div class="form-row" style="width:50%">
-                <label class="required" for="wholeSalePrice">Warehouse:</label>
-                <select name="warehouseId" >
-                    <option selected disabled></option>
-                @foreach (var scheme in Model)
-                {
-                    @foreach (var warehouse in scheme.warehouse)
-                    {
-                        <option value="@warehouse.warehouseId">@warehouse.warehouseName</option>
-                    }
-                }
-                </select>
-        </div>
-        
+    @*             <label class="required" for="sellingPrice">Stock Alert:</label> *@
+    @*         <input type="number" name="stockAlert" required/> *@
+    @*     </div> *@
+    @*         <div class="form-row" style="width:50%"> *@
+    @*             <label class="required" for="wholeSalePrice">Warehouse:</label> *@
+    @*             <select name="warehouseId" > *@
+    @*                 <option selected disabled></option> *@
+    @*             @foreach (var scheme in Model) *@
+    @*             { *@
+    @*                 @foreach (var warehouse in scheme.warehouse) *@
+    @*                 { *@
+    @*                     <option value="@warehouse.warehouseId">@warehouse.warehouseName</option> *@
+    @*                 } *@
+    @*             } *@
+    @*             </select> *@
+    @*     </div> *@
+
+      
+
+    @* </div> *@
 
 
-    </div>
-
-
-           <div class="button-container">
-            <button type="submit">Submit</button>
-            <button type="reset" >Reset</button>
-        </div>
+           
     </form>
 </div> 
 

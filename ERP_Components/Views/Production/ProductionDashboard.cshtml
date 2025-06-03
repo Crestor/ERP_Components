@@ -1,0 +1,511 @@
+﻿@using ERP_Component_DAL.Models;
+<link href="~/css/Product.css" rel="stylesheet" />
+
+@{
+    ViewBag.Title = "Dashboard";
+    ViewBag.UserName = "Himalyan Goats";
+
+}
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    /* body { */
+
+
+    .topbar {
+        margin: 10px;
+        background-color: #a14040;
+        color: white;
+        padding: 10px 30px;
+        text-align: center;
+        font-size: 1.5rem;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    .dashboard {
+        padding: 10px;
+    }
+
+    .cards {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        gap: 20px;
+    }
+
+    .card {
+        background-color: white;
+        padding: 20px;
+        border-radius: 12px;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+        text-align: center;
+    }
+
+        .card h3 {
+            margin-bottom: 10px;
+            color: #555;
+        }
+
+        .card p {
+            font-size: 1.6rem;
+            font-weight: bold;
+            color: #349769;
+        }
+
+    .charts {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+        justify-content: space-between;
+    }
+
+    .chart-container {
+        flex: 1 1 450px;
+        background: white;
+        padding: 20px;
+        border-radius: 12px;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+    }
+
+</style>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+
+
+<div class="app-content" style="margin-top:80px">
+    <!--begin::Container-->
+    <div class="container-fluid">
+        <!-- Info boxes -->
+        <div class="row">
+            <div class="col-12 col-sm-6 col-md-3">
+                <div class="info-box" onclick="location.href='@Url.Action("InventoryReport", "Inventory")'">
+                    <span class="info-box-icon text-bg-primary shadow-sm">
+                        <i class="fas fa-boxes"></i>
+                    </span>
+                    <div class="info-box-content">
+                        <span class="info-box-text">Total Active Items</span>
+                        <span class="info-box-number">
+                            <strong> 548</strong>
+
+                        </span>
+                    </div>
+                    <!-- /.info-box-content -->
+                </div>
+                <!-- /.info-box -->
+            </div>
+            <!-- /.col -->
+            <div class="col-12 col-sm-6 col-md-3">
+                <div class="info-box" onclick="location.href='@Url.Action("StockLedger", "Inventory")'">
+                    <span class="info-box-icon text-bg-danger shadow-sm">
+                        <i class="fas fa-file-invoice"></i>
+
+                    </span>
+                    <div class="info-box-content">
+                        <span class="info-box-text">Total Stock Value</span>
+                        <span class="info-box-number">
+                            <strong>₹</strong>8,68,350
+                        </span>
+                    </div>
+                    <!-- /.info-box-content -->
+                </div>
+                <!-- /.info-box -->
+            </div>
+            <!-- /.col -->
+            <!-- fix for small devices only -->
+            <!-- <div class="clearfix hidden-md-up"></div> -->
+            <!-- /.col -->
+            <div class="col-12 col-sm-6 col-md-3">
+                <div class="info-box" onclick="location.href='@Url.Action("ReorderReport", "Inventory")'">
+                    <span class="info-box-icon text-bg-warning shadow-sm">
+                        <i class="bi bi-people-fill"></i>
+                    </span>
+                    <div class="info-box-content">
+                        <span class="info-box-text">Stock Below Minimum Level</span>
+                        <span class="info-box-number">35</span>
+                    </div>
+                    <!-- /.info-box-content -->
+                </div>
+                <!-- /.info-box -->
+            </div>
+            <!-- /.col -->
+            <div class="col-12 col-sm-6 col-md-3">
+                <div class="info-box" onclick="location.href='@Url.Action("ExpiryReport", "Inventory")'">
+                    <span class="info-box-icon text-bg-success shadow-sm">
+                        <i class="bi bi-cart-fill"></i>
+                    </span>
+                    <div class="info-box-content">
+                        <span class="info-box-text">Expired Stock Value </span>
+                        <span class="info-box-number">  <strong>₹</strong>8,68,350</span>
+
+                    </div>
+                    <!-- /.info-box-content -->
+                </div>
+                <!-- /.info-box -->
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+
+
+<main class="dashboard">
+
+
+    <section class="charts">
+
+        <div class="chart-container" style="display:flex;justify-content:center; width:430px;height:400px">
+            <canvas id="InventoryLevelsChart"></canvas>
+        </div>
+
+        <div class="chart-container" style="display:flex;justify-content:center; width:430px;height:400px">
+            <canvas id="StockInOutChart"></canvas>
+        </div>
+        <div class="chart-container" style="display:flex;justify-content:center; width:430px;height:400px">
+            <canvas id="StockCategoryChart"></canvas>
+        </div>
+        <div class="chart-container" style="display:flex;justify-content:center; width:430px;height:400px">
+            <canvas id="TurnoverRatioChart"></canvas>
+        </div>
+    </section>
+
+    <section>
+
+        <div class="row" style="margin-top:20px">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header border-transparent">
+                        <h3 class="card-title">Low Stock Items</h3>
+
+                        <div class="card-tools">
+                            <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                <i class="fas fa-minus"></i>
+                            </button>
+
+                        </div>
+                    </div>
+                    <!-- /.card-header -->
+                    <div class="card-body p-0">
+                        <div class="table-responsive">
+                            <table class="table m-0">
+                                <thead>
+                                    <tr>
+                                        <th>Item  Name</th>
+                                        <th>Current Qty</th>
+                                        <th>Min Level</th>
+                                        <th>Last Inward Date</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Glass Cleaner</td>
+                                        <td> 15</td>
+                                        <td><span class="badge badge-danger">30</span></td>
+                                        <td> 01/04/2025 </td>
+                                        <td> Reorder  </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Notebook</td>
+                                        <td> 11</td>
+                                        <td><span class="badge badge-danger">15</span></td>
+                                        <td> 11/04/2025 </td>
+                                        <td> Reorder  </td>
+                                    </tr>
+                                    <tr>
+                                        <td> Ball Pens</td>
+                                        <td> 25</td>
+                                        <td><span class="badge badge-danger">50</span></td>
+                                        <td> 21/04/2025 </td>
+                                        <td> Reorder  </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Printer Caartridge</td>
+                                        <td> 5</td>
+                                        <td><span class="badge badge-danger">10</span></td>
+                                        <td> 01/03/2025 </td>
+                                        <td> Reorder  </td>
+                                    </tr>
+                                    <tr>
+                                        <td>A4 Sheet Paper</td>
+                                        <td> 3</td>
+                                        <td><span class="badge badge-danger">10</span></td>
+                                        <td> 10/04/2025 </td>
+                                        <td> Reorder  </td>
+                                    </tr>
+                                    @*          <tr>
+                                        <td>Whiteboard Markers</td>
+                                        <td> 5</td>
+                                        <td><span class="badge badge-danger">12</span></td>
+                                        <td> 01/04/2025 </td>
+                                        <td> Reorder  </td>
+                            </tr>
+                            <tr>
+                                        <td>Power Cords</td>
+                                        <td> 10</td>
+                                        <td><span class="badge badge-danger">20</span></td>
+                                        <td> 01/01/2025 </td>
+                                        <td> Reorder  </td>
+                            </tr> *@
+                                </tbody>
+                            </table>
+                        </div>
+                        <!-- /.table-responsive -->
+                    </div>
+                    <!-- /.card-body -->
+                    @*           <div class="card-footer clearfix">
+                <a href="javascript:void(0)" class="btn btn-sm btn-info float-left">Place New Order</a>
+                <a href="javascript:void(0)" class="btn btn-sm btn-secondary float-right">View All Orders</a>
+            </div> *@
+                    <!-- /.card-footer -->
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header border-transparent">
+                        <h3 class="card-title">Top 5 Fast Moving Items</h3>
+
+                        <div class="card-tools">
+                            <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                <i class="fas fa-minus"></i>
+                            </button>
+
+                        </div>
+                    </div>
+                    <!-- /.card-header -->
+                    <div class="card-body p-0">
+                        <div class="table-responsive">
+                            <table class="table m-0">
+                                <thead>
+                                    <tr>
+                                        <th>Rank</th>
+                                        <th>Item</th>
+                                        <th>Total times Issued</th>
+
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td> 1</td>
+                                        <td> Glass Cleaner</td>
+                                        <td> 200 </td>
+
+                                    </tr>
+                                    <tr>
+                                        <td> 2</td>
+                                        <td> Ball Pens</td>
+                                        <td> 176 </td>
+                                    </tr>
+                                    <tr>
+                                        <td> 3</td>
+                                        <td> Notebook</td>
+                                        <td> 134 </td>
+                                    </tr>
+                                    <tr>
+                                        <td> 4</td>
+                                        <td> Files</td>
+                                        <td> 105 </td>
+                                    </tr>
+                                    <tr>
+                                        <td> 5</td>
+                                        <td> Binders</td>
+                                        <td> 95 </td>
+                                    </tr>
+
+
+                                </tbody>
+                            </table>
+                        </div>
+                        <!-- /.table-responsive -->
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+
+
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header border-transparent">
+                    <h3 class="card-title">Recent Activity Log</h3>
+
+                    <div class="card-tools">
+                        <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                            <i class="fas fa-minus"></i>
+                        </button>
+
+                    </div>
+                </div>
+                <!-- /.card-header -->
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table m-0">
+                            <thead>
+                                <tr>
+                                    <th>S.No</th>
+                                    <th>Date</th>
+                                    <th>Item</th>
+                                    <th>Type</th>
+                                    <th>Quantity</th>
+                                    <th>Perticulars</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                              @*   @for (var i = 0; i < 10; i++)
+                                {
+                                    var v = Model.StocKRecords[i];
+
+                                    <tr data-id="@v.id">
+
+
+
+                                        <td>@(i + 1)</td>
+                                        <td>@v.transcationDate.ToShortDateString()</td>
+                                        <td>@v.ItemName</td>
+                                        <td>@v.Type</td>
+                                        <td>@v.Quantity</td>
+                                        <td>@v.Perticulars</td>
+
+
+
+                                    </tr>
+                                } *@
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- /.table-responsive -->
+                </div>
+
+            </div>
+        </div>
+        </div>
+    </section>
+</main>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script asp-append-version="true" src="~/lib/jquery/dist/jquery.min.js"></script>
+<script>
+
+    document.addEventListener("DOMContentLoaded", function () {
+      // 1. Inventory Levels Over Time - Line Chart
+      new Chart(document.getElementById('InventoryLevelsChart').getContext('2d'), {
+        type: 'line',
+        data: {
+          labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+          datasets: [{
+            label: 'Stocks',
+            data: [1200, 1350, 1280, 1100, 1400, 1500, 50],
+            backgroundColor: '#dee2e6',
+            borderColor: '#198754',
+            borderWidth: 2,
+            fill: true,
+            tension: 0.4
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            title: {
+              display: true,
+                          text: 'Stock Consumption Trend'
+            }
+          }
+        }
+      });
+
+      // 2. Stock In vs. Stock Out - Bar Chart
+      new Chart(document.getElementById('StockInOutChart').getContext('2d'), {
+        type: 'bar',
+        data: {
+          labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'],
+          datasets: [
+            {
+              label: 'Stock In',
+              data: [400, 450, 420, 500, 480, 520, 510],
+              backgroundColor: '#198754'
+            },
+            {
+              label: 'Stock Out',
+              data: [380, 430, 410, 470, 460, 490, 500],
+              backgroundColor: '#dee2e6'
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            title: {
+              display: true,
+              text: 'Stock In vs. Stock Out'
+            }
+          }
+        }
+      });
+
+      // 3. Current Stock Distribution by Category - Pie Chart
+      new Chart(document.getElementById('StockCategoryChart').getContext('2d'), {
+        type: 'pie',
+        data: {
+          labels: ['Electronics', 'Furniture', 'Stationery', 'Appliances'],
+          datasets: [{
+            data: [40, 25, 20, 15],
+                      backgroundColor: ['#dc3545', '#0d6efd', '#198754', '#ffc107']
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            title: {
+              display: true,
+              text: 'Stock by Category'
+            }
+          }
+        }
+      });
+
+      // 4. Inventory Turnover Ratio - Line Chart
+      new Chart(document.getElementById('TurnoverRatioChart').getContext('2d'), {
+        type: 'line',
+        data: {
+          labels: ['Q1', 'Q2', 'Q3', 'Q4'],
+          datasets: [{
+            label: 'Turnover Ratio',
+            data: [4.2, 4.8, 5.1, 3.5],
+            borderColor: '#198754',
+            borderWidth: 2,
+            fill: false,
+            tension: 0.3
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            title: {
+              display: true,
+              text: 'Inventory Turnover Ratio (Quarterly)'
+            }
+          }
+        }
+      });
+    });
+</script>
+
+
+<script>
+    // $(document).ready(function ()
+    // {
+    //     // Show the welcome popup after 1 second
+    //     setTimeout(function () {
+    //         $('#WelcomePopup').fadeIn();
+    //     }, 1000);
+
+    //     // Hide the popup when clicked
+    //     $('#WelcomePopup').click(function () {
+    //         $(this).fadeOut();
+    //     });
+    // });
+</script>

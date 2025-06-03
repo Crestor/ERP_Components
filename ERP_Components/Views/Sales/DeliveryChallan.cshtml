@@ -1,0 +1,77 @@
+﻿@{
+    ViewBag.Title = "DeliveryChallan";
+    Layout = "~/Views/Shared/_LayoutINV.cshtml";
+}
+
+<link rel="stylesheet" href="~/css/ProductTwo.css" />
+
+<form method="post" asp-action="SetDeliveryChallan" asp-controller="Sales">
+    <div class="form-section">
+        <h3>Basic Details</h3>
+        <div class="form-row">
+        <label for="">Delivery Challan Type</label>
+        <select id="" name="DeliveryChallanType" >
+            <option value="Normal Gate Pass">Normal Gate Pass</option>
+            <option value="Return Gate Pass">Return Gate Pass</option>
+            <option value=""></option>
+        </select>
+   
+        <label for="">Branch</label>
+        <input type="text" id="" name="Branch" >
+    </div>
+        <div class="form-row">
+            <label for="OrderSeries">Order Series ID</label>
+            <input type="text" id="orderSeriesID" name="OrderSeriesID">
+
+    
+
+
+
+        <label > Security Seal number</label>
+        <input type="text" id="" name="SecuritySealNumber">
+    </div>
+
+            <div class="form-row">
+
+        <label for="customerName">Customer Name</label>
+        <input type="text" id="customerName" name="CustomerName" >
+        <label for="ChallanDate">Challan Date</label>
+        <input type="Date" id="" name="ChallanDate" >
+    </div>
+
+
+        <button class="button" type="submit" style=" float: right;margin-top: 70px;margin-right: -15px; background-color:#138496;color: white;">
+            submit
+        </button>
+    </div>
+</form>
+
+<script>
+
+    document.addEventListener("DOMContentLoaded", function () {
+        const orderInput = document.getElementById("orderSeriesID");
+        const year = new Date().getFullYear();
+        let nextNumber = 1;
+
+        // Get the last order series from localStorage
+        let lastOrder = localStorage.getItem("lastQuotationSeries");
+
+        if (lastOrder) {
+            let parts = lastOrder.split("-");
+            let lastYear = parseInt(parts[1]);
+            let lastNum = parseInt(parts[2]);
+
+            if (lastYear === year) {
+                nextNumber = lastNum + 1;
+            }
+        }
+
+        const newSeries = `DLC-${year}-${String(nextNumber).padStart(4, "0")}`;
+
+        // Set the input values
+        orderInput.value = newSeries;
+
+        // Store the new series in localStorage
+        localStorage.setItem("lastQuotationSeries", newSeries);
+    });
+</script>

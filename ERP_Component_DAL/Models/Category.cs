@@ -24,6 +24,8 @@ namespace ERP_Component_DAL.Models
         public string userName { get; set; }
         public DateTime createdOn { get; set; }
 
+        public List<Category> names { get; set; }
+        public List<Category> list { get; set; }
 
     }
 }

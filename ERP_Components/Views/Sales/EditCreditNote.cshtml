@@ -1,0 +1,140 @@
+﻿@using ERP_Component_DAL.Models
+
+@{
+    ViewBag.Title = "EditCreditNote";
+    Layout = "~/Views/Shared/_LayoutINV.cshtml";
+}
+
+<link rel="stylesheet" href="~/css/ProductTwo.css" />
+
+@* 
+<div class="toggle-buttons" style="margin-left: 28px;">
+    <button type="button" class="button" onclick="showSection('basic')">Basic Details</button>
+    <button type="button" class="button" onclick="showSection('additional')" style="margin-left:10px;">Additional Details</button>
+</div> *@
+@model CreditNote
+<form method="" asp-action="UpdateCreditNote" asp-controller="Sales">
+
+
+    <!-- BASIC DETAILS SECTION -->
+    <div class="form-section">
+        <h3>Basic Details</h3>
+        <div class="form-row">
+            <label for="orderSeries">OrderSeries ID</label>
+            <input type="text" id="orderSeries" name="OrderSeriesID" value="@Model.OrderSeriesID" >
+
+
+            <label for="creditNoteFor">Credit Note For</label>
+            <select id="creditNoteFor" name="CreditNoteFor" >
+                <option selected value="@Model.CreditNoteFor">@Model.CreditNoteFor</option>
+                <option value="customer">Customer</option>
+                <option value="vendor">Vendor</option>
+            </select>
+        </div>
+        <div class="form-row">
+            <label for="creditNoteType">Credit Note Type</label>
+            <select id="creditNoteType" name="CreditNoteType" >
+                <option value="@Model.CreditNoteType">@Model.CreditNoteType</option>
+                <option value="sales return">Sales Return</option>
+                <option value="post sales discount">Post Sales Discount</option>
+                <option value="Correcting In Invoice">Correcting In Invoice</option>
+                <option value="Change in POS">Change in POS</option>
+
+                <option value="other">Other</option>
+            </select>
+
+            <label for="creditNote">Credit Note Date</label>
+            <input type="Text" id="creditNoteDate" name="CreatedOn" value="@Model.CreatedOn" readonly>
+
+        </div>
+        <div class="form-row">
+            <label for="customerName">Customer Name</label>
+            <input type="text" id="customerName" name="CustomerName" value="@Model.CustomerName" >
+
+
+            <label for="invoiceNumber">Invoice Number</label>
+            <input type="text" id="invoiceNumber" name="InvoiceNumber" value="@Model.InvoiceNumber" >
+
+        </div>
+
+    </div>
+    <!-- SHIPPING DETAILS SECTION -->
+    <div class="form-section">
+
+        <h3>Shipping Details</h3>
+        <div class="form-row">
+
+            <label for="numberOfCartons">Number of Cartons</label>
+            <input type="number" id="numberOfCartons" name="NumberOfCartons" value="@Model.NumberOfCartons" >
+
+            <label for="lorryReceiptNumber">Lorry Receipt Number</label>
+            <input type="text" id="lorryReceiptNumber" name="LorryReceiptNumber" value="@Model.LorryReceiptNumber" >
+        </div>
+        <div class="form-row">
+            <label for="lorryReceiptDate">Lorry Receipt Date</label>
+            <input type="text" id="lorryReceiptDate" name="LorryReceiptDate" value="@Model.LorryReceiptDate" readonly>
+
+
+            <label for="modeOfShipment">Mode of Shipment</label>
+            <input type="text" id="modeOfShipment" name="ModeOfShipment" value="@Model.ModeOfShipment" >
+        </div>
+        <div class="form-row" style="width:50%">
+            <label for="remarks">Remarks</label>
+            <input type="text" id="remarks" name="Remarks" value="@Model.Remarks" >
+
+        </div>
+    </div>
+    <!-- ADDITIONAL DETAILS SECTION -->
+    <div class="form-section">
+
+        <h3>Additional Details</h3>
+        <div class="form-row">
+
+            <label for="costCenter">Cost Center</label>
+            <select id="costCenter" name="CostCenter" >
+                <option value="">-- Select Cost Center --</option>
+                <option selected value="@Model.CostCenter">@Model.CostCenter</option>
+                <option value="Account">Account</option>
+                <option value="Products">Products</option>
+                <option value="Service">Service</option>
+                @* <option value="admin">Admin</option> *@
+            </select>
+
+            <label for="location">Location</label>
+            <input type="text" id="location" name="Location" value="@Model.Location" >
+        </div>
+        <div class="form-row" style="width:50%">
+            <label for="noteId">Customer/Vendor Note ID</label>
+            <input type="text" id="noteId" name="VenderNoteId" value="@Model.VenderNoteId" >
+        </div>
+
+    </div>
+    <input type="text" value="@Model.CreditNoteId" name="CreditNoteId" hidden />
+
+    <div>
+        <button class="button" type="submit" style=" float: right;margin-top: 18px;margin-right: 47px; margin-bottom: 13px; background-color:#138496;color: white;">
+            submit
+        </button>
+    </div>
+</form>
+
+@* <script>
+    function showSection(section) {
+        const basic = document.getElementById('basicSection');
+        const additional = document.getElementById('additionalSection');
+
+        if (section === 'basic') {
+            basic.style.display = 'block';
+            additional.style.display = 'none';
+        } else {
+            basic.style.display = 'none';
+            additional.style.display = 'block';
+        }
+    }
+
+    // Default view is Basic Section
+    window.onload = function () {
+        showSection('basic');
+    };
+</script> *@
+

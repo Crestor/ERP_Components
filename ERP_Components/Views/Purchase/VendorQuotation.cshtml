@@ -1,0 +1,324 @@
+﻿@using ERP_Component_DAL.Models;
+@{
+	ViewBag.Title = "Vendor Quotation";
+	Layout = "~/Views/Shared/_LayoutINV.cshtml";
+}
+
+@model Vendor
+
+<link rel="stylesheet" href="~/css/Product.css">
+
+
+
+
+
+<form asp-action="ChangePurchaseStatus" asp-controller="Purchase">
+	<div class="form-section" style="box-shadow:none; margin-top:0px; margin-bottom:0px">
+		<h3>Quotation</h3>
+		
+		<div class="form-row" >
+
+			<label for="vendor">Choose a vendor</label>
+			<select id="vendorId" name="quotation1.vendorId">
+				<option selected disabled>Select vendor</option>
+
+				@for (var i = 0; i < Model.vendor.Count; i++)
+				{
+
+					<option value="@Model.vendor[i].vendorId">@Model.vendor[i].vendorName</option>
+				}
+
+			</select>
+
+
+			<label for="amount">Amount</label>
+			<input type="Number" id="amount" name="amount">
+			<input type="hidden" id="requisitionId" name="requisitionId" value="@Model.requisitionId">
+		</div>
+	</div>
+
+
+	<div class="form-section" style=" margin-top:0px; margin-bottom:0px">
+			<h3>Quotation</h3>
+		<div class="form-row">
+
+
+			<label for="advance">Advance Amount %</label>
+			<select id="advanceRate" name="advanceRate" class="other-select" data-name="advanceRate">
+				<option disabled selected>Selected</option>
+				<option value="10">10</option>
+				<option value="20">20</option>
+				<option value="30">30</option>
+				<option value="40">40</option>
+				<option value="50">50</option>
+				<option value="other">Other</option>
+			</select>
+			@* <input type="number" id="advance" name="advance"> *@
+
+
+
+			<label for="delterms">DeliveryTerms</label>
+			<select id="deliveryTerms" name="deliveryTerms" class="other-select" data-name="deliveryTerms">
+				<option disabled selected>Selected</option>
+				<option value="2">2</option>
+				<option value="5">5</option>
+				<option value="10">10</option>
+				<option value="15">15</option>
+				<option value="20">20</option>
+				<option value="other">Other</option>
+			</select>
+			@* <input type="text" id="deliveryTerms" name="deliveryTerms"> *@
+		</div>
+
+		<div class="form-row">
+
+			<label for="credper">Credit Period</label>
+			@* <input type="text" id="creditPeriod" name="qpaymentTerms"> *@
+			<select id="paymentTerms" name="paymentTerms" class="other-select" data-name="paymentTerms">
+				<option disabled selected>Selected</option>
+				<option value="2">2</option>
+				<option value="5">5</option>
+				<option value="10">10</option>
+				<option value="15">15</option>
+				<option value="20">20</option>
+				<option value="other">Other</option>
+			</select>
+			<label for="credper">Discount %</label>
+			<select id="discountRate" name="discountRate" class="other-select" data-name="discountRate">
+				<option disabled selected>Selected</option>
+				<option value="10">10</option>
+				<option value="20">20</option>
+				<option value="30">30</option>
+				<option value="40">40</option>
+				<option value="50">50</option>
+				<option value="other">Other</option>
+			</select>
+			@* <input type="text" id="discount" name="discount"> *@
+
+		</div>
+        <div class="button-container">
+			<button id="addItems" type="submit">Add</button>
+        </div>
+   </div>
+
+
+	<div class="form-section" style=" margin-top:0px; margin-bottom:0px">
+		<h3>Quotation</h3>
+	
+		<table>
+			<thead>
+				<tr>
+					<th>Field</th>
+					<th>Vendor 1</th>
+					<th>Vendor 2</th>
+					<th>Vendor 3</th>
+				</tr>
+			</thead>
+			<tbody id="quotationTableBody">
+				<tr>
+					<td>Vendor Name</td>
+					@for (int i = 0; i < 3; i++)
+					{
+						<td id="v@(i+1)_name">@((Model.lists.Count > i) ? Model.lists[i].vendorName : "")</td>
+					}
+				</tr>
+				<tr>
+					<td>Quotation Amount</td>
+					@for (int i = 0; i < 3; i++)
+					{
+						<td id="v@(i+1)_amt">@((Model.lists.Count > i) ? Model.lists[i].amount.ToString() : "")</td>
+					}
+				</tr>
+				<tr>
+					<td>Discount Amount</td>
+					@for (int i = 0; i < 3; i++)
+					{
+						<td id="v@(i+1)_disc">@((Model.lists.Count > i) ? Model.lists[i].discountAmount.ToString() : "")</td>
+					}
+				</tr>
+				<tr>
+					<td>Final Amount</td>
+					@for (int i = 0; i < 3; i++)
+					{
+						<td id="v@(i+1)_final">@((Model.lists.Count > i) ? Model.lists[i].finalAmount.ToString() : "")</td>
+					}
+				</tr>
+				<tr>
+					<td>Advance Amount</td>
+					@for (int i = 0; i < 3; i++)
+					{
+						<td id="v@(i+1)_adv">@((Model.lists.Count > i) ? Model.lists[i].advancedAmount.ToString() : "")</td>
+					}
+				</tr>
+				<tr>
+					<td>Delivery Terms</td>
+					@for (int i = 0; i < 3; i++)
+					{
+						<td id="v@(i+1)_del">@((Model.lists.Count > i) ? Model.lists[i].deliveryTerms : "")</td>
+					}
+				</tr>
+				<tr>
+					<td>Credit Period</td>
+					@for (int i = 0; i < 3; i++)
+					{
+						<td id="v@(i+1)_cred">@((Model.lists.Count > i) ? Model.lists[i].paymentTerms : "")</td>
+					}
+				</tr>
+			</tbody>
+
+			@* <tbody id="quotationTableBody">
+				<tr><td>Vendor Name</td><td id="v1_name"></td><td id="v2_name"></td><td id="v3_name"></td></tr>
+				<tr><td>Quotation Amount</td><td id="v1_amt"></td><td id="v2_amt"></td><td id="v3_amt"></td></tr>
+				<tr><td>Discount Amount</td><td id="v1_disc"></td><td id="v2_disc"></td><td id="v3_disc"></td></tr>
+				<tr><td>Final Amount</td><td id="v1_final"></td><td id="v2_final"></td><td id="v3_final"></td></tr>
+				<tr><td>Advance Amount</td><td id="v1_adv"></td><td id="v2_adv"></td><td id="v3_adv"></td></tr>
+				<tr><td>Delivery Terms</td><td id="v1_del"></td><td id="v2_del"></td><td id="v3_del"></td></tr>
+				<tr><td>Credit Period</td><td id="v1_cred"></td><td id="v2_cred"></td><td id="v3_cred"></td></tr>
+				
+			</tbody> *@
+		</table>
+
+		<div class="button-container" style="display:flex; justify-content:center; align-items:center; margin-top:10px">
+			<button onclick="return SavedPopup()">Save</button>
+			<button type="submit">Create</button>
+		</div>
+	
+	</div>
+
+</form>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+	$(document).ready(function () {
+
+	
+		$('#addItems').click(function (event) {
+			event.preventDefault();
+
+			const vendorData = {
+				vendorId: $('#vendorId').val(),
+				amount: $('#amount').val(),
+				advanceRate: $('#advanceRate').val(),
+				deliveryTerms: $('#deliveryTerms').val(),
+				paymentTerms: $('#paymentTerms').val(),
+				discountRate: $('#discountRate').val(),
+				requisitionId: $('#requisitionId').val()
+			};
+
+			console.log('Sending data to server:', vendorData); 
+
+			$.ajax({
+				url: '@Url.Action("SetQuotation", "Purchase")',
+				type: 'POST',
+				data: vendorData,
+				success: function (response) {
+					if (response.length > 0) {
+						response.forEach(function (item, index) {
+							if (index >= 3) return;
+							const idx = index + 1;
+
+							$('#v' + idx + '_name').text(item.vendorName || '');
+							$('#v' + idx + '_amt').text(item.amount || '');
+							$('#v' + idx + '_adv').text(item.advancedAmount || '');
+							$('#v' + idx + '_del').text(item.deliveryTerms || '');
+							$('#v' + idx + '_cred').text(item.paymentTerms || '');
+							$('#v' + idx + '_disc').text(item.discountAmount || '');
+							$('#v' + idx + '_final').text(item.finalAmount || '');
+
+							
+						});
+
+				
+						$('#vendorId').val('');
+						$('#amount').val('');
+						$('#advanceRate').val('');
+						$('#deliveryTerms').val('');
+						$('#paymentTerms').val('');
+						$('#discountRate').val('');
+					} else {
+						alert('No quotation data returned.');
+					}
+				},
+				error: function (xhr, status, error) {
+					alert('Error submitting quotation: ' + error);
+					console.log(xhr.responseText);
+				}
+			});
+		});
+
+	
+		
+	});
+</script>
+
+
+@* <script>
+		$(document).ready(function () {
+		$('.other-select').on('change', async function () {
+			if ($(this).val() === 'other') {
+				const fieldLabel = $(this).data('name') || 'Custom Value';
+
+				const { value: customValue } = await Swal.fire({
+					title: `Enter custom value for ${fieldLabel}`,
+					input: 'text',
+					inputLabel: fieldLabel,
+					showCancelButton: true,
+					inputValidator: (value) => {
+						if (!value) return 'You need to enter something!';
+					}
+				});
+
+				if (customValue) {
+					const newOption = new Option(customValue, customValue, true, true);
+					$(this).append(newOption).val(customValue);
+				} else {
+					$(this).val(''); 
+				}
+			}
+		});
+	});
+
+</script>
+ *@
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
+	$(document).ready(function () {
+		$('.other-select').on('change', async function () {
+			if ($(this).val() === 'other') {
+				const fieldLabel = $(this).data('name') || 'Custom Value';
+
+				const { value: customValue } = await Swal.fire({
+					title: `Enter custom value for ${fieldLabel}`,
+					input: 'text',
+					inputLabel: fieldLabel,
+					showCancelButton: true,
+					inputValidator: (value) => {
+						if (!value) return 'You need to enter something!';
+					}
+				});
+
+				if (customValue) {
+					const newOption = new Option(customValue, customValue, true, true);
+					$(this).append(newOption).val(customValue);
+				} else {
+					$(this).val(''); // Clear if cancelled
+				}
+			}
+		});
+	});
+</script>
+
+<script>
+	 function SavedPopup(){
+
+
+			Swal.fire({
+	  title: "Saved",
+	  icon: "success",
+	  draggable: true
+	});
+		 }
+</script>

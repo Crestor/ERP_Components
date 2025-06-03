@@ -2,15 +2,15 @@
 
 
 @{
-    ViewBag.Title = "Add Material";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Master";
+    Layout = "~/Views/Shared/_LayoutINV.cshtml";
 }
 
 <link rel="stylesheet" href="~/css/Product.css">
 
 @model List<Items>
-<div class="header1">
-    <h4>Add Opening Stock</h4>
+ 
+    @* <h4>Add Opening Stock</h4> *@
 </div>
 
 
@@ -18,9 +18,15 @@
     <form method="post" asp-action="OpeningStockEntryForm" asp-controller="Inventory" onsubmit="return savedDetail()">
 
         <div class="form-section">
-            <h3>Stock Adjustment</h3>
-            <div class="form-row">
+            <h3>Add Opening Stock</h3>
+            <div class="form-row" style="width:50%">
+                <label class="required" for="sku">Opening Stock as on Date:</label>
+                <input type="date" name="expiry" value="@DateTime.Now.ToString("yyyy-MM-dd")" required />
 
+            </div>
+            <div class="form-row">
+                <label class="required" for="supplier">Product Code:</label>
+                <input type="number" id="currentStock" name="inStock" />
                 <label class="required" for="itemName">Product Name:</label>
                 <select name="itemId">
 
@@ -34,26 +40,37 @@
 
                 @* <input type="hidden" name="itemType" value="product" required /> *@
 
+               
+            </div>
+            <div class="form-row">
                 <label class="required" for="supplier">Quantity:</label>
                 <input type="number" id="currentStock" name="inStock" />
-            </div>
-            <div class="form-row" style="width:50%">
-
-                <label class="required" for="supplier">Batch Series:</label>
-                <input type="text"  name="batchSeries"/>
+                <label class="required" for="sku">Unit Price:</label>
+                <input type="text" name="expiry" required />
 
                
             </div>
-          
+            <div class="form-row">
+
+                <label class="required" for="sku">Invoice Date:</label>
+                <input type="date" name="manufacture" required />
+                <label class="required" for="sku">Expiry Date:</label>
+                <input type="date" name="expiry" required />
+
+            </div>
+            <div class="form-row" style="width:50%">
+                <label class="required" for="supplier">Batch Series:</label>
+                <input type="text" name="batchSeries" />
+
+            </div>
             
 
-        </div>
-
-
-        <div class="button-container">
+        <div class="button">
             <button type="submit">Submit</button>
-            <button type="reset">Reset</button>
         </div>
+      </div>
+
+
     </form>
 </div>
 
