@@ -58,7 +58,7 @@
         @if (!insufficientMaterial)
         {
 
-            <button style="width: 200px" type="submit" onclick="location.href='@Url.Action("AllocateToProductionFromStoreSeven", "Inventory", new { requisitionId = Model[0].RequisitionId }, null)'">Allocate</button>
+            <button type="submit" onclick="location.href='@Url.Action("AllocateToProductionFromStoreSeven", "Inventory", new { requisitionId = Model[0].RequisitionId }, null)'">Allocate</button>
 
         }
 

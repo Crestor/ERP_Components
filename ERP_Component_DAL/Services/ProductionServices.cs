@@ -532,7 +532,7 @@ namespace ERP_Component_DAL.Services
                 SqlCommand cmd1 = new SqlCommand();
                 cmd1.CommandType = System.Data.CommandType.Text;
 
-                cmd1.CommandText = $"INSERT INTO Requisitions ([Description],[RequisitionType], [RequisitionStatus]) OUTPUT INSERTED.RequisitionID VALUES ('{production.description}', 2, 1)";
+                cmd1.CommandText = $"INSERT INTO Requisitions ([Description],[RequisitionType], [RequisitionStatus],[RequisitionSeries]) OUTPUT INSERTED.RequisitionID VALUES ('{production.description}', 2, 1,'{production.RequisitionSeries}')";
 
 
 

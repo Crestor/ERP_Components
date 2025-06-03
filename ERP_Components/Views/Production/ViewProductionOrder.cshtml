@@ -42,7 +42,7 @@
                         <td>@x.quantity</td>
                         <td>@x.createdAt.ToShortDateString()</td>
                         <td>
-                            <div class="button">
+                            <div class="table-button">
                             <button onclick="location.href='@Url.Action("ViewProductionOrderDetail","Production", new { ProductionOrderId = x.productionOrderId })'">View Material</button>
                             </div>
                         </td>
@@ -78,7 +78,7 @@
                         <td>@x.quantity</td>
                         <td>@x.createdAt.ToShortDateString()</td>
                         <td>
-                            <div class="button">
+                            <div class="table-button">
                                 <button onclick="location.href='@Url.Action("DispatchProductionOrder","Production", new { ProductionOrderId = x.productionOrderId, productId = @x.productId })'">Dispatch</button>
                        </div>
 
@@ -115,7 +115,7 @@
                         <td>@x.quantity</td>
                         <td>@x.createdAt.ToShortDateString()</td>
                         <td>
-                            <div class="button">
+                            <div class="table-button">
                                 <button onclick="location.href='@Url.Action("UpdateProductionStage","Production", new { ProductionOrderId = x.productionOrderId, productId = x.productId})'">View Stages</button>
                        </div>
                         

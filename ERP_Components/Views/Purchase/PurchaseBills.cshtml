@@ -46,7 +46,7 @@
 					<td>@x.createdAt.ToShortDateString()</td>
 					<td>@x.amount</td>
 					<td>
-						<div class="actions">
+						<div class="table-button">
 
 							<button onclick="location.href='@Url.Action("GeneratePurchaseInvoice", "Purchase", new { vendorId = @x.vendorId, purchaseOrderID = @x.purchaseOrderId }, null)'">View Purchase Bills</button>
 							@* <button type="button" class="convert-btn" data-purchase-id="@x.purchaseOrderId">Convert To Bill</button> *@
