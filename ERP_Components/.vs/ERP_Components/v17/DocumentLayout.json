@@ -509,8 +509,7 @@
               "ViewState": "AgIAAD4AAAAAAAAAAAAvwFMAAAAIAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-06-01T01:53:27.589Z",
-              "IsPinned": true,
-              "EditorCaption": ""
+              "IsPinned": true
             },
             {
               "$type": "Document",
@@ -574,7 +573,7 @@
               "RelativeDocumentMoniker": "Controllers\\WarehouseController.cs",
               "ToolTip": "D:\\CountreesAI\\Github\\ERP_Components\\ERP_Components\\Controllers\\WarehouseController.cs",
               "RelativeToolTip": "Controllers\\WarehouseController.cs",
-              "ViewState": "AgIAAGYAAAAAAAAAAAA/wHgAAAAMAAAAAAAAAA==",
+              "ViewState": "AgIAAGcAAAAAAAAAAAAswHgAAAAMAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-05-30T03:32:59.379Z",
               "EditorCaption": ""
@@ -602,8 +601,7 @@
               "RelativeToolTip": "..\\ERP_Component_DAL\\Services\\ProductionServices.cs",
               "ViewState": "AgIAAMgCAAAAAAAAAADgv9UCAAAQAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-03T12:03:13.634Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-06-03T12:03:13.634Z"
             },
             {
               "$type": "Document",
@@ -615,8 +613,7 @@
               "RelativeToolTip": "..\\ERP_Component_DAL\\Services\\InventoryServices.cs",
               "ViewState": "AgIAALAKAAAAAAAAAAAEwL4KAAAIAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-03T11:13:26.551Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-06-03T11:13:26.551Z"
             },
             {
               "$type": "Document",
@@ -628,8 +625,7 @@
               "RelativeToolTip": "..\\ERP_Component_DAL\\Services\\PurchaseServices.cs",
               "ViewState": "AgIAAPEBAAAAAAAAAAAqwAECAAC1AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-03T11:57:15.434Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-06-03T11:57:15.434Z"
             },
             {
               "$type": "Document",
