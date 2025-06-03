@@ -1,13 +1,12 @@
-﻿using ERP_Component_DAL.Models;
-using Microsoft.Data.SqlClient;
-using Microsoft.Extensions.Configuration;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Text;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using ERP_Component_DAL.Models;
+using Microsoft.Data.SqlClient;
+using Microsoft.Extensions.Configuration;
 
 namespace ERP_Component_DAL.Services
 {
@@ -330,7 +329,7 @@ namespace ERP_Component_DAL.Services
                 connection = new SqlConnection(connectionstring);
                 SqlCommand cmd = new();
                 cmd.CommandType = System.Data.CommandType.Text;
-                cmd.CommandText = $"Select RequisitionID, RequisitionSeries,Description,CreatedAt From Requisitions  Where RequisitionStatus = 4 AND RequisitionType = 1";
+                cmd.CommandText = $"Select RequisitionID, RequisitionSeries,Description,CreatedAt From Requisitions  Where RequisitionStatus = 4";
                 cmd.Connection = connection;
 
 
@@ -428,13 +427,7 @@ namespace ERP_Component_DAL.Services
                 connection = new SqlConnection(connectionstring);
                 SqlCommand cmd = new();
                 cmd.CommandType = System.Data.CommandType.Text;
-                cmd.CommandText = $"SELECT it.ItemName, it.HSN, it.Specification,ps.StatusName, it.UnitOfMeasure,ri.RequisitionID, ri.Quantity"
-                 + " FROM Items it"
-                 + $" JOIN ProductionOrder po ON it.ItemId = po.ProductID"
-                 + $" LEFT JOIN ProductionStatuses ps ON po.ProductionStatus = ps.ProductionStatus"
-                 + $" LEFT JOIN RequisitionItems ri ON po.SalesForcastID = ri.RequisitionID"
-                 + $" Where po.SalesForcastID = '{RequisitionID}'"
-                 + $" GROUP BY it.ItemName, it.HSN, it.Specification,ps.StatusName, it.UnitOfMeasure,ri.RequisitionID, ri.Quantity;";
+                cmd.CommandText = $"SELECT  it.ItemName, it.HSN, it.Specification,ps.StatusName, it.UnitOfMeasure,ri.RequisitionID, ri.Quantity FROM Items it  JOIN ProductionOrder po ON it.ItemId = po.ProductID LEFT JOIN ProductionStatuses ps ON po.ProductionStatus =ps.ProductionStatus LEFT JOIN RequisitionItems ri ON po.SalesForcastID = ri.RequisitionID Where po.SalesForcastID  = '{RequisitionID}'";
                 cmd.Parameters.AddWithValue("@RequisitionID", RequisitionID);
                 cmd.Connection = connection;
 

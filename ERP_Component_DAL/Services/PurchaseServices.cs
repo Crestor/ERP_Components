@@ -202,7 +202,7 @@ namespace ERP_Component_DAL.Services
                 SqlCommand cmd = new SqlCommand();
                 cmd.CommandType = CommandType.Text;
 
-                cmd.CommandText = $"INSERT INTO PurchaseOrders(PurchaseOrderID,VendorID,RequisitionId,Description,TaxableAmount) VALUES (@PurchaseOrderID, @VendorID, @RequisitionID,'{vendor.description}','{vendor.amount}')";
+                cmd.CommandText = $"INSERT INTO PurchaseOrders(PurchaseOrderID,VendorID,RequisitionId,Description,TaxableAmount, OrderStatus) VALUES (@PurchaseOrderID, @VendorID, @RequisitionID,'{vendor.description}','{vendor.amount}', 1)";
 
 
                 cmd.Parameters.AddWithValue("@PurchaseOrderID", purchaseOrderID);
