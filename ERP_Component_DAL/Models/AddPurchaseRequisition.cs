@@ -29,7 +29,7 @@
         public string? hsn { get; set; }
         public decimal discount { get; set; }
         public decimal AvaiableQuantity { get; set; }
-        public decimal RequiredQuantity { get; set; }
+        //public decimal RequiredQuantity { get; set; }
         public decimal discountAmount { get; set; }
 
         List<AddPurchaseRequisition> Listbyreq { get; set; }
@@ -43,7 +43,7 @@
         public string RaisedBy { get; set; }
 
         public string RequiredBy { get; set; }
-        public string RequisitionSeries { get; set; }
+        //public string RequisitionSeries { get; set; }
         public decimal TotalAmount { get; set; }
         public decimal unitPrice { get; set; }
         public decimal taxableValue { get; set; }

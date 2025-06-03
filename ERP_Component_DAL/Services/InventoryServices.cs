@@ -2524,7 +2524,9 @@ namespace ERP_Component_DAL.Services
                 connection = new SqlConnection(ConnectionString);
                 SqlCommand cmd = new SqlCommand();
                 cmd.CommandType = System.Data.CommandType.Text;
-                cmd.CommandText = $" SELECT r.Description,r.RequisitionID, r.RequisitionSeries, it.ItemName, ri.Quantity AS AvaiableQuantity, i.InStock AS RequiredQuantity FROM RequisitionItems ri JOIN Inventory i ON ri.ItemID = i.ItemId JOIN Items it ON ri.ItemID = it.ItemId JOIN Requisitions r ON ri.RequisitionID = r.RequisitionID WHERE ri.RequisitionID = @RequisitionID GROUP BY r.Description,r.RequisitionID, r.RequisitionSeries, it.ItemName, ri.Quantity, i.InStock";
+                cmd.CommandText = $" SELECT r.Description,r.RequisitionID, r.RequisitionSeries, it.ItemName, ri.Quantity AS RequiredQuantity, i.InStock AS AvailableQuantity " +
+                    $"FROM RequisitionItems ri JOIN Inventory i ON ri.ItemID = i.ItemId JOIN Items it ON ri.ItemID = it.ItemId JOIN Requisitions r ON ri.RequisitionID = r.RequisitionID " +
+                    $"WHERE ri.RequisitionID = @RequisitionID AND i.InventoryCenter = 4 GROUP BY r.Description,r.RequisitionID, r.RequisitionSeries, it.ItemName, ri.Quantity, i.InStock";
                 cmd.Parameters.AddWithValue("@RequisitionID", RequisitionID);
                 cmd.Connection = connection;
 
@@ -2538,7 +2540,7 @@ namespace ERP_Component_DAL.Services
                         RequisitionId = reader["RequisitionID"] != DBNull.Value ? (Guid)reader["RequisitionID"] : Guid.Empty,
 
                         itemName = reader["ItemName"] != DBNull.Value ? (string)reader["ItemName"] : string.Empty,
-                       availableQuantity = reader["AvaiableQuantity"] != DBNull.Value ? (int)reader["AvaiableQuantity"] : 0,
+                       availableQuantity = reader["AvailableQuantity"] != DBNull.Value ? (int)reader["AvailableQuantity"] : 0,
 
                         requiredQuantity = reader["RequiredQuantity"] != DBNull.Value ? (int)reader["RequiredQuantity"] : 0,
 

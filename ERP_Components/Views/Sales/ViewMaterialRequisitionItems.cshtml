@@ -12,7 +12,7 @@
         <label for="Description">Description :</label>
         <input type="text" id="Description" name="Description" value="@Model[0].Descripion" readonly />
         <label for="RequisitionSeries">Requisition Series:</label>
-        <input type="number" id="" name="" value="@Model[0].RequisitionSeries" readonly />
+        <input type="number" id="" name="" value="@Model[0].requisitionSeries" readonly />
     </div>
     <div class="form-row" style="width:50%">
         <label for="orderDate">Order Date:</label>
@@ -39,7 +39,7 @@
 
 					<tr>
 						<td>@x.itemName</td>
-						<td>@x.RequiredQuantity</td>
+						<td>@x.requiredQuantity</td>
 						<td>@x.AvaiableQuantity</td>
 						
 					</tr>
