@@ -74,94 +74,102 @@
 	<div class="table">
 
 	<table>
-			<thead>
-				<tr>
-					<th>Field</th>
-					<th>Vendor 1</th>
-					<th>Vendor 2</th>
-					<th>Vendor 3</th>
-				</tr>
-			</thead>
-			<tbody id="quotationTableBody">
-				<tr>
-					<td>Vendor Name</td>
-					@for (int i = 0; i < 3; i++)
-					{
-							<td id="v@(i+1)_name">@((Model.lists.Count > i) ? Model.lists[i].vendorName : "")</td>
-					}
-				</tr>
-				<tr>
-					<td>Quotation Amount</td>
-					@for (int i = 0; i < 3; i++)
-					{
-							<td id="v@(i+1)_amt">@((Model.lists.Count > i) ? Model.lists[i].amount.ToString() : "")</td>
-					}
-				</tr>
-				<tr>
-					<td>Discount Amount</td>
-					@for (int i = 0; i < 3; i++)
-					{
-							<td id="v@(i+1)_disc">@((Model.lists.Count > i) ? Model.lists[i].discountAmount.ToString() : "")</td>
-					}
-				</tr>
-				<tr>
-					<td>Final Amount</td>
-					@for (int i = 0; i < 3; i++)
-					{
-							<td id="v@(i+1)_final">@((Model.lists.Count > i) ? Model.lists[i].finalAmount.ToString() : "")</td>
-					}
-				</tr>
-				<tr>
-					<td>Advance Amount</td>
-					@for (int i = 0; i < 3; i++)
-					{
-							<td id="v@(i+1)_adv">@((Model.lists.Count > i) ? Model.lists[i].advancedAmount.ToString() : "")</td>
-					}
-				</tr>
-				<tr>
-					<td>Delivery Terms</td>
-					@for (int i = 0; i < 3; i++)
-					{
-							<td id="v@(i+1)_del">@((Model.lists.Count > i) ? Model.lists[i].deliveryTerms : "")</td>
-					}
-				</tr>
-				<tr>
-					<td>Credit Period</td>
-					@for (int i = 0; i < 3; i++)
-					{
-							<td id="v@(i+1)_cred">@((Model.lists.Count > i) ? Model.lists[i].paymentTerms : "")</td>
-					}
-				</tr>
-
+		<thead>
 			<tr>
-				<td>Action</td>
+				<th>Field</th>
+				<th>Vendor 1</th>
+				<th>Vendor 2</th>
+				<th>Vendor 3</th>
+			</tr>
+		</thead>
+		<tbody id="quotationTableBody">
+			<tr>
+				<td>Vendor Name</td>
 				@for (int i = 0; i < 3; i++)
 				{
-					if (Model.lists.Count > i)
-					{
-						<td>
-							<form method="post" asp-action="ApproveVendor" asp-controller="Manager" style="display:inline;">
-								<input type="hidden" name="vendorId" value="@Model.lists[i].vendorId" />
-								<input type="hidden" name="requisitionId" value="@Model.lists[i].requisitionId" />
-								<div class="table-button">
-									<button class="btn">Approve</button>
-								</div>
-								
-							</form>
-						</td>
-					}
-					else
-					{
-						<td></td>
-					}
+					<td id="v@(i+1)_name">@((Model.lists.Count > i) ? Model.lists[i].vendorName : "")</td>
+				}
+			</tr>
+			<tr>
+				<td>Quotation Amount</td>
+				@for (int i = 0; i < 3; i++)
+				{
+					<td id="v@(i+1)_amt">
+						@((Model.lists.Count > i) ? Model.lists[i].amount.ToString("0.00") : "")
+					</td>
+				}
+			</tr>
+			<tr>
+				<td>Discount Amount</td>
+				@for (int i = 0; i < 3; i++)
+				{
+					<td id="v@(i+1)_disc">
+						@((Model.lists.Count > i) ? Model.lists[i].discountAmount.ToString("0.00") : "")
+					</td>
+				}
+			</tr>
+			<tr>
+				<td>Final Amount</td>
+				@for (int i = 0; i < 3; i++)
+				{
+					<td id="v@(i+1)_final">
+						@((Model.lists.Count > i) ? Model.lists[i].finalAmount.ToString("0.00") : "")
+					</td>
+				}
+			</tr>
+			<tr>
+				<td>Advance Amount</td>
+				@for (int i = 0; i < 3; i++)
+				{
+					<td id="v@(i+1)_adv">
+						@((Model.lists.Count > i) ? Model.lists[i].advancedAmount.ToString("0.00") : "")
+					</td>
+				}
+			</tr>
+			<tr>
+				<td>Delivery Terms</td>
+				@for (int i = 0; i < 3; i++)
+				{
+					<td id="v@(i+1)_del">@((Model.lists.Count > i) ? Model.lists[i].deliveryTerms : "")</td>
+				}
+			</tr>
+			<tr>
+				<td>Credit Period</td>
+				@for (int i = 0; i < 3; i++)
+				{
+					<td id="v@(i+1)_cred">@((Model.lists.Count > i) ? Model.lists[i].paymentTerms : "")</td>
 				}
 			</tr>
 
 
-			</tbody>
+		<td>Action</td>
+			@for (int i = 0; i < 3; i++)
+			{
+				if (Model.lists.Count > i)
+				{
+				<td>
+					<form method="post" asp-action="ApproveVendor" asp-controller="Manager" style="display:inline;">
+						<input type="hidden" name="vendorId" value="@Model.lists[i].vendorId" />
+						<input type="hidden" name="requisitionId" value="@Model.lists[i].requisitionId" />
+						<div class="table-button">
+							<button class="btn">Approve</button>
+						</div>
+
+					</form>
+				</td>
+				}
+				else
+				{
+				<td></td>
+				}
+			}
+		</tr>
 
 
-		</table>
+		</tbody>
+
+
+	</table>
 	
 		
 
