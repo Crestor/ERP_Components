@@ -1,101 +1,268 @@
-﻿@using ERP_Component_DAL.Models
-@using ERP_Components
+﻿
+
+
+<link href="~/css/Product.css" rel="stylesheet" />
+
 @{
-    ViewBag.Title = "DashBoard";
-    Layout = "~/Views/Shared/_LayoutINV.cshtml";
+    ViewBag.Title = "Dashboard";
+    ViewBag.UserName = "Himalyan Goats";
+
 }
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
 
-<link rel="stylesheet" href="~/css/Product.css">
+    /* body { */
 
-<div class="container-fluid mt-4">
-    <h2 class=" mb-4">Sales Management Dashboard</h2>
 
-    <div class="row mb-4">
-        <div class="col-md-3">
-            <div class="card ">
-                <div class="card-body">
-                    <h5>Total Sales</h5>
-                    <h3 style="color:#ad4b4b">₹1,20,000</h3>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-3">
-            <div class="card ">
-                <div class="card-body">
-                    <h5>Customers</h5>
-                    <h3 style="color:#ad4b4b">350</h3>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-3">
-            <div class="card">
-                <div class="card-body">
-                    <h5>Orders</h5>
-                    <h3 style="color:#ad4b4b">680</h3>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-3">
-            <div class="card ">
-                <div class="card-body">
-                    <h5>Pending Orders</h5>
-                    <h3 style="color:#ad4b4b">24</h3>
-                </div>
-            </div>
-        </div>
-    </div>
+    .topbar {
+        margin: 10px;
+        background-color: #a14040;
+        color: white;
+        padding: 10px 30px;
+        text-align: center;
+        font-size: 1.5rem;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
 
-    <div class="row">
-        <div class="col-md-8">
-            <div class="card shadow-sm">
-                <div class="card-body">
-                    <h5 class="card-title">Monthly Revenue Trend</h5>
-                    <canvas id="revenueChart" height="100"></canvas>
+    .dashboard {
+        padding: 10px;
+    }
+
+    .cards {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        gap: 20px;
+    }
+
+    .card {
+        background-color: white;
+        padding: 20px;
+        border-radius: 12px;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+        text-align: center;
+    }
+
+        .card h3 {
+            margin-bottom: 10px;
+            color: #555;
+        }
+
+        .card p {
+            font-size: 1.6rem;
+            font-weight: bold;
+            color: #138496;
+        }
+
+    .charts {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+        justify-content: space-between;
+    }
+
+    .chart-container {
+        flex: 1 1 600px;
+        background: white;
+        padding: 20px;
+        border-radius: 12px;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+    }
+
+</style>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+
+<div class="app-content" style="margin-top:80px">
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Total Sales -->
+            <div class="col-12 col-sm-6 col-md-3">
+                <div class="info-box">
+                    <span class="info-box-icon text-bg-primary shadow-sm" style="background-color:#55d5e9 !important">
+                        <i class="fas fa-rupee-sign"></i> <!-- Money icon -->
+                    </span>
+                    <div class="info-box-content">
+                        <span class="info-box-text">Total Sales</span>
+                        <span class="info-box-number"><strong>₹</strong> 12,48,500</span>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="col-md-4">
-            <div class="card shadow-sm">
-                <div class="card-body">
-                    <h5 class="card-title">Top Selling Products</h5>
-                    <ul class="list-group">
-                        <li class="list-group-item">Product A - ₹50,000</li>
-                        <li class="list-group-item">Product B - ₹30,000</li>
-                        <li class="list-group-item">Product C - ₹20,000</li>
-                    </ul>
+
+            <!-- Total Orders -->
+            <div class="col-12 col-sm-6 col-md-3">
+                <div class="info-box">
+                    <span class="info-box-icon text-bg-danger shadow-sm" style="background-color:#2BCBE4 !important">
+                        <i class="fas fa-shopping-basket"></i> <!-- Orders icon -->
+                    </span>
+                    <div class="info-box-content">
+                        <span class="info-box-text">Total Orders</span>
+                        <span class="info-box-number">990</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- New Customers -->
+            <div class="col-12 col-sm-6 col-md-3">
+                <div class="info-box">
+                    <span class="info-box-icon text-bg-success shadow-sm" style="background-color:#19ACC3 !important">
+                        <i class="fas fa-user-plus"></i> <!-- New user icon -->
+                    </span>
+                    <div class="info-box-content">
+                        <span class="info-box-text">New Customers</span>
+                        <span class="info-box-number">466</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Returns -->
+            <div class="col-12 col-sm-6 col-md-3">
+                <div class="info-box">
+                    <span class="info-box-icon text-bg-warning shadow-sm" style="background-color:#138496 !important">
+                        <i class="fas fa-undo-alt"></i> <!-- Return icon -->
+                    </span>
+                    <div class="info-box-content">
+                        <span class="info-box-text">Returns</span>
+                        <span class="info-box-number">₹36,000</span>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
 
-@section scripts {
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script>
-        const ctx = document.getElementById('revenueChart').getContext('2d');
-        const revenueChart = new Chart(ctx, {
-            type: 'line',
-            data: {
-                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May'],
-                datasets: [{
-                    label: 'Revenue (₹)',
-                    data: [10000, 20000, 15000, 30000, 40000],
-                    borderColor: 'dark',
-                    backgroundColor: '#ad4b4b',
-                    fill: true,
-                    tension: 0.3
-                }]
-            },
-            options: {
-                responsive: true,
-                scales: {
-                    y: {
-                        beginAtZero: true
-                    }
-                }
+
+
+
+
+<main class="dashboard">
+    <section class="cards">
+    </section>
+
+    <section class="charts">
+        <div class="chart-container" style="display:flex;justify-content:center; width:430px;height:400px">
+            <canvas id="InventoryLevelsChart"></canvas>
+        </div>
+        <div class="chart-container" style="display:flex;justify-content:center; width:430px;height:400px">
+            <canvas id="StockInOutChart"></canvas>
+        </div>
+        <div class="chart-container" style="display:flex;justify-content:center; width:430px;height:400px">
+            <canvas id="StockCategoryChart"></canvas>
+        </div>
+        <div class="chart-container" style="display:flex;justify-content:center; width:430px;height:400px">
+            <canvas id="TurnoverRatioChart"></canvas>
+        </div>
+    </section>
+</main>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script asp-append-version="true" src="~/lib/jquery/dist/jquery.min.js"></script>
+<script>
+
+    document.addEventListener("DOMContentLoaded", function () {
+      // 1. Inventory Levels Over Time - Line Chart
+      new Chart(document.getElementById('InventoryLevelsChart').getContext('2d'), {
+        type: 'line',
+        data: {
+          labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'],
+          datasets: [{
+            label: 'Sales ₹ ',
+            data: [1200, 1350, 1280, 1500, 1400, 1600, 1550],
+            backgroundColor: '#dee2e6',
+            borderColor: '#138496',
+            borderWidth: 2,
+            fill: true,
+            tension: 0.4
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            title: {
+              display: true,
+              text: 'Monthly Sales Trend'
             }
-        });
-    </script>
-}
+          }
+        }
+      });
+
+      // 2. Stock In vs. Stock Out - Bar Chart
+      new Chart(document.getElementById('StockInOutChart').getContext('2d'), {
+        type: 'bar',
+        data: {
+          labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'],
+          datasets: [
+            {
+              label: 'Order',
+              data: [400, 450, 420, 500, 480, 520, 510],
+              backgroundColor: '#138496'
+            },
+            {
+              label: 'Return Order',
+              data: [380, 430, 410, 470, 460, 490, 500],
+              backgroundColor: '#dee2e6'
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            title: {
+              display: true,
+              text: 'Order Per Month'
+            }
+          }
+        }
+      });
+
+      // 3. Current Stock Distribution by Category - Pie Chart
+      new Chart(document.getElementById('StockCategoryChart').getContext('2d'), {
+        type: 'pie',
+        data: {
+          labels: ['Saree', 'T-Shirt', 'Blazer', 'Pent'],
+          datasets: [{
+            data: [40, 25, 20, 15],
+                      backgroundColor: ['#55d5e9', '#2BCBE4', '#19ACC3', '#138496']
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            title: {
+              display: true,
+              text: 'Sales By Category'
+            }
+          }
+        }
+      });
+
+      // 4. Inventory Turnover Ratio - Line Chart
+      new Chart(document.getElementById('TurnoverRatioChart').getContext('2d'), {
+        type: 'line',
+        data: {
+          labels: ['Q1', 'Q2', 'Q3', 'Q4'],
+          datasets: [{
+            label: 'Turnover Ratio',
+            data: [4.2, 4.8, 5.1, 5.5],
+            borderColor: '#138496',
+            borderWidth: 2,
+            fill: false,
+            tension: 0.3
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            title: {
+              display: true,
+              text: 'sales Turnover Ratio (Quarterly)'
+            }
+          }
+        }
+      });
+    });
+</script>
 
 
