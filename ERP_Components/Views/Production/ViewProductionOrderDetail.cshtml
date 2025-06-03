@@ -1,78 +1,4 @@
-﻿@* @using ERP_Component_DAL.Models;
-@{
-    ViewBag.Title = "Production Order";
-    Layout = "~/Views/Shared/_LayoutINV.cshtml";
-}
-
-@model Production
-
-<link rel="stylesheet" href="~/css/Product.css">
-
-
-@{
-    bool insufficientMaterial = Model.materials.Any(m => m.quantityRequired > m.availableQuantity);
-}
-<form method="post" asp-action="SendToProduction" asp-controller="Production">
-    <div class="form-section">
-        <h3>Production Order Details</h3>
-        <div class="form-row">
-            <label for="productName">Product Name:</label>
-            <input type="text" id="productName" name="productName" value="@Model.productName" readonly />
-            <input type="hidden" name="productId" value="@Model.productId" />
-            <label for="quantity">Quantity:</label>
-            <input type="number" id="quantity" name="quantity" value="@Model.quantity" readonly />
-            <input type="hidden" name="productionOrderId" value="@Model.productionOrderId" />
-        </div>
-        <div class="form-row" style="width:50%">
-            <label for="orderDate">Order Date:</label>
-            <input type="text" id="orderDate" name="createdAt" value="@Model.createdAt.ToShortDateString()" readonly />
-            <input type="hidden" name="salesForcastId" value="@Model.salesForcastId" />
-        </div>
-    </div>
-        <div class="table">
-            <table>
-                <thead>
-                    <tr>
-                        <th>Serial No.</th>
-                        <th>Material Name</th>
-                        <th>Required</th>
-                        <th>Available</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @for (var i = 0; i < Model.materials.Count; i++)
-                    {
-                        var x = Model.materials[i];
-                        <tr>
-                            <td>@(i + 1)</td>
-                            <td>@x.materialName</td>
-                            <td>@x.quantityRequired @x.unitOfMeasure</td>
-                            <td>@x.availableQuantity @x.unitOfMeasure</td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
-        
-
-    </div>
-        <div class="button">
-            @if (insufficientMaterial)
-            {
-                <button style="width: 200px;" type="button" onclick="location.href='@Url.Action("MaterialRequisition", "Production", new { salesForCastId = Model.salesForcastId, productionOrderId = Model.productionOrderId })'">Create Requisition</button>
-            }
-            else
-            {
-                <button style="width: 200px;" type="submit">Start Production</button>
-            }
-        </div>
-</form>
- *@
-
-
-
-
-
-
+﻿
 @using ERP_Component_DAL.Models;
 @{
     ViewBag.Title = "Production Order";
@@ -139,11 +65,11 @@
     <div class="button">
         @if (insufficientMaterial)
         {
-            <button style="width: 200px;" type="button" onclick="location.href='@Url.Action("MaterialRequisition", "Production", new { salesForCastId = Model.salesForcastId, productionOrderId = Model.productionOrderId })'">Create Requisition</button>
+            <button  type="button" onclick="location.href='@Url.Action("MaterialRequisition", "Production", new { salesForCastId = Model.salesForcastId, productionOrderId = Model.productionOrderId })'">Create Requisition</button>
         }
         else
         {
-            <button style="width: 200px;" type="submit">Start Production</button>
+            <button  type="submit">Start Production</button>
         }
     </div>
 </form>

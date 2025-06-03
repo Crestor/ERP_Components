@@ -531,10 +531,15 @@ namespace ERP_Component_DAL.Services
 
                 SqlCommand cmd1 = new SqlCommand();
                 cmd1.CommandType = System.Data.CommandType.Text;
+<<<<<<< HEAD
                 Guid RequisitionID = Guid.NewGuid();
                 cmd1.CommandText = $"INSERT INTO Requisitions (RequisitionID, [Description],[RequisitionType], [RequisitionStatus]) VALUES ('{RequisitionID}', '{production.description}', 2, 1);" +
                     $" INSERT INTO ProductionRequisitionMapping(ProductionOrderID, RequisitionID) VALUES ('{production.productionOrderId}','{RequisitionID}');" +
                     $" UPDATE ProductionOrder SET ProductionStatus = 5 WHERE ProductionOrderID = '{production.productionOrderId}';";
+=======
+
+                cmd1.CommandText = $"INSERT INTO Requisitions ([Description],[RequisitionType], [RequisitionStatus],[RequisitionSeries]) OUTPUT INSERTED.RequisitionID VALUES ('{production.description}', 2, 1,'{production.RequisitionSeries}')";
+>>>>>>> 76ab5e2a26ebed1bb9bd8a0de715394434df7298
 
 
 

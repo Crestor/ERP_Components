@@ -39,7 +39,7 @@
 				var x = Model[i];
 				var index = i + 1;
 
-				<tr id="row-@x.vendorId; @x.purchaseOrderId">
+				<tr id="row-@x.purchaseOrderId">
 
 					<td>@index</td>
 					<td>@x.vendorName</td>
@@ -48,9 +48,9 @@
 					<td>@x.createdAt.ToShortDateString()</td>
 					<td>@x.amount</td>
 					<td>
-						<div class="button">
+						<div class="table-button">
 
-							<button onclick="location.href='@Url.Action("PurchaseOrderForm", "Purchase", new { vendorId = @x.vendorId }, null)'">Receive Order</button>
+							<button onclick="location.href='@Url.Action("SetReceivedPurchaseOrder", "Inventory", new { purchaseOrderId = @x.purchaseOrderId }, null)'">Receive Order</button>
 							
 
 						</div>

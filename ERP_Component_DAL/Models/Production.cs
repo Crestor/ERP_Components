@@ -21,6 +21,7 @@ namespace ERP_Component_DAL.Models
         public int stageTime{ get; set; }
 
         public string? productName { get; set; }
+        public string? RequisitionSeries { get; set; }
         public string? description { get; set; }
         public string? status { get; set; }
         public string? stageWork { get; set; }

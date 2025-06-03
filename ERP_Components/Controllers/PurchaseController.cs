@@ -187,11 +187,11 @@ namespace ERP_Components.Controllers
         }
 
 
-        public IActionResult PurchaseOrderForm(Guid vendorId)
+        public IActionResult PurchaseOrderForm(Guid vendorId, Guid purchaseOrderId)
         {
 
             Vendor vendor = purchaseServices.GetVendorAddressDetails(vendorId);
-            List<AddPurchaseRequisition> ItemData = purchaseServices.PurchaseOrderItemsList(vendorId);
+            List<AddPurchaseRequisition> ItemData = purchaseServices.PurchaseOrderItemsList(vendorId, purchaseOrderId);
             vendor.Items = ItemData;
             return View(vendor);
         }
@@ -219,7 +219,7 @@ namespace ERP_Components.Controllers
         {
 
             Vendor vendor = purchaseServices.GetPurchaseBills(purchaseOrderId);
-            List<AddPurchaseRequisition> ItemData = purchaseServices.PurchaseOrderItemsList(vendorId);
+            List<AddPurchaseRequisition> ItemData = purchaseServices.PurchaseOrderItemsList(vendorId, purchaseOrderId);
             vendor.Items = ItemData;
             return View(vendor);
         }

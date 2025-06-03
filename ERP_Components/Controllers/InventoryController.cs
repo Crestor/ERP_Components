@@ -632,6 +632,12 @@ namespace ERP_Components.Controllers
             return View(vendor);
         }
 
+         public IActionResult SetReceivedPurchaseOrder(Guid purchaseOrderId)
+        {
+            inventoryServices.ReceiveItemsOfPurchaseOrder(purchaseOrderId);
+            return RedirectToAction("RecievePurchaseOrder");
+        }
+
 
         public IActionResult AllocateToProduction()
         {

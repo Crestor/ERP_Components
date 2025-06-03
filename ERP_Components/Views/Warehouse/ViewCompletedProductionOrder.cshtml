@@ -41,7 +41,7 @@
 
 					<td>@x.Date.ToShortDateString()</td>
 					<td>
-						<div class="actions">
+						<div class="table-button">
 
 							<button onclick="viewDetails('@x.RequisitionId')">View</button>
 							<button onclick="location.href='@Url.Action("AllocateToSalesFromWarehouse", "Warehouse", new { salesForcastId = @x.RequisitionId }, null)'">Allocate</button>

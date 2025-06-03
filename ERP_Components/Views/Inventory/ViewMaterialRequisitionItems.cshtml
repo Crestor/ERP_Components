@@ -6,6 +6,12 @@
 @model List<AddPurchaseRequisition>
 
 <link rel="stylesheet" href="~/css/Product.css">
+
+@{
+    bool insufficientMaterial = Model.Any(m => m.requiredQuantity > m.availableQuantity);
+}
+
+
 <div class="form-section">
     <h3>Production Order Details</h3>
     <div class="form-row">
@@ -19,38 +25,46 @@
         <label for="orderDate">Order Date:</label>
         <input type="text" id="orderDate" name="orderDate" value="@DateTime.Now.ToString("yyyy-MM-dd")" readonly />
     </div>
-                    
+
     <h2> Details </h2>
     <div class="table">
-		<table>
-			<thead>
-				<tr>
+        <table>
+            <thead>
+                <tr>
                     <th>Material Name</th>
                     <th>Required</th>
                     <th>Available</th>
-				</tr>
-			</thead>
+                </tr>
+            </thead>
 
 
 
-			<tbody>
-				@for (var i = 0; i < Model.Count; i++)
-				{
-					var x = Model[i];
+            <tbody>
+                @for (var i = 0; i < Model.Count; i++)
+                {
+                    var x = Model[i];
 
-					<tr>
-						<td>@x.itemName</td>
-						<td>@x.requiredQuantity</td>
-						<td>@x.availableQuantity</td>
-						
-					</tr>
-				}
-			</tbody>
-		</table>
+                    <tr>
+                        <td>@x.itemName</td>
+                        <td>@x.requiredQuantity</td>
+                        <td>@x.availableQuantity</td>
+
+                    </tr>
+                }
+            </tbody>
+        </table>
     </div>
     <div class="button">
-        <button type="submit" onclick="location.href='@Url.Action("AddPurchaseRequisition", "Inventory", new { RequisitionId = Model[0].RequisitionId }, null)'">Create PR</button>
-        <button style="width: 200px" type="submit">Start Production</button>
+        @if (!insufficientMaterial)
+        {
+            <button type="submit">Allocate</button>
+        }
+        else
+        {
+            
+            <button type="submit" onclick="location.href='@Url.Action("AddPurchaseRequisition", "Inventory", new { RequisitionId = Model[0].RequisitionId }, null)'">Create PR</button>
+        
+        }
 
     </div>
 </div>

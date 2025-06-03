@@ -48,9 +48,9 @@
 							<td>@x.createdAt.ToShortDateString()</td>
 							<td>@x.amount</td>
 							<td>
-								<div class="actions">
+						<div class="table-button">
 
-							<button onclick="location.href='@Url.Action("PurchaseOrderForm", "Purchase", new { vendorId = @x.vendorId }, null)'">Generate Purchase Order</button>
+							<button onclick="location.href='@Url.Action("PurchaseOrderForm", "Purchase", new { vendorId = @x.vendorId,purchaseOrderId = x.purchaseOrderId }, null)'">Generate Purchase Order</button>
 	                        <button type="button" class="convert-btn" data-purchase-id="@x.purchaseOrderId">Convert To Bill</button>
 
 								</div>
@@ -120,7 +120,7 @@
 			})
 			.then(response => {
 				if (response.ok) {
-					alert("Invoice submitted successfully!");
+				
 					closeModal();
 				} else {
 					alert("Error submitting invoice.");

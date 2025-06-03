@@ -2704,7 +2704,7 @@ namespace ERP_Component_DAL.Services
                 SqlCommand cmd = new();
                 cmd.CommandType = System.Data.CommandType.Text;
                 cmd.CommandText = $"Select ve.VendorID, ve.VendorName, ve.VendorCode,po.PurchaseOrderID, po.CreatedAt,po.Description,po.TaxableAmount from Vendors ve " +
-                    $"join PurchaseOrders po ON ve.VendorID = po.VendorId Left Join Requisitions re On po.RequisitionId = re.RequisitionID Where re.RequisitionStatus = 6 ";
+                    $"join PurchaseOrders po ON ve.VendorID = po.VendorId  Where po.OrderStatus = 1";
                 cmd.Connection = connection;
 
 
@@ -2800,6 +2800,37 @@ namespace ERP_Component_DAL.Services
                 throw ex;
             }
         }
+
+
+        public bool ReceiveItemsOfPurchaseOrder(Guid purchaseOrderId)
+        {
+            try
+            {
+                string connectionstring = configuration.GetConnectionString("DefaultConnectionString");
+
+                using (SqlConnection connection = new SqlConnection(connectionstring))
+                {
+                    using (SqlCommand cmd = new SqlCommand("ReceiveItemsOfPurchaseOrder", connection))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@PurchaseOrderID", purchaseOrderId);
+
+                        connection.Open();
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+
+
+
 
     }
 

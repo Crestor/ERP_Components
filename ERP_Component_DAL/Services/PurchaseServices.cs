@@ -1053,13 +1053,14 @@ namespace ERP_Component_DAL.Services
                 }
                 return true;
             }
+            
             catch (Exception ex)
             {
                 throw ex;
             }
         }
 
-        public List<AddPurchaseRequisition> PurchaseOrderItemsList(Guid vendorId)
+        public List<AddPurchaseRequisition> PurchaseOrderItemsList(Guid vendorId, Guid purchaseOrderId)
         {
             try
             {
@@ -1068,8 +1069,10 @@ namespace ERP_Component_DAL.Services
                 connection = new SqlConnection(connectionstring);
                 SqlCommand cmd = new();
                 cmd.CommandType = System.Data.CommandType.Text;
-                cmd.CommandText = $"SELECT  it.ItemName, it.HSN, pu.Quantity, pu.UnitPrice, pu.DiscountRate, pu.CGST,pu.SGST, pu.IGST, pu.TotalPrice, pu.TaxableAmount,  (pu.TaxableAmount * pu.IGST / 100.0) AS IGSTAmount,(pu.TaxableAmount * pu.CGST / 100.0) AS CGSTAmount,(pu.TaxableAmount * pu.SGST / 100.0) AS SGSTAmount" +
-                    $" FROM Items it JOIN  PurchaseItems pu ON it.ItemId = pu.ItemID Left Join PurchaseOrders po On pu.PurchaseOrderID = po.PurchaseOrderID  Where po.VendorId = '{vendorId}' ";
+                cmd.CommandText = $" SELECT  it.ItemName,it.UnitOfMeasure, it.HSN, pu.Quantity, pu.UnitPrice, pu.DiscountRate, pu.CGST,pu.SGST, pu.IGST, pu.TotalPrice, pu.TaxableAmount," +
+                                  $" (pu.TaxableAmount * pu.IGST / 100.0) AS IGSTAmount, (pu.TaxableAmount * pu.CGST / 100.0) AS CGSTAmount, (pu.TaxableAmount * pu.SGST / 100.0) AS SGSTAmount" +
+                                  $" FROM Items it JOIN  PurchaseItems pu ON it.ItemId = pu.ItemID Left Join PurchaseOrders po On pu.PurchaseOrderID = po.PurchaseOrderID Where po.VendorId = '{vendorId}'" +
+                                  $" AND po.PurchaseOrderID = '{purchaseOrderId}' AND po.OrderStatus = 2 ";
                 cmd.Connection = connection;
 
 
@@ -1085,6 +1088,7 @@ namespace ERP_Component_DAL.Services
                         TotalAmount = reader["TotalPrice"] != DBNull.Value ? Convert.ToDecimal(reader["TotalPrice"]) : 0m,
                         unitPrice = reader["UnitPrice"] != DBNull.Value ? Convert.ToDecimal(reader["UnitPrice"]) : 0m,
                         hsn = reader["HSN"] != DBNull.Value ? (string)reader["HSN"] : string.Empty,
+                        unitofmeasure = reader["UnitOfMeasure"] != DBNull.Value ? (string)reader["UnitOfMeasure"] : string.Empty,
                         taxableValue = reader["TaxableAmount"] != DBNull.Value ? Convert.ToDecimal(reader["TaxableAmount"]) : 0m,
                         cgstRate = reader["CGST"] != DBNull.Value ? Convert.ToDecimal(reader["CGST"]) : 0m,
                         cgstAmount = reader["CGSTAmount"] != DBNull.Value ? Convert.ToDecimal(reader["CGSTAmount"]) : 0m,
@@ -1094,7 +1098,7 @@ namespace ERP_Component_DAL.Services
                         igstAmount = reader["IGSTAmount"] != DBNull.Value ? Convert.ToDecimal(reader["IGSTAmount"]) : 0m,
                         NetAmount = reader["TaxableAmount"] != DBNull.Value ? Convert.ToDecimal(reader["TaxableAmount"]) : 0m,
                         discount = reader["DiscountRate"] != DBNull.Value ? Convert.ToDecimal(reader["DiscountRate"]) : 0m,
-
+                        quantity = reader["Quantity"] != DBNull.Value ? (int)reader["Quantity"] : 0,
 
                     });
                 }
@@ -1220,7 +1224,7 @@ namespace ERP_Component_DAL.Services
                 SqlCommand cmd = new();
                 cmd.CommandType = System.Data.CommandType.Text;
                 cmd.CommandText = @"Select ve.VendorID, ve.VendorName, ve.VendorCode,po.PurchaseOrderID, po.CreatedAt,po.Description,po.TaxableAmount from Vendors ve 
-                    join PurchaseOrders po ON ve.VendorID = po.VendorId Left Join Requisitions re On po.RequisitionId = re.RequisitionID Where re.RequisitionStatus = 6 ";
+                    join PurchaseOrders po ON ve.VendorID = po.VendorId  Where po.OrderStatus = 2 ";
                 cmd.Connection = connection;
 
 
