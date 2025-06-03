@@ -25,9 +25,13 @@
        </div>
    
   </div>
-   
-    <h2>Item Details</h2>
-    <div class="table">
+
+
+
+    <div class="form-section" style="padding:20px 20px 50px 20px">
+        <h3>Item Details</h3>
+
+    <div class="table" style="width:98%; margin:auto">
     <div id="orderDetailsForm">
         <table id="orderTable">
             <thead>
@@ -121,18 +125,25 @@
                         <input type="text" id="ItemId" name="ItemId" hidden />
 
     </div>
-     
+        <button type="submit" id="addItem" class="button" style="background-color:#138496;color: white; display:flex;float:right;margin-top:10px;margin-right:10px">
+
+            Add item
+        </button>
+
+    </div>
 
   </form>
-<div style="text-align: center; margin-top: 15px; display:flex;justify-content:end; margin-right: 29px;padding-bottom: 8px;">
-    <button type="submit" id="addItem" class="button" style="background-color:#138496;color: white;margin-right: 9px;">
 
-        Add item
-    </button>
+
+<div style="text-align: center; margin-top: 15px; display:flex;justify-content:end; margin-right: 29px;padding-bottom: 8px;">
+
 </div>
 
-   <div class="table">   
-   <table >   
+
+<div class="form-section" style="padding:20px 20px 50px 20px">
+    <h3>Added Items</h3>
+    <div class="table" style="width:98%; margin:auto">
+        <table >   
        <thead>   
            <tr>  
                   <th>S.No</th>  
@@ -154,6 +165,7 @@
        </tbody>   
    </table>   
    </div>   
+   </div>
 <form method="post" asp-action="QuotationFinal" asp-controller="Sales">
 
 
@@ -164,6 +176,7 @@
     @* <h2>Summary</h2> *@
     
     <div class="form-section">
+        <h3>Terms & Conditions</h3>
          <div class="form-row">
             <label for="DeliveryTerms"> Delivery Terms:</label>
             <input list="deliveryTerms" name="DeliveryTerms" value="" />
@@ -206,7 +219,7 @@
 
     <div style="text-align: center; margin-top: 30px;">
         <button type="submit" class="button" style="background-color:#138496; color:white;    margin-left: 79%;">
-            submit Quotation
+            Submit Quotation
         </button>
     </div>
 </form>

@@ -96,8 +96,9 @@
                         @*   <img src="~/images/th.jpeg" alt="owner" class="img-circle elevation-2" alt="User Image" /> *@
 
                     </div>
-                    <div class="info">
-                        <a href="/Inventory/Dashboard" class="d-block" style="text-decoration:none"></a>
+                    <div class="info" style="font-size:20px; color:white">
+                        @Role Department
+                       @*  <a href="/Inventory/Dashboard" class="d-block" style="text-decoration:none"></a> *@
                     </div>
                 </div>
 
@@ -112,7 +113,7 @@
 
 
                         @* <-------------------------------------Store-----------------------------------------></> *@
-                        @if (Role == "store")
+                        @if (Role == "Store")
                         {
                             <li class="nav-item">
                                 <a href="/Inventory/Dashboard" class="nav-link">
@@ -150,11 +151,7 @@
                                 </a>
 
                             </li>
-                            <li class="nav-item">
-                                <a href="@Url.Action("AddPurchaseRequisition", "Purchase")" class="nav-link">
-                                    <i class="fas fa-file-alt me-2"></i><p> Add Purchase Requisition</p>
-                                </a>
-                            </li>
+                    
 
                             <!-- Products -->
                             <li class="nav-item">
@@ -273,6 +270,11 @@
                                 </a>
                                 <ul class="nav nav-treeview">
                                     <li class="nav-item">
+                                        <a href="@Url.Action("AddPurchaseRequisition", "Purchase")" class="list-group-item list-group-item-action ps-5">
+                                            <i class="fas fa-file-alt me-2"></i> Add Purchase Requisition
+                                        </a>
+                                    </li>
+                                   @*  <li class="nav-item">
                                         <a asp-controller="Purchase" asp-action="materialRequisition" class="list-group-item list-group-item-action ps-5">
                                             <i class="fas fa-receipt me-2"></i> Material Requisition
                                         </a>
@@ -281,7 +283,7 @@
                                         <a asp-controller="Purchase" asp-action="AddPurchaseReq" class="list-group-item list-group-item-action ps-5">
                                             <i class="fas fa-receipt me-2"></i> Purchase Requisition
                                         </a>
-                                    </li>
+                                    </li> *@
                                     <li class="nav-item">
                                         <a asp-controller="Purchase" asp-action="ViewRequisition" class="list-group-item list-group-item-action ps-5">
                                             <i class="fas fa-eye me-2"></i> View Requisition
@@ -598,12 +600,13 @@
                         else if (Role == "Sales")
                         {
 
+
                             <!-- Sales -->
                             <li class="nav-item">
-                                <a href="#" class="nav-link">
+                                <a href="@Url.Action("Dashboard", "Sales")" class="nav-link">
                                     <i class="fas fa-shopping-cart me-2"></i>
                                     <p>
-                                        Sales
+                                        Dashboard
                                     </p>
                                 </a>
                             </li>
@@ -630,7 +633,7 @@
                                 </a>
                                 <ul class="nav nav-treeview ps-4">
                                     <li class="nav-item"><a href="@Url.Action("AddQuotation", "Sales")" class="nav-link"><i class="fas fa-plus me-2"></i> Create Quotation</a></li>
-                                    <li class="nav-item"><a href="@Url.Action("ManageQuotation", "Sales")" class="nav-link"><i class="fas fa-list me-2"></i> Quotation List</a></li>
+                                    <li class="nav-item"><a href="@Url.Action("ManageQuotation", "Sales")" class="nav-link"><i class="fas fa-list me-2"></i>View Quotation</a></li>
                                 </ul>
                             </li>
 
@@ -650,7 +653,7 @@
                                 </a>
                                 <ul class="nav nav-treeview ps-4">
                                     <li class="nav-item"><a href="@Url.Action("ProformaInvoice", "Sales")" class="nav-link"><i class="fas fa-plus me-2"></i> Create Proforma Invoice</a></li>
-                                    <li class="nav-item"><a href="@Url.Action("ManageProformaInvoice", "Sales")" class="nav-link"><i class="fas fa-list me-2"></i> Proforma Invoice List</a></li>
+                                    <li class="nav-item"><a href="@Url.Action("ManageProformaInvoice", "Sales")" class="nav-link"><i class="fas fa-list me-2"></i>View Proforma Invoice </a></li>
                                 </ul>
                             </li>
 
@@ -662,19 +665,27 @@
                                 </a>
                                 <ul class="nav nav-treeview ps-4">
                                     <li class="nav-item"><a href="@Url.Action("CreditNote", "Sales")" class="nav-link"><i class="fas fa-plus me-2"></i> Create Credit Note</a></li>
-                                    <li class="nav-item"><a href="@Url.Action("ManageCreditNote", "Sales")" class="nav-link"><i class="fas fa-list me-2"></i> Credit Note List</a></li>
+                                    <li class="nav-item"><a href="@Url.Action("ManageCreditNote", "Sales")" class="nav-link"><i class="fas fa-list me-2"></i> View Credit Note </a></li>
                                     <li class="nav-item"><a href="@Url.Action("ReturnNote", "Sales")" class="nav-link"><i class="fas fa-plus me-2"></i> Create Return Note</a></li>
-                                    <li class="nav-item"><a href="@Url.Action("ManageReturnNote", "Sales")" class="nav-link"><i class="fas fa-list me-2"></i> Return Note List</a></li>
+                                    @* <li class="nav-item"><a href="@Url.Action("ManageReturnNote", "Sales")" class="nav-link"><i class="fas fa-list me-2"></i>View Return Note </a></li> *@
                                 </ul>
                             </li>
 
                             <!-- Delivery Challan (Single link) -->
                             <li class="nav-item">
-                                <a href="@Url.Action("ManageDeliveryChallan", "Sales")" class="nav-link">
+                                <a href="#" class="nav-link">
                                     <i class="fas fa-truck me-2"></i>
-                                    <p>Delivery Challan</p>
+                                    <p>Delivery Challan <i class="fas fa-angle-left right"></i></p>
                                 </a>
+                                <ul class="nav nav-treeview ps-4">
+                                    <li class="nav-item"><a href="@Url.Action("DeliveryChallan", "Sales")" class="nav-link"><i class="fas fa-plus me-2"></i> Create Delivery Challan</a></li>
+                                    <li class="nav-item"><a href="@Url.Action("ManageDeliveryChallan", "Sales")" class="nav-link"><i class="fas fa-list me-2"></i> View Delivery Challan </a></li>
+                                </ul>
                             </li>
+
+
+
+
 
                             <!-- Customer History (Single link) -->
                             <li class="nav-item">
@@ -684,14 +695,13 @@
                                 </a>
                             </li>
 
-                            <!-- Customer Bill (Single link) -->
+
                             <li class="nav-item">
-                                <a href="@Url.Action("CustomerBill", "Sales")" class="nav-link">
+                                <a href="@Url.Action("ViewInventory", "Sales")" class="nav-link">
                                     <i class="fas fa-file-invoice-dollar me-2"></i>
-                                    <p>Customer Bill</p>
+                                    <p>ViewInventory </p>
                                 </a>
                             </li>
-
                             <!-- Sales Forecasting (Single link) -->
                             <li class="nav-item">
                                 <a href="@Url.Action("Salesforecasting", "Sales")" class="nav-link">
@@ -699,13 +709,6 @@
                                     <p>Sales Forecasting</p>
                                 </a>
                             </li>
-                            <li class="nav-item">
-                                <a href="@Url.Action("ViewInventory", "Sales")" class="nav-link">
-                                    <i class="fas fa-chart-pie me-2"></i>
-                                    <p>View Inventory</p>
-                                </a>
-                            </li>
-
 
                         }
                         else if (Role == "Purchase")

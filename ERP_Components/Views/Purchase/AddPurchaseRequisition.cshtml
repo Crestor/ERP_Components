@@ -14,24 +14,38 @@
 <div class="form-section">
 <h3>Create Requisition</h3>
 <form id="purchaseForm">
+
+
+
+		
+
+
+
+
+
 	
 		<div class="form-row">
-			<label for="ItemName">Item Name</label>
-			@* <div class="dropdown-container" style="position: relative; width: 250px;"> *@
-				<div id="customDropdown" class="dropdown-button" onclick="toggleDropdown()" style="border: 1px solid #ccc; padding: 5px;width:38%; cursor: pointer;">
+			<label for="category">Category</label>
+			<div class="dropdown-container" style="position: relative; width:36%">
+				<div id="customDropdown" class="dropdown-button" onclick="toggleDropdown()" style="border: 1px solid #ccc; padding: 5px; width: 100%; cursor: pointer;">
 					Select Item
 				</div>
-				<div id="dropdownList" class="dropdown-list" style="display: none; left: 0; max-height: 200px; overflow-y: auto; border: 1px solid #ccc; background: white; z-index: 1000;">
-					<input type="text" id="searchInput" onkeyup="filterItems()" placeholder="Search..." style="width: 95%; margin: 5px; padding: 5px;">
-					<ul id="itemList" style="list-style: none; padding: 0; margin: 0;" id="productIdDropdown">
+				<div id="dropdownList" class="dropdown-list"
+					 style="position: absolute; top: 100%; left: 0; width: 100%; display: none; max-height: 200px; overflow-y: auto; border: 1px solid #ccc; background: white; z-index: 1000;">
+					<input type="text" id="searchInput" onkeyup="filterItems()" placeholder="Search..."
+						   style="width: 95%; margin: 5px; padding: 5px;">
+					<ul id="itemList" style="list-style: none; padding: 0; margin: 0;">
 						@for (var i = 0; i < Model.Count; i++)
 						{
-							<li onclick="selectItem('@Model[i].itemId', '@Model[i].itemName')" style="padding: 8px; cursor: pointer;">@Model[i].itemName</li>
+							<li onclick="selectItem('@Model[i].itemId', '@Model[i].itemName')"
+								style="padding: 8px; cursor: pointer;">@Model[i].itemName</li>
 						}
 					</ul>
 				</div>
+			</div>
+
 				<input type="hidden" id="selectedItemId" name="itemId" />
-		
+			<input type="hidden" id="hiddenQuotationSeries" name="requisitionSeries" />
 				<label for="category">Category</label>
 				<input id="cat" type="text" name="category">
 
