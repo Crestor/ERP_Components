@@ -150,6 +150,12 @@
                                 </a>
 
                             </li>
+                            <li class="nav-item">
+                                <a href="@Url.Action("AddPurchaseRequisition", "Purchase")" class="nav-link">
+                                    <i class="fas fa-file-alt me-2"></i><p> Add Purchase Requisition</p>
+                                </a>
+                            </li>
+
                             <!-- Products -->
                             <li class="nav-item">
                                 <a href="#" class="nav-link">
@@ -556,6 +562,39 @@
 
 
                         }
+
+
+                        else if (Role == "Manager")
+                        {
+
+
+
+                            <li class="nav-item">
+                                <a href="/Manager/Dashboard" class="nav-link">
+                                    <i class="fas fa-chart-line"></i>
+                                    <p>
+                                        Dashboard
+                                    </p>
+                                </a>
+
+                            </li>
+                            <li class="nav-item">
+                                <a href="/Manager/ApproveVendorQuotation" class="nav-link">
+                                    <i class="fas fa-tachometer-alt me-2"></i>
+                                    <p>
+                                        View Vendor Quotation
+                                    </p>
+                                </a>
+
+                            </li>
+
+
+
+                           
+
+
+                        }
+
                         else if (Role == "Sales")
                         {
 
@@ -678,7 +717,7 @@
                                     <p>Purchase <i class="fas fa-chevron-left right"></i></p>
                                 </a>
                             </li>
-                            @*  <li class="nav-item">
+                        @*      <li class="nav-item">
                                 <a href="@Url.Action("AddPurchaseRequisition", "Purchase")" class="nav-link">
                                     <i class="fas fa-file-alt me-2"></i><p> Add Purchase Requisition</p>
                                 </a>
