@@ -32,7 +32,7 @@ namespace ERP_Component_DAL.Services
                 connection = new SqlConnection(connectionstring);
                 SqlCommand cmd = new();
                 cmd.CommandType = System.Data.CommandType.Text;
-                cmd.CommandText = $"select po.ProductID, it.ItemName,po.ProductionOrderID,po.ProductionStatus, po.Quantity, po.CreatedAt, po.SalesForcastID From ProductionOrder po JOIN Items it ON it.itemId = po.ProductID";
+                cmd.CommandText = $"select po.ProductID, it.ItemName,po.ProductionOrderID,po.ProductionStatus, po.Quantity, po.CreatedAt, po.SalesForcastID From ProductionOrder po JOIN Items it ON it.itemId = po.ProductID WHERE po.ProductionStatus != 5";
                 cmd.Connection = connection;
 
 
@@ -531,14 +531,17 @@ namespace ERP_Component_DAL.Services
 
                 SqlCommand cmd1 = new SqlCommand();
                 cmd1.CommandType = System.Data.CommandType.Text;
-
-                cmd1.CommandText = $"INSERT INTO Requisitions ([Description],[RequisitionType], [RequisitionStatus]) OUTPUT INSERTED.RequisitionID VALUES ('{production.description}', 2, 1)";
+                Guid RequisitionID = Guid.NewGuid();
+                cmd1.CommandText = $"INSERT INTO Requisitions (RequisitionID, [Description],[RequisitionType], [RequisitionStatus]) VALUES ('{RequisitionID}', '{production.description}', 2, 1);" +
+                    $" INSERT INTO ProductionRequisitionMapping(ProductionOrderID, RequisitionID) VALUES ('{production.productionOrderId}','{RequisitionID}');" +
+                    $" UPDATE ProductionOrder SET ProductionStatus = 5 WHERE ProductionOrderID = '{production.productionOrderId}';";
 
 
 
                 cmd1.Connection = connection;
                 connection.Open();
-                Guid RequisitionID = (Guid)cmd1.ExecuteScalar();
+                cmd1.ExecuteScalar();
+                //Guid RequisitionID = (Guid)cmd1.ExecuteScalar();
 
                 return RequisitionID;
             }
