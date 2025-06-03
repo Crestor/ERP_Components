@@ -28,6 +28,14 @@ namespace ERP_Components.Controllers
             return View();
         }
 
+        public IActionResult Setting()
+        {
+            return View();
+        }
+        public IActionResult Support()
+        {
+            return View();
+        }
         public IActionResult Logout()
         {
 
