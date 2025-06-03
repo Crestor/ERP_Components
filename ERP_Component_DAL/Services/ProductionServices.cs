@@ -401,7 +401,7 @@ namespace ERP_Component_DAL.Services
                 connection = new SqlConnection(connectionstring);
                 SqlCommand cmd = new();
                 cmd.CommandType = System.Data.CommandType.Text;
-                cmd.CommandText = cmd.CommandText = $"SELECT m.ItemName AS Material, (pmm.Quantity * po.Quantity) AS RequiredQuantity, m.UnitOFMeasure, i.InStock AS AvailableQuantity FROM ProductionOrder po JOIN ProductMaterialMapping pmm ON po.ProductID = pmm.ProductID JOIN Items m ON pmm.MaterialID = m.ItemId JOIN Inventory i ON pmm.MaterialID = i.ItemId WHERE po.ProductionOrderID = '{productionOrderId}' AND i.InventoryCenter = 3";
+                cmd.CommandText = cmd.CommandText = $"SELECT m.ItemID AS MaterialID, m.ItemName AS Material, (pmm.Quantity * po.Quantity) AS RequiredQuantity, m.UnitOFMeasure, i.InStock AS AvailableQuantity FROM ProductionOrder po JOIN ProductMaterialMapping pmm ON po.ProductID = pmm.ProductID JOIN Items m ON pmm.MaterialID = m.ItemId JOIN Inventory i ON pmm.MaterialID = i.ItemId WHERE po.ProductionOrderID = '{productionOrderId}' AND i.InventoryCenter = 3";
 
                 cmd.Connection = connection;
 
@@ -416,6 +416,7 @@ namespace ERP_Component_DAL.Services
                         unitOfMeasure = reader["UnitOFMeasure"] != DBNull.Value ? (string)reader["UnitOFMeasure"] : string.Empty,
                         quantityRequired = reader["RequiredQuantity"] != DBNull.Value ? Convert.ToDecimal(reader["RequiredQuantity"]) : 0m,
                         availableQuantity = reader["AvailableQuantity"] != DBNull.Value ? (int)reader["AvailableQuantity"] : 0,
+                        materialId = reader["MaterialID"] != DBNull.Value ? (Guid)reader["MaterialID"] : Guid.Empty
 
                     });
                 }
@@ -531,15 +532,14 @@ namespace ERP_Component_DAL.Services
 
                 SqlCommand cmd1 = new SqlCommand();
                 cmd1.CommandType = System.Data.CommandType.Text;
-<<<<<<< HEAD
                 Guid RequisitionID = Guid.NewGuid();
                 cmd1.CommandText = $"INSERT INTO Requisitions (RequisitionID, [Description],[RequisitionType], [RequisitionStatus]) VALUES ('{RequisitionID}', '{production.description}', 2, 1);" +
                     $" INSERT INTO ProductionRequisitionMapping(ProductionOrderID, RequisitionID) VALUES ('{production.productionOrderId}','{RequisitionID}');" +
                     $" UPDATE ProductionOrder SET ProductionStatus = 5 WHERE ProductionOrderID = '{production.productionOrderId}';";
-=======
 
-                cmd1.CommandText = $"INSERT INTO Requisitions ([Description],[RequisitionType], [RequisitionStatus],[RequisitionSeries]) OUTPUT INSERTED.RequisitionID VALUES ('{production.description}', 2, 1,'{production.RequisitionSeries}')";
->>>>>>> 76ab5e2a26ebed1bb9bd8a0de715394434df7298
+
+                //cmd1.CommandText = $"INSERT INTO Requisitions ([Description],[RequisitionType], [RequisitionStatus],[RequisitionSeries]) OUTPUT INSERTED.RequisitionID VALUES ('{production.description}', 2, 1,'{production.RequisitionSeries}')";
+
 
 
 

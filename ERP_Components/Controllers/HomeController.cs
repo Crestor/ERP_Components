@@ -300,7 +300,7 @@ namespace ERP_Components.Controllers
         {
             HttpContext.Session.SetString("UserId", Convert.ToString(user.userId));
             HttpContext.Session.SetString("UserName", user.userName);
-            HttpContext.Session.SetString("Role", "store");
+            HttpContext.Session.SetString("Role", "Store");
             
         }
         private void SetWarehouseSession(User user)
