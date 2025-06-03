@@ -1,1 +1,251 @@
-﻿
+﻿@using ERP_Component_DAL.Models;
+@{
+    ViewBag.Title = "Accounts Dashboard";
+    ViewBag.UserName = "Himalyan Silk Mills";
+}
+<link href="~/css/Product.css" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script asp-append-version="true" src="~/lib/jquery/dist/jquery.min.js"></script>
+
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    .topbar {
+        margin: 10px;
+        background-color: #a14040;
+        color: white;
+        padding: 10px 30px;
+        text-align: center;
+        font-size: 1.5rem;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    .dashboard {
+        padding: 10px;
+    }
+
+    .cards {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        gap: 20px;
+    }
+
+    .card {
+        background-color: white;
+        padding: 20px;
+        border-radius: 12px;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+        text-align: center;
+    }
+
+        .card h3 {
+            margin-bottom: 10px;
+            color: #555;
+        }
+
+        .card p {
+            font-size: 1.6rem;
+            font-weight: bold;
+            color: #138496;
+        }
+
+    .charts {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+        justify-content: space-between;
+    }
+
+    .chart-container {
+        flex: 1 1 600px;
+        background: white;
+        padding: 20px;
+        border-radius: 12px;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+        display: flex;
+        justify-content: center;
+        height: 400px;
+    }
+</style>
+
+<div class="app-content" style="margin-top:80px">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12 col-sm-6 col-md-3">
+                <div class="info-box" onclick="location.href='@Url.Action("RevenueReport", "Accounts")'">
+                    <span class="info-box-icon shadow-sm" style="background-color:#55d5e9 !important">
+                        <i class="fas fa-rupee-sign"></i>
+                    </span>
+                    <div class="info-box-content">
+                        <span class="info-box-text">Total Revenue</span>
+                        <span class="info-box-number">₹ 2,30,00,000</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 col-sm-6 col-md-3">
+                <div class="info-box" onclick="location.href='@Url.Action("ExpenseReport", "Accounts")'">
+                    <span class="info-box-icon shadow-sm" style="background-color:#2BCBE4 !important">
+                        <i class="fas fa-wallet"></i>
+                    </span>
+                    <div class="info-box-content">
+                        <span class="info-box-text">Total Expenses</span>
+                        <span class="info-box-number">₹ 1,80,50,000</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 col-sm-6 col-md-3">
+                <div class="info-box" onclick="location.href='@Url.Action("Receivables", "Accounts")'">
+                    <span class="info-box-icon shadow-sm" style="background-color:#138496 !important">
+                        <i class="bi bi-hourglass-split"></i>
+                    </span>
+                    <div class="info-box-content">
+                        <span class="info-box-text">Outstanding Receivables</span>
+                        <span class="info-box-number">₹ 35,00,000</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 col-sm-6 col-md-3">
+                <div class="info-box" onclick="location.href='@Url.Action("ProfitLoss", "Accounts")'">
+                    <span class="info-box-icon shadow-sm" style="background-color:#19ACC3 !important">
+                        <i class="bi bi-bar-chart-fill"></i>
+                    </span>
+                    <div class="info-box-content">
+                        <span class="info-box-text">Net Profit</span>
+                        <span class="info-box-number">₹ 49,50,000</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<main class="dashboard">
+    <section class="charts">
+        <!-- Row 1 -->
+        <div style="display:flex;justify-content:space-around;width:100%" class="mb-4">
+            <div class="chart-container" style="width:450px !important">
+                <canvas id="IncomeExpenseChart"></canvas>
+            </div>
+            <div class="chart-container" style="width:450px !important">
+                <canvas id="CashFlowChart"></canvas>
+            </div>
+        </div>
+
+        <!-- Row 2 -->
+        <div style="display:flex;justify-content:space-around;width:100%">
+            <div class="chart-container" style="width:450px !important">
+                <canvas id="ExpenseCategoryChart"></canvas>
+            </div>
+            <div class="chart-container" style="width:450px !important">
+                <canvas id="ReceivablesChart"></canvas>
+            </div>
+        </div>
+    </section>
+</main>
+
+
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        // Income vs Expense Chart
+        new Chart(document.getElementById('IncomeExpenseChart').getContext('2d'), {
+            type: 'bar',
+            data: {
+                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+                datasets: [
+                    {
+                        label: 'Revenue (₹)',
+                        data: [3800000, 3600000, 3900000, 4200000, 4100000, 4400000],
+                        backgroundColor: '#138496'
+                    },
+                    {
+                        label: 'Expenses (₹)',
+                        data: [3000000, 3100000, 2900000, 3200000, 3300000, 3250000],
+                        backgroundColor: '#dee2e6'
+                    }
+                ]
+            },
+            options: {
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Monthly Revenue vs Expenses'
+                    }
+                }
+            }
+        });
+
+        // Cash Flow Chart
+        new Chart(document.getElementById('CashFlowChart').getContext('2d'), {
+            type: 'line',
+            data: {
+                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+                datasets: [{
+                    label: 'Net Cash Flow (₹)',
+                    data: [800000, 500000, 1000000, 900000, 800000, 1150000],
+                    borderColor: '#138496',
+                    backgroundColor: '#dee2e6',
+                    borderWidth: 2,
+                    fill: true,
+                    tension: 0.4
+                }]
+            },
+            options: {
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Cash Flow Trend'
+                    }
+                }
+            }
+        });
+
+        // Expense Breakdown Pie Chart
+        new Chart(document.getElementById('ExpenseCategoryChart').getContext('2d'), {
+            type: 'pie',
+            data: {
+                labels: ['Salaries', 'Utilities', 'Rent', 'Logistics', 'Others'],
+                datasets: [{
+                    data: [40, 15, 20, 10, 15],
+                    backgroundColor: ['#55d5e9', '#2BCBE4', '#19ACC3', '#138496', '#dee2e6']
+                }]
+            },
+            options: {
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Expense Breakdown by Category'
+                    }
+                }
+            }
+        });
+
+        // Receivables Aging Chart
+        new Chart(document.getElementById('ReceivablesChart').getContext('2d'), {
+            type: 'bar',
+            data: {
+                labels: ['0-30 days', '31-60 days', '61-90 days', '90+ days'],
+                datasets: [{
+                    label: 'Receivables (₹)',
+                    data: [1500000, 1000000, 600000, 700000],
+                    backgroundColor: '#19ACC3'
+                }]
+            },
+            options: {
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Receivables Aging Report'
+                    }
+                }
+            }
+        });
+    });
+</script>

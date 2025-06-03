@@ -28,6 +28,14 @@ namespace ERP_Components.Controllers
             return View();
         }
 
+        public IActionResult Setting()
+        {
+            return View();
+        }
+        public IActionResult Support()
+        {
+            return View();
+        }
         public IActionResult Logout()
         {
 
@@ -292,7 +300,7 @@ namespace ERP_Components.Controllers
         {
             HttpContext.Session.SetString("UserId", Convert.ToString(user.userId));
             HttpContext.Session.SetString("UserName", user.userName);
-            HttpContext.Session.SetString("Role", "Store");
+            HttpContext.Session.SetString("Role", "store");
             
         }
         private void SetWarehouseSession(User user)

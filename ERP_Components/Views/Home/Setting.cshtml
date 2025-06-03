@@ -1,0 +1,59 @@
+﻿@using ERP_Component_DAL.Models;
+<link rel="stylesheet" href="~/css/Product.css" />
+
+
+@{
+    ViewBag.Title = "Setting";
+    Layout = "~/Views/Shared/_LayoutINV.cshtml";
+}
+
+
+<div class="form-section">
+    <h3>Account Settings</h3>
+    <label for="user">Change Username:</label>
+    <input type="radio" value="user" name="user" onclick="showuser(0)" />
+    <label for="user">Change Password:</label>
+    <input type="radio" value="pass" name="user" onclick="showuser(1)" />
+
+    <div id="usernameSection" style="display:none;">
+        <div class="form-row" style="width:50%">
+            <label for="currentUsername">Current Username:</label>
+            <input type="text" id="currentUsername" name="username" placeholder="Username">
+        </div>
+        <div class="form-row">
+            <label for="newUsername">New Username:</label>
+            <input type="text" id="newUsername" name="newUsername" placeholder="New Username" >
+            <label for="reenterUsername">Re-Enter:</label>
+            <input type="text" id="reenterUsername" name="reenterUsername" placeholder="Re-Enter">
+        </div>
+    </div>
+
+    <div id="passwordSection" style="display:none;width:100%;">
+        <div class="form-row" style="width:50%">
+            <label for="currentPassword">Current Password:</label>
+            <input type="password" id="currentPassword" name="currentPassword" placeholder="Password">
+        </div>
+        <div class="form-row"style="width:100%">
+            <label for="newPassword">New Password:</label>
+            <input type="password" id="newPassword" name="newPassword" placeholder="New Password">
+            <label for="reenterPassword">Re-Enter:</label>
+            <input type="password" id="reenterPassword" name="reenterPassword" placeholder="Re-Enter">
+        </div>
+    </div>
+
+    <div class="button">
+        <button class="submit">Save</button>
+    </div>
+</div>
+
+<script>
+    function showuser(i){
+        if(i === 0){
+            document.getElementById("usernameSection").style.display = "grid";
+            document.getElementById("passwordSection").style.display = "none";
+        } else {
+            document.getElementById("usernameSection").style.display = "none";
+            document.getElementById("passwordSection").style.display = "grid";
+        }
+    }
+</script>

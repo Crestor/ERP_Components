@@ -16,12 +16,13 @@
             <div class="form-row">
                 
                     <label for="gst">GST No </label>
-                    <input type="text" id="gstin" name="GstIn" maxlength="15" pattern="[0-9A-Z]{15}" placeholder="Enter a valid GST" />
+                    <input type="text" id="gstin" name="GstIn" maxlength="15" pattern="[0-9A-Z]{15}" placeholder="Enter a GST Number" />
+                      <input id="vendorCode"  type="hidden"/>
                     <div id="gstError" class="error-message"></div>
                
                 
                     <label for="pan">PAN No</label>
-                    <input type="text" id="panno" name="PAN" maxlength="10" pattern="[A-Z]{5}[0-9]{4}[A-Z]{1}" placeholder="Enter a valid PAN (e.g., ABCDE1234F)" />
+                    <input type="text" id="panno" name="PAN" maxlength="10" pattern="[A-Z]{5}[0-9]{4}[A-Z]{1}" placeholder="Enter PAN Number (e.g., ABCDE1234F)" />
                     <div id="panError" class="error-message"></div>
               
             </div>
@@ -29,14 +30,14 @@
                     <label for="CustomerName">Customer Name<span class="required">*</span></label>
                     <input type="text" id="CustomerName" name="CustomerName" placeholder="Enter Customer Name" required>
                     <label for="email">Email </label>
-                    <input type="email" id="Email" name="Email" placeholder="Enter a Email" />
+                    <input type="email" id="Email" name="Email" placeholder="Enter Email ID" />
               </div>
                 <div class="form-row">
                     <label for="ContactNo">Contact No </label>
-                    <input type="text" id="Contact" name="ContactNo" placeholder="Enter a ContactNo" />
+                    <input type="text" id="Contact" name="ContactNo" placeholder="Enter Contact Number" />
 
                     <label for="AlternteContactNo">Alternate Contact No </label>
-                    <input type="text" id="Contact" name="alterContactNo" placeholder="Enter a AlternateContactNo" />
+                    <input type="text" id="Contact" name="alterContactNo" placeholder="Enter Alternate Contact Number" />
 
                 </div>
            
@@ -44,7 +45,7 @@
       <div class="form-section">
         <h3>Opening Balance</h3>
             <div class="form-row">
-                    <label for="date">Date(As On)<span class="required">*</span></label>
+                    <label for="date">As On Date<span class="required">*</span></label>
                     <input type="date" id="date" name="OpeningDate" required>
                     <label for="Balance">Balance</label>
                     <input type="text" id="Balance" name="Balance">
@@ -153,41 +154,45 @@
      <div class="form-section">
         <h3>Upload Document(Optional)</h3>
             <div class="form-row">
-                <div class="field">
+             @*    <div class="field"> *@
                     <label for="GstCertificate">Upload  Gst Certificate</label>
                     <input name="GstCertificate" type="file" placeholder="Enter a file" />
-                </div>
-                <div class="field">
+        @*         </div>
+                <div class="field"> *@
                     <label for="PanCard">Upload  Pan Card</label>
                     <input name="PanCard" type="file" placeholder="Enter a file" />
-                </div>
-
-                <div class="field">
+            @*     </div> *@
+            </div>
+            <div class="form-row" style="width:50%">
+            @*     <div class="field"> *@
                     <label for="Other">Other</label>
                     <input type='file' placeholder="Enter a file" />
-                </div>
+            @*     </div> *@
               </div>
                 <div class="form-row">
-                    <div class="field">
+               @*      <div class="field"> *@
                         <label for="CustomerName">Customer Name<span class="required">*</span></label>
                         <input type="text" id="CustomerName" name="ContactName" placeholder="Enter Customer Name" required>
-                    </div>
-                    <div class="field">
-                        <label for="CustomerName">Customer Name<span class="required">*</span></label>
-                        <input type="text" id="CustomerName" name="CustomerIndustry" placeholder="Enter Customer Name" required>
-                    </div>
-                    <div class="field">
-                        <label for="CustomerName">Customer Name<span class="required">*</span></label>
-                        <input type="text" id="CustomerName" name="CustomerCode" placeholder="Enter Customer Name" required>
-                    </div>
+              @*       </div>
+                    <div class="field"> *@
+                        <label for="CustomerName">Industry<span class="required">*</span></label>
+                        <input type="text" id="CustomerName" name="CustomerIndustry" placeholder="Enter Industry type" required>
+                 @*    </div>
+                    <div class="field"> *@
+
+            </div>
+            <div class="form-row" style="width:50%">
+                        <label for="CustomerName">Customer Code<span class="required">*</span></label>
+                        <input type="text" id="CustomerName" name="CustomerCode" placeholder="Enter Customer Code" required>
+               @*      </div> *@
                 </div>
             </div>
             <div class="form-section">
             <h3>Additional Remark</h3>
                 <div class="form-row">
-                    <div class="field">
+               @*      <div class="field"> *@
                         <textarea></textarea>
-                    </div>
+                  @*   </div> *@
                 </div>
             </div>
         <div class="button-container" style="padding-right: 30px;float: right; padding-bottom:13px">
@@ -404,13 +409,14 @@
         }
     });
 
-       document.getElementById('panno').addEventListener('input', function () {
+    document.getElementById('panno').addEventListener('input', function () {
 
         function limitLength(input, maxLength) {
-        if (input.value.length > maxLength) {
-            input.value = input.value.slice(0, maxLength);
+            if (input.value.length > maxLength) {
+                input.value = input.value.slice(0, maxLength);
+            }
         }
-    }
+    });
 </script>
 <script>
     document.getElementById("vendorCode").addEventListener("change", function () {

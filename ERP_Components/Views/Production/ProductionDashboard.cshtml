@@ -1,20 +1,19 @@
 ﻿@using ERP_Component_DAL.Models;
-<link href="~/css/Product.css" rel="stylesheet" />
-
 @{
-    ViewBag.Title = "Dashboard";
-    ViewBag.UserName = "Himalyan Goats";
-
+    ViewBag.Title = "Silk Inventory Dashboard";
+    ViewBag.UserName = "Himalyan Silk Mills";
 }
+<link href="~/css/Product.css" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script asp-append-version="true" src="~/lib/jquery/dist/jquery.min.js"></script>
+
 <style>
     * {
         margin: 0;
         padding: 0;
         box-sizing: border-box;
     }
-
-    /* body { */
-
 
     .topbar {
         margin: 10px;
@@ -52,7 +51,7 @@
         .card p {
             font-size: 1.6rem;
             font-weight: bold;
-            color: #349769;
+            color: #138496;
         }
 
     .charts {
@@ -63,100 +62,70 @@
     }
 
     .chart-container {
-        flex: 1 1 450px;
+        flex: 1 1 600px;
         background: white;
         padding: 20px;
         border-radius: 12px;
         box-shadow: 0 4px 8px rgba(0,0,0,0.05);
     }
-
 </style>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
-
 
 <div class="app-content" style="margin-top:80px">
-    <!--begin::Container-->
     <div class="container-fluid">
-        <!-- Info boxes -->
         <div class="row">
             <div class="col-12 col-sm-6 col-md-3">
                 <div class="info-box" onclick="location.href='@Url.Action("InventoryReport", "Inventory")'">
-                    <span class="info-box-icon text-bg-primary shadow-sm">
+                    <span class="info-box-icon shadow-sm" style="background-color:#55d5e9 !important">
                         <i class="fas fa-boxes"></i>
                     </span>
                     <div class="info-box-content">
-                        <span class="info-box-text">Total Active Items</span>
-                        <span class="info-box-number">
-                            <strong> 548</strong>
-
-                        </span>
+                        <span class="info-box-text">Total Silk Yarn Stock</span>
+                        <span class="info-box-number"><strong>12,450 kg</strong></span>
                     </div>
-                    <!-- /.info-box-content -->
                 </div>
-                <!-- /.info-box -->
             </div>
-            <!-- /.col -->
+
             <div class="col-12 col-sm-6 col-md-3">
                 <div class="info-box" onclick="location.href='@Url.Action("StockLedger", "Inventory")'">
-                    <span class="info-box-icon text-bg-danger shadow-sm">
+                    <span class="info-box-icon shadow-sm" style="background-color:#2BCBE4 !important">
                         <i class="fas fa-file-invoice"></i>
-
                     </span>
                     <div class="info-box-content">
-                        <span class="info-box-text">Total Stock Value</span>
-                        <span class="info-box-number">
-                            <strong>₹</strong>8,68,350
-                        </span>
+                        <span class="info-box-text">Total Inventory Value</span>
+                        <span class="info-box-number"><strong>₹</strong>1,56,20,000</span>
                     </div>
-                    <!-- /.info-box-content -->
                 </div>
-                <!-- /.info-box -->
             </div>
-            <!-- /.col -->
-            <!-- fix for small devices only -->
-            <!-- <div class="clearfix hidden-md-up"></div> -->
-            <!-- /.col -->
+
             <div class="col-12 col-sm-6 col-md-3">
                 <div class="info-box" onclick="location.href='@Url.Action("ReorderReport", "Inventory")'">
-                    <span class="info-box-icon text-bg-warning shadow-sm">
+                    <span class="info-box-icon shadow-sm" style="background-color:#138496 !important">
                         <i class="bi bi-people-fill"></i>
                     </span>
                     <div class="info-box-content">
-                        <span class="info-box-text">Stock Below Minimum Level</span>
-                        <span class="info-box-number">35</span>
+                        <span class="info-box-text">Low Yarn Stock Items</span>
+                        <span class="info-box-number">18</span>
                     </div>
-                    <!-- /.info-box-content -->
                 </div>
-                <!-- /.info-box -->
             </div>
-            <!-- /.col -->
+
             <div class="col-12 col-sm-6 col-md-3">
                 <div class="info-box" onclick="location.href='@Url.Action("ExpiryReport", "Inventory")'">
-                    <span class="info-box-icon text-bg-success shadow-sm">
+                    <span class="info-box-icon shadow-sm" style="background-color:#19ACC3 !important">
                         <i class="bi bi-cart-fill"></i>
                     </span>
                     <div class="info-box-content">
-                        <span class="info-box-text">Expired Stock Value </span>
-                        <span class="info-box-number">  <strong>₹</strong>8,68,350</span>
-
+                        <span class="info-box-text">Expired Dye Lots</span>
+                        <span class="info-box-number"><strong>₹</strong>2,75,000</span>
                     </div>
-                    <!-- /.info-box-content -->
                 </div>
-                <!-- /.info-box -->
             </div>
         </div>
-
     </div>
 </div>
 
-
-
-
 <main class="dashboard">
-
-
     <section class="charts">
-
         <div class="chart-container" style="display:flex;justify-content:center; width:430px;height:400px">
             <canvas id="InventoryLevelsChart"></canvas>
         </div>
@@ -164,348 +133,118 @@
         <div class="chart-container" style="display:flex;justify-content:center; width:430px;height:400px">
             <canvas id="StockInOutChart"></canvas>
         </div>
+
         <div class="chart-container" style="display:flex;justify-content:center; width:430px;height:400px">
             <canvas id="StockCategoryChart"></canvas>
         </div>
+
         <div class="chart-container" style="display:flex;justify-content:center; width:430px;height:400px">
             <canvas id="TurnoverRatioChart"></canvas>
         </div>
     </section>
-
-    <section>
-
-        <div class="row" style="margin-top:20px">
-            <div class="col-md-6">
-                <div class="card">
-                    <div class="card-header border-transparent">
-                        <h3 class="card-title">Low Stock Items</h3>
-
-                        <div class="card-tools">
-                            <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                                <i class="fas fa-minus"></i>
-                            </button>
-
-                        </div>
-                    </div>
-                    <!-- /.card-header -->
-                    <div class="card-body p-0">
-                        <div class="table-responsive">
-                            <table class="table m-0">
-                                <thead>
-                                    <tr>
-                                        <th>Item  Name</th>
-                                        <th>Current Qty</th>
-                                        <th>Min Level</th>
-                                        <th>Last Inward Date</th>
-                                        <th>Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>Glass Cleaner</td>
-                                        <td> 15</td>
-                                        <td><span class="badge badge-danger">30</span></td>
-                                        <td> 01/04/2025 </td>
-                                        <td> Reorder  </td>
-                                    </tr>
-                                    <tr>
-                                        <td>Notebook</td>
-                                        <td> 11</td>
-                                        <td><span class="badge badge-danger">15</span></td>
-                                        <td> 11/04/2025 </td>
-                                        <td> Reorder  </td>
-                                    </tr>
-                                    <tr>
-                                        <td> Ball Pens</td>
-                                        <td> 25</td>
-                                        <td><span class="badge badge-danger">50</span></td>
-                                        <td> 21/04/2025 </td>
-                                        <td> Reorder  </td>
-                                    </tr>
-                                    <tr>
-                                        <td>Printer Caartridge</td>
-                                        <td> 5</td>
-                                        <td><span class="badge badge-danger">10</span></td>
-                                        <td> 01/03/2025 </td>
-                                        <td> Reorder  </td>
-                                    </tr>
-                                    <tr>
-                                        <td>A4 Sheet Paper</td>
-                                        <td> 3</td>
-                                        <td><span class="badge badge-danger">10</span></td>
-                                        <td> 10/04/2025 </td>
-                                        <td> Reorder  </td>
-                                    </tr>
-                                    @*          <tr>
-                                        <td>Whiteboard Markers</td>
-                                        <td> 5</td>
-                                        <td><span class="badge badge-danger">12</span></td>
-                                        <td> 01/04/2025 </td>
-                                        <td> Reorder  </td>
-                            </tr>
-                            <tr>
-                                        <td>Power Cords</td>
-                                        <td> 10</td>
-                                        <td><span class="badge badge-danger">20</span></td>
-                                        <td> 01/01/2025 </td>
-                                        <td> Reorder  </td>
-                            </tr> *@
-                                </tbody>
-                            </table>
-                        </div>
-                        <!-- /.table-responsive -->
-                    </div>
-                    <!-- /.card-body -->
-                    @*           <div class="card-footer clearfix">
-                <a href="javascript:void(0)" class="btn btn-sm btn-info float-left">Place New Order</a>
-                <a href="javascript:void(0)" class="btn btn-sm btn-secondary float-right">View All Orders</a>
-            </div> *@
-                    <!-- /.card-footer -->
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="card">
-                    <div class="card-header border-transparent">
-                        <h3 class="card-title">Top 5 Fast Moving Items</h3>
-
-                        <div class="card-tools">
-                            <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                                <i class="fas fa-minus"></i>
-                            </button>
-
-                        </div>
-                    </div>
-                    <!-- /.card-header -->
-                    <div class="card-body p-0">
-                        <div class="table-responsive">
-                            <table class="table m-0">
-                                <thead>
-                                    <tr>
-                                        <th>Rank</th>
-                                        <th>Item</th>
-                                        <th>Total times Issued</th>
-
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td> 1</td>
-                                        <td> Glass Cleaner</td>
-                                        <td> 200 </td>
-
-                                    </tr>
-                                    <tr>
-                                        <td> 2</td>
-                                        <td> Ball Pens</td>
-                                        <td> 176 </td>
-                                    </tr>
-                                    <tr>
-                                        <td> 3</td>
-                                        <td> Notebook</td>
-                                        <td> 134 </td>
-                                    </tr>
-                                    <tr>
-                                        <td> 4</td>
-                                        <td> Files</td>
-                                        <td> 105 </td>
-                                    </tr>
-                                    <tr>
-                                        <td> 5</td>
-                                        <td> Binders</td>
-                                        <td> 95 </td>
-                                    </tr>
-
-
-                                </tbody>
-                            </table>
-                        </div>
-                        <!-- /.table-responsive -->
-                    </div>
-
-                </div>
-            </div>
-        </div>
-
-
-
-        <div class="col-md-6">
-            <div class="card">
-                <div class="card-header border-transparent">
-                    <h3 class="card-title">Recent Activity Log</h3>
-
-                    <div class="card-tools">
-                        <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                            <i class="fas fa-minus"></i>
-                        </button>
-
-                    </div>
-                </div>
-                <!-- /.card-header -->
-                <div class="card-body p-0">
-                    <div class="table-responsive">
-                        <table class="table m-0">
-                            <thead>
-                                <tr>
-                                    <th>S.No</th>
-                                    <th>Date</th>
-                                    <th>Item</th>
-                                    <th>Type</th>
-                                    <th>Quantity</th>
-                                    <th>Perticulars</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                              @*   @for (var i = 0; i < 10; i++)
-                                {
-                                    var v = Model.StocKRecords[i];
-
-                                    <tr data-id="@v.id">
-
-
-
-                                        <td>@(i + 1)</td>
-                                        <td>@v.transcationDate.ToShortDateString()</td>
-                                        <td>@v.ItemName</td>
-                                        <td>@v.Type</td>
-                                        <td>@v.Quantity</td>
-                                        <td>@v.Perticulars</td>
-
-
-
-                                    </tr>
-                                } *@
-                            </tbody>
-                        </table>
-                    </div>
-                    <!-- /.table-responsive -->
-                </div>
-
-            </div>
-        </div>
-        </div>
-    </section>
 </main>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-<script asp-append-version="true" src="~/lib/jquery/dist/jquery.min.js"></script>
 <script>
-
     document.addEventListener("DOMContentLoaded", function () {
-      // 1. Inventory Levels Over Time - Line Chart
-      new Chart(document.getElementById('InventoryLevelsChart').getContext('2d'), {
-        type: 'line',
-        data: {
-          labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
-          datasets: [{
-            label: 'Stocks',
-            data: [1200, 1350, 1280, 1100, 1400, 1500, 50],
-            backgroundColor: '#dee2e6',
-            borderColor: '#198754',
-            borderWidth: 2,
-            fill: true,
-            tension: 0.4
-          }]
-        },
-        options: {
-          responsive: true,
-          plugins: {
-            title: {
-              display: true,
-                          text: 'Stock Consumption Trend'
-            }
-          }
-        }
-      });
-
-      // 2. Stock In vs. Stock Out - Bar Chart
-      new Chart(document.getElementById('StockInOutChart').getContext('2d'), {
-        type: 'bar',
-        data: {
-          labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'],
-          datasets: [
-            {
-              label: 'Stock In',
-              data: [400, 450, 420, 500, 480, 520, 510],
-              backgroundColor: '#198754'
+        // Silk Yarn Usage Trend
+        new Chart(document.getElementById('InventoryLevelsChart').getContext('2d'), {
+            type: 'line',
+            data: {
+                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+                datasets: [{
+                    label: 'Silk Yarn Used (kg)',
+                    data: [1050, 1220, 1175, 1100, 1340, 1450],
+                    backgroundColor: '#dee2e6',
+                    borderColor: '#138496',
+                    borderWidth: 2,
+                    fill: true,
+                    tension: 0.4
+                }]
             },
-            {
-              label: 'Stock Out',
-              data: [380, 430, 410, 470, 460, 490, 500],
-              backgroundColor: '#dee2e6'
+            options: {
+                responsive: true,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Silk Yarn Usage Trend'
+                    }
+                }
             }
-          ]
-        },
-        options: {
-          responsive: true,
-          plugins: {
-            title: {
-              display: true,
-              text: 'Stock In vs. Stock Out'
-            }
-          }
-        }
-      });
+        });
 
-      // 3. Current Stock Distribution by Category - Pie Chart
-      new Chart(document.getElementById('StockCategoryChart').getContext('2d'), {
-        type: 'pie',
-        data: {
-          labels: ['Electronics', 'Furniture', 'Stationery', 'Appliances'],
-          datasets: [{
-            data: [40, 25, 20, 15],
-                      backgroundColor: ['#dc3545', '#0d6efd', '#198754', '#ffc107']
-          }]
-        },
-        options: {
-          responsive: true,
-          plugins: {
-            title: {
-              display: true,
-              text: 'Stock by Category'
+        // Yarn In vs Fabric Out
+        new Chart(document.getElementById('StockInOutChart').getContext('2d'), {
+            type: 'bar',
+            data: {
+                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+                datasets: [
+                    {
+                        label: 'Yarn Purchased (kg)',
+                        data: [1400, 1300, 1450, 1380, 1500, 1480],
+                        backgroundColor: '#138496'
+                    },
+                    {
+                        label: 'Fabric Produced (m)',
+                        data: [1250, 1200, 1280, 1190, 1380, 1400],
+                        backgroundColor: '#dee2e6'
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Yarn In vs. Fabric Out'
+                    }
+                }
             }
-          }
-        }
-      });
+        });
 
-      // 4. Inventory Turnover Ratio - Line Chart
-      new Chart(document.getElementById('TurnoverRatioChart').getContext('2d'), {
-        type: 'line',
-        data: {
-          labels: ['Q1', 'Q2', 'Q3', 'Q4'],
-          datasets: [{
-            label: 'Turnover Ratio',
-            data: [4.2, 4.8, 5.1, 3.5],
-            borderColor: '#198754',
-            borderWidth: 2,
-            fill: false,
-            tension: 0.3
-          }]
-        },
-        options: {
-          responsive: true,
-          plugins: {
-            title: {
-              display: true,
-              text: 'Inventory Turnover Ratio (Quarterly)'
+        // Stock by Category
+        new Chart(document.getElementById('StockCategoryChart').getContext('2d'), {
+            type: 'pie',
+            data: {
+                labels: ['Raw Silk', 'Dyed Yarn', 'Printed Fabric', 'Silk Waste'],
+                datasets: [{
+                    data: [45, 30, 20, 5],
+                    backgroundColor: ['#55d5e9', '#2BCBE4', '#19ACC3', '#138496']
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Stock by Silk Material Category'
+                    }
+                }
             }
-          }
-        }
-      });
+        });
+
+        // Turnover Ratio
+        new Chart(document.getElementById('TurnoverRatioChart').getContext('2d'), {
+            type: 'line',
+            data: {
+                labels: ['Q1', 'Q2', 'Q3', 'Q4'],
+                datasets: [{
+                    label: 'Turnover Ratio',
+                    data: [3.8, 4.2, 4.6, 4.0],
+                    borderColor: '#138496',
+                    borderWidth: 2,
+                    fill: false,
+                    tension: 0.3
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Silk Inventory Turnover Ratio (Quarterly)'
+                    }
+                }
+            }
+        });
     });
-</script>
-
-
-<script>
-    // $(document).ready(function ()
-    // {
-    //     // Show the welcome popup after 1 second
-    //     setTimeout(function () {
-    //         $('#WelcomePopup').fadeIn();
-    //     }, 1000);
-
-    //     // Hide the popup when clicked
-    //     $('#WelcomePopup').click(function () {
-    //         $(this).fadeOut();
-    //     });
-    // });
 </script>
