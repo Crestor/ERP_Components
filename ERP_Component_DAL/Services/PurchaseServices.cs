@@ -447,7 +447,7 @@ namespace ERP_Component_DAL.Services
                 SqlCommand cmd = new SqlCommand();
                 cmd.CommandType = System.Data.CommandType.Text;
 
-                cmd.CommandText = $"Insert into PurchaseBills([BillNumber],[PurchaseOrderID],[PaidAmount])values('{vendor.invoiceNumber}','{vendor.purchaseOrderId}','{vendor.amount}')";
+                cmd.CommandText = $"Insert into PurchaseBills([BillNumber],[PurchaseOrderID],[BillDate])values('{vendor.invoiceNumber}','{vendor.purchaseOrderId}','{vendor.createdAt}')";
 
                 cmd.Connection = connection;
 
@@ -1176,7 +1176,7 @@ namespace ERP_Component_DAL.Services
                 connection = new SqlConnection(connectionstring);
                 SqlCommand cmd = new();
                 cmd.CommandType = System.Data.CommandType.Text;
-                cmd.CommandText = $"Select vn.VendorName, vn.VendorCode,ad.AddressLine1,ad.District,ad.State,ad.Country,ad.Pincode,vn.TaxID,pb.BillNumber from Vendors vn Join Address ad On vn.AddressID = ad.AddressID Left Join PurchaseOrders po On vn.vendorId = po.VendorId Left Join PurchaseBills pb On po.PurchaseOrderID = pb.PurchaseOrderID Where pb.PurchaseOrderID = '{purchaseOrderId}'";
+                cmd.CommandText = $"Select vn.VendorName, vn.VendorCode,ad.AddressLine1,ad.District,ad.State,ad.Country,ad.Pincode,vn.TaxID,pb.BillNumber,pb.BillDate from Vendors vn Join Address ad On vn.AddressID = ad.AddressID Left Join PurchaseOrders po On vn.vendorId = po.VendorId Left Join PurchaseBills pb On po.PurchaseOrderID = pb.PurchaseOrderID Where pb.PurchaseOrderID = '{purchaseOrderId}'";
 
 
                 cmd.Connection = connection;
@@ -1195,6 +1195,7 @@ namespace ERP_Component_DAL.Services
                     vendor.Country = reader["Country"] != DBNull.Value ? (string)reader["Country"] : string.Empty;
                     vendor.PostalCode = reader["Pincode"] != DBNull.Value ? (string)reader["Pincode"] : string.Empty;
                     vendor.GstIn = reader["TaxID"] != DBNull.Value ? (string)reader["TaxID"] : string.Empty;
+                    vendor.createdAt = reader["BillDate"] != DBNull.Value ? ((DateTime)reader["BillDate"]).Date : default(DateTime);
 
 
 
@@ -1224,7 +1225,7 @@ namespace ERP_Component_DAL.Services
                 SqlCommand cmd = new();
                 cmd.CommandType = System.Data.CommandType.Text;
                 cmd.CommandText = @"Select ve.VendorID, ve.VendorName, ve.VendorCode,po.PurchaseOrderID, po.CreatedAt,po.Description,po.TaxableAmount from Vendors ve 
-                    join PurchaseOrders po ON ve.VendorID = po.VendorId  Where po.OrderStatus = 2 ";
+                    join PurchaseOrders po ON ve.VendorID = po.VendorId  Where po.OrderStatus = 2 Order By po.CreatedAt desc";
                 cmd.Connection = connection;
 
 
@@ -1275,7 +1276,7 @@ namespace ERP_Component_DAL.Services
                 connection = new SqlConnection(connectionstring);
                 SqlCommand cmd = new();
                 cmd.CommandType = System.Data.CommandType.Text;
-                cmd.CommandText = $"Select ve.VendorID, ve.VendorName, ve.VendorCode,po.PurchaseOrderID,pb.BillNumber,pb.BillDate, pb.PaidAmount from PurchaseBills pb join PurchaseOrders po ON po.PurchaseOrderID= pb.PurchaseOrderID  Left Join Vendors ve On po.VendorId = ve.VendorID where orderstatus = 2";
+                cmd.CommandText = $"Select ve.VendorID, ve.VendorName, ve.VendorCode,po.PurchaseOrderID,pb.BillNumber,pb.BillDate, pb.PaidAmount from PurchaseBills pb join PurchaseOrders po ON po.PurchaseOrderID= pb.PurchaseOrderID  Left Join Vendors ve On po.VendorId = ve.VendorID where orderstatus = 2 Order By pb.BillDate desc";
                 cmd.Connection = connection;
 
 
