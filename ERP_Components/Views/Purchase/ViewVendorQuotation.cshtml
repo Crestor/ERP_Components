@@ -46,7 +46,7 @@
 						<div class="table-button">
 
 							<button onclick="viewDetails('@x.RequisitionId')">View</button>
-							<button onclick="location.href='@Url.Action("UpdateRequisitionStatusToQuotationApproved", "Purchase", new { RequisitionID = @x.RequisitionId }, null)'">Send</button>
+						@* 	<button onclick="location.href='@Url.Action("UpdateRequisitionStatusToQuotationApproved", "Purchase", new { RequisitionID = @x.RequisitionId }, null)'">Send</button> *@
 							@* <button onclick="location.href='@Url.Action("DeleteRequisition", "Home", new { RequisitionId = @x.RequisitionId }, null)'">Reject</button> *@
 
 
@@ -128,7 +128,7 @@
 						<td>${item.vendorName}</td>
 						<td>${item.paymentTerms}</td>
 						<td>${item.deliveryTerms}</td
-						<td>${item.totalAmount}</td>
+							<td>${item.finalAmount}</td>
 					`;
 					tableBody.appendChild(tr);
 				});
