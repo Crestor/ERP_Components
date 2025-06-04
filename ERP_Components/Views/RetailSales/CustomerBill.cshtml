@@ -1,0 +1,173 @@
+﻿@model ERP_Component_DAL.Models.QuotationViewModel
+
+@{
+    ViewBag.Title = "Customer Bill";
+    Layout = "~/Views/Shared/_LayoutINV.cshtml";
+}
+
+<link rel="stylesheet" href="~/css/ProductTwo.css" />
+
+<form method="post" asp-action="" asp-controller="">
+    <div class="form-section">
+        <h3>Basic Details</h3>
+        <div class="form-row">
+            <label>Customer Name:</label>
+            <input type="text" id="customerName" name="customerName" /> 
+            <label>Contact Name:</label>
+            <input type="Number" id="ContactNumber" name="ContactNumber" />
+        </div>
+    </div>
+
+    <div class="table">
+        <table id="orderTable">
+            <thead>
+                <tr>
+                    <th>S.No</th>
+                    <th>Product Name</th>
+                    <th>UOM</th>
+                    <th>Unit Price</th>
+                    <th>Quantity</th>
+                    <th>Discount Rate (%)</th>
+                    <th>Discount Amount</th>
+                    <th>Taxable Amount</th>
+                    <th>CGST (%)</th>
+                    <th>SGST (%)</th>
+                    <th>Total</th>
+                </tr>
+            </thead>
+            <tbody id="tableBody">
+                <tr>
+                    <td>1</td>
+                    <td>
+                        <select class="ItemName" name="ItemName" onchange="SetPriceFromDropdown(event)">
+                            <option selected disabled>Select Product</option>
+                            @foreach (var product in Model.ItemNames)
+                            {
+                                <option value="@product.SellingPrice"
+                                        data-UnitOFMeasure="@product.UnitOFMeasure">
+                                    @product.ItemName
+                                </option>
+                            }
+                        </select>
+                    </td>
+                    <td><input type="text" class="UnitOFMeasure" name="UnitOFMeasure" readonly></td>
+                    <td><input type="number" class="SellingPrice" name="SellingPrice" oninput="calculateRow(this)"></td>
+                    <td><input type="number" class="Quantity" name="Quantity" oninput="calculateRow(this)"></td>
+                    <td><input type="number" class="discountRate" name="discountRate" oninput="calculateRow(this)"></td>
+                    <td><input type="number" class="discountAmount" name="discountAmount" readonly></td>
+                    <td><input type="number" class="taxableAmount" name="taxableAmount" readonly></td>
+                    <td>
+                        <select class="cgst" name="cgst" onchange="calculateRow(this)">
+                            <option value="0">0%</option>
+                            <option value="5">5%</option>
+                            <option value="9">9%</option>
+                            <option value="12">12%</option>
+                            <option value="18">18%</option>
+                            <option value="28">28%</option>
+                        </select>
+                    </td>
+                    <td>
+                        <select class="sgst" name="sgst" onchange="calculateRow(this)">
+                            <option value="0">0%</option>
+                            <option value="5">5%</option>
+                            <option value="9">9%</option>
+                            <option value="12">12%</option>
+                            <option value="18">18%</option>
+                            <option value="28%">28%</option>
+                        </select>
+                    </td>
+                    <td><input type="text" class="total" name="TotalAmount" readonly></td>
+                </tr>
+            </tbody>
+        </table><br />
+
+        <button type="button" class="btn" id="addNewRow" onclick="addRow()">Add Row</button>
+    </div>
+</form>
+
+<div class="form-section">
+    <h3>Amount Details</h3>
+    <div class="form-row">
+        <label>Total Amount: </label>
+        <input type="number" id="grandTotal" readonly />
+        <label>Discount Amount: </label>
+        <input type="number" id="totalDiscountAmount" readonly />
+    </div>
+    <div class="form-row">
+        <label>Taxable Amount: </label>
+        <input type="number" id="totalDiscountPercent" readonly />
+        <label>Gross Total: </label>
+        <input type="text" id="grossTotal" readonly />
+    </div>
+</div>
+
+<script>
+    function SetPriceFromDropdown(event) {
+        const dropdown = event.target;
+        const selectedOption = dropdown.options[dropdown.selectedIndex];
+        const price = selectedOption.value;
+        const uom = selectedOption.getAttribute("data-UnitOFMeasure");
+
+        const row = dropdown.closest('tr');
+        row.querySelector('.SellingPrice').value = price;
+        row.querySelector('.UnitOFMeasure').value = uom;
+
+        calculateRow(row.querySelector('.SellingPrice'));
+    }
+
+    function addRow() {
+        const tableBody = document.getElementById('tableBody');
+        const rowCount = tableBody.rows.length;
+        const newRow = tableBody.rows[0].cloneNode(true);
+
+        newRow.querySelectorAll('input').forEach(input => input.value = '');
+        newRow.querySelectorAll('select').forEach(select => select.selectedIndex = 0);
+        newRow.cells[0].innerText = rowCount + 1;
+
+        tableBody.appendChild(newRow);
+    }
+
+    function calculateRow(input) {
+        const row = input.closest('tr');
+
+        const qty = parseFloat(row.querySelector('.Quantity').value) || 0;
+        const price = parseFloat(row.querySelector('.SellingPrice').value) || 0;
+        const discountRate = parseFloat(row.querySelector('.discountRate').value) || 0;
+        const cgst = parseFloat(row.querySelector('.cgst').value) || 0;
+        const sgst = parseFloat(row.querySelector('.sgst').value) || 0;
+
+        const gross = qty * price;
+        const discountAmount = gross * (discountRate / 100);
+        const taxable = gross - discountAmount;
+        const total = taxable + (taxable * (cgst + sgst) / 100);
+
+        row.querySelector('.discountAmount').value = discountAmount.toFixed(2);
+        row.querySelector('.taxableAmount').value = taxable.toFixed(2);
+        row.querySelector('.total').value = total.toFixed(2);
+
+        calculateSummary();
+    }
+
+    function calculateSummary() {
+        const rows = document.querySelectorAll('#tableBody tr');
+        let totalDiscountAmount = 0, totalGross = 0, taxableAmount = 0, grandTotal = 0;
+
+        rows.forEach(row => {
+            const qty = parseFloat(row.querySelector('.Quantity').value) || 0;
+            const price = parseFloat(row.querySelector('.SellingPrice').value) || 0;
+            const discount = parseFloat(row.querySelector('.discountAmount').value) || 0;
+            const total = parseFloat(row.querySelector('.total').value) || 0;
+
+            totalGross += qty * price;
+            totalDiscountAmount += discount;
+            grandTotal += total;
+        });
+
+        taxableAmount = totalGross - totalDiscountAmount;
+
+        document.getElementById('grandTotal').value = totalGross.toFixed(2);
+        document.getElementById('totalDiscountAmount').value = totalDiscountAmount.toFixed(2);
+        document.getElementById('totalDiscountPercent').value = taxableAmount.toFixed(2);
+        document.getElementById('grossTotal').value = grandTotal.toFixed(2);
+    }
+</script>

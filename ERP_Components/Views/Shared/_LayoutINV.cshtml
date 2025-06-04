@@ -787,6 +787,64 @@
                             </li>
 
                         }
+                        else if (Role == "RetailCustomer")
+                        {
+                            <li class="nav-item">
+                                <a href="/Retailsales/Index" class="nav-link">
+                                    <i class="fas fa-tools "></i>
+
+                                    <p>Dashboard</p>
+
+                                </a>
+
+                            </li>
+                            <li class="nav-item">
+                                <a href="/RetailSales/CustomerBill" class="nav-link">
+                                    <i class="fas fa-headset"></i>
+
+                                    <p>Create Bill</p>
+
+                                </a>
+
+                            </li>
+                            <li class="nav-item">
+                                <a href="/RetailSales/Reports" class="nav-link">
+                                    <i class="fas fa-sign-out-alt"></i>
+
+                                    <p>Reports</p>
+
+                                </a>
+
+                            </li>
+                            <li class="nav-item">
+                                <a href="#" class="nav-link">
+                                    <i class="fas fa-users-cog me-2"></i>
+                                    <p>Customer <i class="fas fa-angle-left right"></i></p>
+                                </a>
+                                <ul class="nav nav-treeview ps-4">
+                                    <li class="nav-item">
+                                        <a href="@Url.Action("AddCustomer", "RetailSales")" class="nav-link">
+                                            <i class="fas fa-user-plus me-2"></i> <p>Add Customer</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="@Url.Action("ViewCustomer", "RetailSales")" class="nav-link">
+                                            <i class="fas fa-list me-2"></i> View Customer
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="@Url.Action("CusstomerLedger", "RetailSales")" class="nav-link">
+                                            <i class="fas fa-book me-2"></i> Customer Ledger
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="@Url.Action("ViewPayment", "RetailSales")" class="nav-link">
+                                            <i class="fas fa-money-bill-wave me-2"></i> See Payment
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                        }
                         <li class="nav-item">
                             <a href="/Home/Setting" class="nav-link">
                                 <i class="fas fa-tools "></i>

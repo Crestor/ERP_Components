@@ -72,7 +72,7 @@ namespace ERP_Component_DAL.Services
                 connection = new SqlConnection(connectionstring);
                 SqlCommand cmd = new();
                 cmd.CommandType = System.Data.CommandType.Text;
-                cmd.CommandText = $"select ItemId, ItemName From Items Where ItemType = 1";
+                cmd.CommandText = $"select ItemId, ItemName From Items Where ItemType = 2";
                 cmd.Connection = connection;
 
 
@@ -1275,7 +1275,7 @@ namespace ERP_Component_DAL.Services
                 connection = new SqlConnection(connectionstring);
                 SqlCommand cmd = new();
                 cmd.CommandType = System.Data.CommandType.Text;
-                cmd.CommandText = $"Select ve.VendorID, ve.VendorName, ve.VendorCode,po.PurchaseOrderID,pb.BillNumber,pb.BillDate, pb.PaidAmount from PurchaseBills pb join PurchaseOrders po ON po.PurchaseOrderID= pb.PurchaseOrderID  Left Join Vendors ve On po.VendorId = ve.VendorID";
+                cmd.CommandText = $"Select ve.VendorID, ve.VendorName, ve.VendorCode,po.PurchaseOrderID,pb.BillNumber,pb.BillDate, pb.PaidAmount from PurchaseBills pb join PurchaseOrders po ON po.PurchaseOrderID= pb.PurchaseOrderID  Left Join Vendors ve On po.VendorId = ve.VendorID where orderstatus = 2";
                 cmd.Connection = connection;
 
 
@@ -1292,7 +1292,6 @@ namespace ERP_Component_DAL.Services
                         vendorCode = reader["VendorCode"] != DBNull.Value ? (string)reader["VendorCode"] : string.Empty,
                         invoiceNumber = reader["BillNumber"] != DBNull.Value ? (string)reader["BillNumber"] : string.Empty,
                         createdAt = reader["BillDate"] != DBNull.Value ? ((DateTime)reader["BillDate"]).Date : default(DateTime),
-
                         amount = reader["PaidAmount"] != DBNull.Value ? Convert.ToDecimal(reader["PaidAmount"]) : 0m,
 
 

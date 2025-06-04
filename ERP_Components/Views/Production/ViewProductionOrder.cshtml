@@ -130,8 +130,13 @@
 
 <script>
     function showSection(sectionId) {
+        localStorage.setItem("selectedSection", sectionId);
         document.querySelectorAll('.vendor-section > div').forEach(el => el.style.display = 'none');
         document.getElementById(sectionId).style.display = 'block';
     }
+    document.addEventListener("DOMContentLoaded", function () {
+        var sectionId = localStorage.getItem("selectedSection") || "pending";
+        showSection(sectionId);
+    });
 </script>
 

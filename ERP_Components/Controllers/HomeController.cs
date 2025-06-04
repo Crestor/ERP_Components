@@ -97,6 +97,10 @@ namespace ERP_Components.Controllers
                 {
                     return HandleProductionLogin(users);
                 }
+                else if (x.role == 11 && x.userName == users.userName && x.password == users.password)
+                {
+                    return HandleRetailCustomerLogin(users);
+                }
             }
             if (users.userName != null)
             {
@@ -125,6 +129,26 @@ namespace ERP_Components.Controllers
             {
                 SetAdminSession(user);
                 return Json(new { status = true, url = Url.Action("CheckerDashboard", "Dashboard") });
+            }
+
+            return Json(new { status = false, message = "Invalid credentials or you are not a registered Admin, Sign Up to use this service" });
+        }
+
+
+        public JsonResult HandleRetailCustomerLogin(User users)
+        {
+
+            if (string.IsNullOrEmpty(users.userName))
+            {
+                return Json(new { status = false, message = "User does not exist, please enter a valid username" });
+            }
+            //SuperAdmin 
+            var user = userServices.HandleUsers(users);
+
+            if (user != null && user.password == user.password && user.role == 11)
+            {
+                SetRetailCustomerSession(user);
+                return Json(new { status = true, url = Url.Action("Index", "RetailSales") });
             }
 
             return Json(new { status = false, message = "Invalid credentials or you are not a registered Admin, Sign Up to use this service" });
@@ -234,7 +258,7 @@ namespace ERP_Components.Controllers
             if (user != null && user.password == user.password && user.role == 6)
             {
                 SetSalesSession(user);
-                return Json(new { status = true, url = Url.Action("Dashboard", "Inventory") });
+                return Json(new { status = true, url = Url.Action("Dashboard", "Sales") });
             }
 
             return Json(new { status = false, message = "Invalid credentials or you are not a registered Admin, Sign Up to use this service" });
@@ -281,6 +305,13 @@ namespace ERP_Components.Controllers
             HttpContext.Session.SetString("UserName", user.userName);
             HttpContext.Session.SetString("Role", "Admin");
             
+        }
+
+        private void SetRetailCustomerSession(User user)
+        {
+            HttpContext.Session.SetString("UserId", Convert.ToString(user.userId));
+            HttpContext.Session.SetString("UserName", user.userName);
+            HttpContext.Session.SetString("Role", "RetailCustomer");
         }
         private void SetManagerSession(User user)
         {
