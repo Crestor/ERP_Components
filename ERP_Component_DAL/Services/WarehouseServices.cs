@@ -329,7 +329,7 @@ namespace ERP_Component_DAL.Services
                 connection = new SqlConnection(connectionstring);
                 SqlCommand cmd = new();
                 cmd.CommandType = System.Data.CommandType.Text;
-                cmd.CommandText = $"Select RequisitionID, RequisitionSeries,Description,CreatedAt From Requisitions  Where RequisitionStatus = 4";
+                cmd.CommandText = $"Select RequisitionID, RequisitionSeries,Description,CreatedAt From Requisitions  Where RequisitionStatus = 4 and requisitiontype = 1";
                 cmd.Connection = connection;
 
 

@@ -855,7 +855,7 @@ namespace ERP_Component_DAL.Services
                 connection = new SqlConnection(connectionstring);
                 SqlCommand cmd = new();
                 cmd.CommandType = System.Data.CommandType.Text;
-                cmd.CommandText = $"Select RequisitionID, Description,RequisitionSeries, CreatedAt, TotalAmount From Requisitions Where RequisitionStatus = 1 ";
+                cmd.CommandText = $"Select RequisitionID, Description,RequisitionSeries, CreatedAt, TotalAmount From Requisitions Where RequisitionStatus = 1 and requisitiontype = 3";
                 cmd.Connection = connection;
 
 
