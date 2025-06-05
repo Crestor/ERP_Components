@@ -34,7 +34,9 @@ namespace ERP_Component_DAL.Services
                 connection = new SqlConnection(ConnectionString);
                 SqlCommand cmd = new SqlCommand();
                 cmd.CommandType = System.Data.CommandType.Text;
-                cmd.CommandText = $"select I.ItemName,I.ItemId,I.HSN,I.UnitOFMeasure, L.SellingPrice from Items I Join LotBatch L on I.ItemId=L.ItemId  ";
+                cmd.CommandText = @"SELECT i.ItemName, i.ItemId, i.HSN, i.UnitOFMeasure, pp.SellingPrice 
+                    FROM Items i JOIN ProductPrice pp ON pp.ProductID = i.ItemId 
+                    WHERE i.ItemType = 1 ORDER BY i.ItemName";
 
                 cmd.Connection = connection;
 
