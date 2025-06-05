@@ -15,13 +15,15 @@ namespace ERP_Component_DAL.Services
 
         private readonly IConfiguration configuration;
         SqlConnection connection;
+        private readonly string _connectionString;
 
         public SalesServices(IConfiguration config)
         {
             this.configuration = config;
+            _connectionString = configuration.GetConnectionString("DefaultConnectionString");
         }
 
- 
+
 
 
 
@@ -67,9 +69,46 @@ namespace ERP_Component_DAL.Services
             {
                 connection.Close();
             }
-
-
         }
+
+        public List<QuotationViewModel.Customer> GetCustomersList()
+        {
+            connection = new SqlConnection(_connectionString);
+            var Customers = new List<QuotationViewModel.Customer>();
+            try
+            {
+                var cmd = new SqlCommand();
+                cmd.CommandType = CommandType.Text;
+                cmd.CommandText = @"SELECT CustomerID, CustomerName FROM Customers";
+                cmd.CommandTimeout = 300;
+                cmd.Connection = connection;
+                connection.Open();
+
+                var reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    Customers.Add(
+                        new QuotationViewModel.Customer
+                        {                           
+                            CustomerID = reader["CustomerID"] != DBNull.Value ? reader.GetGuid("CustomerID") : Guid.Empty,
+                            CustomerName = reader["CustomerName"] != DBNull.Value ? reader.GetString("CustomerName") : "No Name",
+                         }
+                    );
+                }
+                return Customers;
+            } 
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
+            finally
+            {
+                connection.Close();
+            }
+
+            return Customers;
+        }
+
         public bool AddQuota(QuotationModel Aq)
         {
             try
@@ -124,11 +163,12 @@ namespace ERP_Component_DAL.Services
                 SqlCommand cmd1 = new SqlCommand();
                 cmd1.CommandType = System.Data.CommandType.Text;
 
-                cmd1.CommandText = $"INSERT INTO Quotation ([QuotationSeries],[CustomerName],[status]) " + "OUTPUT INSERTED.QuotationID " +
-                                  "VALUES (@QuotationSeries, @CustomerName, 'open' )";
+                cmd1.CommandText = $"INSERT INTO Quotation ([QuotationSeries], [status]) " + "OUTPUT INSERTED.QuotationID " +
+                                  "VALUES (@QuotationSeries, 'open' )";
 
                 cmd1.Parameters.AddWithValue("@QuotationSeries", Aq.QuotationSeries ?? (object)DBNull.Value);
-                cmd1.Parameters.AddWithValue("@CustomerName", Aq.CustomerName ?? (object)DBNull.Value);
+                //cmd1.Parameters.AddWithValue("@CustomerName", Aq.CustomerName ?? (object)DBNull.Value);
+                //cmd1.Parameters.AddWithValue("@CustomerID", Aq.CustomerID);
 
 
                 cmd1.Connection = connection;
@@ -254,13 +294,13 @@ GrossTotal=@GrossTotal,
     UPDATE Quotation 
     SET 
         QuotationSeries = @QuotationSeries, 
-        CustomerName = @CustomerName, 
+        CustomerID = @CustomerID, 
         GrossTotal = @GrossTotal,
         TermConditionID = @TermConditionID
     WHERE QuotationID = @QuotationID", connection);
 
                 cmd2.Parameters.AddWithValue("@QuotationSeries", Aq.QuotationSeries ?? (object)DBNull.Value);
-                cmd2.Parameters.AddWithValue("@CustomerName", Aq.CustomerName ?? (object)DBNull.Value);
+                cmd2.Parameters.AddWithValue("@CustomerID", Aq.CustomerID);
                 cmd2.Parameters.AddWithValue("@GrossTotal", Aq.GrossTotal);
                 cmd2.Parameters.AddWithValue("@QuotationID", Aq.QuotationID);
                 cmd2.Parameters.AddWithValue("@TermConditionID", TermConditionID); // Use inserted ID
@@ -2514,11 +2554,5 @@ RequisitionStatus=1
 
 
 
-
-
-
-
-
     }
-
 }

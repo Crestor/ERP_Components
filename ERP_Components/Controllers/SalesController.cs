@@ -67,20 +67,19 @@ namespace ERP_Components.Controllers
 
             List<QuotationModel> aq = salesServices.AddQuotaItemName();
 
-
+            List<QuotationViewModel.Customer> Customers = salesServices.GetCustomersList();
 
 
             var model = new QuotationViewModel
             {
                 ItemNames = aq,
-
-
+                Customers = Customers
             };
 
             return View(model);
         }
         [HttpPost]
-        public JsonResult SetQuotation(QuotationModel O)
+        public JsonResult SetQuotationProducts(QuotationModel O)
         {
             var QuotationCreated = HttpContext.Session.GetString("QuotationAdded");
             if (QuotationCreated == "False")
@@ -134,7 +133,7 @@ namespace ERP_Components.Controllers
 
 
         // update details  
-        public IActionResult QuotationFinal(QuotationModel O)
+        public IActionResult SubmitQuotation(QuotationModel O)
         {
             O.QuotationID = Guid.Parse(HttpContext.Session.GetString("QuotationID"));
 

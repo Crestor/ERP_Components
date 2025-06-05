@@ -17,7 +17,14 @@
                 <label>Quotation Series:</label>
                 <input type="text" id="QuotationSeries" name="QuotationSeries" onchange="pass()"><br>
         <label>Customer Name:</label>
-        <input type="text" id="customerName" name="customerName" onchange="pass()"><br>
+            <select id="CustomerID" name="CustomerID" style="width: 40px;" onchange="pass()">
+                @foreach(var customer in Model.Customers)
+                {
+                    <option value="@customer.CustomerID">@customer.CustomerName</option>
+                }
+                
+            </select>
+        @* <input type="text" id="customerName" name="customerName" onchange="pass()"><br> *@
         </div> 
 	   <div class="form-row" style="width:50%">
 		<label>Date</label>
@@ -125,14 +132,14 @@
                         <input type="text" id="ItemId" name="ItemId" hidden />
 
     </div>
-        <button type="submit" id="addItem" class="button" style="background-color:#138496;color: white; display:flex;float:right;margin-top:10px;margin-right:10px">
-
-            Add item
-        </button>
 
     </div>
 
   </form>
+        <button type="submit" id="addItem" class="button" style="background-color:#138496;color: white; display:flex;float:right;margin-top:10px;margin-right:10px">
+
+            Add item
+        </button>
 
 
 <div style="text-align: center; margin-top: 15px; display:flex;justify-content:end; margin-right: 29px;padding-bottom: 8px;">
@@ -166,11 +173,11 @@
    </table>   
    </div>   
    </div>
-<form method="post" asp-action="QuotationFinal" asp-controller="Sales">
+<form method="post" asp-action="SubmitQuotation" asp-controller="Sales">
 
 
     <input type="hidden" name="QuotationSeries" id="hiddenQuotationSeries" value=""/>
-    <input type="hidden" name="customerName" id="hiddenCustomerName" value="" />
+    <input type="hidden" name="CustomerID" id="hiddenCustomerID" value="" />
     <input type="hidden" name="date" id="hiddendate" value=""/>
 
     @* <h2>Summary</h2> *@
@@ -240,8 +247,8 @@
 
 
         function pass() {
-              const customerName = document.getElementById("customerName").value;
-             document.getElementById("hiddenCustomerName").value = customerName;
+              const CustomerID = document.getElementById("CustomerID").value;
+             document.getElementById("hiddenCustomerID").value = CustomerID;
              const QuotationSeries = document.getElementById("QuotationSeries").value;
              document.getElementById("hiddenQuotationSeries").value = QuotationSeries;
           
@@ -392,7 +399,7 @@
             };
             $.ajax({
                 type: "POST",
-                url: "/Sales/SetQuotation",
+                url: "/Sales/SetQuotationProducts",
                 data: productData,
                 success: function (response) {
                     console.log("Success:", response);

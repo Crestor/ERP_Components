@@ -27,6 +27,7 @@
         public string OrderSeries { get; set; }
 
         public string CustomerName { get; set; }
+        public Guid CustomerID { get; set; }
 
 
         public Guid ProductID { get; set; }

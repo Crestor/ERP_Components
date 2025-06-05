@@ -20,6 +20,14 @@
         public decimal TotalAmountAfterDiscount { get; set; }
         public string PaymentTerm { get; set; }
 
+        public List<Customer>? Customers { get; set; }
+
+        public class Customer
+        {
+            public Guid CustomerID { get; set; }
+            public string CustomerName { get; set; }
+        }
+
        
     }
 }
