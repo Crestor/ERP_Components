@@ -2436,7 +2436,7 @@ namespace ERP_Component_DAL.Services
                 connection = new SqlConnection(ConnectionString);
                 SqlCommand cmd = new SqlCommand();
                 cmd.CommandType = System.Data.CommandType.Text;
-                cmd.CommandText = $" select Description,CreatedAt,RequisitionSeries,RequisitionID from  Requisitions where RequisitionType = 2 AND RequisitionStatus = 1 ";
+                cmd.CommandText = $" select Description,CreatedAt,RequisitionSeries,RequisitionID from  Requisitions where RequisitionType = 2 AND RequisitionStatus = 1 Order By CreatedAt desc ";
 
                 cmd.Connection = connection;
 
@@ -2480,7 +2480,7 @@ namespace ERP_Component_DAL.Services
                 connection = new SqlConnection(ConnectionString);
                 SqlCommand cmd = new SqlCommand();
                 cmd.CommandType = System.Data.CommandType.Text;
-                cmd.CommandText = $" select Description,CreatedAt,RequisitionSeries,RequisitionID from  Requisitions where RequisitionType = 2 AND RequisitionStatus = 7 ";
+                cmd.CommandText = $" select Description,CreatedAt,RequisitionSeries,RequisitionID from  Requisitions where RequisitionType = 2 AND RequisitionStatus = 7 Order By CreatedAt desc";
 
                 cmd.Connection = connection;
 
@@ -2704,7 +2704,7 @@ namespace ERP_Component_DAL.Services
                 SqlCommand cmd = new();
                 cmd.CommandType = System.Data.CommandType.Text;
                 cmd.CommandText = $"Select ve.VendorID, ve.VendorName, ve.VendorCode,po.PurchaseOrderID, po.CreatedAt,po.Description,po.TaxableAmount from Vendors ve " +
-                    $"join PurchaseOrders po ON ve.VendorID = po.VendorId  Where po.OrderStatus = 1";
+                    $"join PurchaseOrders po ON ve.VendorID = po.VendorId  Where po.OrderStatus = 1 Order By po.CreatedAt desc";
                 cmd.Connection = connection;
 
 
