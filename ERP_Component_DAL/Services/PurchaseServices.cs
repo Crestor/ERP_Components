@@ -447,7 +447,8 @@ namespace ERP_Component_DAL.Services
                 SqlCommand cmd = new SqlCommand();
                 cmd.CommandType = System.Data.CommandType.Text;
 
-                cmd.CommandText = $"Insert into PurchaseBills([BillNumber],[PurchaseOrderID],[BillDate])values('{vendor.invoiceNumber}','{vendor.purchaseOrderId}','{vendor.createdAt}')";
+                cmd.CommandText = $"Insert into PurchaseBills([BillNumber],[PurchaseOrderID],[BillDate])values('{vendor.invoiceNumber}','{vendor.purchaseOrderId}','{vendor.createdAt}');" +
+                    $" UPDATE PurchaseOrders SET OrderStatus = 3 WHERE PurchaseOrderID = '{vendor.purchaseOrderId}'";
 
                 cmd.Connection = connection;
 
