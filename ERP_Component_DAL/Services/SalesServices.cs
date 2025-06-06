@@ -163,7 +163,7 @@ namespace ERP_Component_DAL.Services
                 SqlCommand cmd1 = new SqlCommand();
                 cmd1.CommandType = System.Data.CommandType.Text;
 
-                cmd1.CommandText = $"INSERT INTO Quotation ([QuotationSeries], [status]) " + "OUTPUT INSERTED.QuotationID " +
+                cmd1.CommandText = $"INSERT INTO CustomerQuotation ([QuotationSeries], [status]) " + "OUTPUT INSERTED.QuotationID " +
                                   "VALUES (@QuotationSeries, 'open' )";
 
                 cmd1.Parameters.AddWithValue("@QuotationSeries", Aq.QuotationSeries ?? (object)DBNull.Value);
@@ -237,7 +237,7 @@ namespace ERP_Component_DAL.Services
                 cmd.CommandType = System.Data.CommandType.Text;
                 //GrossTotal = (SELECT SUM(TotalAmount) FROM QuotationProduct WHERE QuotationID = @QuotationID),
                 cmd.CommandText = @"
-                    UPDATE Quotation SET 
+                    UPDATE CustomerQuotation SET 
 GrossTotal=@GrossTotal,
                         CustomerName = @CustomerName
                     WHERE QuotationId = @QuotationID";
@@ -291,7 +291,7 @@ GrossTotal=@GrossTotal,
                 connection.Close();
 
                 SqlCommand cmd2 = new SqlCommand(@"
-    UPDATE Quotation 
+    UPDATE CustomerQuotation 
     SET 
         QuotationSeries = @QuotationSeries, 
         CustomerID = @CustomerID, 
@@ -423,7 +423,7 @@ GrossTotal=@GrossTotal,
                 SqlCommand cmd = new SqlCommand();
                 cmd.CommandType = System.Data.CommandType.Text;
 
-                cmd.CommandText = "SELECT q.QuotationSeries, q.QuotationID, SUM(qp.TotalAmount) AS finalAmount,q.QuotationDate, q.status, c.CustomerName, q.contactNumber FROM Quotation q JOIN QuotationProduct qp ON q.QuotationID=qp.QuotationID JOIN Customers c ON q.CustomerID = c.CustomerID WHERE q.status='open' GROUP BY q.QuotationSeries, q.QuotationID, q.QuotationDate, q.status, c.CustomerName, q.contactNumber";
+                cmd.CommandText = "SELECT q.QuotationSeries, q.QuotationID, SUM(qp.TotalAmount) AS finalAmount,q.QuotationDate, q.status, c.CustomerName, c.Phone FROM CustomerQuotation q JOIN QuotationProduct qp ON q.QuotationID=qp.QuotationID JOIN Customers c ON q.CustomerID = c.CustomerID WHERE q.status='open' GROUP BY q.QuotationSeries, q.QuotationID, q.QuotationDate, q.status, c.CustomerName, c.Phone";
                 // Q.date,
                 cmd.Connection = connection;
 
@@ -439,7 +439,8 @@ GrossTotal=@GrossTotal,
                         finalAmount = reader["finalAmount"] != DBNull.Value ? (decimal)reader["finalAmount"] : 0m,
                         Status = reader["status"] != DBNull.Value ? (string)reader["status"] : string.Empty,
                         CustomerName = reader["CustomerName"] != DBNull.Value ? (string)reader["CustomerName"] : string.Empty,
-                        ContactNumber = reader["contactNumber"] != DBNull.Value ? (long)reader["contactNumber"] : 0,
+                        ContactNumber = reader["Phone"] != DBNull.Value ? Convert.ToInt64( reader["Phone"]) : 0,
+                        QuotationSeries = reader.GetString("QuotationSeries")
 
                     });
                 }
@@ -468,7 +469,7 @@ GrossTotal=@GrossTotal,
                 connection = new SqlConnection(ConnectionString);
                 SqlCommand cmd = new SqlCommand();
                 cmd.CommandType = System.Data.CommandType.Text;
-                cmd.CommandText = $"update Quotation Set status='close' where QuotationId=@QuotationId";
+                cmd.CommandText = $"update CustomerQuotation Set status='close' where QuotationId=@QuotationId";
                 cmd.Parameters.AddWithValue("@QuotationID", id.QuotationID);
 
 
@@ -504,7 +505,7 @@ GrossTotal=@GrossTotal,
                 connection = new SqlConnection(ConnectionString);
                 SqlCommand cmd = new SqlCommand();
                 cmd.CommandType = System.Data.CommandType.Text;
-                cmd.CommandText = $" SELECT Q.QuotationID, Q.QuotationDate ,Q.GrossTotal,Q.CustomerName,Q.QuotationSeries,Q.TermConditionID,P.ProductID,P.ItemName,P.HSN,P.Quantity,P.UnitOFMeasure,P.SellingPrice,P.TaxableAmount,P.discountRate,P.DiscountAmount,P.CGST,P.SGST,P.IGST,P.TotalAmount,T.PaymentTerm,T.DeliveryTerms,T.Other FROM Quotation Q JOIN QuotationProduct P ON Q.QuotationID = P.QuotationID JOIN TermCondition T ON Q.TermConditionID = T.TermConditionID  where Q.QuotationID = @QuotationID";
+                cmd.CommandText = $" SELECT Q.QuotationID, Q.QuotationDate ,Q.GrossTotal,Q.CustomerName,Q.QuotationSeries,Q.TermConditionID,P.ProductID,P.ItemName,P.HSN,P.Quantity,P.UnitOFMeasure,P.SellingPrice,P.TaxableAmount,P.discountRate,P.DiscountAmount,P.CGST,P.SGST,P.IGST,P.TotalAmount,T.PaymentTerm,T.DeliveryTerms,T.Other FROM CustomerQuotation Q JOIN QuotationProduct P ON Q.QuotationID = P.QuotationID JOIN TermCondition T ON Q.TermConditionID = T.TermConditionID  where Q.QuotationID = @QuotationID";
 
                 cmd.Parameters.AddWithValue("@QuotationID", QuotationID);
                 cmd.Connection = connection;
@@ -602,7 +603,7 @@ GrossTotal=@GrossTotal,
                 connection = new SqlConnection(ConnectionString);
                 SqlCommand cmd = new SqlCommand();
                 cmd.CommandType = System.Data.CommandType.Text;
-                cmd.CommandText = $" SELECT Q.GrossTotal,Q.CustomerName,Q.QuotationDate,Q.QuotationSeries,P.ItemName,P.HSN,P.Quantity,P.UnitOFMeasure,P.SellingPrice,P.TaxableAmount,P.discountRate,P.DiscountAmount,P.CGST,P.SGST,P.TotalAmount,T.PaymentTerm,T.DeliveryTerms,T.Other FROM Quotation Q JOIN QuotationProduct P ON Q.QuotationID = P.QuotationID JOIN TermCondition T ON Q.TermConditionID = T.TermConditionID  where Q.QuotationID = @QuotationID";
+                cmd.CommandText = $" SELECT Q.GrossTotal,Q.CustomerName,Q.QuotationDate,Q.QuotationSeries,P.ItemName,P.HSN,P.Quantity,P.UnitOFMeasure,P.SellingPrice,P.TaxableAmount,P.discountRate,P.DiscountAmount,P.CGST,P.SGST,P.TotalAmount,T.PaymentTerm,T.DeliveryTerms,T.Other FROM CustomerQuotation Q JOIN QuotationProduct P ON Q.QuotationID = P.QuotationID JOIN TermCondition T ON Q.TermConditionID = T.TermConditionID  where Q.QuotationID = @QuotationID";
 
                 cmd.Parameters.AddWithValue("@QuotationID", QuotationID);
                 cmd.Connection = connection;
@@ -718,7 +719,7 @@ GrossTotal=@GrossTotal,
                 SqlCommand cmd = new SqlCommand();
                 cmd.CommandType = System.Data.CommandType.Text;
 
-                cmd.CommandText = $"select Q.QuotationID, Q.GrossTotal,Q.CustomerName, Q.QuotationSeries,Q.TermConditionID, P.ItemName, P.Quantity, P.UnitOFMeasure, P.SellingPrice, P.TaxableAmount, P.discountRate, P.DiscountAmount, P.CGST, P.SGST,P.IGST, P.TotalAmount from Quotation Q Join QuotationProduct P ON Q.QuotationID=P.QuotationID where Q.QuotationID=@QuotationID";  //Q.date
+                cmd.CommandText = $"SELECT q.QuotationID, q.GrossTotal,c.CustomerName, q.QuotationSeries,q.TermConditionID, p.ItemName, p.Quantity, p.UnitOFMeasure, p.SellingPrice, p.TaxableAmount, p.discountRate, p.DiscountAmount, p.CGST, p.SGST,p.IGST, p.TotalAmount FROM CustomerQuotation q JOIN QuotationProduct p ON q.QuotationID=p.QuotationID\r\nJOIN Customers c ON c.CustomerID = q.CustomerID WHERE q.QuotationID=@QuotationID";  //Q.date
                 cmd.Parameters.AddWithValue("@QuotationID", QuotationID);
                 cmd.Connection = connection;
                 connection.Open();
@@ -838,7 +839,7 @@ GrossTotal=@GrossTotal,
                 cmd1.CommandText = $"INSERT INTO Address ([Country],[State],[City],[Area],[Pincode],[AddressLine1],[District]) OUTPUT INSERTED.AddressID VALUES ('India',@State,@City,@Area,@Pincode,'',@District)";
 
 
-                cmd1.Parameters.AddWithValue("@State", Aq.State ?? (object)DBNull.Value);
+                cmd1.Parameters.AddWithValue("@State", Aq.State ?? "-");
                 cmd1.Parameters.AddWithValue("@City", Aq.City ?? (object)DBNull.Value);
                 cmd1.Parameters.AddWithValue("@Area", Aq.Area ?? (object)DBNull.Value);
                 cmd1.Parameters.AddWithValue("@Pincode", Aq.Pincode ?? (object)DBNull.Value);
@@ -1007,7 +1008,7 @@ GrossTotal=@GrossTotal,
                 connection = new SqlConnection(ConnectionString);
                 SqlCommand cmd = new SqlCommand();
                 cmd.CommandType = System.Data.CommandType.Text;
-                cmd.CommandText = $"update Quotation Set status='close' where QuotationID=@QuotationID; update Quotation Set GrossTotal='{id.GrossTotal}' where QuotationID=@QuotationID;";
+                cmd.CommandText = $"update CustomerQuotation Set status='close' where QuotationID=@QuotationID; update CustomerQuotation Set GrossTotal='{id.GrossTotal}' where QuotationID=@QuotationID;";
                 cmd.Parameters.AddWithValue("@QuotationID", id.QuotationID);
 
 
@@ -1073,7 +1074,7 @@ GrossTotal=@GrossTotal,
                 SqlCommand cmd = new SqlCommand();
                 cmd.CommandType = System.Data.CommandType.Text;
 
-                cmd.CommandText = "select Q.QuotationID,I.InvoiceID,I.InvoiceDate, Q.GrossTotal,I.Status,Q.CustomerName,I.InvoiceNumber,I.EWayBill, Q.contactNumber from Quotation Q Join Invoice I ON Q.QuotationID=I.QuotationID where I.Status='Unpaid'";
+                cmd.CommandText = "SELECT q.QuotationID, i.InvoiceID, i.InvoiceDate, q.GrossTotal, i.Status, i.InvoiceNumber, i.EWayBill, c.ContactName, c.Phone FROM CustomerQuotation q JOIN Invoice i ON q.QuotationID = i.QuotationID JOIN Customers c ON c.CustomerID = q.CustomerID WHERE i.Status = 'Unpaid';";
 
                 cmd.Connection = connection;
 
@@ -1093,7 +1094,7 @@ GrossTotal=@GrossTotal,
                         CustomerName = reader["CustomerName"] != DBNull.Value ? (string)reader["CustomerName"] : string.Empty,
                         InvoiceNumber = reader["InvoiceNumber"] != DBNull.Value ? (string)reader["InvoiceNumber"] : string.Empty,
                         EWayBill = reader["EWayBill"] != DBNull.Value ? (string)reader["EWayBill"] : string.Empty,
-                        ContactNumber = reader["contactNumber"] != DBNull.Value ? (long)reader["contactNumber"] : 0,
+                        ContactNumber = reader["Phone"] != DBNull.Value ? (long)reader["Phone"] : 0,
 
                     });
                 }
@@ -1156,7 +1157,7 @@ GrossTotal=@GrossTotal,
                 connection = new SqlConnection(ConnectionString);
                 SqlCommand cmd = new SqlCommand();
                 cmd.CommandType = System.Data.CommandType.Text;
-                cmd.CommandText = $"select I.InvoiceID, I.InvoiceDate,I.InvoiceNumber,I.PaymentMode,I.PaymentType,I.ReferenceNumber,Q.CustomerName,Q.GrossTotal from Quotation Q Join Invoice I ON Q.QuotationID=I.QuotationID where InvoiceID='{InvoiceID}'";
+                cmd.CommandText = $"select I.InvoiceID, I.InvoiceDate,I.InvoiceNumber,I.PaymentMode,I.PaymentType,I.ReferenceNumber,c.CustomerName,Q.GrossTotal from CustomerQuotation Q Join Invoice I ON Q.QuotationID=I.QuotationID JOIN Customers c ON c.CustomerID = Q.CustomerID where InvoiceID='{InvoiceID}'";
                 cmd.Connection = connection;
                 connection.Open();
                 SqlDataReader reader = cmd.ExecuteReader();
@@ -2232,7 +2233,7 @@ GrossTotal=@GrossTotal,
                 connection = new SqlConnection(ConnectionString);
                 SqlCommand cmd = new SqlCommand();
                 cmd.CommandType = System.Data.CommandType.Text;
-                cmd.CommandText = "SELECT Q.QuotationID,Q.CustomerName, SUM(P.TaxableAmount) AS TotalTaxableAmount,Q.GrossTotal, I.InvoiceDate, I.InvoiceID FROM Quotation Q JOIN Invoice I ON Q.QuotationID = I.QuotationID JOIN QuotationProduct P ON Q.QuotationID = P.QuotationID GROUP BY Q.QuotationID, Q.CustomerName, Q.GrossTotal, I.InvoiceDate, I.InvoiceID;";
+                cmd.CommandText = "SELECT Q.QuotationID,c.CustomerName, SUM(P.TaxableAmount) AS TotalTaxableAmount,Q.GrossTotal, I.InvoiceDate, I.InvoiceID FROM CustomerQuotation Q JOIN Invoice I ON Q.QuotationID = I.QuotationID JOIN QuotationProduct P ON Q.QuotationID = P.QuotationID JOIN Customers c ON c.CustomerID = Q.CustomerID GROUP BY Q.QuotationID, c.CustomerName, Q.GrossTotal, I.InvoiceDate, I.InvoiceID;";
 
 
                 cmd.Connection = connection;
