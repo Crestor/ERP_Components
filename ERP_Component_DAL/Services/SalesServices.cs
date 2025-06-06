@@ -423,7 +423,7 @@ GrossTotal=@GrossTotal,
                 SqlCommand cmd = new SqlCommand();
                 cmd.CommandType = System.Data.CommandType.Text;
 
-                cmd.CommandText = "select Q.QuotationID, SUM(P.TotalAmount) As finalAmount,Q.QuotationDate, Q.status, Q.CustomerName, Q.contactNumber from Quotation Q Join QuotationProduct P ON Q.QuotationID=P.QuotationID where Q.status='open' GROUP BY Q.status, Q.CustomerName, Q.QuotationDate, Q.contactNumber, Q.QuotationID ";
+                cmd.CommandText = "SELECT q.QuotationSeries, q.QuotationID, SUM(qp.TotalAmount) AS finalAmount,q.QuotationDate, q.status, c.CustomerName, q.contactNumber FROM Quotation q JOIN QuotationProduct qp ON q.QuotationID=qp.QuotationID JOIN Customers c ON q.CustomerID = c.CustomerID WHERE q.status='open' GROUP BY q.QuotationSeries, q.QuotationID, q.QuotationDate, q.status, c.CustomerName, q.contactNumber";
                 // Q.date,
                 cmd.Connection = connection;
 
@@ -504,7 +504,7 @@ GrossTotal=@GrossTotal,
                 connection = new SqlConnection(ConnectionString);
                 SqlCommand cmd = new SqlCommand();
                 cmd.CommandType = System.Data.CommandType.Text;
-                cmd.CommandText = $" SELECT Q.QuotationID, Q.QuotationDate ,Q.GrossTotal,Q.CustomerName,Q.QuotationSeries,Q.TermConditionID,P.ProductID,P.ItemId,P.ItemName,P.HSN,P.Quantity,P.UnitOFMeasure,P.SellingPrice,P.TaxableAmount,P.discountRate,P.DiscountAmount,P.CGST,P.SGST,P.IGST,P.TotalAmount,T.PaymentTerm,T.DeliveryTerms,T.Other FROM Quotation Q JOIN QuotationProduct P ON Q.QuotationID = P.QuotationID JOIN TermCondition T ON Q.TermConditionID = T.TermConditionID  where Q.QuotationID = @QuotationID";
+                cmd.CommandText = $" SELECT Q.QuotationID, Q.QuotationDate ,Q.GrossTotal,Q.CustomerName,Q.QuotationSeries,Q.TermConditionID,P.ProductID,P.ItemName,P.HSN,P.Quantity,P.UnitOFMeasure,P.SellingPrice,P.TaxableAmount,P.discountRate,P.DiscountAmount,P.CGST,P.SGST,P.IGST,P.TotalAmount,T.PaymentTerm,T.DeliveryTerms,T.Other FROM Quotation Q JOIN QuotationProduct P ON Q.QuotationID = P.QuotationID JOIN TermCondition T ON Q.TermConditionID = T.TermConditionID  where Q.QuotationID = @QuotationID";
 
                 cmd.Parameters.AddWithValue("@QuotationID", QuotationID);
                 cmd.Connection = connection;
@@ -534,7 +534,7 @@ GrossTotal=@GrossTotal,
                         QuotationSeries = reader["QuotationSeries"] != DBNull.Value ? (string)reader["QuotationSeries"] : string.Empty,
                         CustomerName = reader["CustomerName"] != DBNull.Value ? (string)reader["CustomerName"] : string.Empty,
                         ProductID = reader["ProductID"] != DBNull.Value ? (Guid)reader["ProductID"] : Guid.Empty,
-                        ItemId = reader["ItemId"] != DBNull.Value ? (Guid)reader["ItemId"] : Guid.Empty,
+                        //ItemId = reader["ItemId"] != DBNull.Value ? (Guid)reader["ItemId"] : Guid.Empty,
                         TermConditionID = reader["TermConditionID"] != DBNull.Value ? (Guid)reader["TermConditionID"] : Guid.Empty,
                         GrossTotal = reader["GrossTotal"] != DBNull.Value ? (decimal)reader["GrossTotal"] : 0m,
                         QuotationDate = reader["QuotationDate"] != DBNull.Value ? DateOnly.FromDateTime((DateTime)reader["QuotationDate"]) : DateOnly.MinValue,
