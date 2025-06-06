@@ -180,7 +180,7 @@
 
 		<div class="button-container" style="display:flex; justify-content:center; align-items:center; margin-top:10px">
 			<button onclick="return SavedPopup()">Save</button>
-			<button type="submit">Create</button>
+			<button id="createbtn" type="submit">Create</button>
 		</div>
 	
 	</div>
@@ -253,36 +253,7 @@
 </script>
 
 
-@* <script>
-		$(document).ready(function () {
-		$('.other-select').on('change', async function () {
-			if ($(this).val() === 'other') {
-				const fieldLabel = $(this).data('name') || 'Custom Value';
-
-				const { value: customValue } = await Swal.fire({
-					title: `Enter custom value for ${fieldLabel}`,
-					input: 'text',
-					inputLabel: fieldLabel,
-					showCancelButton: true,
-					inputValidator: (value) => {
-						if (!value) return 'You need to enter something!';
-					}
-				});
-
-				if (customValue) {
-					const newOption = new Option(customValue, customValue, true, true);
-					$(this).append(newOption).val(customValue);
-				} else {
-					$(this).val(''); 
-				}
-			}
-		});
-	});
-
-</script>
- *@
-
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2"></script>
 
 <script>
 	$(document).ready(function () {
@@ -321,4 +292,34 @@
 	  draggable: true
 	});
 		 }
+
+
+</script>
+<script>
+		const create = document.getElementById("createbtn");
+	create.addEventListener("click",function(){
+
+	   Swal.fire({
+			 title: "Created",
+			 text:"Vender Quotations created ",
+			 icon: "success",
+			 timer:1500,
+			 draggable: true
+	   });
+	} );
+	const added = document.getElementById("addItems");
+
+	added.addEventListener("click", function () {
+	  Swal.fire({
+		title: "Added",
+		text: "Vendor Quotation Added",
+		icon: "success",
+		showCancelButton: false,
+		showDenyButton: false,
+		showConfirmButton: true,
+		confirmButtonText: "OK"
+	  });
+	});
+
+
 </script>

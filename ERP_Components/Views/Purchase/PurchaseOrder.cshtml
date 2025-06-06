@@ -88,9 +88,9 @@
             </table>
         </div>
 
-        <div class="button-container" style="display:flex; justify-content:center">
-            <button type="submit">Submit</button>
+        <div class="button">
             <button type="reset">Reset</button>
+            <button id="submitted" type="submit">Submit</button>
         </div>
 
     </form>
@@ -128,5 +128,19 @@
         updateTotals();
     });
 </script>
+<script>
+        const submitted = document.getElementById("submitted");
 
+    submitted.addEventListener("click", function () {
+           Swal.fire({
+             title: "Submitted",
+             text:"Purchase order submitted ",
+             icon: "success",
+             timer:1500,
+             draggable: true
+       });
+    });
+
+
+</script>
 

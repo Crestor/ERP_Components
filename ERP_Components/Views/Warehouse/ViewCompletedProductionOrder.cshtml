@@ -44,7 +44,8 @@
 						<div class="table-button">
 
 							<button onclick="viewDetails('@x.RequisitionId')">View</button>
-							<button onclick="location.href='@Url.Action("AllocateToSalesFromWarehouse", "Warehouse", new { salesForcastId = @x.RequisitionId }, null)'">Allocate</button>
+							@* <button onclick="location.href='@Url.Action("AllocateToSalesFromWarehouse", "Warehouse", new { salesForcastId = @x.RequisitionId }, null)'">Allocate</button> *@
+							<button class="btn btn-primary dispatch-btn" data-salesForcastId="@x.RequisitionId">Allocate</button>
 
 
 
@@ -145,6 +146,41 @@
 	}
 </script>
 
+<script>
+	document.addEventListener("DOMContentLoaded", function () {
+		const dispatchButtons = document.querySelectorAll(".dispatch-btn");
+
+		dispatchButtons.forEach(button => {
+			button.addEventListener("click", function () {
+				const salesForcastId = this.getAttribute("data-salesForcastId");
+
+				Swal.fire({
+					title: "Are you sure?",
+					text: "You are about to Allocate this production order.",
+					icon: "warning",
+					showCancelButton: true,
+					confirmButtonColor: "#3085d6",
+					cancelButtonColor: "#d33",
+					confirmButtonText: "Yes, Allocate it!"
+				}).then((result) => {
+					if (result.isConfirmed) {
+						Swal.fire({
+							title: "Allocated!",
+							text: "Your Order has been Allocated.",
+							icon: "success",
+							timer: 1500,
+							timerProgressBar: true,
+							showConfirmButton: false
+						}).then(() => {
+							const url = `/Warehouse/AllocateToSalesFromWarehouse?salesForcastId=${salesForcastId}`;
+							window.location.href = url;
+						});
+					}
+				});
+			});
+		});
+	});
+</script>
 
 
 

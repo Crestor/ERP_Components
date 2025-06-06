@@ -8,29 +8,24 @@
 
 @model List<Invoice>
 <form method="post" asp-action="SetAddInvoice" asp-controller="Sales" onsubmit="savedInvoice()">
-
+ <div>
     <div class="form-section">
         <h3>Basic Details</h3>
+            <div class="form-row">
+                        <label>Customer Name:</label>
+                        <input type="text" id="customerName" name="customerName" value="@Model[0].CustomerName" readonly ><br>
+                        <label>Invoice Date</label>
+                <input type="text" id="date" name="date" value="@DateTime.Now.ToString("yyyy-mm-dd")" onchange="pass()" />
+            </div>
 
-
-
-
-
-        <div class="form-row">
-                    <label>Customer Name:</label>
-                    <input type="text" id="customerName" name="customerName" value="@Model[0].CustomerName" readonly ><br>
-                    <label>Invoice Date</label>
-            <input type="text" id="date" name="date" value="@DateTime.Now.ToString("yyyy-mm-dd")" onchange="pass()" />
-        </div>
-
-        <div class="form-row" >
-                    <label>Invoice Series</label>
-                    <input type="text" id="InvoiceSeries" name="InvoiceSeries" />
-                    <label>E-Invoice Number</label>
-                    <input type="text" id="eInvoiceNumber" name="InvoiceNumber" >
-                </div>
+            <div class="form-row" >
+                        <label>Invoice Series</label>
+                        <input type="text" id="InvoiceSeries" name="InvoiceSeries" />
+                        <label>E-Invoice Number</label>
+                        <input type="text" id="eInvoiceNumber" name="InvoiceNumber" >
+                    </div>
            
-        </div>
+     </div>
 
 
         <h2>Item Details</h2>
@@ -97,389 +92,172 @@
             </table>
         </div>
 
-
-
-
-
-
-
-        @* <div style="display: flex; justify-content: space-between; align-items: flex-start;"> *@
-            <div class="form-section">
-               <h3>Terms</h3>
-                <div class="form-row" style="display:flex; justify-content:space-between;margin-inline:50px">
-                    <div style="display:flex">
-                    <label>Delivery Terms:</label>
-                <select id="deliveryTerms" name="DeliveryTerms"style=" width: 200px;">
-                      
-                        <option selected value="@Model[0].DeliveryTerms">@Model[0].DeliveryTerms</option>
-                        <option value="7 day">7 days</option>
-                        <option value="10 Day"> 10 Day</option>
-                        <option value="14 Day"> 14 Day</option>
-                        <option value="19 Day"> 19 Day</option>
-                        <option value="21 Day"> 21 Day</option>
-                        <option value="30 Day"> 30 Day</option>
-                    </select>
-                    </div>
-            <div style="display: flex">
+            <div class="form-section">                
                     <p>Total Amount:</p><span id="totalPriceBeforeDiscount" style="margin-left: 10px;"></span><br />
-                 </div>
-                </div>
-                @* <input type="text" id="deliveryTerms" name="DeliveryTerms"><br> *@
-            <div class="form-row" style="display:flex; justify-content:space-between;margin-inline:50px">
-                <div style="display:flex">
-                    <label>Payment Terms:</label>
-                <select id="paymentTerms" name="PaymentTerm" style="width: 200px;">
 
-                     
-                        <option selected value="@Model[0].PaymentMode">@Model[0].PaymentMode</option>
-                        <option value="Addvance">Advance</option>
-                        <option value="cash after service"> cash after service</option>
-                    </select>
-                    </div>
-            <div style="display: flex">
                 <p>Total Discount (%):</p><span id="totalDiscountPercent" style="margin-left: 10px;"></span><br>
-                    </div>
-                </div>
-        <div class="form-row" style="display:flex; justify-content:space-between;margin-inline:50px">
-            <div style="display:flex">
-            <label>Other:</label>
-                <input type="text" id="other" name="Other" value="@Model[0].Other" style="width: 199px;"><br>
-            </div><div style="display: flex">
+                   
                 <p>Total Discount Amount:</p><span id="totalDiscountAmount" style="margin-left: 10px;"></span><br>
-                    </div>
-            </div>
 
 
+             @* 
+                     <label class="form-label">Gross Total:</label>
+                    <input type="number" class="form-control" id="grossTotal" name="GrossTotal" value="@Model[0].GrossTotal" style="width: 199px;" readonly> *@
+                    <p>Gross Total: </p><s>@Model[0].GrossTotal</s><br />
+                    <p> Total Taxable Amount:</p> <span id="totalTaxableAmount" style="margin-left: 10px;"></span><br />
 
-        <div class="form-row" style="display:flex; justify-content:space-between;margin-inline:50px">
-            <div style="display:flex">
-            <label class="form-label">Gross Total:</label>
-                <input type="number" class="form-control" id="grossTotal" name="GrossTotal" value="@Model[0].GrossTotal" style="width: 199px;" readonly>
-                @* <strong>Total Taxable Amount:</strong><span id="totalTaxableAmount" style="margin-left: 10px;"></span><br /> *@
-            </div><div style="display: flex">
-                    @* <strong>Total Amount:</strong><span id="totalPriceBeforeDiscount" style="margin-left: 10px;"></span><br /> *@
-                    @* <strong>Total Discount (%):</strong><span id="totalDiscountPercent"></span><br> *@
-                    @* <strong>Total Discount Amount:</strong><span id="totalDiscountAmount"></span><br> *@
-                    @* <label>Total Discount (%):</label> *@
-                    @* <input type="number" id="totalDiscountPercent" name="TotalDiscountPercent" value="@Model[0].TotalDiscountPercent" readonly><br>  *@
-                <p> Total Taxable Amount:</p> <span id="totalTaxableAmount" style="margin-left: 10px;"></span><br />
-            </div>
-
-                    @*   <label>Round off :</label>
-            <input type="number" id="" name="" readonly value="" style="padding:10px 123px;" ><br> *@
-                </div>
             
-        </div>
                     <input type="hidden" name="QuotationID" value="@Model[0].QuotationID" />
                     <input type ="hidden" name="TermConditionID" value="@Model[0].TermConditionID" />
 
-
-
+          </div>
+ </div>
         <!-- Tax Section -->
-       
-          
+ <div>
+
+            <div class="form-section">
+                <p>Total Amount:</p><span id="totalPriceBeforeDiscount" style="margin-left: 10px;"></span><br />
+
+                <p>Total Discount (%):</p><span id="totalDiscountPercent" style="margin-left: 10px;"></span><br>
+
+                <p>Total Discount Amount:</p><span id="totalDiscountAmount" style="margin-left: 10px;"></span><br>
 
 
-    <div class="form-section tds-tcs-setting-box">
-        <h3>Invoice TDS TCS Setting</h3>
-        <div class="tds-tcs-options">
-            <label for="applyTCS" class="radio-label">
-                <input type="radio" name="applyTax" id="applyTCS">
-                Apply TCS
-            </label>
+                @* 
+                             <label class="form-label">Gross Total:</label>
+                            <input type="number" class="form-control" id="grossTotal" name="GrossTotal" value="@Model[0].GrossTotal" style="width: 199px;" readonly> *@
+                <p>Gross Total: </p><s>@Model[0].GrossTotal</s><br />
+                <p> Total Taxable Amount:</p> <span id="totalTaxableAmount" style="margin-left: 10px;"></span><br />
 
-            <label for="applyTDS" class="radio-label">
-                <input type="radio" name="applyTax" id="applyTDS">
-                Apply TDS
-            </label>
-        </div>
-    </div>
 
-            @* 
-                     <div class="form-section">
-                       <h3>Invoice TDS TCS Setting </h3>
-                        <div class="form-row">
-                            <label for="applyTCS">Apply TCS</label>
-                            <input type="radio" name="applyTax" id="applyTCS" >
-                        
-                        
-                            <label for="ApplyTDS">apply TDS</label>
-                            <input type="radio" name="applyTax" id="applyTDS" >
-                        </div>
-                    </div> *@
-       
-    <!-- TCS Modal -->
-    <div class="modal fade tax-modal" id="tcsModal" tabindex="-1">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">TCS Details</h5>
-                    <button type="button" class="button" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="mb-3">
-                        <label class="form-label">Applied %</label>
-                        <input type="number" class="form-control" id="tcsPercentage">
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Collect Amount</label>
-                        <input type="number" class="form-control" id="tcsAmount" readonly>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="button " data-bs-dismiss="modal" style="background-color:#138496;color: white;">Close</button>
-                    <button type="button" class="button" id="tcsSubmit" style="background-color:#138496;color: white;">Save changes</button>
-                </div>
+                <input type="hidden" name="QuotationID" value="@Model[0].QuotationID" />
+                <input type="hidden" name="TermConditionID" value="@Model[0].TermConditionID" />
+
             </div>
-        </div>
-    </div>
 
-        <!-- TDS Modal -->
-        <div class="modal fade tax-modal" id="tdsModal" tabindex="-1">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">TDS Details</h5>
-                        <button type="button" class="button" data-bs-dismiss="modal"></button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="mb-3">
+            <div class="form-section">
+                <h3>Invoice TDS TCS Setting</h3>
+                    <label for="applyTCS" class="radio-label">
+                        <input type="radio" name="applyTax" id="applyTCS">
+                        Apply TCS
+                    </label>
+                        <div id="tcs" style="display:none">
+                            <label class="form-label">Applied %</label>
+                            <input type="number" class="form-control" id="tcsPercentage">
+                            <label class="form-label">Collect Amount</label>
+                            <input type="number" class="form-control" id="tcsAmount" readonly>
+
+                            <button type="button" class="button" id="tcsSubmit" style="background-color:#138496;color: white;">Save changes</button>
+
+                        </div>
+
+                    <label for="applyTDS" class="radio-label">
+                        <input type="radio" name="applyTax" id="applyTDS">
+                        Apply TDS
+                    </label>
+                        <div id="tds" style="display:none">
                             <label class="form-label">Applied %</label>
                             <input type="number" class="form-control" id="tdsPercentage">
-                        </div>
-                        <div class="mb-3">
                             <label class="form-label">Deduct Amount</label>
                             <input type="number" class="form-control" id="tdsAmount" readonly>
+                            <button type="button" class="button" id="tdsSubmit" style="background-color:#138496;color: white;">Save changes</button>
                         </div>
-                    </div>
-                    <div class="modal-footer">
-                    <button type="button" class="button button" data-bs-dismiss="modal" style="background-color:#138496;color: white;">Close</button>
-                    <button type="button" class="button" id="tdsSubmit" style="background-color:#138496;color: white;">Save changes</button>
-                    </div>
-                </div>
+
             </div>
-        </div>
-
-        <input type="hidden" name="TDSPercentage" id="hiddenTdsPercentage" />
-        <input type="hidden" name="TDSAmount" id="hiddenTdsAmount" />
-    <input type="hidden" name="TCSPercentage" id="hiddenTcsPercentage" />
-    <input type="hidden" name="TCSAmount" id="hiddenTcsAmount" />
-
-
-
-
-    <div class="form-section">
-        <h3>Payment Details</h3>    
-        <div class="form-row">
-        
-
        
-                <label>Payment Mode:</label>
-                <input type="text" id="paymentMode" name="PaymentMode">
+    <!-- TCS Modal -->
+        <!-- TDS Modal -->
+                 <div>
+                    <input type="hidden" name="TDSPercentage" id="hiddenTdsPercentage" />
+                    <input type="hidden" name="TDSAmount" id="hiddenTdsAmount" />
+                    <input type="hidden" name="TCSPercentage" id="hiddenTcsPercentage" />
+                   <input type="hidden" name="TCSAmount" id="hiddenTcsAmount" />
+
+                 </div>
+
+
+                   <div class="form-section">
+                        <h3>Payment Details</h3>    
+                            <div class="form-row">
+                                <label>Payment Mode:</label>
+                                <input type="text" id="paymentMode" name="PaymentMode">
            
-                <label>Reference Number:</label>
-                <input type="text" id="referenceNumber" name="ReferenceNumber">
-            </div>
+                                <label>Reference Number:</label>
+                                <input type="text" id="referenceNumber" name="ReferenceNumber">
+                            </div>
 
-        <div class="form-row" style="width:50%">
-            <label>Payment Type:</label>
-                <select id="paymentType" name="PaymentType">
-                    <option value="">select</option>
-                    <option value="Full">Full</option>
-                    <option value="Partial">Partial</option>
-                </select>
-         </div>
-     </div>
-        @* </div> *@
-        @* </form> *@
-        <h2>Shipping Details</h2>
-          <div class="">
-            <div class="sd">
-            <button class="btn" type="button" id="option1">Shipped To</button>
-            <button class="btn" type="button" id="option2">Transport/E-Way Bill</button>
-            <button class="btn" type="button" id="option3">Dispatch Form</button>
-            <button class="btn" type="button" id="option4" >Courier Details</button>
-            </div>
-
-            <div id="form1" class="shipping-form" style="display: block;">
-                <div style="display: flex;margin-left: 73px;">
-                    <div class="row">
+                            <div class="form-row" style="width:50%">
+                                <label>Payment Type:</label>
+                                    <select id="paymentType" name="PaymentType">
+                                        <option value="">select</option>
+                                        <option value="Full">Full</option>
+                                        <option value="Partial">Partial</option>
+                                    </select>
+                            </div>
+                   </div>
+ </div>
+ <div>
+        <div class="form-section">
+            <h3>Shipping Details</h3>
+                  <div class="form-row">
                         <label>Company Name:</label>
-                        <input type="text" id="CompanyName" name="CompanyName" style="width: 250px !important;" placeholder="Enter name">
+                        <input type="text" id="CompanyName" name="CompanyName"   placeholder="Enter name">
                         <label>State:</label>
-                        <input type="text" id="State" name="State" style="width: 250px !important;" placeholder="Enter State">
+                        <input type="text" id="State" name="State"   placeholder="Enter State">
+                   </div>
+                   <div class="form-row">
                         <label>Pin Code:</label>
-                        <input type="text" id="Pincode" name="Pincode" style="width: 250px !important;" placeholder="Enter Pin code">
+                        <input type="text" id="Pincode" name="Pincode"   placeholder="Enter Pin code">
 
                         <label>Consignment Number:</label>
-                        <input type="text" id="ConsignmentNumber" name="ConsignmentNumber" style="width: 250px !important;" placeholder="Enter Consignment Number">
-                    </div>
-
-                    <div class="row">
+                        <input type="text" id="ConsignmentNumber" name="ConsignmentNumber"   placeholder="Enter Consignment Number">
+                   </div>
+                    <div class="form-row">
                         <label>Branch:</label>
-                        <input type="text" id="Branch" name="Branch" style="width: 250px !important;" placeholder="Enter Branch">
+                        <input type="text" id="Branch" name="Branch"   placeholder="Enter Branch">
 
                         <label>District:</label>
-                        <input type="text" id="District" name="District" style="width: 250px !important;" placeholder="Enter District">
+                        <input type="text" id="District" name="District"   placeholder="Enter District">
+                    </div>
+                    <div class="form-row">
                         <label>Contact Number:</label>
-                        <input type="number" id="ContactNumber" name="ContactNumber" style="width: 250px !important;" placeholder="Enter Contact Number">
+                        <input type="number" id="ContactNumber" name="ContactNumber"   placeholder="Enter Contact Number">
                         <label>GSTIN:</label>
-                        <input type="text" id="GSTIN" name="GSTIN" style="width: 250px !important;" placeholder="Enter GSTIN">
+                        <input type="text" id="GSTIN" name="GSTIN"   placeholder="Enter GSTIN">
                     </div>
 
-                    <div class="row">
+                    <div class="form-row">
                         <label>Area:</label>
-                        <input type="text" id="Area" name="Area" style="width: 250px !important;" placeholder="Enter Area">
+                        <input type="text" id="Area" name="Area"   placeholder="Enter Area">
 
                         <label>City:</label>
-                        <input type="text" id="City" name="City" style="width: 250px !important;" placeholder="Enter City">
+                        <input type="text" id="City" name="City"   placeholder="Enter City">
+                    </div>
+                    <div class="form-row">
                         <label>Shipping Remote:</label>
-                        <input type="text" id="ShippingRemote" name="ShippingRemote" style="width: 250px !important;">
+                        <input type="text" id="ShippingRemote" name="ShippingRemote"  >
                         <label>Other References:</label>
-                        <input type="text" id="OtherReferences" name="OtherReferences" style="width: 250px !important;" placeholder="Enter References">
-                    </div>
-                </div>
-
-            </div>
-
-           <div id="form2" class="shipping-form" style="display: none;">
-            <div style="display: flex;margin-left: 73px;">
-                <div class="row">
-                        <label>Transporter ID:</label>
-                        <input type="text" id="TransporterID" name="TransporterID" style="width: 250px !important;" placeholder="Enter Transporter ID">
-                       
-                        <label>Mode Of Shipment:</label>
-                        <select id="ModeOfShipment" name="ModeOfShipment" style="padding: 5px;width: 250px !important;">
-                            <option value="">Select Mode of Shipment</option>
-                            <option value="Air">Air</option>
-                            <option value="Road">Road</option>
-                            <option value="Rail">Rail</option>
-                            <option value="Sea">Sea</option>
-                        </select>
-
-                         <label>Transport Document Number:</label>
-                        <input type="text" id="" name="TransporterDocumentNumber" style="width: 250px !important;" placeholder="Enter Transporter Doc Number">
-                        <label>GR.Number:</label>
-                        <input type="text" id="GRNumber" name="GRNumber" style="width: 250px !important;" placeholder="Enter GR Number">
-                        <label>Number Of Cartons:</label>
-                        <input type="number" id="NumberOfCartons" name="NumberOfCartons" style="width: 250px !important;" placeholder="Enter Cartons">
+                        <input type="text" id="OtherReferences" name="OtherReferences"   placeholder="Enter References">
                     </div>
 
-                    <div class="row">
-                        <label>Transporter Name:</label>
-                        <input type="text" id="TransporterName" name="TransporterName" style="width: 250px !important;" placeholder="Enter Transporter Name">
-
-                        <label>Vehicle Type:</label>
-                        <input type="text" id="VehicleType" name="VehicleType" style="width: 250px !important;" placeholder="Enter Type Of Vehicle">
-                        <label>Transporter Document Date:</label>
-                        <input type="date" id="" name="TransporterDocumentDate" style="width: 250px !important;">
-                        <label>Net Weight:</label>
-                        <input type="number" id="NetWeight" name="NetWeight" style="width: 250px !important;" placeholder="Enter Net Weight">
-                        <label>Transaction Type:</label>
-                        <input type="text" id="TransactionType" name="TransactionType" style="width: 250px !important;" placeholder="Enter Transaction Type">
+                    <div class="button">
+                      <button> Create Invoice </button>
                     </div>
-
-                    <div class="row">
-                        <label>Distance (KM):</label>
-                        <input type="number" id="DistanceKM" name="DistanceKM" style="width: 250px !important;" placeholder="Enter Distance(KM)">
-
-                        <label>Vehicle Number:</label>
-                        <input type="text" id="VehicleNumber" name="VehicleNumber" style="width: 250px !important;" placeholder="Enter Vehicle Number">
-                        <label> Time Of Supply :</label>
-                        <input type="time" id="TimeOfSupply" name="TimeOfSupply" style="width: 250px !important;">
-                        <label>Gross Weight:</label>
-                        <input type="number" id="GrossWeight" name="GrossWeight" style="width: 250px !important;" placeholder="Enter Gross Weight">
-
-                        <label>Freight charges:</label>
-                        <select id="FreightCharges" name="FreightCharges" style="padding: 5px;width: 250px !important;">
-                            <option value="">Select</option>
-                            <option value="Paid">Paid</option>
-                            <option value="Unpaid">Unpaid</option>
-
-                        </select>
-
-                    </div>
-                </div>
-  
-            </div>
-
-            <div id="form3" class="shipping-form" style="display: none;">
-            <!-- Dispatch Form Content -->
-
-
-
-            <div style="display: flex;margin-left: 73px;">
-                <div class="row">
-                        <label>Location Name:</label>
-                        <input type="text" id="AddressLine1" name="AddressLine1" style="width: 250px !important;" placeholder="Enter Location">
-                        <label>Districts:</label>
-                        <input type="text" id="District" name="District" style="width: 250px !important;" placeholder="Enter Districts">
-
-                    </div>
-
-                    <div class="row">
-                        <label>Area :</label>
-                        <input type="text" id="Area" name="Area" style="width: 250px !important;" placeholder="Enter Area">
-
-                        <label>City:</label>
-                        <input type="text" id="City" name="City" style="width: 250px !important;" placeholder="Enter City">
-
-
-                    </div>
-
-                    <div class="row">
-                        <label>State:</label>
-                        <input type="text" id="State" name="State" style="width: 250px !important;" placeholder="Enter State">
-
-                        <label>PIN Code:</label>
-                        <input type="text" id="Pincode" name="Pincode" style="width: 250px !important;" placeholder="Enter PIN Code">
-
-                    </div>
-                </div>
-
-         
-
-
-            </div>
-        
-            <div id="form4" class="shipping-form" style="display: none;">
-             
-
-
-
-                <div style="display: flex;margin-left: 73px;">
-                    <div class="row">
-                        <label>Corrier Details:</label>
-                        <input type="text" id="CourierDetail" name="CourierDetail" style="width: 250px !important;" placeholder="Enter Corrier Details">
-
-                    </div>
-
-                    <div class="row">
-                        <label>Corrier Company:</label>
-                        <input type="text" id="CourierCompany" name="CourierCompany" style="width: 250px !important;" placeholder="Enter Company">
-
-
-
-                    </div>
-
-                    <div class="row">
-                        <label>Tracking Number:</label>
-                        <input type="text" id="TrackingNumber" name="TrackingNumber" style="width: 250px !important;" placeholder="Enter Tracking Number">
-
-
-                    </div>
-                </div>
-
-
-            </div>
-
-
-           </div>
-        <div>
-        <button class="button" style="margin-top: 19px;margin-left: 41%;margin-bottom: 16px; background-color:#138496;color: white;"> Create Invoice </button>
         </div>
-    
+  </div>
 </form>
+<script>
+    const tds = document.getElementById("applyTDS");
+    const tcs = document.getElementById("applyTCS");
+    tds.addEventListener("click",function(){
+        document.getElementById("tds").style.display = "block";
+        document.getElementById("tcs").style.display = "none";    
+    });
+    tcs.addEventListener("click",function(){
+        document.getElementById("tcs").style.display = "block";
+        document.getElementById("tds").style.display = "none";
+    });
+    </script>
 <script>
     document.addEventListener("DOMContentLoaded", function () {
         const buttons = {

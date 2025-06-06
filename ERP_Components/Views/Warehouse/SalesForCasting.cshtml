@@ -44,7 +44,7 @@
 						<div class="table-button">
 
 							<button onclick="viewDetails('@x.RequisitionId')">View</button>
-							<button onclick="location.href='@Url.Action("SentToProduction", "Warehouse", new { RequisitionID = @x.RequisitionId }, null)'">Send</button>
+							<button class=" send-btn" data-RequisitionID ="@x.RequisitionId">Send</button>
 
 
 
@@ -61,6 +61,31 @@
 
 
 </div>
+<script>
+	document.addEventListener("DOMContentLoaded", function () {
+		const dispatchButtons = document.querySelectorAll(".send-btn");
+
+		dispatchButtons.forEach(button => {
+			button.addEventListener("click", function () {
+				const RequisitionId = this.getAttribute("data-RequisitionID");
+
+				Swal.fire({
+					title: "Are you sure?",
+					text: "You are about to send this production order.",
+					icon: "warning",
+					showCancelButton: true,
+					confirmButtonColor: "#3085d6",
+					cancelButtonColor: "#d33",
+					confirmButtonText: "Yes, Send it!"
+				}).then((result) =>  {
+							const url = `/Warehouse/SentToProduction?RequisitionID=${RequisitionId}`;
+							window.location.href = url;
+						});
+					
+			});
+		});
+	});
+</script>
 
 
 

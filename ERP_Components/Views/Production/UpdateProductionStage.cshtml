@@ -22,109 +22,42 @@
     </div>
 </div>
 
-    <div class="table">
-        <table>
-            <thead>
-                <tr>
-                    <th>Stage</th>
-                    <th>Work</th>
-                    <th>Time</th>
-                    <th>Status</th>
+<div class="table">
+    <table>
+        <thead>
+            <tr>
+                <th>Stage</th>
+                <th>Work</th>
+                <th>Time</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (var i = 0; i < Model.materials.Count; i++)
+            {
+                var v = Model.materials[i];
+                <tr data-id="@v">
+                    <td>Stage @v.stage</td>
+                    <td>@v.stageWork</td>
+                    <td>@v.stageTime</td>
+                    <td>@v.status</td>
+
+
                 </tr>
-            </thead>
-            <tbody>
-                @for (var i = 0; i < Model.materials.Count; i++)
-                {
-                    var v = Model.materials[i];
-                    <tr data-id="@v">
-                        <td>Stage @v.stage</td>
-                        <td>@v.stageWork</td>
-                        <td>@v.stageTime</td>
-                        <td>@v.status</td>
-                        @* <td>@v.productStatus</td> *@
+            }
 
-                    </tr>
-                }
-
-            </tbody>
-        </table>
-    </div>
+        </tbody>
+    </table>
+</div>
 
 <div class="button">
     <button style="" type="button" id="nextStageBtn">Next Stage</button>
-    <button style=" display:none;" id="completeBtn" type="button" onclick="location.href='@Url.Action("MarkProductionComplete","Production")'">Complete</button>
+    <button style=" display:none;" id="completeBtn" type="button" >Complete</button>
 
 </div>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
-$(document).ready(function () {
-    $("#nextStageBtn").click(function () {
-        const dataToSend = {
-            productId: $("#productId[name='productId']").val(),
-            quantity: $("#quantity").val(),
-            productionOrderId: $("#productionOrder[name='productionOrderId']").val()
-        };
-
-        $.ajax({
-            url: '@Url.Action("GoToNextStage", "Production")',
-            type: 'POST',
-            data: dataToSend,
-            success: function (response) {
-                $("table tbody").empty();
-                let isLastStageComplete = false;
-
-                $.each(response, function (i, v) {
-                    const row = `
-<tr>
-    <td>Stage ${v.stage}</td>
-    <td>${v.stageWork}</td>
-    <td>${v.stageTime}</td>
-    <td>${v.status}</td>
-</tr>`;
-                    $("table tbody").append(row);
-
-                    if (i === response.length - 1 && v.status === "COMPLETED") {
-                        isLastStageComplete = true;
-                    }
-                });
-
-                if (isLastStageComplete) {
-                    $("#nextStageBtn").hide();
-                    $("#completeBtn").show();
-                } else {
-                    $("#nextStageBtn").show();
-                    $("#completeBtn").hide();
-                }
-            },
-            error: function (xhr, status, error) {
-                alert("Error advancing stage: " + error);
-            }
-        });
-    });
-
-    // $("#completeBtn").click(function () {
-       
-
-    //     $.ajax({
-    //         url: '@Url.Action("MarkProductionComplete", "Production")',
-    //         type: 'POST',
-        
-    //         // success: function (response) {
-    //         //     alert("Production marked as complete!");
-    //         //     location.reload();
-    //         // },
-    //         error: function (xhr, status, error) {
-    //             alert("Error: " + error);
-    //         }
-    //     });
-    // });
-});
-</script>
-
-
-
-@* <script>
     $(document).ready(function () {
         $("#nextStageBtn").click(function () {
             const dataToSend = {
@@ -134,32 +67,58 @@ $(document).ready(function () {
             };
 
             $.ajax({
-                url: '@Url.Action("GoToNextStage", "Production")', 
+                url: '@Url.Action("GoToNextStage", "Production")',
                 type: 'POST',
                 data: dataToSend,
-                       
-
                 success: function (response) {
-                  
                     $("table tbody").empty();
+                    let isLastStageComplete = false;
 
-                 
                     $.each(response, function (i, v) {
-                        const row = `<tr>
-                                        <td>Stage ${v.stage}</td>
-                                        <td>${v.stageWork}</td>
-                                        <td>${v.stageTime}</td>
-                                        <td>${v.status}</td>
-                                    </tr>`;
+                        const row = `
+    <tr>
+        <td>Stage ${v.stage}</td>
+        <td>${v.stageWork}</td>
+        <td>${v.stageTime}</td>
+        <td>${v.status}</td>
+    </tr>`;
                         $("table tbody").append(row);
+
+                        if (i === response.length - 1 && v.status === "COMPLETED") {
+                            isLastStageComplete = true;
+                        }
                     });
+
+                    if (isLastStageComplete) {
+                        $("#nextStageBtn").hide();
+                        $("#completeBtn").show();
+                    } else {
+                        $("#nextStageBtn").show();
+                        $("#completeBtn").hide();
+                    }
                 },
                 error: function (xhr, status, error) {
                     alert("Error advancing stage: " + error);
                 }
             });
         });
+
+
     });
 </script>
-
- *@
+<script>
+    const completedorder = document.getElementById("completeBtn");
+    completedorder.addEventListener("click", function(){
+                        Swal.fire({
+                            title: "Completed",
+                            text: "Your production is completed",
+                            icon: "success",
+                            timer: 1500,
+                            timerProgressBar: true,
+                            showConfirmButton: false
+                        }).then(() => {
+                            const url = `/Production/MarkProductionComplete`;
+                            window.location.href = url;
+                        });
+    });
+</script>

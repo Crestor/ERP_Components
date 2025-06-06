@@ -6,6 +6,8 @@
 
 @model List<Production>
 <link rel="stylesheet" href="~/css/Product.css">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 
 <div class="button-container" style="margin-bottom:20px; display:flex; justify-content:space-around">
     <button onclick="showSection('pending')">Pending</button>
@@ -79,8 +81,8 @@
                         <td>@x.createdAt.ToShortDateString()</td>
                         <td>
                             <div class="table-button">
-                                <button onclick="location.href='@Url.Action("DispatchProductionOrder","Production", new { ProductionOrderId = x.productionOrderId, productId = @x.productId })'">Dispatch</button>
-                       </div>
+                                <button class="btn btn-primary dispatch-btn" data-productionid="@x.productionOrderId" data-productid="@x.productId">Dispatch   </button>
+                            </div>
 
                        </td>
                     </tr>
@@ -137,6 +139,42 @@
     document.addEventListener("DOMContentLoaded", function () {
         var sectionId = localStorage.getItem("selectedSection") || "pending";
         showSection(sectionId);
+    });
+</script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const dispatchButtons = document.querySelectorAll(".dispatch-btn");
+
+        dispatchButtons.forEach(button => {
+            button.addEventListener("click", function () {
+                const productId = this.getAttribute("data-productid");
+                const productionOrderId = this.getAttribute("data-productionid");
+
+                Swal.fire({
+                    title: "Are you sure?",
+                    text: "You are about to dispatch this production order.",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#3085d6",
+                    cancelButtonColor: "#d33",
+                    confirmButtonText: "Yes, dispatch it!"
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        Swal.fire({
+                            title: "Dispatched!",
+                            text: "Your file has been dispatched.",
+                            icon: "success",
+                            timer: 1500,
+                            timerProgressBar: true,
+                            showConfirmButton: false
+                        }).then(() => {
+                            const url = `/Production/DispatchProductionOrder?productId=${productId}&productionOrderId=${productionOrderId}`;
+                            window.location.href = url;
+                        });
+                    }
+                });
+            });
+        });
     });
 </script>
 

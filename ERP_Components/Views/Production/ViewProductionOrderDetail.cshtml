@@ -69,9 +69,21 @@
         }
         else
         {
-            <button  type="submit">Start Production</button>
+            <button onclick="popup()" type="submit">Start Production</button>
         }
     </div>
 </form>
 
 
+<script>
+    function popup(){
+         Swal.fire({
+            title: "Production",
+            text: "Your Production is started",
+            icon: "success",
+            timer: 1500,
+            timerProgressBar: true,
+            showConfirmButton: false
+         });
+    }
+</script>
