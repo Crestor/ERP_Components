@@ -1074,7 +1074,7 @@ GrossTotal=@GrossTotal,
                 SqlCommand cmd = new SqlCommand();
                 cmd.CommandType = System.Data.CommandType.Text;
 
-                cmd.CommandText = "SELECT q.QuotationID, i.InvoiceID, i.InvoiceDate, q.GrossTotal, i.Status, i.InvoiceNumber, i.EWayBill, c.ContactName, c.Phone FROM CustomerQuotation q JOIN Invoice i ON q.QuotationID = i.QuotationID JOIN Customers c ON c.CustomerID = q.CustomerID WHERE i.Status = 'Unpaid';";
+                cmd.CommandText = "SELECT q.QuotationID, i.InvoiceID, i.InvoiceDate, q.GrossTotal, i.Status, i.InvoiceNumber, i.EWayBill, c.CustomerName, c.Phone FROM CustomerQuotation q JOIN Invoice i ON q.QuotationID = i.QuotationID JOIN Customers c ON c.CustomerID = q.CustomerID WHERE i.Status = 'Unpaid';";
 
                 cmd.Connection = connection;
 
@@ -1094,7 +1094,7 @@ GrossTotal=@GrossTotal,
                         CustomerName = reader["CustomerName"] != DBNull.Value ? (string)reader["CustomerName"] : string.Empty,
                         InvoiceNumber = reader["InvoiceNumber"] != DBNull.Value ? (string)reader["InvoiceNumber"] : string.Empty,
                         EWayBill = reader["EWayBill"] != DBNull.Value ? (string)reader["EWayBill"] : string.Empty,
-                        ContactNumber = reader["Phone"] != DBNull.Value ? (long)reader["Phone"] : 0,
+                        ContactNumber = reader["Phone"] != DBNull.Value ? Convert.ToInt64(reader["Phone"]) : 0,
 
                     });
                 }
