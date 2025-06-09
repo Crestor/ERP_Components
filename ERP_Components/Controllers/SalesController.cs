@@ -1,6 +1,7 @@
 ﻿
 using ERP_Component_DAL.Models;
 using ERP_Component_DAL.Services;
+using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ERP_Components.Controllers
@@ -205,6 +206,18 @@ namespace ERP_Components.Controllers
 
             return RedirectToAction("ManageInvoice");
         }
+
+        public IActionResult DispatchInvoice(Guid InvoiceID)
+        {
+            return View(InvoiceID);
+        }
+
+        public IActionResult AddDispatchDetails(Invoice dispatch)
+        {
+            //TODO: Write service to save dispatch details
+            return RedirectToAction("ManageInvoice");
+        }
+
         public IActionResult CancelInvoice(Invoice I, Guid InvoiceID)
         {
             salesServices.CancelInvoice(I, InvoiceID);
