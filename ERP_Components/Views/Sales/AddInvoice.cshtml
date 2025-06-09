@@ -5,10 +5,14 @@
     Layout = "~/Views/Shared/_LayoutINV.cshtml";
 }
 <link rel="stylesheet" href="~/css/ProductTwo.css" />
-
+<style>
+     #secondSection, thirdSection{
+        display:none;
+    }
+</style>
 @model List<Invoice>
 <form method="post" asp-action="SetAddInvoice" asp-controller="Sales" onsubmit="savedInvoice()">
- <div>
+ <div id="firstSection">
     <div class="form-section">
         <h3>Basic Details</h3>
             <div class="form-row">
@@ -92,48 +96,44 @@
             </table>
         </div>
 
-            <div class="form-section">                
-                    <p>Total Amount:</p><span id="totalPriceBeforeDiscount" style="margin-left: 10px;"></span><br />
+            <div class="form-section" style="display:flex;justify-content:space-around">                
+                    <p><strong>Total Amount:</strong><br /><span id="totalPriceBeforeDiscount"></span></p>
 
-                <p>Total Discount (%):</p><span id="totalDiscountPercent" style="margin-left: 10px;"></span><br>
+                <p><strong> Total Discount (%):</strong> <br /><span id="totalDiscountPercent" ></span></p>
                    
-                <p>Total Discount Amount:</p><span id="totalDiscountAmount" style="margin-left: 10px;"></span><br>
+                <p><strong>Total Discount Amount:</strong><br /><span id="totalDiscountAmount" ></span></p>
 
 
-             @* 
-                     <label class="form-label">Gross Total:</label>
-                    <input type="number" class="form-control" id="grossTotal" name="GrossTotal" value="@Model[0].GrossTotal" style="width: 199px;" readonly> *@
-                    <p>Gross Total: </p><s>@Model[0].GrossTotal</s><br />
-                    <p> Total Taxable Amount:</p> <span id="totalTaxableAmount" style="margin-left: 10px;"></span><br />
+                    <p><strong>Gross Total:</strong><br /><span>@Model[0].GrossTotal</span> </p>
+                    <p><strong>Total Taxable Amount:</strong><br /><span id="totalTaxableAmount" ></span></p> 
 
             
                     <input type="hidden" name="QuotationID" value="@Model[0].QuotationID" />
                     <input type ="hidden" name="TermConditionID" value="@Model[0].TermConditionID" />
 
           </div>
+          <div class="button2">
+              <button type="button" id="tosecond">Next</button>
+          </div>
  </div>
-        <!-- Tax Section -->
- <div>
+ <div id="secondSection">
 
-            <div class="form-section">
-                <p>Total Amount:</p><span id="totalPriceBeforeDiscount" style="margin-left: 10px;"></span><br />
+           <div class="form-section" style="display:flex;justify-content:space-around">                
+                    <p><strong>Total Amount:</strong><br /><span id="totalPriceBeforeDiscount"></span></p>
 
-                <p>Total Discount (%):</p><span id="totalDiscountPercent" style="margin-left: 10px;"></span><br>
-
-                <p>Total Discount Amount:</p><span id="totalDiscountAmount" style="margin-left: 10px;"></span><br>
-
-
-                @* 
-                             <label class="form-label">Gross Total:</label>
-                            <input type="number" class="form-control" id="grossTotal" name="GrossTotal" value="@Model[0].GrossTotal" style="width: 199px;" readonly> *@
-                <p>Gross Total: </p><s>@Model[0].GrossTotal</s><br />
-                <p> Total Taxable Amount:</p> <span id="totalTaxableAmount" style="margin-left: 10px;"></span><br />
+                <p><strong> Total Discount (%):</strong> <br /><span id="totalDiscountPercent" ></span></p>
+                   
+                <p><strong>Total Discount Amount:</strong><br /><span id="totalDiscountAmount" ></span></p>
 
 
-                <input type="hidden" name="QuotationID" value="@Model[0].QuotationID" />
-                <input type="hidden" name="TermConditionID" value="@Model[0].TermConditionID" />
+                    <p><strong>Gross Total:</strong><br /><input name="GrossTotal" id="grossTotal" type="number" value="@Model[0].GrossTotal" >< </p>
+                    <p><strong>Total Taxable Amount:</strong><br /><span id="totalTaxableAmount" ></span></p> 
 
-            </div>
+            
+                    <input type="hidden" name="QuotationID" value="@Model[0].QuotationID" />
+                    <input type ="hidden" name="TermConditionID" value="@Model[0].TermConditionID" />
+
+          </div>
 
             <div class="form-section">
                 <h3>Invoice TDS TCS Setting</h3>
@@ -141,26 +141,32 @@
                         <input type="radio" name="applyTax" id="applyTCS">
                         Apply TCS
                     </label>
-                        <div id="tcs" style="display:none">
-                            <label class="form-label">Applied %</label>
-                            <input type="number" class="form-control" id="tcsPercentage">
-                            <label class="form-label">Collect Amount</label>
-                            <input type="number" class="form-control" id="tcsAmount" readonly>
-
-                            <button type="button" class="button" id="tcsSubmit" style="background-color:#138496;color: white;">Save changes</button>
-
-                        </div>
-
                     <label for="applyTDS" class="radio-label">
                         <input type="radio" name="applyTax" id="applyTDS">
                         Apply TDS
                     </label>
-                        <div id="tds" style="display:none">
-                            <label class="form-label">Applied %</label>
-                            <input type="number" class="form-control" id="tdsPercentage">
-                            <label class="form-label">Deduct Amount</label>
-                            <input type="number" class="form-control" id="tdsAmount" readonly>
-                            <button type="button" class="button" id="tdsSubmit" style="background-color:#138496;color: white;">Save changes</button>
+                        <div id="tcs" class="form-section" style="display:none">
+                            <div class="form-row">
+                                <label class="form-label">Applied %</label>
+                                <input type="number" class="form-control" id="tcsPercentage">
+                                <label class="form-label">Collect Amount</label>
+                                <input type="number" class="form-control" id="tcsAmount" readonly>
+                            </div>
+                            <div class="button2">
+                            <button type="button" id="tcsSubmit" style="background-color:#138496;color: white;">Save changes</button>
+                            </div>
+                        </div>
+
+                        <div id="tds" class="form-section" style="display:none">
+                            <div class="form-row">
+                                <label class="form-label">Applied %</label>
+                                <input type="number" class="form-control" id="tdsPercentage">
+                                <label class="form-label">Deduct Amount</label>
+                                <input type="number" class="form-control" id="tdsAmount" readonly>
+                            </div>
+                            <div class="button2">
+                              <button type="button" id="tdsSubmit" style="background-color:#138496;color: white;">Save changes</button>
+                            </div>
                         </div>
 
             </div>
@@ -195,8 +201,12 @@
                                     </select>
                             </div>
                    </div>
+                 <div class="button2">
+                     <button type="button" id="toFirst">Previous</button>
+                     <button type="button" id="toThird">Next</button>
+                 </div>
  </div>
- <div>
+ <div id="thirdSection" style="display:none">
         <div class="form-section">
             <h3>Shipping Details</h3>
                   <div class="form-row">
@@ -240,12 +250,47 @@
                         <input type="text" id="OtherReferences" name="OtherReferences"   placeholder="Enter References">
                     </div>
 
-                    <div class="button">
-                      <button> Create Invoice </button>
-                    </div>
+                    
+        </div>
+        <div class="button2">
+            <button type="button" id="tosecondfromthird">Previous</button>
+            <button type="submit">Create</button>
         </div>
   </div>
 </form>
+<script>
+    const firstsection = document.getElementById("firstSection");
+    const secondsection = document.getElementById("secondSection");
+    const thirdsection = document.getElementById("thirdSection");
+    const tosecond = document.getElementById("tosecond");
+    const tofirst = document.getElementById("toFirst");
+    const tothird = document.getElementById("toThird");
+    const tosecondfromthird = document.getElementById("tosecondfromthird");
+    tofirst.style.backgroundColor = "#e0a800";
+    tosecondfromthird.style.backgroundColor = "#e0a800";
+    tosecond.addEventListener("click", function () {
+        firstsection.style.display = "none";
+        secondsection.style.display = "block";
+        thirdsection.style.display = "none";
+    });
+    tofirst.addEventListener("click", function () {
+        firstsection.style.display = "block";
+        secondsection.style.display = "none";
+        thirdsection.style.display = "none";
+    });
+    tothird.addEventListener("click", function () {
+        firstsection.style.display = "none";
+        secondsection.style.display = "none";
+        thirdsection.style.display = "block";
+    });
+    tosecondfromthird.addEventListener("click", function () {
+        firstsection.style.display = "none";
+        secondsection.style.display = "block";
+        thirdsection.style.display = "none";
+    });
+
+
+</script>
 <script>
     const tds = document.getElementById("applyTDS");
     const tcs = document.getElementById("applyTCS");
@@ -258,84 +303,12 @@
         document.getElementById("tds").style.display = "none";
     });
     </script>
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-        const buttons = {
-            option1: "form1",
-            option2: "form2",
-            option3: "form3",
-            option4: "form4"
-        };
 
-        for (let btnId in buttons) {
-            document.getElementById(btnId).addEventListener("click", function () {
-                // Hide all forms
-                document.querySelectorAll(".shipping-form").forEach(form => {
-                    form.style.display = "none";
-                });
-
-                // Show the corresponding form
-                const targetForm = document.getElementById(buttons[btnId]);
-                if (targetForm) {
-                    targetForm.style.display = "block";
-                }
-            });
-        }
-    });
-</script>
-
-@* <script>
-       // Prevent default action for option buttons (do nothing on click)
-    document.querySelectorAll('.shipping-options button').forEach(button => {
-        button.addEventListener('click', function (e) {
-            e.preventDefault(); // Prevent any action on click
-        });
-    });
-
-
-    // Next buttons logic
-    const nextButtons = [
-        { id: "shippedTo", current: "form1", next: "form2" },
-        { id: "transportfm", current: "form2", next: "form3" },
-        { id: "button1", current: "form3", next: "form4" }
-    ];
-
-    nextButtons.forEach(button => {
-        document.getElementById(button.id)?.addEventListener('click', function (e) {
-            e.preventDefault();
-            document.getElementById(button.current).style.display = "none";
-            document.getElementById(button.next).style.display = "block";
-        });
-    });
-
-    // Previous buttons logic
-    const prevButtons = [
-        { id: "prev1", current: "form2", prev: "form1" },
-        { id: "prev2", current: "form3", prev: "form2" },
-        { id: "prev3", current: "form4", prev: "form3" }
-    ];
-
-    prevButtons.forEach(button => {
-        document.getElementById(button.id)?.addEventListener('click', function (e) {
-            e.preventDefault();
-            document.getElementById(button.current).style.display = "none";
-            document.getElementById(button.prev).style.display = "block";
-        });
-    });
-
-</script> *@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
-<script>
+ <script>
     $(document).ready(function () {
-        // Show TDS modal on radio button click
-        $('#applyTDS').on('change', function () {
-            if ($(this).is(':checked')) {
-                $('#tdsModal').modal('show');
-            }
-        });
-
         // Calculate TDS amount on % input
         $('#tdsPercentage').on('input', function () {
             let percent = parseFloat($(this).val());
@@ -407,7 +380,6 @@
     });
 
 
-
     
       function savedInvoice(){
                 Swal.fire({
@@ -419,6 +391,7 @@
     });
     }
 </script>
+ 
 <script>
     window.onload = function () {
         let totalPriceBeforeDiscount = 0;
@@ -449,6 +422,7 @@
         document.getElementById("totalTaxableAmount").textContent = totalTaxableAmount.toFixed(2);
     };
 </script>
+
 <script>
     $(document).ready(function () {
         // Show TCS modal on radio button click
@@ -504,319 +478,50 @@
         });
     });
 </script>
+ 
+ <script>
+ // Calculate TCS amount on % input
+$('#tcsPercentage').on('input', function () {
+    let percent = parseFloat($(this).val());
+    let totalTaxableAmount = 0;
 
-
-@* 
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-
-        // Function to calculate the sum of all taxable amounts
-        function getTotalTaxableAmount() {
-            let sum = 0;
-            document.querySelectorAll(".taxable-amount").forEach(cell => {
-                const value = parseFloat(cell.textContent || cell.innerText) || 0;
-                sum += value;
-            });
-            return sum;
+    $('.taxable-amount').each(function () {
+        let val = parseFloat($(this).text());
+        if (!isNaN(val)) {
+            totalTaxableAmount += val;
         }
-
-        // When TDS radio is selected, show modal and populate taxable total
-        document.getElementById("applyTDS").addEventListener("change", function () {
-            if (this.checked) {
-                const tdsModal = new bootstrap.Modal(document.getElementById("tdsModal"));
-                tdsModal.show();
-
-                const totalTaxable = getTotalTaxableAmount();
-                document.getElementById("tdsPercentage").value = "";
-                document.getElementById("tdsAmount").value = "";
-
-                // Store totalTaxable in a hidden field or in memory
-                document.getElementById("tdsModal").dataset.totalTaxable = totalTaxable;
-            }
-        });
-
-        // When user types percentage, calculate and show TDS amount
-        document.getElementById("tdsPercentage").addEventListener("input", function () {
-            const percentage = parseFloat(this.value) || 0;
-            const totalTaxable = parseFloat(document.getElementById("tdsModal").dataset.totalTaxable) || 0;
-            const tdsAmount = (totalTaxable * percentage) / 100;
-            document.getElementById("tdsAmount").value = tdsAmount.toFixed(2);
-        });
-
-        // Optional: Handle modal save button if needed
-        document.getElementById("tdsSubmit").addEventListener("click", function () {
-            // You can use tdsAmount value here if you want to update net payable, etc.
-        });
     });
+
+    if (!isNaN(percent)) {
+        let tcsAmount = (totalTaxableAmount * percent) / 100;
+        $('#tcsAmount').val(tcsAmount.toFixed(2));
+    } else {
+        $('#tcsAmount').val('');
+    }
+});
+
+// Handle TCS submit button
+$('#tcsSubmit').on('click', function () {
+    let percent = parseFloat($('#tcsPercentage').val());
+    let totalTaxableAmount = 0;
+
+    $('.taxable-amount').each(function () {
+        let val = parseFloat($(this).text());
+        if (!isNaN(val)) {
+            totalTaxableAmount += val;
+        }
+    });
+
+    if (!isNaN(percent)) {
+        let tcsAmount = (totalTaxableAmount * percent) / 100;
+        $('#tcsAmount').val(tcsAmount.toFixed(2));
+        $('#grossTotal').val((totalTaxableAmount + tcsAmount).toFixed(2));
+
+        // Optionally: set hidden fields for backend
+        $('#hiddenTcsPercentage').val(percent.toFixed(2));
+        $('#hiddenTcsAmount').val(tcsAmount.toFixed(2));
+
+        $('#tcsModal').modal('hide'); // if you are using a modal
+    }
+});
 </script>
- *@
-
-@* 
-     <script>
-        const tdsRadio = document.getElementById('applyTDS');
-        const tcsRadio = document.getElementById('applyTCS');
-        const tdsPopup = document.getElementById('tdsPopup');
-        const tdsPercentage = document.getElementById('tdsPercentage');
-        const tdsAmount = document.getElementById('tdsAmount');
-
-        // Example base amount
-        const baseAmount = 1000; // You can replace this with a dynamic value
-
-        tdsRadio.addEventListener('change', function () {
-            if (tdsRadio.checked) {
-                tdsPopup.style.display = 'block';
-            }
-        });
-
-        tcsRadio.addEventListener('change', function () {
-            if (tcsRadio.checked) {
-                tdsPopup.style.display = 'none';
-            }
-        });
-
-        // Calculate deducted amount on input
-        tdsPercentage.addEventListener('input', function () {
-            const percentage = parseFloat(tdsPercentage.value);
-            if (!isNaN(percentage)) {
-                const deducted = (baseAmount * percentage) / 100;
-                tdsAmount.value = deducted.toFixed(2);
-            } else {
-                tdsAmount.value = '';
-            }
-        });
-    </script>
-
- *@
-
-
-
-
-
-
-
-
-
-
-
-
-
-<script>
-    // Handle tab buttons (Shipped To, Transport, etc.)
-    // const buttons = document.querySelectorAll('.shipping-options button');
-    // const forms = document.querySelectorAll('.shipping-form');
-
-    // buttons.forEach((button, index) => {
-    //     button.addEventListener('click', () => {
-    //         forms.forEach(form => form.style.display = 'none');
-    //         const selectedForm = document.getElementById(`form${index + 1}`);
-    //         if (selectedForm) {
-    //             selectedForm.style.display = 'block';
-    //         }
-    //     });
-    // });
-
-    // Handle "Next ->" button inside each form
-    // const nextButtons = [
-    //     { id: "shippedTo", current: "form1", next: "form2" },
-    //     { id: "transportfm", current: "form2", next: "form3" },
-    //     { id: "button1", current: "form3", next: "form4" }
-    // ];
-
-    // nextButtons.forEach(button => {
-    //     const button = document.getElementById(button.id);
-    //     button.addEventListener('click', function (e) {
-    //         e.preventDefault(); // Prevent form submission
-    //         document.getElementById(button.current).style.display = "none";
-    //         document.getElementById(button.next).style.display = "block";
-    //     });
-    // });
-</script>
-
-
-
-
-
-
-
-@* <script>
-    // Handle showing/hiding the forms
-    const buttons = document.querySelectorAll('.shipping-options button');
-    const forms = document.querySelectorAll('.shipping-form');
-
-    buttons.forEach((button, index) => {
-        button.addEventListener('click', () => {
-            forms.forEach(form => form.style.display = 'none'); // Hide all
-            const selectedForm = document.getElementById(`form${index + 1}`);
-            if (selectedForm) {
-                selectedForm.style.display = 'block'; // Show selected
-            }
-        });
-    });
-</script> *@
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-@* <script> *@
-@* $(document).ready(function () { *@
-@*     // Show popup when TDS radio button is clicked *@
-@*     $("#applyTDS").click(function () { *@
-@*         $("#tdsPopup").show(); *@
-@*     }); *@
-
-@*     // Calculate deduct amount when TDS percentage is entered *@
-@*     $("#tdsPercentage").on("input", function () { *@
-@*         var grossTotal = parseFloat($("#grossTotal").val()); *@
-@*         var tdsPercentage = parseFloat($(this).val()); *@
-@*         var tdsAmount = (grossTotal * tdsPercentage) / 100; *@
-@*         $("#tdsAmount").val(tdsAmount.toFixed(2)); *@
-@*     }); *@
-
-@*     // Submit TDS details *@
-@*     $("#tdsSubmit").click(function () { *@
-@*         // Add your logic here to submit TDS details *@
-@*         $("#tdsPopup").hide(); *@
-@*     }); *@
-
-@*     // Hide popup when TCS radio button is clicked *@
-@*     $("#applyTCS").click(function () { *@
-@*         $("#tdsPopup").hide(); *@
-@*     }); *@
-@* }); *@
-@* </script> *@
-@* <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script>
-        $("#button2").click(function () {
-        var formData = {
-            CompanyName: $("#CompanyName").val(),
-            State: $("#State").val(),
-            PinCode: $("#PinCode").val(),
-            ConsignmentNumber: $("#ConsignmentNumber").val(),
-            Branch: $("#Branch").val(),
-            Districts: $("#Districts").val(),
-            ContactNumber: $("#ContactNumber").val(),
-            GSTIN: $("#GSTIN").val(),
-            Area: $("#Area").val(),
-            City: $("#City").val(),
-            ShippingRemote: $("#ShippingRemote").val(),
-            OtherReferences: $("#OtherReferences").val(),
-             TransporterID: $("#TransporterID").val(),
-             ModeOfShipment: $("#ModeOfShipment").val(),
-
-
-             GRNumber: $("#GRNumber").val(),
-             NumberOfCartons: $("#NumberOfCartons").val(),
-             TransporterName: $("#TransporterName").val(),
-             VehicleType: $("#VehicleType").val(),
-             TransportContact: $("#TransportContact").val(),
-             NetWeight: $("#NetWeight").val(),
-             TransactionType: $("#TransactionType").val(),
-             DistanceKM: $("#DistanceKM").val(),
-             VehicleNumber: $("#VehicleNumber").val(),
-             TimeOfSupply: $("#TimeOfSupply").val(),
-             GrossWeight: $("#GrossWeight").val(),
-             FreightCharges: $("#FreightCharges").val,
-
-			   LocationName: $("#LocationName").val(),
-				DispatchDistrict: $("#DispatchDistrict").val(),
-			  DispatchArea: $("#DispatchArea").val(),
-			  DispatchCity: $("#DispatchCity").val(),
-			  DispatchState: $("#DispatchState").val(),
-			  DispatchPINCode: $("#DispatchPINCode").val(),
-
-			 CourierDetail: $("#CourierDetail").val(),
-			 CourierCompany: $("#CourierCompany").val(),
-			 TrackingNumber: $("#TrackingNumber").val()
-
-
-        };
-
-        $.ajax({
-            type: "POST",
-            url: "/Home/SetAddInvoice",
-            data: formData,
-            success: function (response) {
-                alert("Shipping details saved successfully!");
-                    $("#CompanyName, #State, #PinCode, #ConsignmentNumber, #Branch, #Districts, #ContactNumber, #GSTIN, #Area, #City, #ShippingRemote, #OtherReferences,#TransporterID,#ModeOfShipment,#GRNumber,#NumberOfCartons,#TransporterName,#VehicleType,#TransportContact,#DistanceKM,#NetWeight,#TransactionType,#VehicleNumber,#TimeOfSupply,#GrossWeight,#FreightCharges,#LocationName,#DispatchDistrict,#DispatchArea,#DispatchCity,#DispatchState,#DispatchPINCode,#CourierDetail,#CourierCompany,#TrackingNumber ").val('');
-            },
-            error: function (xhr, status, error) {
-                console.log("Error: " + error);
-                alert("Something went wrong. Check console.");
-            }
-        });
-    });
-
-
-</script>  *@
-
-@* 
-     $("#transportfm").click(function () {
-        var formData = {
-            TransporterID: $("#TransporterID").val(),
-            ModeOfShipment: $("#ModeOfShipment").val(),
-
-            GRNumber: $("#GRNumber").val(),
-            NumberOfCartons: $("#NumberOfCartons").val(),
-            TransporterName: $("#TransporterName").val(),
-            VehicleType: $("#VehicleType").val(),
-            TransportContact: $("#TransportContact").val(),
-            NetWeight: $("#NetWeight").val(),
-            TransactionType: $("#TransactionType").val(),
-            DistanceKM: $("#DistanceKM").val(),
-            VehicleNumber: $("#VehicleNumber").val(),
-			TimeOfSupply: $("#TimeOfSupply").val(),
-			GrossWeight: $("#GrossWeight").val(),
-			FreightCharges: $("#FreightCharges").val()
-        };
-
-        $.ajax({
-            type: "POST",
-            url: "/Home/SetAddInvoice",
-            data: formData,
-            success: function (response) {
-                alert("Shipping details saved successfully!");
-                $("#TransporterID,#ModeOfShipment,#GRNumber,#NumberOfCartons,#TransporterName,#VehicleType,#TransportContact,#DistanceKM,#NetWeight,#TransactionType,#VehicleNumber,#TimeOfSupply,#GrossWeight,#FreightCharges").val('');
-            },
-            error: function (xhr, status, error) {
-                console.log("Error: " + error);
-                alert("Something went wrong. Check console.");
-            }
-        });
-    }); 
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        // TDS Modal Handling
-        const tdsRadio = document.getElementById('applyTDS');
-        const tdsModal = new bootstrap.Modal(document.getElementById('tdsModal'));
-
-        tdsRadio.addEventListener('change', function() {
-            if(this.checked) tdsModal.show();
-        });
-
-        // TDS Calculation
-        const tdsPercentage = document.getElementById('tdsPercentage');
-        const tdsAmount = document.getElementById('tdsAmount');
-        const baseAmount = 1000; // Example value
-
-        tdsPercentage.addEventListener('input', function() {
-            const percentage = parseFloat(this.value) || 0;
-            const deduction = (baseAmount * percentage) / 100;
-            tdsAmount.value = deduction.toFixed(2);
-        });
-    });
-</script>
-
-*@

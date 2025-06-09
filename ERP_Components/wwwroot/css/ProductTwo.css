@@ -258,12 +258,20 @@ input:focus {
     margin-top: 20px;
 }*/
 /*
-.button {
+*/
+/**/
+.button2 {
     width: 100%;
     display: flex;
     justify-content: end;
-}*/
-/**/
+    gap:5px;
+    padding:10px 35px 0px 0px;
+}
+.button2 button{
+    width:auto;
+    height:30px;
+    padding-inline:10px;
+}
 button {
     background-color: #138496;
     color: white;
