@@ -589,31 +589,120 @@
 
                         else if (Role == "Manager")
                         {
+                                <!-- Dashboard -->
+                                <li class="nav-item">
+                                    <a href="/Manager/Dashboard" class="nav-link">
+                                        <i class="fas fa-chart-line me-2"></i> <p>Dashboard</p>
+                                    </a>
+                                </li>
+
+                                <!-- View Vendor Quotation -->
+                                <li class="nav-item">
+                                    <a href="/Manager/ApproveVendorQuotation" class="nav-link">
+                                        <i class="fas fa-file-invoice me-2"></i> <p>View Vendor Quotation</p>
+                                    </a>
+                                </li>
+
+                                <!-- Purchase Module -->
+                                <li class="nav-item">
+                                    <a href="#" class="nav-link">
+                                        <i class="fas fa-shopping-cart me-2"></i> <p>Purchase Module <i class="fas fa-chevron-left float-end"></i></p>
+                                    </a>
+                                    <ul class="nav nav-treeview">
+                                        <li class="nav-item"><a href="#" class="nav-link ps-5"><i class="fas fa-users me-2"></i> Top Vendor and Customer</a></li>
+                                        <li class="nav-item"><a href="#" class="nav-link ps-5"><i class="fas fa-hourglass-half me-2"></i> Pending Purchase Order</a></li>
+                                        <li class="nav-item"><a href="#" class="nav-link ps-5"><i class="fas fa-balance-scale me-2"></i> Approve vs Rejected Quotation</a></li>
+                                    </ul>
+                                </li>
+
+                                <!-- Store Module -->
+                                <li class="nav-item">
+                                    <a href="#" class="nav-link">
+                                        <i class="fas fa-store me-2"></i> <p>Store Module <i class="fas fa-chevron-left float-end"></i></p>
+                                    </a>
+                                    <ul class="nav nav-treeview">
+                                        <li class="nav-item"><a href="#" class="nav-link ps-5"><i class="fas fa-chart-pie me-2"></i> Stock Summary</a></li>
+                                        <li class="nav-item"><a href="#" class="nav-link ps-5"><i class="fas fa-exchange-alt me-2"></i> Stock In / Out</a></li>
+                                        <li class="nav-item"><a href="#" class="nav-link ps-5"><i class="fas fa-box-open me-2"></i> Damaged and Lost Goods</a></li>
+                                    </ul>
+                                </li>
+
+                                <!-- Warehouse Module -->
+                                <li class="nav-item">
+                                    <a href="#" class="nav-link">
+                                        <i class="fas fa-warehouse me-2"></i> <p>Warehouse Module <i class="fas fa-chevron-left float-end"></i></p>
+                                    </a>
+                                    <ul class="nav nav-treeview">
+                                        <li class="nav-item"><a href="#" class="nav-link ps-5"><i class="fas fa-cube me-2"></i> Warehouse Capacity</a></li>
+                                        <li class="nav-item"><a href="#" class="nav-link ps-5"><i class="fas fa-cogs me-2"></i> Storage Initialization</a></li>
+                                        <li class="nav-item"><a href="#" class="nav-link ps-5"><i class="fas fa-truck-loading me-2"></i> Goods Movement & Report</a></li>
+                                    </ul>
+                                </li>
+
+                                <!-- Sales Module -->
+                                <li class="nav-item">
+                                    <a href="#" class="nav-link">
+                                        <i class="fas fa-tags me-2"></i> <p>Sales Module <i class="fas fa-chevron-left float-end"></i></p>
+                                    </a>
+                                    <ul class="nav nav-treeview">
+                                        <li class="nav-item"><a href="#" class="nav-link ps-5"><i class="fas fa-file-invoice-dollar me-2"></i> Sales Order Summary</a></li>
+                                        <li class="nav-item"><a href="#" class="nav-link ps-5"><i class="fas fa-star me-2"></i> Top Selling Product</a></li>
+                                        <li class="nav-item"><a href="#" class="nav-link ps-5"><i class="fas fa-chart-bar me-2"></i> Revenue by Product</a></li>
+                                    </ul>
+                                </li>
+
+                                <!-- Production Module -->
+                                <li class="nav-item">
+                                    <a href="#" class="nav-link">
+                                        <i class="fas fa-industry me-2"></i> <p>Production Module <i class="fas fa-chevron-left float-end"></i></p>
+                                    </a>
+                                    <ul class="nav nav-treeview">
+                                        <li class="nav-item">
+                                            <a href="#" class="nav-link ps-5">
+                                                <i class="fas fa-tasks me-2"></i> Total Production Order
+                                            </a>
+                                            <ul class="nav nav-treeview ps-5">
+                                                <li class="nav-item"><a href="#" class="nav-link"><i class="fas fa-clipboard-check me-2"></i> Status</a></li>
+                                                <li class="nav-item"><a href="#" class="nav-link"><i class="fas fa-times-circle me-2"></i> Waste / Defective Product</a></li>
+                                                <li class="nav-item"><a href="#" class="nav-link"><i class="fas fa-boxes me-2"></i> Total Output Quantity</a></li>
+                                            </ul>
+                                        </li>
+
+                                        <li class="nav-item">
+                                            <a href="#" class="nav-link ps-5">
+                                                <i class="fas fa-flask me-2"></i> Raw Material Consumption
+                                            </a>
+                                            <ul class="nav nav-treeview ps-5">
+                                                <li class="nav-item"><a href="#" class="nav-link"><i class="fas fa-file-invoice me-2"></i> Material Summary</a></li>
+                                                <li class="nav-item"><a href="#" class="nav-link"><i class="fas fa-box me-2"></i> Top Used Material</a></li>
+                                                <li class="nav-item"><a href="#" class="nav-link"><i class="fas fa-percentage me-2"></i> Cost by Material</a></li>
+                                            </ul>
+                                        </li>
+                                        <!-- Work Order Tracking -->
+                                        <li class="nav-item">
+                                            <a href="#" class="nav-link ps-5">
+                                                <i class="fas fa-clipboard-list me-2"></i> Work Order Tracking
+                                            </a>
+                                            <ul class="nav nav-treeview ps-5">
+                                                <li class="nav-item"><a href="#" class="nav-link ps-5"><i class="fas fa-calendar-alt me-2"></i> Work Date</a></li>
+                                                <li class="nav-item"><a href="#" class="nav-link ps-5"><i class="fas fa-balance-scale-left me-2"></i> Expected vs Actual Completion</a></li>
+                                            </ul>
+                                        </li>
+                                        <!-- Quality Control -->
+                                        <li class="nav-item">
+                                            <a href="#" class="nav-link ps-5">
+                                                <i class="fas fa-check-circle me-2"></i>Quality Control
+                                            </a>
+                                            <ul class="nav nav-treeview ps-5">
+                                                <li class="nav-item"><a href="#" class="nav-link ps-5"><i class="fas fa-bug me-2"></i> Defects Found</a></li>
+                                                <li class="nav-item"><a href="#" class="nav-link ps-5"><i class="fas fa-redo me-2"></i> Rework Report</a></li>
+                                                <li class="nav-item"><a href="#" class="nav-link ps-5"><i class="fas fa-search me-2"></i> QC Check Per Stage</a></li>
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                </li>
 
 
-
-                            <li class="nav-item">
-                                <a href="/Manager/Dashboard" class="nav-link">
-                                    <i class="fas fa-chart-line"></i>
-                                    <p>
-                                        Dashboard
-                                    </p>
-                                </a>
-
-                            </li>
-                            <li class="nav-item">
-                                <a href="/Manager/ApproveVendorQuotation" class="nav-link">
-                                    <i class="fas fa-tachometer-alt me-2"></i>
-                                    <p>
-                                        View Vendor Quotation
-                                    </p>
-                                </a>
-
-                            </li>
-
-
-
-                           
 
 
                         }
@@ -941,64 +1030,3 @@
 </body>
 
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

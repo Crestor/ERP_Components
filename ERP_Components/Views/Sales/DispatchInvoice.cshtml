@@ -1,5 +1,130 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@using ERP_Component_DAL.Models
+
 @{
+    ViewBag.Title = "Dispatch Invoice";
+    Layout = "~/Views/Shared/_LayoutINV.cshtml";
 }
+<link rel="stylesheet" href="~/css/Product.css" />
+
+<form asp-controller="Sales" asp-action="AddDispatchDetails" method="post">
+                        <div class="form-section">
+                            <h3>Transport/E-Way Bill</h3>
+                                <div class="form-row">
+                                    <label>Transporter ID:</label>
+                                    <input type="text" id="TransporterID" name="TransporterID" placeholder="Enter Transporter ID">
+
+                                    <label>Mode Of Shipment:</label>
+                                    <select id="ModeOfShipment" name="ModeOfShipment" style="padding: 5px;width: 250px !important;">
+                                        <option value="">Select Mode of Shipment</option>
+                                        <option value="Air">Air</option>
+                                        <option value="Road">Road</option>
+                                        <option value="Rail">Rail</option>
+                                        <option value="Sea">Sea</option>
+                                    </select>
+                                </div>
+                                <div class="form-row">
+
+                                    <label>Transport Document Number:</label>
+                                    <input type="text" id="" name="TransporterDocumentNumber" placeholder="Enter Transporter Doc Number">
+                                    <label>GR.Number:</label>
+                                    <input type="text" id="GRNumber" name="GRNumber" placeholder="Enter GR Number">
+                                  </div>
+                                  <div class="form-row">
+                                        <label>Number Of Cartons:</label>
+                                        <input type="number" id="NumberOfCartons" name="NumberOfCartons" placeholder="Enter Cartons">
+                                        <label>Transporter Name:</label>
+                                        <input type="text" id="TransporterName" name="TransporterName" placeholder="Enter Transporter Name">
+                                  </div>
+                                    <div class="form-row">
+                                        <label>Vehicle Type:</label>
+                                        <input type="text" id="VehicleType" name="VehicleType" placeholder="Enter Type Of Vehicle">
+                                        <label>Transporter Document Date:</label>
+                                        <input type="date" id="" name="TransporterDocumentDate">
+                                    </div>
+                                    <div class="form-row">
+                                        <label>Net Weight:</label>
+                                        <input type="number" id="NetWeight" name="NetWeight" placeholder="Enter Net Weight">
+                                        <label>Transaction Type:</label>
+                                        <input type="text" id="TransactionType" name="TransactionType" placeholder="Enter Transaction Type">
+                                    </div>
+
+                                   <div class="form-row">
+                                        <label>Distance (KM):</label>
+                                        <input type="number" id="DistanceKM" name="DistanceKM" placeholder="Enter Distance(KM)">
+
+                                        <label>Vehicle Number:</label>
+                                        <input type="text" id="VehicleNumber" name="VehicleNumber" placeholder="Enter Vehicle Number">
+    
+                                    </div>
+                                   <div class="form-row">
+                      
+                                        <label> Time Of Supply :</label>
+                                        <input type="time" id="TimeOfSupply" name="TimeOfSupply">
+                                        <label>Gross Weight:</label>
+                                        <input type="number" id="GrossWeight" name="GrossWeight" placeholder="Enter Gross Weight">
+                                   </div>
+                                   <div class="form-row" style="width:50%">
+                                        <label>Freight charges:</label>
+                                        <select id="FreightCharges" name="FreightCharges" style="padding: 5px;width: 250px !important;">
+                                            <option value="">Select</option>
+                                            <option value="Paid">Paid</option>
+                                            <option value="Unpaid">Unpaid</option>
+
+                                        </select>
+
+                                   </div>
+                        </div>
+                        <div id="form3" class="form-section">
+                            <!-- Dispatch Form Content -->
+                            <h3>Dispatch </h3>
+                            <h3>Dispatch Details</h3>
+
+
+                                <div class="form-row">
+                                    <label>Location Name:</label>
+                                    <input type="text" id="AddressLine1" name="AddressLine1" placeholder="Enter Location">
+                                    <label>Districts:</label>
+                                    <input type="text" id="District" name="District" placeholder="Enter Districts">
+
+                                </div>
+
+                                <div class="form-row">
+                                    <label>Area :</label>
+                                    <input type="text" id="Area" name="Area" placeholder="Enter Area">
+
+                                    <label>City:</label>
+                                    <input type="text" id="City" name="City" placeholder="Enter City">
+
+
+                                </div>
+
+                                <div class="form-row">
+                                    <label>State:</label>
+                                    <input type="text" id="State" name="State" placeholder="Enter State">
+
+                                    <label>PIN Code:</label>
+                                    <input type="text" id="Pincode" name="Pincode" placeholder="Enter PIN Code">
+
+                                </div>
+                                <div class="form-row">
+                                    <label>Corrier Details:</label>
+                                    <input type="text" id="CourierDetail" name="CourierDetail" placeholder="Enter Corrier Details">
+
+
+                                    <label>Corrier Company:</label>
+                                    <input type="text" id="CourierCompany" name="CourierCompany" placeholder="Enter Company">
+                                </div>
+
+                                <div class="form-row" style="width:50%">
+                                    <label>Tracking Number:</label>
+                                    <input type="text" id="TrackingNumber" name="TrackingNumber" placeholder="Enter Tracking Number">
+
+
+                                </div>
+                                <div class="button">
+                                    <button type="submit">submit</button>
+                                </div>
+                        </div>
+
+
+</form>
