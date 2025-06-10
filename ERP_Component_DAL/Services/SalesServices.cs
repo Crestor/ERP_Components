@@ -27,7 +27,7 @@ namespace ERP_Component_DAL.Services
 
 
 
-        public List<QuotationModel> AddQuotaItemName()
+        public List<QuotationModel> GetProductDetails()
         {
             try
             {
@@ -109,7 +109,7 @@ namespace ERP_Component_DAL.Services
             return Customers;
         }
 
-        public bool AddQuota(QuotationModel Aq)
+        public bool SaveQuotationProduct(QuotationModel Aq)
         {
             try
             {
@@ -118,13 +118,14 @@ namespace ERP_Component_DAL.Services
                 SqlCommand cmd = new SqlCommand();
                 cmd.CommandType = System.Data.CommandType.Text;
 
-                cmd.CommandText = "INSERT INTO QuotationProduct ([QuotationID],[ItemName],[HSN],[Quantity],[UnitOFMeasure],[SellingPrice],[TaxableAmount],[discountRate],[DiscountAmount],[CGST],[SGST],[IGST],[TotalAmount]) VALUES (@QuotationID,@ItemName,@HSN,@Quantity,@UnitOFMeasure,@SellingPrice,@TaxableAmount,@discountRate,@DiscountAmount,@CGST,@SGST,@IGST,@TotalAmount)";
+                cmd.CommandText = @"INSERT INTO QuotationProduct 
+                                    ([QuotationID],[Quantity],[SellingPrice], [TaxableAmount],[discountRate],
+                                    [DiscountAmount],[CGST],[SGST],[IGST],[TotalAmount], [ProductID]) 
+                                    VALUES (@QuotationID,@Quantity,@SellingPrice,@TaxableAmount,@discountRate,
+                                    @DiscountAmount,@CGST,@SGST,@IGST,@TotalAmount, @ProductID)";
 
                 cmd.Parameters.AddWithValue("@QuotationID", Aq.QuotationID);
-                cmd.Parameters.AddWithValue("@ItemName", Aq.ItemName ?? (object)DBNull.Value);
-                cmd.Parameters.AddWithValue("@HSN", Aq.HSN ?? (object)DBNull.Value);
                 cmd.Parameters.AddWithValue("@Quantity", Aq.Quantity);
-                cmd.Parameters.AddWithValue("@UnitOFMeasure", Aq.UnitOFMeasure ?? (object)DBNull.Value);
                 cmd.Parameters.AddWithValue("@SellingPrice", Aq.SellingPrice);
                 cmd.Parameters.AddWithValue("@TaxableAmount", Aq.TaxableAmount);
                 cmd.Parameters.AddWithValue("@discountRate", Aq.discountRate);
@@ -133,6 +134,7 @@ namespace ERP_Component_DAL.Services
                 cmd.Parameters.AddWithValue("@SGST", Aq.SGST);
                 cmd.Parameters.AddWithValue("@IGST", Aq.IGST);
                 cmd.Parameters.AddWithValue("@TotalAmount", Aq.TotalAmount);
+                cmd.Parameters.AddWithValue("@ProductID", Aq.ItemId);
                 cmd.Connection = connection;
                 connection.Open();
                 cmd.ExecuteScalar();
@@ -167,9 +169,6 @@ namespace ERP_Component_DAL.Services
                                   "VALUES (@QuotationSeries, 'open' )";
 
                 cmd1.Parameters.AddWithValue("@QuotationSeries", Aq.QuotationSeries ?? (object)DBNull.Value);
-                //cmd1.Parameters.AddWithValue("@CustomerName", Aq.CustomerName ?? (object)DBNull.Value);
-                //cmd1.Parameters.AddWithValue("@CustomerID", Aq.CustomerID);
-
 
                 cmd1.Connection = connection;
                 connection.Open();
@@ -235,10 +234,9 @@ namespace ERP_Component_DAL.Services
                 connection = new SqlConnection(ConnectionString);
                 SqlCommand cmd = new SqlCommand();
                 cmd.CommandType = System.Data.CommandType.Text;
-                //GrossTotal = (SELECT SUM(TotalAmount) FROM QuotationProduct WHERE QuotationID = @QuotationID),
                 cmd.CommandText = @"
                     UPDATE CustomerQuotation SET 
-GrossTotal=@GrossTotal,
+                        GrossTotal=@GrossTotal,
                         CustomerName = @CustomerName
                     WHERE QuotationId = @QuotationID";
                 cmd.Parameters.AddWithValue("@CustomerName", Aq.CustomerName ?? (object)DBNull.Value);
@@ -368,7 +366,7 @@ GrossTotal=@GrossTotal,
                 connection = new SqlConnection(ConnectionString);
                 SqlCommand cmd = new SqlCommand();
                 cmd.CommandType = System.Data.CommandType.Text;
-                cmd.CommandText = $"select ItemName,HSN,Quantity,UnitOFMeasure,SellingPrice,TaxableAmount,discountRate,DiscountAmount,CGST,SGST,IGST,TotalAmount from QuotationProduct where QuotationID=@QuotationID";
+                cmd.CommandText = $"select i.ItemName,i.HSN,qp.Quantity,i.UnitOFMeasure,qp.SellingPrice,qp.TaxableAmount,qp.discountRate,qp.DiscountAmount,qp.CGST,qp.SGST,qp.IGST,qp.TotalAmount from QuotationProduct qp JOIN Items i ON i.ItemId = qp.ProductID where qp.QuotationID=@QuotationID";
                 cmd.Parameters.AddWithValue("@QuotationID", QuotationID);
 
                 cmd.Connection = connection;
@@ -505,7 +503,7 @@ GrossTotal=@GrossTotal,
                 connection = new SqlConnection(ConnectionString);
                 SqlCommand cmd = new SqlCommand();
                 cmd.CommandType = System.Data.CommandType.Text;
-                cmd.CommandText = $" SELECT Q.QuotationID, Q.QuotationDate ,Q.GrossTotal,Q.CustomerName,Q.QuotationSeries,Q.TermConditionID,P.ProductID,P.ItemName,P.HSN,P.Quantity,P.UnitOFMeasure,P.SellingPrice,P.TaxableAmount,P.discountRate,P.DiscountAmount,P.CGST,P.SGST,P.IGST,P.TotalAmount,T.PaymentTerm,T.DeliveryTerms,T.Other FROM CustomerQuotation Q JOIN QuotationProduct P ON Q.QuotationID = P.QuotationID JOIN TermCondition T ON Q.TermConditionID = T.TermConditionID  where Q.QuotationID = @QuotationID";
+                cmd.CommandText = $" SELECT cq.QuotationID, cq.QuotationDate ,cq.GrossTotal,c.CustomerName,cq.QuotationSeries,cq.TermConditionID,qp.ProductID,i.ItemName,i.HSN,qp.Quantity,i.UnitOFMeasure,qp.SellingPrice,qp.TaxableAmount,qp.discountRate,qp.DiscountAmount,qp.CGST,qp.SGST,qp.IGST,qp.TotalAmount,T.PaymentTerm,T.DeliveryTerms,T.Other FROM CustomerQuotation cq JOIN QuotationProduct qp ON cq.QuotationID = qp.QuotationID JOIN TermCondition T ON cq.TermConditionID = T.TermConditionID  JOIN Items i ON i.ItemId = qp.ProductID JOIN Customers c ON c.CustomerID=cq.CustomerID where cq.QuotationID = @QuotationID";
 
                 cmd.Parameters.AddWithValue("@QuotationID", QuotationID);
                 cmd.Connection = connection;
@@ -603,7 +601,7 @@ GrossTotal=@GrossTotal,
                 connection = new SqlConnection(ConnectionString);
                 SqlCommand cmd = new SqlCommand();
                 cmd.CommandType = System.Data.CommandType.Text;
-                cmd.CommandText = $" SELECT Q.GrossTotal,Q.CustomerName,Q.QuotationDate,Q.QuotationSeries,P.ItemName,P.HSN,P.Quantity,P.UnitOFMeasure,P.SellingPrice,P.TaxableAmount,P.discountRate,P.DiscountAmount,P.CGST,P.SGST,P.TotalAmount,T.PaymentTerm,T.DeliveryTerms,T.Other FROM CustomerQuotation Q JOIN QuotationProduct P ON Q.QuotationID = P.QuotationID JOIN TermCondition T ON Q.TermConditionID = T.TermConditionID  where Q.QuotationID = @QuotationID";
+                cmd.CommandText = $"SELECT cq.GrossTotal,c.CustomerName,cq.QuotationDate,cq.QuotationSeries,i.ItemName,i.HSN,qp.Quantity,i.UnitOFMeasure,qp.SellingPrice,qp.TaxableAmount,qp.discountRate,qp.DiscountAmount,qp.CGST,qp.SGST,qp.TotalAmount,T.PaymentTerm,T.DeliveryTerms,T.Other FROM CustomerQuotation cq JOIN QuotationProduct qp ON cq.QuotationID = qp.QuotationID JOIN TermCondition T ON cq.TermConditionID = T.TermConditionID  JOIN Customers c ON cq.CustomerID = c.CustomerID JOIN Items i ON i.ItemId = qp.ProductID  WHERE cq.QuotationID = @QuotationID";
 
                 cmd.Parameters.AddWithValue("@QuotationID", QuotationID);
                 cmd.Connection = connection;
@@ -719,7 +717,11 @@ GrossTotal=@GrossTotal,
                 SqlCommand cmd = new SqlCommand();
                 cmd.CommandType = System.Data.CommandType.Text;
 
-                cmd.CommandText = $"SELECT q.QuotationID, q.GrossTotal,c.CustomerName, q.QuotationSeries,q.TermConditionID, p.ItemName, p.Quantity, p.UnitOFMeasure, p.SellingPrice, p.TaxableAmount, p.discountRate, p.DiscountAmount, p.CGST, p.SGST,p.IGST, p.TotalAmount FROM CustomerQuotation q JOIN QuotationProduct p ON q.QuotationID=p.QuotationID\r\nJOIN Customers c ON c.CustomerID = q.CustomerID WHERE q.QuotationID=@QuotationID";  //Q.date
+                cmd.CommandText = @"SELECT cq.QuotationID, cq.GrossTotal,c.CustomerName, cq.QuotationSeries, cq.TermConditionID, i.ItemName, 
+                                    qp.Quantity, i.UnitOFMeasure, qp.SellingPrice, qp.TaxableAmount, qp.discountRate, qp.DiscountAmount, qp.CGST, 
+                                    qp.SGST,qp.IGST, qp.TotalAmount FROM CustomerQuotation cq 
+                                    JOIN QuotationProduct qp ON cq.QuotationID=qp.QuotationID JOIN Customers c ON c.CustomerID = cq.CustomerID
+                                    JOIN Items i ON i.ItemId = qp.ProductID WHERE cq.QuotationID=@QuotationID";  //Q.date
                 cmd.Parameters.AddWithValue("@QuotationID", QuotationID);
                 cmd.Connection = connection;
                 connection.Open();
@@ -779,7 +781,7 @@ GrossTotal=@GrossTotal,
                 SqlCommand cmd1 = new SqlCommand();
                 cmd1.CommandType = System.Data.CommandType.Text;
                 cmd1.CommandText = "UPDATE TermCondition SET PaymentTerm = @PaymentTerm, DeliveryTerms = @DeliveryTerms, Other = @Other WHERE TermConditionID = @TermConditionID";
-
+    
                 cmd1.Parameters.AddWithValue("@PaymentTerm", Aq.PaymentTerm ?? (object)DBNull.Value);
                 cmd1.Parameters.AddWithValue("@DeliveryTerms", Aq.DeliveryTerms ?? (object)DBNull.Value);
                 cmd1.Parameters.AddWithValue("@Other", Aq.Other ?? (object)DBNull.Value);
@@ -826,7 +828,7 @@ GrossTotal=@GrossTotal,
 
         }
 
-        public bool AddShipingD(Invoice Aq)
+        public bool SaveShipingDetails(Invoice Aq)
         {
             try
             {
@@ -858,16 +860,9 @@ GrossTotal=@GrossTotal,
                 cmd.CommandType = System.Data.CommandType.Text;
 
 
-                cmd.CommandText = "INSERT INTO ShippedTo ([InvoiceID],[CompanyName],[ConsignmentNumber],[Branch],[ContactNumber],[GSTIN],[ShippingRemote],[OtherReferences],[AddressID]) VALUES (@InvoiceID,@CompanyName,@ConsignmentNumber,@Branch,@ContactNumber,@GSTIN,@ShippingRemote,@OtherReferences,@AddressID)";
+                cmd.CommandText = "UPDATE Invoice SET ShippingAddressID = @ShippingAddressID WHERE InvoiceID =  @InvoiceID";
                 cmd.Parameters.AddWithValue("@InvoiceID", Aq.InvoiceID);
-                cmd.Parameters.AddWithValue("@CompanyName", Aq.CompanyName ?? (object)DBNull.Value);
-                cmd.Parameters.AddWithValue("@ConsignmentNumber", Aq.ConsignmentNumber ?? (object)DBNull.Value);
-                cmd.Parameters.AddWithValue("@Branch", Aq.Branch ?? (object)DBNull.Value);
-                cmd.Parameters.AddWithValue("@ContactNumber", Aq.ContactNumber == 0 ? (object)DBNull.Value : Aq.ContactNumber);
-                cmd.Parameters.AddWithValue("@GSTIN", Aq.GSTIN ?? (object)DBNull.Value);
-                cmd.Parameters.AddWithValue("@ShippingRemote", Aq.ShippingRemote ?? (object)DBNull.Value);
-                cmd.Parameters.AddWithValue("@OtherReferences", Aq.OtherReferences ?? (object)DBNull.Value);
-                cmd.Parameters.AddWithValue("@AddressID", Aq.AddressID);
+                cmd.Parameters.AddWithValue("@ShippingAddressID", Aq.AddressID);
                 cmd.Connection = connection;
                 connection.Open();
                 cmd.ExecuteScalar();
@@ -1285,6 +1280,60 @@ GrossTotal=@GrossTotal,
                 connection.Close();
             }
         }
+        public void SaveDispatchDetails(Dispatch dispatch)
+        {
+
+            connection = new SqlConnection(_connectionString);
+            SqlCommand cmd = new SqlCommand();
+            try
+            {
+                
+                cmd.CommandType = CommandType.Text;
+                cmd.CommandText = @"INSERT INTO DispatchDetails ( InvoiceID, TransporterID,TransporterName,TransporterDocumentNumber,TransporterDocumentDate,
+                                    CourierDetail,CourierCompany,TrackingNumber,GRNumber,NumberOfCartons,ModeOfShipment, VehicleType, NetWeight,
+                                    GrossWeight,TransactionType,DistanceKM,VehicleNumber,TimeOfSupply,FreightCharges)
+                                    VALUES 
+                                    ( @InvoiceID, @TransporterID, @TransporterName, @TransporterDocumentNumber, @TransporterDocumentDate, 
+                                      @CourierDetail, @CourierCompany, @TrackingNumber, @GRNumber, @NumberOfCartons, @ModeOfShipment, 
+                                      @VehicleType, @NetWeight, @GrossWeight, @TransactionType, @DistanceKM, @VehicleNumber, @TimeOfSupply,
+                                      @FreightCharges );
+                                    UPDATE Invoice SET InvoiceStatus = @InvoiceStatus WHERE InvoiceID = @InvoiceID;";
+
+                cmd.Parameters.AddWithValue("@InvoiceID", dispatch.InvoiceID);
+                cmd.Parameters.AddWithValue("@TransporterID", dispatch.TransporterID);
+                cmd.Parameters.AddWithValue("@TransporterName", dispatch.TransporterName);
+                cmd.Parameters.AddWithValue("@TransporterDocumentNumber", dispatch.TransporterDocumentNumber);
+                cmd.Parameters.AddWithValue("@TransporterDocumentDate", dispatch.TransporterDocumentDate);
+                cmd.Parameters.AddWithValue("@CourierDetail", dispatch.CourierDetail);
+                cmd.Parameters.AddWithValue("@CourierCompany", dispatch.CourierCompany);
+                cmd.Parameters.AddWithValue("@TrackingNumber", dispatch.TrackingNumber);
+                cmd.Parameters.AddWithValue("@GRNumber", dispatch.GRNumber);
+                cmd.Parameters.AddWithValue("@NumberOfCartons", dispatch.NumberOfCartons);
+                cmd.Parameters.AddWithValue("@ModeOfShipment", dispatch.ModeOfShipment);
+                cmd.Parameters.AddWithValue("@VehicleType", dispatch.VehicleType);
+                cmd.Parameters.AddWithValue("@NetWeight", dispatch.NetWeight);
+                cmd.Parameters.AddWithValue("@GrossWeight", dispatch.GrossWeight);
+                cmd.Parameters.AddWithValue("@TransactionType", dispatch.TransactionType);
+                cmd.Parameters.AddWithValue("@DistanceKM", dispatch.DistanceKM);
+                cmd.Parameters.AddWithValue("@VehicleNumber", dispatch.VehicleNumber);
+                cmd.Parameters.AddWithValue("@TimeOfSupply", dispatch.TimeOfSupply);
+                cmd.Parameters.AddWithValue("@FreightCharges", dispatch.FreightCharges);
+                cmd.Parameters.AddWithValue("@InvoiceStatus", 1);
+                cmd.Connection = connection;
+                connection.Open();
+                cmd.ExecuteScalar();
+            }
+            catch (Exception e)
+            {
+                throw;
+            }
+            finally
+            {
+                connection.Close();
+                connection.Dispose();
+                cmd.Dispose();
+            }
+        }
         public Invoice ViewDispatchDetails(Guid InvoiceID)
         {
             Invoice cl = new Invoice();
@@ -1294,7 +1343,7 @@ GrossTotal=@GrossTotal,
                 connection = new SqlConnection(ConnectionString);
                 SqlCommand cmd = new SqlCommand();
                 cmd.CommandType = System.Data.CommandType.Text;
-                cmd.CommandText = "SELECT A.AddressLine1, A.District, A.Area, A.City, A.State, A.Pincode FROM Address A Join  DispatchDetails S On A.AddressID=S.AddressID WHERE InvoiceID = @InvoiceID";
+                cmd.CommandText = "SELECT a.AddressLine1, a.District, a.Area, a.City, a.State, a.Pincode FROM Address a Join  Invoice i On a.AddressID=i.ShippingAddressID WHERE i.InvoiceID = @InvoiceID";
                 cmd.Parameters.AddWithValue("@InvoiceID", InvoiceID);
                 cmd.Connection = connection;
                 connection.Open();
@@ -1398,7 +1447,7 @@ GrossTotal=@GrossTotal,
                 SqlCommand cmd = new SqlCommand();
                 cmd.CommandType = System.Data.CommandType.Text;
 
-                cmd.CommandText = $"select P.ItemName, P.Quantity, P.UnitOFMeasure, P.SellingPrice, P.TaxableAmount, P.discountRate, P.DiscountAmount, P.CGST, P.SGST,P.IGST, P.TotalAmount  from QuotationProduct P Join Invoice Q ON P.QuotationID=Q.QuotationID where Q.QuotationID=@QuotationID";
+                cmd.CommandText = $"select i.ItemName, qp.Quantity, i.UnitOFMeasure, qp.SellingPrice, qp.TaxableAmount, qp.discountRate, qp.DiscountAmount, qp.CGST, qp.SGST,qp.IGST, qp.TotalAmount  from QuotationProduct qp JOIN Items i ON qp.ProductID=i.ItemId where qp.QuotationID=@QuotationID";
                 cmd.Parameters.AddWithValue("@QuotationID", QuotationID);
                 cmd.Connection = connection;
                 connection.Open();
@@ -2552,8 +2601,5 @@ RequisitionStatus=1
 
 
         }
-
-
-
     }
 }

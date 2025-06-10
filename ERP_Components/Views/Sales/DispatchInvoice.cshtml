@@ -1,5 +1,5 @@
 ﻿@using ERP_Component_DAL.Models
-
+@model Guid
 @{
     ViewBag.Title = "Dispatch Invoice";
     Layout = "~/Views/Shared/_LayoutINV.cshtml";
@@ -7,6 +7,7 @@
 <link rel="stylesheet" href="~/css/Product.css" />
 
 <form asp-controller="Sales" asp-action="AddDispatchDetails" method="post">
+    <input type="hidden" id="InvoiceID" name="InvoiceID" value="@Model" />
                         <div class="form-section">
                             <h3>Transport/E-Way Bill</h3>
                                 <div class="form-row">

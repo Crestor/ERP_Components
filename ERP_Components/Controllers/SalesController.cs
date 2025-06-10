@@ -66,7 +66,7 @@ namespace ERP_Components.Controllers
 
 
 
-            List<QuotationModel> aq = salesServices.AddQuotaItemName();
+            List<QuotationModel> aq = salesServices.GetProductDetails();
 
             List<QuotationViewModel.Customer> Customers = salesServices.GetCustomersList();
 
@@ -80,22 +80,21 @@ namespace ERP_Components.Controllers
             return View(model);
         }
         [HttpPost]
-        public JsonResult SetQuotationProducts(QuotationModel O)
+        public JsonResult SetQuotationProducts(QuotationModel quotationModel)
         {
             var QuotationCreated = HttpContext.Session.GetString("QuotationAdded");
             if (QuotationCreated == "False")
             {
-                O.QuotationID = salesServices.AddQuotaDetails(O);// get QuotationID 
+                quotationModel.QuotationID = salesServices.AddQuotaDetails(quotationModel);// get QuotationID 
                 HttpContext.Session.SetString("QuotationAdded", "True");
-                HttpContext.Session.SetString("QuotationID", O.QuotationID.ToString());
-                var x = salesServices.AddQuota(O);
-
+                HttpContext.Session.SetString("QuotationID", quotationModel.QuotationID.ToString());
+                var x = salesServices.SaveQuotationProduct(quotationModel);
             }
             else
             {
-                O.QuotationID = Guid.Parse(HttpContext.Session.GetString("QuotationID"));
+                quotationModel.QuotationID = Guid.Parse(HttpContext.Session.GetString("QuotationID"));
 
-                var x = salesServices.AddQuota(O);
+                var x = salesServices.SaveQuotationProduct(quotationModel);
 
 
 
@@ -106,7 +105,7 @@ namespace ERP_Components.Controllers
 
 
 
-            List<QuotationModel> ol = salesServices.OrderList(O.QuotationID);
+            List<QuotationModel> ol = salesServices.OrderList(quotationModel.QuotationID);
 
 
             var totalPriceBeforeDiscount = ol.Sum(x => x.SellingPrice * x.Quantity);
@@ -194,11 +193,13 @@ namespace ERP_Components.Controllers
         }
         public IActionResult SetAddInvoice(Invoice q)
         {
+            //TODO: Fix this controller
+            Console.WriteLine("We are in SetAdd Invoice");
             q.InvoiceID = salesServices.AddInvoiceDetails(q);
-            salesServices.AddShipingD(q);
-            salesServices.TransportDetail(q);
-            salesServices.DispatchDetail(q);
-            salesServices.CourierDetail(q);
+            salesServices.SaveShipingDetails(q);
+            //salesServices.TransportDetail(q);
+            //salesServices.DispatchDetail(q);
+            //salesServices.CourierDetail(q);
             salesServices.Updatestatus(q);
 
 
@@ -212,9 +213,9 @@ namespace ERP_Components.Controllers
             return View(InvoiceID);
         }
 
-        public IActionResult AddDispatchDetails(Invoice dispatch)
-        {
-            //TODO: Write service to save dispatch details
+        public IActionResult AddDispatchDetails(Dispatch dispatch)
+        {    
+            salesServices.SaveDispatchDetails(dispatch);
             return RedirectToAction("ManageInvoice");
         }
 
