@@ -1,0 +1,40 @@
+﻿@using ERP_Component_DAL.Models;
+@{
+    ViewBag.Title = "Add Stages";
+    Layout = "~/Views/Shared/_LayoutINV.cshtml";
+}
+
+<link rel="stylesheet" href="~/css/Product.css">
+
+<form>
+    <div class="form-section">
+        <h3>Add Stage</h3>
+        <div class="form-row">
+            <label for="ProductName">Product Name</label>
+            <select type="text" class="form-control" id="ProductName" name="ProductName">
+                <option value="">Select Product</option>
+                @*  @foreach (var product in ViewBag.Products)
+                    {
+                        <option value="@product.ProductName">@product.ProductName</option>
+                    } *@
+            </select>
+            <label class="required" for="stage">Stage :</label>
+            <input type="text" name="stage" placeholder="Stage" />
+        </div>
+        <div class="form-row">
+            <label class="required" for="work">Work:</label>
+            <input type="text" name="work" placeholder="Work" />
+            <label for="timetaken" class="required">Time:</label>
+            <input type="number" name="timetaken" placeholder="Time in Minutes" />
+        </div>
+        <div class="form-row">
+            <label for="inputmaterial" class="required">Input Material:</label>
+                <input type="text" id="inputmaterial" name="inputmaterial" placeholder="Input Material" />
+            <label for="outputmaterial" class="required">Output Material:</label>
+            <input type="text" id="outputmaterial" name="outputmaterial" placeholder="Output Material" />
+        </div>
+        <div class="button">
+            <button type="submit" id="AddStage">Add Stage</button>
+        </div>
+    </div>
+</form>

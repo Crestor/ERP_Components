@@ -232,6 +232,7 @@ namespace ERP_Components.Controllers
         public IActionResult CreateVendorQuotation()
         {
             List<AddPurchaseRequisition> add = purchaseServices.ApprovedRequisitionsForQuotation();
+
             return View(add);
         }
 
@@ -242,6 +243,8 @@ namespace ERP_Components.Controllers
             vendor.requisitionId = requisitionId;
             vendor.vendor = purchaseServices.GetVendorNames();
             vendor.lists = purchaseServices.GetRequisitionQuotationListData(requisitionId);
+          vendor.Items = purchaseServices.GetPurchasedOrdersItemsLists(requisitionId);
+
             return View(vendor);
         }
 

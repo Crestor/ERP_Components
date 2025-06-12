@@ -32,7 +32,7 @@
 
 
 			<label for="amount">Amount</label>
-			<input type="Number" id="amount" name="amount">
+			<input type="Number" class="amount" id="amount" name="amount" readonly>
 			<input type="hidden" id="requisitionId" name="requisitionId" value="@Model.requisitionId">
 		</div>
 	</div>
@@ -96,11 +96,39 @@
 			@* <input type="text" id="discount" name="discount"> *@
 
 		</div>
-        <div class="button-container">
+		   <div class="table" style="margin-top:25px;">
+				<table id="geeks">
+				   <thead>
+					   <tr>
+						   <th>Sr no</th>
+						   <th>Item Name</th>
+							<th>Specification</th>
+							<th>Quantity</th>
+							<th>Unit Price</th>
+					   </tr>
+				   </thead>
+				   <tbody>
+					   @for(int i = 0; i < Model.Items.Count; i++)
+					  {
+						<tr>
+							 <td>@(i + 1)</td>
+								<td><input type="text" name="itemName" value="@Model.Items[i].itemName" readonly/></td>
+								<td><input type="text" name="specification" value="@Model.Items[i].specification" readonly/></td>
+								<td><input type="number" class="quantity" name="quantity" value="@Model.Items[i].quantity" readonly /></td>
+								<td>
+									<input type="number" class="unitprice" name="UnitPrice" value="@Model.Items[i].unitPrice" />
+									<input type="hidden" name="itemId" value="@Model.Items[i].itemId" />
+								</td>
+						</tr>
+					  }
+					<tbody>
+
+			   </table>
+		   </div>
+        <div class="button">
 			<button id="addItems" type="submit">Add</button>
         </div>
    </div>
-
 
 	<div class="form-section" style=" margin-top:0px; margin-bottom:0px">
 		<h3>Quotation</h3>
@@ -166,16 +194,6 @@
 				</tr>
 			</tbody>
 
-			@* <tbody id="quotationTableBody">
-				<tr><td>Vendor Name</td><td id="v1_name"></td><td id="v2_name"></td><td id="v3_name"></td></tr>
-				<tr><td>Quotation Amount</td><td id="v1_amt"></td><td id="v2_amt"></td><td id="v3_amt"></td></tr>
-				<tr><td>Discount Amount</td><td id="v1_disc"></td><td id="v2_disc"></td><td id="v3_disc"></td></tr>
-				<tr><td>Final Amount</td><td id="v1_final"></td><td id="v2_final"></td><td id="v3_final"></td></tr>
-				<tr><td>Advance Amount</td><td id="v1_adv"></td><td id="v2_adv"></td><td id="v3_adv"></td></tr>
-				<tr><td>Delivery Terms</td><td id="v1_del"></td><td id="v2_del"></td><td id="v3_del"></td></tr>
-				<tr><td>Credit Period</td><td id="v1_cred"></td><td id="v2_cred"></td><td id="v3_cred"></td></tr>
-				
-			</tbody> *@
 		</table>
 
 		<div class="button-container" style="display:flex; justify-content:center; align-items:center; margin-top:10px">
@@ -196,15 +214,36 @@
 		$('#addItems').click(function (event) {
 			event.preventDefault();
 
-			const vendorData = {
-				vendorId: $('#vendorId').val(),
-				amount: $('#amount').val(),
-				advanceRate: $('#advanceRate').val(),
-				deliveryTerms: $('#deliveryTerms').val(),
-				paymentTerms: $('#paymentTerms').val(),
-				discountRate: $('#discountRate').val(),
-				requisitionId: $('#requisitionId').val()
-			};
+		
+	   const vendorData = {
+		vendorId: $('#vendorId').val(),
+		amount: $('#amount').val(),
+		advanceRate: $('#advanceRate').val(),
+		deliveryTerms: $('#deliveryTerms').val(),
+		paymentTerms: $('#paymentTerms').val(),
+		discountRate: $('#discountRate').val(),
+		requisitionId: $('#requisitionId').val(),
+		items: []
+	};
+
+	$('#geeks tr').each(function () {
+		const itemName = $(this).find('input[name="itemName"]').val();
+		const specification = $(this).find('input[name="specification"]').val();
+		const quantity = $(this).find('input[name="quantity"]').val();
+		const unitPrice = $(this).find('input[name="UnitPrice"]').val();
+		const itemId = $(this).find('input[name="itemId"]').val();
+
+		if (itemName && specification && quantity && unitPrice && itemId) {
+			vendorData.items.push({
+				itemName: itemName,
+				specification: specification,
+				quantity: quantity,
+				unitPrice: unitPrice,
+				itemId: itemId
+			});
+		}
+	});
+
 
 			console.log('Sending data to server:', vendorData); 
 
@@ -322,4 +361,24 @@
 	});
 
 
+</script>
+<script>
+	document.addEventListener("DOMContentLoaded", function () {
+		const unitPrices = document.querySelectorAll('.unitprice');
+		const quantities = document.querySelectorAll('.quantity');
+		const amountInput = document.getElementById('amount'); // Only ONE amount field outside
+
+		function updateAmount() {
+			let total = 0;
+			unitPrices.forEach((unitInput, index) => {
+				const unitPrice = parseFloat(unitInput.value) || 0;
+				const quantity = parseFloat(quantities[index].value) || 0;
+				total += unitPrice * quantity;
+			});
+			amountInput.value = total.toFixed(2);
+		}
+
+		unitPrices.forEach(input => input.addEventListener('input', updateAmount));
+		quantities.forEach(input => input.addEventListener('input', updateAmount));
+	});
 </script>

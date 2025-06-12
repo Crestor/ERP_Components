@@ -142,7 +142,130 @@ namespace ERP_Component_DAL.Services
 
 
         }
+        public List<Production> GetProductDetailforbill()
+        {
+            try
+            {
+                List<Production> product = new();
+                string connectionstring = configuration.GetConnectionString("DefaultConnectionString");
+                connection = new SqlConnection(connectionstring);
+                SqlCommand cmd = new();
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.CommandText = $"Select ItemName,ItemID from Items Where ItemType=1 ";
 
+                cmd.Connection = connection;
+
+                cmd.CommandTimeout = 300;
+                connection.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    product.Add(new Production
+                    {
+                        productName = reader["ItemName"] != DBNull.Value ? (string)reader["ItemName"] : string.Empty,
+                        productId = reader["ItemId"] != DBNull.Value ? (Guid)reader["ItemId"] : Guid.Empty,
+
+                    });
+                }
+
+                return product;
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                connection.Close();
+            }
+
+
+        }
+        public List<Production> GetMaterialDetailforbill()
+        {
+            try
+            {
+                List<Production> product = new();
+                string connectionstring = configuration.GetConnectionString("DefaultConnectionString");
+                connection = new SqlConnection(connectionstring);
+                SqlCommand cmd = new();
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.CommandText = $"Select ItemName,ItemID from Items Where ItemType=2 ";
+
+                cmd.Connection = connection;
+
+                cmd.CommandTimeout = 300;
+                connection.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    product.Add(new Production
+                    {
+                        materialName = reader["ItemName"] != DBNull.Value ? (string)reader["ItemName"] : string.Empty,
+                        materialId = reader["ItemId"] != DBNull.Value ? (Guid)reader["ItemId"] : Guid.Empty,
+
+                    });
+                }
+
+                return product;
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                connection.Close();
+            }
+
+
+        }
+        public List<Items> ViewInventoryOfProduction()
+        {
+            try
+            {
+                List<Items> product = new();
+                string connectionstring = configuration.GetConnectionString("DefaultConnectionString");
+                connection = new SqlConnection(connectionstring);
+                SqlCommand cmd = new();
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.CommandText = $"select it.ItemName,iv.InStock,iv.StockAlert,iv.LastUpdated,it.UnitOFMeasure,it.Specification from Inventory iv Join Items it On iv.ItemId = it.ItemId where InventoryCenter = 3\r\n";
+
+                cmd.Connection = connection;
+
+                cmd.CommandTimeout = 300;
+                connection.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    product.Add(new Items
+                    {
+                        itemName = reader["ItemName"] != DBNull.Value ? (string)reader["ItemName"] : string.Empty,
+                        inStock = reader["InStock"] != DBNull.Value ? (int)reader["InStock"] : 0,
+                        stockAlert = reader["StockAlert"] != DBNull.Value ? (int)reader["StockAlert"] : 0,
+                        UOM = reader["UnitOFMeasure"] != DBNull.Value ? (string)reader["UnitOFMeasure"] : string.Empty,
+                        specification = reader["Specification"] != DBNull.Value ? (string)reader["Specification"] : string.Empty,
+                        arrival = reader["LastUpdated"] != DBNull.Value ? ((DateTime)reader["LastUpdated"]).Date : default(DateTime),
+
+                    });
+                }
+
+                return product;
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                connection.Close();
+            }
+
+
+        }
 
         //public Production GetProductionStages(Guid ProductId)
         //{
@@ -355,6 +478,34 @@ namespace ERP_Component_DAL.Services
 
             }
         }
+        public bool SaveBilOlfMaterial(Production production)
+        {
+            try
+            {
+                string connectionString = configuration.GetConnectionString("DefaultConnectionString");
+
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    string query = $"INSERT INTO ProductMaterialMapping (ProductID, MaterialID, Quantity) VALUES ('{production.productId}', '{production.materialId}', '{production.quantity}');";
+
+
+                    using (SqlCommand cmd = new SqlCommand(query, connection))
+                    {
+                        cmd.CommandType = System.Data.CommandType.Text;
+                        connection.Open();
+                        cmd.ExecuteNonQuery();
+
+                        return true;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw;
+
+            }
+        }
+
 
 
 

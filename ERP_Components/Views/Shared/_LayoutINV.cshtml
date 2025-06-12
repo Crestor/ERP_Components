@@ -99,7 +99,7 @@
                     </div>
                     <div class="info" style="font-size:20px; color:white">
                         @Role Department
-                       @*  <a href="/Inventory/Dashboard" class="d-block" style="text-decoration:none"></a> *@
+                        @*  <a href="/Inventory/Dashboard" class="d-block" style="text-decoration:none"></a> *@
                     </div>
                 </div>
 
@@ -152,7 +152,7 @@
                                 </a>
 
                             </li>
-                    
+
 
                             <!-- Products -->
                             <li class="nav-item">
@@ -275,7 +275,7 @@
                                             <i class="fas fa-file-alt me-2"></i> Add Purchase Requisition
                                         </a>
                                     </li>
-                                   @*  <li class="nav-item">
+                                    @*  <li class="nav-item">
                                         <a asp-controller="Purchase" asp-action="materialRequisition" class="list-group-item list-group-item-action ps-5">
                                             <i class="fas fa-receipt me-2"></i> Material Requisition
                                         </a>
@@ -295,7 +295,28 @@
 
 
                         }
+                        else if (Role == "Weaver")
+                        {
+                            <li class="nav-item">
+                                <a href="/Weaver/WeaverDashboard" class="nav-link">
+                                    <i class="fas fa-chart-line"></i>
+                                    <p>
+                                        Dashboard
+                                    </p>
+                                </a>
 
+                            </li>
+                            <li class="nav-item">
+                                <a href="/Weaver/WeaverDashboard" class="nav-link">
+                                    <i class="fas fa-eye"></i>
+                                    <p>
+                                        Weaver
+                                    </p>
+                                </a>
+
+                            </li>
+                            
+                        }
                         else if (Role == "Production")
                         {
 
@@ -319,19 +340,25 @@
                                 </a>
 
                             </li>
-
-
-
-                            @*  <li>
-                                <a href="@Url.Action("Dashboard", "Production")" class="list-group-item list-group-item-action">
-                                    <i class="fas fa-tachometer-alt me-2"></i>  Dashboard
+                            <li class="nav-item">
+                                <a href="/Production/ViewInventory" class="nav-link">
+                                    <i class="fas fa-eye me-2"></i>
+                                    <p>
+                                        View Inventory
+                                    </p>
                                 </a>
+
                             </li>
-                            <li>
-                                <a href="@Url.Action("ViewProductionOrder", "Production")" class="list-group-item list-group-item-action">
-                                    <i class="fas fa-industry me-2"></i> View Production Order
+                            <li class="nav-item">
+                                <a href="/Production/CreateMaterialRequisition" class="nav-link">
+                                    <i class="fas fa-file-signature me-2"></i>
+                                    <p>
+                                        Create Material Requisition
+                                    </p>
                                 </a>
-                            </li> *@
+
+                            </li>
+                            
 
 
                         }
@@ -379,7 +406,7 @@
                                 </a>
                                 <ul class="nav nav-treeview ps-4">
                                     <li class="nav-item">
-                                        <a href="@Url.Action("WarehouseLocation", "Warehouse")" class="nav-link">
+                                        <a href="@Url.Action("BillofMaterial", "Production")" class="nav-link">
                                             <i class="fas fa-plus-circle me-2"></i> Add Warehouse Location
                                         </a>
                                     </li>

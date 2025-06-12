@@ -276,6 +276,7 @@ button {
     background-color: #138496;
     color: white;
     border: none;
+    padding-inline:15px;
     border-radius: 4px;
     cursor: pointer;
 /*    margin: 25px 35px 0px 0px;

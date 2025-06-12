@@ -947,7 +947,7 @@ namespace ERP_Component_DAL.Services
                 connection = new SqlConnection(connectionstring);
                 SqlCommand cmd = new();
                 cmd.CommandType = System.Data.CommandType.Text;
-                cmd.CommandText = $"Select it.ItemId, it.ItemName, rq.RequisitionID,rq.UnitPrice,rq.Quantity, rq.TotalPrice From RequisitionItems  rq Join Items it ON it.ItemId = rq.ItemID Where RequisitionID = '{requisitionId}'";
+                cmd.CommandText = $"Select it.ItemId, it.ItemName,it.specification, rq.RequisitionID,rq.UnitPrice,rq.Quantity, rq.TotalPrice From RequisitionItems  rq Join Items it ON it.ItemId = rq.ItemID Where RequisitionID = '{requisitionId}'";
                 cmd.Connection = connection;
 
 
@@ -964,6 +964,7 @@ namespace ERP_Component_DAL.Services
                         itemName = reader["ItemName"] != DBNull.Value ? (string)reader["ItemName"] : string.Empty,
                         TotalAmount = reader["TotalPrice"] != DBNull.Value ? Convert.ToDecimal(reader["TotalPrice"]) : 0m,
                         unitPrice = reader["UnitPrice"] != DBNull.Value ? Convert.ToDecimal(reader["UnitPrice"]) : 0m,
+                        specification = reader["Specification"] != DBNull.Value ? (string)reader["Specification"] : string.Empty,
 
 
                     });

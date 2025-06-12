@@ -1,0 +1,39 @@
+﻿@using ERP_Component_DAL.Models;
+@{
+    ViewBag.Title = "Bill of Material";
+    Layout = "~/Views/Shared/_LayoutINV.cshtml";
+}
+
+<link rel="stylesheet" href="~/css/Product.css">
+@model Production
+<form asp-action="SaveBillOfMaterial" asp-controller="Production" method="post ">
+<div class="form-section">
+    <h3>Bill Of Material</h3>
+    <div class="form-row" style="width:50%">
+            <label for="ProductName">Product Name</label>
+            <select type="text" class="form-control" id="ProductName" name="ProductId">
+                    <option value="">Select Product</option>
+                    @foreach (var product in Model.Product)
+                    {
+                        <option value="@product.productId">@product.productName</option>
+                    }
+            </select>
+    </div>
+    <div class="form-row">
+        <label for="Material">Material</label>
+        <select type="text" class="form-control" id="Material" name="MaterialId">
+            <option value="">Select Material</option>
+             @foreach (var material in Model.materials)
+            {
+                <option value="@material.materialId">@material.materialName</option>
+            } 
+            </select>
+            <label for="Quantity">Quantity</label>
+            <input type="number" class="form-control" id="Quantity" name="Quantity" placeholder="Enter Quantity">
+
+     </div>
+     <div class="button">
+        <button type="submit" id="AddMaterial">Add Material</button>
+     </div>
+</div>
+</form>

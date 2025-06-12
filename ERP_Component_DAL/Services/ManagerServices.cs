@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Http;
 using ERP_Component_DAL.Models;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
+using System.Numerics;
 
 namespace ERP_Component_DAL.Services
 {
@@ -198,6 +199,126 @@ namespace ERP_Component_DAL.Services
                 connection.Close();
             }
         }
+        public DashBoard GetManagerDashboardData()
+        {
+            try
+            {
+                DashBoard Item = new();
+                string connectionstring = configuration.GetConnectionString("DefaultConnectionString");
+                connection = new SqlConnection(connectionstring);
+                SqlCommand cmd = new();
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.CommandText = $" select(select sum(InStock) from Inventory)As InStock,(select count(*) from Vendors) as TotalVendor,(select Count(*) from Categories) As Categories ,(Select Count(RequisitionID) From Requisitions Where RequisitionType = 3) AS TotalPurchaseRequisition,(select sum( R.TotalAmount ) from Requisitions R join PurchaseOrders P on R.RequisitionID=P.RequisitionID) as TotalPurchases,(SELECT COUNT(*) FROM PurchaseOrders WHERE OrderStatus = 1) as PendingOrder ";
+                cmd.Connection = connection;
+
+                cmd.CommandTimeout = 300;
+                connection.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+
+
+                    Item.InStock = reader["InStock"] != DBNull.Value ? Convert.ToInt32(reader["InStock"]) : 0;
+                    Item.TotalVendor = reader["TotalVendor"] != DBNull.Value ? Convert.ToInt32(reader["TotalVendor"]) : 0;
+                    Item.Categories = reader["Categories"] != DBNull.Value ? Convert.ToInt32(reader["Categories"]) : 0;
+                    Item.TotalPurchaseRequisition = reader["TotalPurchaseRequisition"] != DBNull.Value ? Convert.ToInt32(reader["TotalPurchaseRequisition"]) : 0;
+                    Item.PendingOrder = reader["PendingOrder"] != DBNull.Value ? Convert.ToInt32(reader["PendingOrder"]) : 0;
+                    Item.TotalPurchases = reader["TotalPurchases"] != DBNull.Value ? Convert.ToDecimal(reader["TotalPurchases"]) : 0m;
+
+                }
+
+
+                return Item;
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                connection.Close();
+            }
+
+
+        }
+        public List<DashBoard> ManagerSalesAndPurchaseComparison()
+        {
+            try
+            {
+                List<DashBoard> prod = new();
+                string connectionstring = configuration.GetConnectionString("DefaultConnectionString");
+                connection = new SqlConnection(connectionstring);
+                SqlCommand cmd = new();
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.CommandText = $"select R.TotalAmount,R.CreatedAt from Requisitions R join PurchaseOrders P on R.RequisitionID = P.RequisitionID ";
+
+
+                cmd.Connection = connection;
+                connection.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    prod.Add(new DashBoard
+                    {
+                        TotalAmount = reader["TotalAmount"] != DBNull.Value ? (decimal)reader["TotalAmount"] : 0,
+
+                        CreatedAt = reader["CreatedAt"] != DBNull.Value ? DateOnly.FromDateTime((DateTime)reader["CreatedAt"]) : default(DateOnly),
+
+                    });
+                }
+
+                return prod;
+
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+
+            }
+            finally
+            {
+                connection.Close();
+            }
+        }
+
+        public List<DashBoard> SummaryOrderData()
+        {
+            try
+            {
+                List<DashBoard> prod = new();
+                string connectionstring = configuration.GetConnectionString("DefaultConnectionString");
+                connection = new SqlConnection(connectionstring);
+                SqlCommand cmd = new();
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.CommandText = $" select (SELECT COUNT(*)FROM PurchaseOrders WHERE OrderStatus = 1) as Pending ,(SELECT COUNT(*)FROM PurchaseOrders WHERE OrderStatus = 3) as Complete ";
+                cmd.Connection = connection;
+                connection.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    prod.Add(new DashBoard
+                    {
+                        Pending = reader["Pending"] != DBNull.Value ? Convert.ToInt32(reader["Pending"]) : 0,
+                        Complete = reader["Complete"] != DBNull.Value ? Convert.ToInt32(reader["Complete"]) : 0,
+
+                    });
+                }
+
+                return prod;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                connection.Close();
+            }
+        }
+
+
 
 
     }

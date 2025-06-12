@@ -16,7 +16,7 @@ namespace ERP_Components.Controllers
 
             _logger = logger;
             _configuration = configuration;
-            
+
             managerServices = new ManagerServices(configuration);
         }
         public IActionResult Index()
@@ -26,7 +26,11 @@ namespace ERP_Components.Controllers
 
         public IActionResult Dashboard()
         {
-            return View();
+            DashBoard model = managerServices.GetManagerDashboardData();
+            model.ComparisonSalesPurchase = managerServices.ManagerSalesAndPurchaseComparison();
+            model.OrderSummary = managerServices.SummaryOrderData();
+
+            return View(model);
         }
 
         public IActionResult ApproveVendorQuotation()
@@ -37,11 +41,11 @@ namespace ERP_Components.Controllers
 
         public IActionResult ApproveVendorQuotationDetails(Guid requisitionId)
         {
-           var vendor = new Vendor();
-            vendor.Items =  managerServices.GetRequisitionItemsListData(requisitionId);
-             vendor.lists = managerServices.GetRequisitionQuotationListData(requisitionId);
+            var vendor = new Vendor();
+            vendor.Items = managerServices.GetRequisitionItemsListData(requisitionId);
+            vendor.lists = managerServices.GetRequisitionQuotationListData(requisitionId);
             return View(vendor);
-            
+
         }
 
         public IActionResult ApproveVendor(Guid vendorId, Guid requisitionId)

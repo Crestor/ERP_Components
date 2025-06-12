@@ -31,7 +31,8 @@ namespace ERP_Component_DAL.Models
         public DateTime createdAt { get; set; }
 
 
-        public List<Production> materials { get; set; }
+        public List<Production>? materials { get; set; }
+        public List<Production>? Product { get; set; }
 
         //public List<Production> materials { get; set; }
 

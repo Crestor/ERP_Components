@@ -1,0 +1,188 @@
+﻿@model ERP_Component_DAL.Models.QuotationViewModel
+@{
+    ViewBag.Title = "Material Requisition";
+    Layout = "~/Views/Shared/_LayoutINV.cshtml";
+}
+<link rel="stylesheet" href="~/css/ProductTwo.css" />
+
+<form method="post" asp-action="" asp-controller="">
+<div class="form-section">
+        <h3>Items</h3>
+        <div class="form-row">
+            <label for="SalesSeries">Sales Series</label>
+            <input type="text" name="RequisitionSeries" id="RequisitionSeries" onchange="pass()" readonly />
+
+            <label for="ItemName">ItemName</label>
+            <select id="ItemId" class="form-control" name="ItemId">
+            <option selected disabled>Select Product</option>
+                @foreach (var product in Model.ItemNames)
+                {
+                        <option value="@product.ItemId">@product.ItemName</option>
+                }
+        </select>
+        </div>
+    <div class="form-row">
+        <label for="Description">Description</label>
+        <input type="text" name="Description" id="Description"  onchange="pass()"/>
+        <label for="Quantity">Quantity</label>
+        <input type="number" id="Quantity" name="Quantity">
+    </div>
+        <input type="text" id="ItemId" name="ItemId" value="@Model.ItemNames[0].ItemId" hidden />
+    </div>
+</form>
+<div>
+    <button class="button" type="submit" id="addItem" style="float: right;margin-right: 50px;margin-bottom: 18px; background-color:#138496;color: white;">Add</button>
+
+</div>
+<div id="listofmaterial" style="display:none">
+    <div class="table">
+        <table>
+            <thead>
+                <tr>
+                    <th>S.No</th>
+                    <th>Item Name</th>
+                    @* <th>Sales Series</th> *@
+                    @* <th>Description</th> *@
+                    <th>Quantity</th>
+
+                </tr>
+            </thead>
+            <tbody id="TableBody">
+            </tbody>
+        </table>
+    </div>
+
+    <form method="post" asp-action="FinalMaterialRequisition" asp-controller="Production">
+        <input type="hidden" name="Description" id="hiddenDescription" value="" />
+        @* <input type="hidden" name="date" id="hiddendate" value="" /> *@
+            <input type="hidden" id="RequisitionType" value="1" name="RequisitionType" />
+        <input type="hidden" id="hiddenRequisitionSeries" name="RequisitionSeries" />
+        <button type="submit" class="button" onclick="SForecast()" style="margin-top: 13px;float: inline-end;margin-right: 26px ;background-color:#138496;color: white;">
+            submit
+        </button>
+    </form>
+
+</div>
+
+
+
+<script>
+
+    function SForecast(){
+           Swal.fire({
+         title: "Drag me!",
+         icon: "success"
+       });
+       }
+
+           </script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+      function pass() {
+
+             const DescriptionSeries = document.getElementById("Description").value;
+             document.getElementById("hiddenDescription").value = DescriptionSeries;
+              const Requisition = document.getElementById("RequisitionSeries").value;
+             document.getElementById("hiddenRequisitionSeries").value = Requisition;
+
+       };
+
+           $(document).ready(function () {
+        $("#addItem").click(function () {
+            var productData = {
+                RequisitionID: $("#RequisitionID").val(),
+                ItemId:$('#ItemId').val(),
+                // ItemName: $("#ItemName").val(),
+                Quantity: parseInt($("#Quantity").val()),
+
+
+
+            };
+            $.ajax({    
+                type: "POST",
+                url: "/Production/SetMaterialRequisition",
+                data: productData,
+                success: function (response) {
+                    console.log("Success:", response);
+                    items();
+                    // alert("Item added successfully!");
+                    let tableBody = document.getElementById("TableBody");
+                    tableBody.innerHTML = "";
+                    $(response.orderTable).each(function (index, item) {
+                        var seq = index + 1;
+                        console.log(item);
+
+                        const tr = document.createElement("tr");
+                        tr.innerHTML = `<td>${seq}</td>
+
+                          <td>${item.itemName}</td>
+                          <td>${item.quantity}</td>
+
+                          `;
+
+
+
+                        tableBody.appendChild(tr);
+                    });
+
+
+                    $("#ItemName").val("");
+                    $("#Quantity").val("");
+
+                },
+                error: function (xhr, status, error) {
+                    console.error("Error:", xhr.responseText);
+                    alert("Failed ");
+                }
+            });
+            document.getElementById("listofmaterial").style.display = "block";
+
+        });
+    });
+
+</script>
+
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+    // Generate RequisitionSeries
+    document.addEventListener("DOMContentLoaded", function () {
+        const orderInput = document.getElementById("RequisitionSeries");
+        const year = new Date().getFullYear();
+        let nextNumber = 1;
+
+        // Get the last order series from localStorage
+        let lastOrder = localStorage.getItem("lastQuotationSeries");
+
+        if (lastOrder) {
+            let parts = lastOrder.split("-");
+            let lastYear = parseInt(parts[1]);
+            let lastNum = parseInt(parts[2]);
+
+            if (lastYear === year) {
+                nextNumber = lastNum + 1;
+            }
+        }
+
+        const newSeries = `MR-${year}-${String(nextNumber).padStart(4, "0")}`;
+
+        // Set the input values
+        orderInput.value = newSeries;
+
+        // Store the new series in localStorage
+        localStorage.setItem("lastQuotationSeries", newSeries);
+    });
+      function items(){
+            Swal.fire({
+      title: "Submit successfully  ",
+      text: "",
+      icon: "success",
+      confirmButtonColor: "#138496",
+      draggable: true
+
+
+      });
+    }
+</script>

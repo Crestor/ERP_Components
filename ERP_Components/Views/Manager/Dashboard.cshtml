@@ -1,4 +1,19 @@
-﻿<!-- Font Awesome for Icons -->
+﻿@using ERP_Component_DAL.Models
+@model DashBoard
+@{
+    ViewBag.Title = "Dashboard";
+    // ViewBag.UserName = "Himalyan Goats";
+
+}
+
+<style>
+    #salesPurchaseChart{
+        height:446px !important;
+    }
+</style>
+
+
+<!-- Font Awesome for Icons -->
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
 
 <div class="dashboard-container">
@@ -8,71 +23,165 @@
         <div class="overview-card">
             <h3><i class="fas fa-chart-line icon"></i>Sales Overview</h3>
             <div class="overview-content">
-                <div class="stat"><strong>₹832</strong><br>Sales</div>
-                <div class="stat"><strong>₹18,300</strong><br>Revenue</div>
-                <div class="stat"><strong>₹868</strong><br>Profit</div>
-                <div class="stat"><strong>₹17,432</strong><br>Cost</div>
+                <div class="stat">
+                    <i class="fas fa-cart-shopping icon"></i>
+                    <strong>₹832</strong><br>Sales
+                </div>
+                <div class="stat">
+                    <i class="fas fa-money-bill-wave icon"></i>
+                    <strong>₹18,300</strong><br>Revenue
+                </div>
+                <div class="stat">
+                    <i class="fas fa-hand-holding-usd icon"></i>
+                    <strong>₹868</strong><br>Profit
+                </div>
+                <div class="stat">
+                    <i class="fas fa-file-invoice-dollar icon"></i>
+                    <strong>₹17,432</strong><br>Cost
+                </div>
             </div>
         </div>
+
 
         <div class="overview-card">
             <h3><i class="fas fa-shopping-cart icon"></i>Purchase Overview</h3>
             <div class="overview-content">
-                <div class="stat"><strong>82</strong><br>Purchase</div>
-                <div class="stat"><strong>₹13,573</strong><br>Cost</div>
-                <div class="stat"><strong>5</strong><br>Cancelled</div>
-                <div class="stat"><strong>₹17,432</strong><br>Return</div>
+                <div class="stat">
+                    <i class="fas fa-shopping-cart icon"></i>
+                    <strong>@Model.TotalPurchases</strong><br>Total Purchases
+                    @* <strong>82</strong><br>Purchase *@
+                </div>
+                <div class="stat">
+                    <i class="fas fa-clock icon"></i>
+                    @* <strong>₹13,573</strong><br>Cost *@
+                    <strong>@Model.PendingOrder</strong><br> Pending Orders
+                </div>
+                <div class="stat">
+
+                    <i class="fas fa-clipboard-list"></i>
+                    @* <strong>5</strong><br>Cancelled *@
+                   <strong>@Model.TotalPurchaseRequisition</strong><br> Purchase Requisition
+                </div>
+                <div class="stat">
+                    <i class="fas fa-undo icon"></i>
+                    <strong>₹17,432</strong><br>Return
+                </div>
             </div>
         </div>
+
 
         <div class="overview-card">
             <h3><i class="fas fa-chart-bar icon"></i>Sales vs Purchase Comparison</h3>
             <canvas id="salesPurchaseChart"></canvas>
+
         </div>
     </div>
 
     <!-- Right Section -->
     <div class="right-section">
-        <div class="summary-card">
-            <h4><i class="fas fa-boxes icon"></i>Inventory Summary</h4>
-            <canvas id="inventoryChart"></canvas>
+        <div class="summary-card1">
+            <h3><i class="fas fa-boxes icon"></i>Inventory Summary</h3>
+            <div class="overview-content1">
+                <div class="stat">
+                    <i class="fas fa-cube icon"></i>
+                    <div class="stat-text">
+                        <strong>@Model.InStock</strong>
+                        <span>In Stock</span>
+                    </div>
+                </div>
+                <div class="stat">
+                    <i class="fas fa-truck icon"></i>
+                    <div class="stat-text">
+                        <strong>200</strong>
+                        <span>To Be Received</span>
+                    </div>
+                </div>
+            </div>
         </div>
 
-        <div class="summary-card">
-            <h4><i class="fas fa-laptop icon"></i>Product Summary</h4>
-            <canvas id="productChart"></canvas>
+        <div class="summary-card1">
+            <h3><i class="fas fa-laptop icon"></i>Product Summary</h3>
+            <div class="overview-content1">
+                <div class="stat">
+                    <i class="fas fa-industry icon"></i>
+                    <div class="stat-text">
+                        <strong>@Model.TotalVendor</strong>
+                        @* <span>Suppliers</span> *@
+                        <span>Vendor</span>
+                    </div>
+                </div>
+                <div class="stat">
+                    <i class="fas fa-th-list icon"></i>
+                    <div class="stat-text">
+                        <strong>@Model.Categories</strong>
+                        <span>Categories</span>
+                    </div>
+                </div>
+
+                
+            </div>
         </div>
 
-        <div class="summary-card">
-            <h4><i class="fas fa-clipboard-list icon"></i>Order Summary</h4>
-            <canvas id="orderChart"></canvas>
-        </div>
+            <div class="summary-card1">
+                <h4><i class="fas fa-clipboard-list icon"></i>Order Summary</h4>
+                <canvas id="orderChart"></canvas>
+            </div>
+
+
+       
     </div>
 
 </div>
 
 <!-- Chart.js -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+@using Newtonsoft.Json
+
+<script asp-append-version="true" src="~/lib/jquery/dist/jquery.min.js"></script>
 <script>
-    // Sales vs Purchase
-    new Chart(document.getElementById('salesPurchaseChart'), {
-      type: 'bar',
-      data: {
-        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
-        datasets: [
-          {
-            label: 'Sales',
-            backgroundColor: '#0f4c5c',
-            data: [120000, 150000, 170000, 140000, 180000, 200000]
-          },
-          {
-            label: 'Purchase',
-            backgroundColor: '#3b8a9e',
-            data: [90000, 110000, 130000, 120000, 140000, 160000]
-          }
-        ]
-      },
-      options: {
+
+                const modelData = @Html.Raw(JsonConvert.SerializeObject(Model.ComparisonSalesPurchase));
+
+            // Step 1: Group and sum Stock In and Stock Out by month
+            const monthlyData = {};
+
+            modelData.forEach(item => {
+                const date = new Date(item.CreatedAt);
+                const monthKey = date.toLocaleString('default', { month: 'short', year: 'numeric' }); // e.g., "Jun 2025"
+
+                if (!monthlyData[monthKey]) {
+                    monthlyData[monthKey] = { Sales: 0, Purchase: 0 };
+                }
+
+                monthlyData[monthKey].Sales += item.InStock || 0; // replace with actual stock out property if needed
+                monthlyData[monthKey].Purchase += item.TotalAmount || 0; 
+            });
+
+            // Step 2: Prepare labels and datasets
+               const labels = Object.keys(monthlyData);
+    const salesData = labels.map(month => monthlyData[month].Sales);
+    const purchaseData = labels.map(month => monthlyData[month].Purchase);
+
+
+            // Step 3: Create the Chart
+            new Chart(document.getElementById('salesPurchaseChart').getContext('2d'), {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [
+                        {
+                      label: 'Sales',
+                      backgroundColor: '#0f4c5c',
+                       data: salesData
+                        },
+                        {
+                    label: 'Purchase',
+                backgroundColor: '#3b8a9e',
+                 data: purchaseData
+                        }
+                    ]
+                },
+               options: {
         responsive: true,
         maintainAspectRatio: false,
         scales: {
@@ -94,75 +203,47 @@
       }
     });
 
-    // Inventory Chart (Pie)
-    new Chart(document.getElementById('inventoryChart'), {
-      type: 'pie',
-      data: {
-        labels: ['In Stock', 'Low Stock', 'Out of Stock'],
-        datasets: [{
-          data: [70, 20, 10],
-          backgroundColor: ['#138496', '#0f4c5c', '#dc3545']
-        }]
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-          legend: { labels: { color: '#000' } }
-        }
-      }
-    });
 
-    // Product Chart (Doughnut)
-    new Chart(document.getElementById('productChart'), {
-      type: 'doughnut',
-      data: {
-        labels: ['New', 'Available', 'Out of Stock'],
-        datasets: [{
-          data: [15, 200, 15],
-          backgroundColor: ['#17a2b8', '#0f4c5c', '#ffc107']
-        }]
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-          legend: { labels: { color: '#000' } }
-        }
-      }
-    });
+       const orderData = @Html.Raw(JsonConvert.SerializeObject(Model.OrderSummary));
+    const firstItem = orderData[0]; // Access first item in list
 
-    // Order Chart (Bar)
     new Chart(document.getElementById('orderChart'), {
-      type: 'bar',
-      data: {
-        labels: ['Completed', 'Pending', 'Cancelled'],
-        datasets: [{
-          label: 'Orders',
-          data: [460, 25, 27],
-          backgroundColor: ['#28a745', '#ffc107', '#dc3545']
-        }]
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        scales: {
-          y: {
-            beginAtZero: true,
-            ticks: { color: '#000' },
-            grid: { color: '#ddd' }
-          },
-          x: {
-            ticks: { color: '#000' },
-            grid: { color: '#eee' }
-          }
+        type: 'bar',
+        data: {
+            labels: ['Completed', 'Pending', 'Cancelled'],
+            datasets: [{
+                label: 'Orders',
+                data: [
+                    firstItem.Complete || 0,
+                    firstItem.Pending || 0
+
+                ],
+                backgroundColor: ['#0f4c5c', '#3b8a9e', '#DC3545']
+            }]
         },
-        plugins: {
-          legend: { labels: { color: '#000' } }
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: { color: '#000' },
+                    grid: { color: '#ddd' }
+                },
+                x: {
+                    ticks: { color: '#000' },
+                    grid: { color: '#eee' }
+                }
+            },
+            plugins: {
+                legend: { labels: { color: '#000' } }
+            }
         }
-      }
     });
+
+
 </script>
+
 
 <style>
     body {
@@ -176,7 +257,7 @@
     .dashboard-container {
         display: flex;
         gap: 24px;
-        padding: 24px;
+        /* padding: 24px; */
         max-width: 1300px;
         margin: auto;
         align-items: stretch;
@@ -203,8 +284,8 @@
         border-radius: 14px;
         box-shadow: 0 8px 24px rgba(0,0,0,0.05);
         padding: 24px;
-        height: 100%;
-        min-height: 220px;
+        /* height: 100%; */
+        /* min-height: 220px; */
     }
 
         .overview-card h3, .summary-card h4 {
@@ -214,6 +295,29 @@
             display: flex;
             align-items: center;
         }
+
+    .summary-card1 {
+        width:94%;
+        background: #e8f0f2;
+        border-radius: 14px;
+        box-shadow: 0 8px 24px rgba(0,0,0,0.05);
+        padding: 24px;
+        height: 100%;
+        min-height: 160px; 
+        color: #000;
+    }
+
+    .summary-card1 h3 {
+        color: #0f4c5c;
+        margin-bottom: 16px;
+        font-size: 1.2rem;
+        display: flex;
+        align-items: center;
+            font-size: 1.2rem;
+            align-items: center;
+    }
+
+  
 
     .icon {
         margin-right: 10px;
@@ -227,30 +331,95 @@
         gap: 10px;
     }
 
-    .stat {
+   /*  .overview-content1 {
+        display: flex;
+        justify-content: space-around;
+        flex-wrap: wrap;
+        gap: 36px;
+    } */
+
+    .overview-content1 {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 16px;
+        padding: 10px 0;
         text-align: center;
-        font-size: 13px;
-        background: #ffffff;
-        border-radius: 10px;
-        padding: 10px 8px;
-        flex: 1 1 80px;
-        transition: all 0.3s ease;
-        border: 1px solid #d1e2e4;
-        min-width: 80px;
-        max-width: 110px;
     }
 
-        .stat strong {
-            font-size: 15px;
-            display: block;
+
+
+    .stat {
+        /* display: flex; */
+        align-items: center;
+        justify-content: space-between;
+        font-size: 13px;
+        /* background: #ffffff; */
+        border-radius: 10px;
+        padding: 10px 12px;
+        flex: 1 1 80px;
+        transition: all 0.3s ease;
+        /* border: 1px solid #d1e2e4; */
+        min-width: 180px;
+        max-width: 220px;
+        gap: 10px;
+    }
+
+        .stat i {
             color: #0f4c5c;
-            margin-bottom: 4px;
+            font-size: 16px;
+            flex-shrink: 0;
         }
+
+    .stat-text {
+        display: flex;
+        flex-direction: column;
+        line-height: 1.2;
+    }
+
+    .stat strong {
+        font-size: 15px;
+        color: #138496;
+        margin: 0;
+    }
+
+    .stat span {
+        font-size: 12px;
+        color: #444;
+    }
+
+
+   
 
     canvas {
         width: 100% !important;
         height: 180px !important;
     }
 
-    
 </style>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

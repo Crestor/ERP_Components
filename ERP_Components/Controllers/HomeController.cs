@@ -101,6 +101,10 @@ namespace ERP_Components.Controllers
                 {
                     return HandleRetailCustomerLogin(users);
                 }
+                else if (x.role == 12 && x.userName == users.userName && x.password == users.password)
+                {
+                    return HandleWeaverLogin(users);
+                }
             }
             if (users.userName != null)
             {
@@ -297,6 +301,23 @@ namespace ERP_Components.Controllers
 
             return Json(new { status = false, message = "Invalid credentials or you are not a registered Admin, Sign Up to use this service" });
         }
+        private JsonResult HandleWeaverLogin(User users)
+        {
+            if (string.IsNullOrEmpty(users.userName))
+            {
+                return Json(new { status = false, message = "User does not exist, please enter a valid username" });
+            }
+            //SuperAdmin 
+            var user = userServices.HandleUsers(users);
+
+            if (user != null && user.password == user.password && user.role == 12)
+            {
+                SetWeaverSession(user);
+                return Json(new { status = true, url = Url.Action("WeaverDashboard", "Weaver") });
+            }
+
+            return Json(new { status = false, message = "Invalid credentials or you are not a registered Admin, Sign Up to use this service" });
+        }
 
 
         private void SetAdminSession(User user)
@@ -306,7 +327,14 @@ namespace ERP_Components.Controllers
             HttpContext.Session.SetString("Role", "Admin");
             
         }
+        
+              private void SetWeaverSession(User user)
+        {
+            HttpContext.Session.SetString("UserId", Convert.ToString(user.userId));
+            HttpContext.Session.SetString("UserName", user.userName);
+            HttpContext.Session.SetString("Role", "Weaver");
 
+        }
         private void SetRetailCustomerSession(User user)
         {
             HttpContext.Session.SetString("UserId", Convert.ToString(user.userId));

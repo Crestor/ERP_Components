@@ -2390,7 +2390,74 @@ namespace ERP_Component_DAL.Services
                 connection.Close();
             }
         }
+        public Guid AddMRDetails(QuotationModel Aq)
+        {
+            try
+            {
+                String ConnectionString = configuration.GetConnectionString("DefaultConnectionString");
+                connection = new SqlConnection(ConnectionString);
 
+
+                SqlCommand cmd1 = new SqlCommand();
+                cmd1.CommandType = System.Data.CommandType.Text;
+
+                cmd1.CommandText = "INSERT INTO Requisitions ([Description],[RequisitionSeries]) OUTPUT INSERTED.RequisitionID VALUES (@Description, @RequisitionSeries)";
+                cmd1.Parameters.AddWithValue("@Description", Aq.Description ?? (object)DBNull.Value);
+                cmd1.Parameters.AddWithValue("@RequisitionSeries", Aq.RequisitionSeries ?? (object)DBNull.Value);
+                //cmd1.Parameters.AddWithValue("@RequisitionType", Aq.RequisitionType);
+
+
+                cmd1.Connection = connection;
+                connection.Open();
+                Guid RequisitionID = (Guid)cmd1.ExecuteScalar();
+
+                return RequisitionID;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                connection.Close();
+            }
+
+        }
+        public bool AddMRItems(QuotationModel Aq)
+        {
+            try
+            {
+                String ConnectionString = configuration.GetConnectionString("DefaultConnectionString");
+                connection = new SqlConnection(ConnectionString);
+                SqlCommand cmd = new SqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+
+                cmd.CommandText = "INSERT INTO RequisitionItems ([ItemID],[Quantity],[RequisitionID]) VALUES (@ItemID,@Quantity,@RequisitionID)";
+
+                cmd.Parameters.AddWithValue("@ItemID", Aq.ItemId);
+                cmd.Parameters.AddWithValue("@RequisitionID", Aq.RequisitionID);
+                //cmd.Parameters.AddWithValue("@ItemName", Aq.ItemName ?? (object)DBNull.Value);
+                cmd.Parameters.AddWithValue("@Quantity", Aq.Quantity);
+
+                cmd.Connection = connection;
+                connection.Open();
+                cmd.ExecuteScalar();
+                connection.Close();
+
+
+
+                return true;
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                connection.Close();
+            }
+        }
         public List<QuotationModel> OrderTable(Guid RequisitionID)
         {
             try
@@ -2430,6 +2497,44 @@ namespace ERP_Component_DAL.Services
             }
 
 
+        }
+        public bool updateMRDetails(QuotationModel Aq)
+        {
+            try
+            {
+                String ConnectionString = configuration.GetConnectionString("DefaultConnectionString");
+                connection = new SqlConnection(ConnectionString);
+
+
+
+                SqlCommand cmd2 = new SqlCommand(@"
+    UPDATE Requisitions 
+    SET 
+        Description = @Description, 
+        RequisitionSeries = @RequisitionSeries, 
+        RequisitionType = 2,
+RequisitionStatus=1
+    WHERE RequisitionID = @RequisitionID", connection);
+
+                cmd2.Parameters.AddWithValue("@RequisitionSeries", Aq.RequisitionSeries ?? (object)DBNull.Value);
+                cmd2.Parameters.AddWithValue("@Description", Aq.Description);
+                cmd2.Parameters.AddWithValue("@RequisitionID", Aq.RequisitionID);
+                cmd2.Parameters.AddWithValue("@RequisitionType", Aq.RequisitionType);
+                connection.Open();
+                cmd2.ExecuteNonQuery();
+                connection.Close();
+
+                return true;
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                connection.Close();
+            }
         }
 
         public bool updateSFDetails(QuotationModel Aq)
@@ -2480,6 +2585,44 @@ RequisitionStatus=1
                 SqlCommand cmd = new SqlCommand();
                 cmd.CommandType = System.Data.CommandType.Text;
                 cmd.CommandText = $" select ItemName,ItemId from Items where ItemType=1";
+
+                cmd.Connection = connection;
+
+                cmd.CommandTimeout = 300;
+                connection.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    sun.Add(new QuotationModel()
+                    {
+
+                        ItemName = reader["ItemName"] != DBNull.Value ? (string)reader["ItemName"] : string.Empty,
+                        ItemId = reader["ItemId"] != DBNull.Value ? (Guid)reader["ItemId"] : Guid.Empty,
+                    });
+                }
+
+                return sun;
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                connection.Close();
+            }
+        }
+         public List<QuotationModel> AddMRItemName()
+        {
+            try
+            {
+                List<QuotationModel> sun = new();
+                String ConnectionString = configuration.GetConnectionString("DefaultConnectionString");
+                connection = new SqlConnection(ConnectionString);
+                SqlCommand cmd = new SqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.CommandText = $" select ItemName,ItemId from Items where ItemType=2";
 
                 cmd.Connection = connection;
 
