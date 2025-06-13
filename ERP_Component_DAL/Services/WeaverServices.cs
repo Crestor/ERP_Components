@@ -20,9 +20,38 @@ namespace ERP_Component_DAL.Services
         {
             this.configuration = config;
         }
+        public bool addWeaver(Weaver weaver)
+        {
+            try
+            {
+                string connectionString = configuration.GetConnectionString("DefaultConnectionString");
 
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    string query = $"";
+
+
+                    using (SqlCommand cmd = new SqlCommand(query, connection))
+                    {
+                        cmd.CommandType = System.Data.CommandType.Text;
+
+
+
+                        connection.Open();
+                        cmd.ExecuteNonQuery();
+
+                        return true;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw;
+
+            }
+        }
+    
     }
 }
-
 
         

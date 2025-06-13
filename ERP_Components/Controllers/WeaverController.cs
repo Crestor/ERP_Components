@@ -34,9 +34,9 @@ namespace ERP_Components.Controllers
         {
             return View();
         }
-        public IActionResult AddWeaverDetails()
+        public IActionResult AddWeaverDetails(Weaver weaver)
         {
-
+            weaverServices.addWeaver(weaver);
             return RedirectToAction("AddWeaver");
         }
     }
