@@ -34,10 +34,19 @@ namespace ERP_Components.Controllers
         {
             return View();
         }
+
+        [HttpPost]
         public IActionResult AddWeaverDetails(Weaver weaver)
         {
-            weaverServices.addWeaver(weaver);
-            return RedirectToAction("AddWeaver");
+            try
+            {
+                weaverServices.addWeaver(weaver);
+                return RedirectToAction("AddWeaver");
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
         }
     }
 }
