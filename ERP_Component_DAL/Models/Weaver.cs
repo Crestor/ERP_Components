@@ -9,7 +9,7 @@ namespace ERP_Component_DAL.Models
 {
         public class Weaver
         {
-            public int WeaverId { get; set; }
+            public Guid WeaverId { get; set; }
 
             public string? WeaverName { get; set; }
 

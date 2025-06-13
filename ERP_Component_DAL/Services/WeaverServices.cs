@@ -25,24 +25,24 @@ namespace ERP_Component_DAL.Services
             {
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
-                    using (SqlCommand cmd = new SqlCommand("AddWeaver", connection))
+                    using (SqlCommand cmd = new SqlCommand("AddWorker", connection))
                     {
                         cmd.CommandType = CommandType.StoredProcedure;
 
-                        cmd.Parameters.AddWithValue("@WorkerName", weaver.WeaverName ?? (object)DBNull.Value);
-                        cmd.Parameters.AddWithValue("@FirmName", weaver.Firm ?? (object)DBNull.Value);
-                        cmd.Parameters.AddWithValue("@ContactNumber", weaver.ContactNumber ?? (object)DBNull.Value);
-                        cmd.Parameters.AddWithValue("@EmailID", weaver.Email ?? (object)DBNull.Value);
-                        cmd.Parameters.AddWithValue("@Country", weaver.Country ?? (object)DBNull.Value);
-                        cmd.Parameters.AddWithValue("@State", weaver.State ?? (object)DBNull.Value);
-                        cmd.Parameters.AddWithValue("@City", weaver.City ?? (object)DBNull.Value);
-                        cmd.Parameters.AddWithValue("@Pincode", weaver.Pincode ?? (object)DBNull.Value);
-                        cmd.Parameters.AddWithValue("@AddressLine1", weaver.Address ?? (object)DBNull.Value);
-                        cmd.Parameters.AddWithValue("@District", weaver.District ?? (object)DBNull.Value);
-                        cmd.Parameters.AddWithValue("@PANCard", GetBytesFromIFormFile(weaver.DocPANCard) ?? (object)DBNull.Value);
-                        cmd.Parameters.AddWithValue("@PANCardNumber", weaver.PANNumber ?? (object)DBNull.Value);
-                        cmd.Parameters.AddWithValue("@AadharImage", GetBytesFromIFormFile(weaver.DocAadhar) ?? (object)DBNull.Value);
-                        cmd.Parameters.AddWithValue("@AadharNumber", weaver.AadharNumber ?? (object)DBNull.Value);
+                        cmd.Parameters.AddWithValue("@WorkerName", weaver.WeaverName);
+                        cmd.Parameters.AddWithValue("@FirmName", weaver.Firm);
+                        cmd.Parameters.AddWithValue("@ContactNumber", weaver.ContactNumber);
+                        cmd.Parameters.AddWithValue("@EmailID", weaver.Email);
+                        cmd.Parameters.AddWithValue("@Country", weaver.Country);
+                        cmd.Parameters.AddWithValue("@State", weaver.State);
+                        cmd.Parameters.AddWithValue("@City", weaver.City);
+                        cmd.Parameters.AddWithValue("@Area", weaver.City);
+                        cmd.Parameters.AddWithValue("@Pincode", weaver.Pincode);
+                        cmd.Parameters.AddWithValue("@AddressLine1", weaver.Address);
+                        cmd.Parameters.AddWithValue("@District", weaver.District);
+                        cmd.Parameters.AddWithValue("@Street", weaver.City); 
+                        cmd.Parameters.AddWithValue("@PANCardNumber", weaver.PANNumber);
+                        cmd.Parameters.AddWithValue("@AadharNumber", weaver.AadharNumber);
 
                         connection.Open();
                         cmd.ExecuteNonQuery();
@@ -51,20 +51,49 @@ namespace ERP_Component_DAL.Services
                     }
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 throw;
             }
         }
-        
-        private byte[] GetBytesFromIFormFile(IFormFile? formFile)
+
+        public List<Weaver> ViewWeaver()
         {
-            if (formFile == null || formFile.Length == 0)
-                return null;
-            using var memoryStream = new MemoryStream();
-            formFile.CopyTo(memoryStream);
-            return memoryStream.ToArray();
+            List<Weaver> weavers = new List<Weaver>();
+
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    using (SqlCommand cmd = new SqlCommand("SELECT WorkerID, WorkerName, FirmName, ContactNumber FROM Workers", connection))
+                    {
+                        connection.Open();
+
+                        using (SqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                weavers.Add(new Weaver
+                                {
+                                    WeaverId = reader["WorkerID"] != DBNull.Value ? (Guid)reader["WorkerID"] : Guid.Empty,
+                                    WeaverName = reader["WorkerName"] != DBNull.Value ? reader["WorkerName"].ToString() : string.Empty,
+                                    Firm = reader["FirmName"] != DBNull.Value ? reader["FirmName"].ToString() : string.Empty,
+                                    ContactNumber = reader["ContactNumber"] != DBNull.Value ? reader["ContactNumber"].ToString() : string.Empty
+                                });
+                            }
+                        }
+                    }
+                }
+
+                return weavers;
+            }
+            catch (Exception ex)
+            {
+                // Log exception here if needed
+                throw;
+            }
         }
+
     }
 }
 

@@ -48,5 +48,49 @@ namespace ERP_Components.Controllers
                 return BadRequest(e.Message);
             }
         }
+        public IActionResult ViewWeaver()
+        {
+           List<Weaver> weavers = weaverServices.ViewWeaver();
+            return View(weavers);
+        }
+
+        public IActionResult EditWeaver(Guid id)
+        {
+            Weaver model = new Weaver();
+            //weaverServices.EditWeaver(WeaverId);
+            return View(model);
+        }
+        public IActionResult EditWeaverDetails(Weaver weaver)
+        {
+            //weaverServices.EditWeaverDetails(weaver);
+            return RedirectToAction("ViewWeaver");
+        }
+        public IActionResult DeleteWeaver(Guid id)
+        {
+            //weaverServices.DeleteWeaver(WeaverId);
+            return RedirectToAction("ViewWeaver");
+        }
+        public IActionResult ViewWeaver()
+        {
+           List<Weaver> weavers = weaverServices.ViewWeaver();
+            return View(weavers);
+        }
+
+        public IActionResult EditWeaver(Guid id)
+        {
+            Weaver model = new Weaver();
+            //weaverServices.EditWeaver(WeaverId);
+            return View(model);
+        }
+        public IActionResult EditWeaverDetails(Weaver weaver)
+        {
+            //weaverServices.EditWeaverDetails(weaver);
+            return RedirectToAction("ViewWeaver");
+        }
+        public IActionResult DeleteWeaver(Guid id)
+        {
+            //weaverServices.DeleteWeaver(WeaverId);
+            return RedirectToAction("ViewWeaver");
+        }
     }
 }
