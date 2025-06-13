@@ -56,18 +56,22 @@ namespace ERP_Components.Controllers
 
         public IActionResult EditWeaver(Guid id)
         {
-            Weaver model = new Weaver();
+            Weaver model = weaverServices.GetWeaverDetailsById(id);
             //weaverServices.EditWeaver(WeaverId);
+            model.WeaverId = id;
             return View(model);
         }
+ 
+        
+        [HttpPost]
         public IActionResult EditWeaverDetails(Weaver weaver)
         {
-            //weaverServices.EditWeaverDetails(weaver);
+            weaverServices.UpdateWeaver(weaver);
             return RedirectToAction("ViewWeaver");
         }
         public IActionResult DeleteWeaver(Guid id)
         {
-            //weaverServices.DeleteWeaver(WeaverId);
+            weaverServices.DeleteWeaver(id);
             return RedirectToAction("ViewWeaver");
         }
         //public IActionResult ViewWeaver()

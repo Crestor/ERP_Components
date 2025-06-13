@@ -5,11 +5,11 @@
 }
 <link rel="stylesheet" href="~/css/Product.css" />
 @model Weaver
-<form asp-action="EditWeaverDetails" asp-controller="Weaver">
+<form asp-action="EditWeaverDetails" asp-controller="Weaver" method="post" enctype="multipart/form-data">
     <div class="form-section">
-        <h3>Edit Weaver</h3>
-        <input type="hidden" name="WeaverId" value="@Model.WeaverId" />
+        <h3>Add Weaver</h3>
         <div class="form-row">
+            <input type="hidden" name="WeaverId" value="@Model.WeaverId" />
             <label class="required" for="WeaverName">Weaver Name</label>
             <input type="text" name="WeaverName" id="WeaverName" value="@Model.WeaverName" required />
             <label class="required" for="firm">Firm Name</label>
@@ -31,13 +31,13 @@
             <label class="required" for="District">District</label>
             <input type="text" name="District" id="District" value="@Model.District" required />
             <label class="required" for="State">State</label>
-            <input type="text" name="State" id="State" value="@Model.State" required />
+            <input type="text" name="State" id="State"value="@Model.State" required />
         </div>
         <div class="form-row">
             <label class="required" for="Pincode">Pincode</label>
             <input type="text" name="Pincode" id="Pincode" value="@Model.Pincode" required />
             <label class="required" for="Country">Country</label>
-            <input type="text" name="Country" id="Country" value="@Model.Country " required />
+            <input type="text" name="Country" id="Country" value="@Model.Country" required />
         </div>
         <div class="form-row">
             <label class="required" for="AadharNumber">Aadhar Number</label>
@@ -47,12 +47,13 @@
         </div>
         <div class="form-row">
             <label class="required" for="docpancard">Photo of PAN:</label>
-            <input type="file" name="docpancard" id="docpancard" accept="image/*" />
+            <input type="file" name="DocPANCard" id="docpancard" accept="image/*" required />
             <label class="required" for="docaadhar">Photo of Aadhar:</label>
-            <input type="file" name="docaadhar" id="docaadhar" accept="image/*" />
+            <input type="file" name="DocAadhar" id="docaadhar" accept="image/*" required />
         </div>
         <div class="button">
             <button type="submit">Update Weaver</button>
         </div>
     </div>
 </form>
+
