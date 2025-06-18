@@ -13,28 +13,59 @@ namespace ERP_Component_DAL.Services
 {
     public class UserServices
     {
-
-        private readonly IConfiguration configuration;
-        SqlConnection connection;
+        private string connectionString;
         //private Microsoft.Extensions.Configuration.IConfiguration configuration1;
 
         public UserServices(IConfiguration config)
         {
-            this.configuration = config;
+            this.connectionString = config.GetConnectionString("DefaultConnectionString");
         }
 
-        //public UserServices(Microsoft.Extensions.Configuration.IConfiguration configuration)
-        //{
-        //    this.configuration1 = configuration;
-        //}
-
-        public List<User> Authentication(User users)
+        public List<Role> GetRoles()
         {
             try
             {
-                List<User> user = new();
+                List<Role> roles = new();
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
 
-                string connectionString = configuration.GetConnectionString("DefaultConnectionString");
+                    string query = @"select * from Roles;";
+
+                    using (SqlCommand cmd = new SqlCommand(query, connection))
+                    {
+                        connection.Open();
+
+                        using (SqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                Role role = new Role
+                                {
+                                    roleId = reader["RoleId"] != DBNull.Value ? Convert.ToInt32(reader["RoleId"]) : 0,
+                                    role = reader["Role"] != DBNull.Value ? (string)reader["Role"] : string.Empty,
+                                    homePage = reader["HomePage"] != DBNull.Value ? (string)reader["HomePage"] : string.Empty,
+                                    controllerName = reader["ControllerName"] != DBNull.Value ? (string)reader["controllerName"] : string.Empty
+                                };
+                                roles.Add(role);
+
+                            }
+                        }
+                    }
+                }
+                return roles;
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+
+        }
+
+        public User GetUserInfo(User users)
+        {
+            try
+            {
+                User user = new();
 
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
@@ -50,14 +81,14 @@ namespace ERP_Component_DAL.Services
 
                         using (SqlDataReader reader = cmd.ExecuteReader())
                         {
-                            while (reader.Read())
+                            if (reader.Read())
                             {
-                                user.Add(new User
+                                user = new User
                                 {
                                     userName = reader["UserName"] != DBNull.Value ? (string)reader["UserName"] : string.Empty,
                                     password = reader["Password"] != DBNull.Value ? (string)reader["Password"] : string.Empty,
-                                    role = reader["RoleId"] != DBNull.Value ? Convert.ToInt32(reader["RoleId"]) : 0,
-                                });
+                                    role = reader["RoleId"] != DBNull.Value ? Convert.ToInt32(reader["RoleId"]) : 0
+                                };
 
                             }
                         }
@@ -70,133 +101,5 @@ namespace ERP_Component_DAL.Services
                 throw;
             }
         }
-
-        public User HandleAdmin(User users)
-        {
-            try
-            {
-                User user = new();
-
-                string connectionString = configuration.GetConnectionString("DefaultConnectionString");
-
-                using (SqlConnection connection = new SqlConnection(connectionString))
-                {
-
-                    string query = @"select UserName,Password,UserRole,FirstName,LastName from Users where UserName = @username And Password = @password ";
-
-                    using (SqlCommand cmd = new SqlCommand(query, connection))
-                    {
-
-                        cmd.Parameters.Add("@username", SqlDbType.VarChar).Value = users.userName;
-                        cmd.Parameters.Add("@password", SqlDbType.VarChar).Value = users.password;
-                        connection.Open();
-
-                        using (SqlDataReader reader = cmd.ExecuteReader())
-                        {
-                            while (reader.Read())
-                            {
-
-                                user.userName = reader["UserName"] != DBNull.Value ? (string)reader["UserName"] : string.Empty;
-                                user.password = reader["Password"] != DBNull.Value ? (string)reader["Password"] : string.Empty;
-                                user.role = reader["UserRole"] != DBNull.Value ? (int)reader["UserRole"] : 0;
-                            }
-                        }
-                    }
-                }
-                return user;
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("An error occurred while fetching route details", ex);
-            }
-        }
-
-        public User HandleManager(User users)
-        {
-            try
-            {
-                User user = new();
-
-                string connectionString = configuration.GetConnectionString("DefaultConnectionString");
-
-                using (SqlConnection connection = new SqlConnection(connectionString))
-                {
-
-                    string query = @"select UserName,Password,Role from Users where UserName = @username ";
-
-                    using (SqlCommand cmd = new SqlCommand(query, connection))
-                    {
-
-                        cmd.Parameters.Add("@username", SqlDbType.VarChar).Value = users.userName;
-                        connection.Open();
-
-                        using (SqlDataReader reader = cmd.ExecuteReader())
-                        {
-                            while (reader.Read())
-                            {
-
-                                user.userName = reader["UserName"] != DBNull.Value ? (string)reader["UserName"] : string.Empty;
-                                user.password = reader["Password"] != DBNull.Value ? (string)reader["Password"] : string.Empty;
-                                user.role = reader["Role"] != DBNull.Value ? (int)reader["Role"] : 0;
-
-
-                            }
-                        }
-                    }
-                }
-                return user;
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("An error occurred while fetching route details", ex);
-            }
-        }
-
-        public User HandleUsers(User users)
-        {
-            try
-            {
-                User user = new();
-
-                string connectionString = configuration.GetConnectionString("DefaultConnectionString");
-
-                using (SqlConnection connection = new SqlConnection(connectionString))
-                {
-
-                    string query = @"select UserName,Password,RoleId from LoginCredentials where UserName = @username ";
-
-                    using (SqlCommand cmd = new SqlCommand(query, connection))
-                    {
-
-                        cmd.Parameters.Add("@username", SqlDbType.VarChar).Value = users.userName;
-                        connection.Open();
-
-                        using (SqlDataReader reader = cmd.ExecuteReader())
-                        {
-                            while (reader.Read())
-                            {
-
-                                user.userName = reader["UserName"] != DBNull.Value ? (string)reader["UserName"] : string.Empty;
-                                user.password = reader["Password"] != DBNull.Value ? (string)reader["Password"] : string.Empty;
-                                user.role = reader["RoleId"] != DBNull.Value ? Convert.ToInt32(reader["RoleId"]) : 0;
-
-
-                            }
-                        }
-                    }
-                }
-                return user;
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("An error occurred while fetching route details", ex);
-            }
-        }
-
-
     }
 }
-
-
-
-
