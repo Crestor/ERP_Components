@@ -50,19 +50,18 @@ namespace ERP_Components.Controllers
         }
         public IActionResult ViewWeaver()
         {
-           List<Weaver> weavers = weaverServices.ViewWeaver();
+            List<Weaver> weavers = weaverServices.ViewWeaver();
             return View(weavers);
         }
 
         public IActionResult EditWeaver(Guid id)
         {
             Weaver model = weaverServices.GetWeaverDetailsById(id);
-            //weaverServices.EditWeaver(WeaverId);
             model.WeaverId = id;
             return View(model);
         }
- 
-        
+
+
         [HttpPost]
         public IActionResult EditWeaverDetails(Weaver weaver)
         {
@@ -74,27 +73,93 @@ namespace ERP_Components.Controllers
             weaverServices.DeleteWeaver(id);
             return RedirectToAction("ViewWeaver");
         }
-        //public IActionResult ViewWeaver()
-        //{
-        //   List<Weaver> weavers = weaverServices.ViewWeaver();
-        //    return View(weavers);
-        //}
+        public IActionResult WorkOrder()
+        {
+            List<Weaver> PendingWorkOrder = weaverServices.ViewWorkOrder();
+            List<Weaver> OngoingWorkOrder = weaverServices.ViewOngoingWorkOrder();
+            var WorkOrder = new Weaver
+            {
+                PendingWorkOrder = PendingWorkOrder,
+                OngoingWorkOrder = OngoingWorkOrder
+            };
+            return View(WorkOrder);
+        }
+        public IActionResult AllocateToWarehouse(Guid WorkOrderId)
+        {
+            weaverServices.AllocateToWarehouse(WorkOrderId);
+            return RedirectToAction("WorkOrder");
+        }
 
-        //public IActionResult EditWeaver(Guid id)
-        //{
-        //    Weaver model = new Weaver();
-        //    //weaverServices.EditWeaver(WeaverId);
-        //    return View(model);
-        //}
-        //public IActionResult EditWeaverDetails(Weaver weaver)
-        //{
-        //    //weaverServices.EditWeaverDetails(weaver);
-        //    return RedirectToAction("ViewWeaver");
-        //}
-        //public IActionResult DeleteWeaver(Guid id)
-        //{
-        //    //weaverServices.DeleteWeaver(WeaverId);
-        //    return RedirectToAction("ViewWeaver");
-        //}
+        public IActionResult StartWeaving(Guid WorkOrderId)
+        {
+            Weaver workOrders = weaverServices.ViewProductOfStartWeaving(WorkOrderId);
+
+            List<Weaver> weaver = weaverServices.GetRequiredMaterial();
+
+            var workOrder = new Weaver
+            {
+                WorkOrderId = WorkOrderId,
+                WorkOrderSeries = workOrders.WorkOrderSeries,
+                ProductName = workOrders.ProductName,
+                Quantity = workOrders.requiredQuantity,
+                Specification = workOrders.Specification,
+                MaterialRequired = weaver
+            };
+            return View(workOrder);
+        }
+
+        public JsonResult ViewWorkOrderItems(Weaver weaver)
+        {
+
+            Weaver workOrders = weaverServices.ViewProductOfWorkOrder(weaver.WorkOrderId);
+            return Json(workOrders);
+        }
+
+        public IActionResult InventoryForAll()
+
+        {
+            List<Items> ProductionMaterial = weaverServices.GetProductionMaterial();
+            List<Items> WeaverMaterial = weaverServices.GetWeaverMaterial();
+            List<Items> finishedProduct = weaverServices.GetWeaverProduct();
+
+            var model = new Items();
+            {
+                model.ProductionMaterial = ProductionMaterial;
+                model.WeaverMaterial = WeaverMaterial;
+                model.FinishedProduct = finishedProduct;
+            }
+             ;
+
+            return View(model);
+        }
+        public IActionResult ViewPhases()
+        {
+            Weaver weaver = new Weaver();
+
+            return View(weaver);
+        }
+        public IActionResult ViewCompletedWorkOrder()
+        {
+            List<Weaver> weaver = weaverServices.ViewCompletedWorkOrder();
+
+            return View(weaver);
+        }
+        public IActionResult MaterialRequisitionforWeaver(Guid WorkOrderId)
+        {
+            Weaver workOrders = weaverServices.ViewProductOfStartWeaving(WorkOrderId);
+
+            List<Weaver> weaver = weaverServices.GetRequiredMaterial();
+
+            var workOrder = new Weaver
+            {
+                WorkOrderId = WorkOrderId,
+                WorkOrderSeries = workOrders.WorkOrderSeries,
+                ProductName = workOrders.ProductName,
+                Quantity = workOrders.requiredQuantity,
+                Specification = workOrders.Specification,
+                MaterialRequired = weaver
+            };
+            return View(workOrder);
+        }
     }
 }

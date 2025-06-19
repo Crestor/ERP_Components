@@ -55,5 +55,9 @@ namespace ERP_Components.Controllers
             return RedirectToAction("ApproveVendorQuotation");
         }
 
+        public IActionResult Productsales()
+        {
+            return View();
+        }   
     }
 }

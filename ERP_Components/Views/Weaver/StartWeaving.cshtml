@@ -1,0 +1,137 @@
+﻿@using ERP_Component_DAL.Models;
+@{
+    ViewBag.Title = "Start Weaving";
+    Layout = "~/Views/Shared/_LayoutINV.cshtml";
+}
+<link rel="stylesheet" href="~/css/Product.css" />
+ @model Weaver
+ <style>
+    #popup {
+        display: none;
+        position: fixed;
+        top: 10%;
+        margin-left: 45px;
+        background: #fff;
+        padding: 20px;
+        box-shadow: 0 0 10px rgba(0,0,0,0.5);
+        border-radius: 10px;
+        z-index: 999;
+        width: 75%;
+     }
+     #overlay{
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,0.5);
+        z-index: 998;
+     }
+ </style>
+ <div class="form-section">
+    <h3>Start Weaving</h3>
+    <form method="post">
+        <h3>Start Weaving</h3>
+        <div class="form-row">
+            <label for="workOrderSeries">Work Order Series:</label>
+            <input type="text" id="workOrderSeries" name="workOrderSeries" value="@Model.WorkOrderSeries" required />
+            <label for="productName">Product Name:</label>
+            <input type="text" id="productName" name="productName" value="@Model.ProductName" required />
+        </div>
+        <div class="form-row">
+            <label for="quantity">Quantity:</label>
+            <input type="number" id="quantity" name="quantity" value="@Model.Quantity" required />
+            <label for="Specification">Specification:</label>
+            <input type="text" id="Specification" name="Specification" value="@Model.Specification" required />
+        </div>
+        <h2>Material Details</h2>
+    <div class="table mt-7">
+        <table>
+            <thead>
+                <tr>
+                    <th>S.no</th>
+                    <th>Material</th>
+                    <th> Required Quantity</th>
+                    <th>Available Quantity</th>
+                </tr>
+            </thead>
+            <tbody>
+                    @for (int i = 0; i < Model.MaterialRequired.Count; i++)
+                    {
+                        <tr>
+                            <td>@(i + 1)</td>
+                            <td>@Model.MaterialRequired[i].MaterialName</td>
+                            <td>@Model.MaterialRequired[i].requiredQuantity</td>
+                            <td>@Model.MaterialRequired[i].availableQuantity</td>
+                        </tr>
+                    }
+            </tbody>
+        </table>
+    </div>
+        <div id="popup">
+            <div class="form-section">
+                <h3>Allocate Material To Weaver</h3>
+                <div class="form-row">
+                    <label for="AllocationSeries">Allocation Series:</label>
+                    <label for="weaverName">Weaver Name:</label>
+                    <select id="weaverName" name="weaverName" required>
+                        <option value="">Select Weaver</option>
+                        @* @foreach (var weaver in Model.Weavers)
+                        {
+                            <option value="@weaver.WeaverId">@weaver.Name</option>
+                        } *@
+                        <option value="1">Weaver 1</option>
+                        <option value="2">Weaver 2</option>
+                    </select>
+                </div>
+                <button onclick="closePopup()">Close</button>
+                <button type="submit">Allocate</button>
+            </div>
+            <div id="overlay" onclick="closePopup()"></div>
+
+
+        </div>
+
+        <div class="button">
+         <button id="showpopup" type="button">Start Weaving</button>
+            <button id="CreateMR"  type="submit">Create MR</button>
+        </div>
+    </form>
+ </div>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const createMR = document.getElementById("CreateMR");
+        const showpopup = document.getElementById("showpopup");
+        const popup = document.getElementById("popup");
+        const overlay = document.getElementById("overlay");
+
+        const workOrderId = '@Model.WorkOrderId';
+
+        const required = @Model.MaterialRequired[0].requiredQuantity;
+        const available = @Model.MaterialRequired[0].availableQuantity;
+
+        if (required > available) {
+            createMR.style.display = "block";
+            showpopup.style.display = "none";
+        } else {
+            createMR.style.display = "none";
+            showpopup.style.display = "block";
+        }
+
+        showpopup.addEventListener("click", function () {
+            popup.style.display = "block";
+            overlay.style.display = "block";
+        });
+
+        createMR.addEventListener("click", function (e) {
+            e.preventDefault();
+            window.location.href = `/Weaver/MaterialRequisitionforWeaver?workOrderId=${workOrderId}`;
+        });
+    });
+
+    function closePopup() {
+        document.getElementById("popup").style.display = "none";
+        document.getElementById("overlay").style.display = "none";
+    }
+</script>

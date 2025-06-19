@@ -2385,7 +2385,7 @@ namespace ERP_Component_DAL.Services
                 connection = new SqlConnection(connectionstring);
                 SqlCommand cmd = new();
                 cmd.CommandType = System.Data.CommandType.Text;
-                cmd.CommandText = cmd.CommandText = @"SELECT  i.ItemId,i.ItemName, i.SKU,i.Specification,i.HSN, iv.InStock,iv.InventoryId FROM Items  LEFT JOIN Inventory iv ON i.ItemId = iv.ItemId ";
+                cmd.CommandText = cmd.CommandText = @"SELECT  i.ItemId,i.ItemName, i.SKU,i.Specification,i.HSN, iv.InStock,iv.InventoryId FROM Items i LEFT JOIN Inventory iv ON i.ItemId = iv.ItemId ";
                 cmd.Connection = connection;
 
                 cmd.CommandTimeout = 300;

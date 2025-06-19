@@ -1,193 +1,4 @@
-﻿@* @using ERP_Component_DAL.Models;
-
-
-@{
-    ViewBag.Title = "Stocks ";
-    Layout = "~/Views/Shared/_LayoutINV.cshtml";
-}
-
-@model List<Stock>
-<link href="~/css/Product.css" rel="stylesheet" />
- 
-
-<div class="table">
-    <table>
-        <thead>
-            <tr>
-                <th>S.No</th>
-                <th>Item Name</th>
-                <th>Category</th>
-                <th>Specification</th>
-                <th>UOM</th>
-                <th>HSN</th>
-                <th>Unit Price</th>
-                <th>Quantity</th>
-
-            </tr>
-        </thead>
-
-        <tbody id="TableBody">
-           
-        </tbody>
-
-    </table>
-</div>
-
-
-<div class="table-container" id="material" style="display: none;">
-
-    <div style="display:flex;justify-content:center;text-align:center">
-        <h4> Material StockIn</h4>
-
-    </div>
-
-    <div class="Table">
-        <table class="material-table" style="margin:0px 15px">
-            <thead>
-                <tr>
-                    <th>Sno.</th>
-                    <th>Product Name</th>
-                    <th>Quantity</th>
-                    <th>unit Price</th>
-                    <th>Arrival Date</th>
-                    <th>Expiry Date</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody id="geeks">
-
-
-                @for (var i = 0; i < Model.Count; i++)
-                {
-
-                    var x = Model[i];
-                    var index = i + 1;
-
-                    <tr id="row-@x.stockId">
-                        <td>@index</td>
-                        <td>@x.itemName</td>
-
-
-                        <td>@x.quantity</td>
-                        <td>@x.costPrice</td>
-
-                        <td>@x.arrival.ToShortDateString()</td>
-
-                        <td>@x.expiry.ToShortDateString()</td>
-
-                        <td>
-                            <div class="actions">
-
-                                <button onclick="location.href='@Url.Action("EditStock", "Inventory", new { stockId = @x.stockId }, null)'"><i class="fas fa-edit"></i></button>
-                                <button onclick="openRejectModal('@x.stockId')"><i class="fas fa-trash"></i></button>
-
-
-
-                            </div>
-                        </td>
-
-                    </tr>
-                }
-            </tbody>
-
-        </table>
-    </div>
-
-</div>
-
-<script>
-
-     function showSection(sectionId) {
-        document.querySelectorAll('.table-container').forEach(el => el.style.display = 'none');
-        document.getElementById(sectionId).style.display = 'block';
-
-    }
-</script>
-
-
-
-
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script>
-
-        function getName() {
-        $.ajax({
-            type: "GET",
-            url: "/Inventory/ViewMaterialStock",
-            contentType: "application/json; charset=utf-8",
-            dataType: "json",
-            success: function (response) {
-                let tbody = $("#material #tbody");
-                tbody.empty();
-
-                if (response.length > 0) {
-                    response.forEach((item, index) => {
-                        tbody.append(`
-                            <tr>
-                                <td>${index + 1}</td>
-                                <td>${item.itemName}</td>
-                                <td>${item.quantity}</td>
-                                <td>${item.costPrice}</td>
-                                   <td>${new Date(item.arrival).toLocaleDateString()}</td>
-                                <td>${new Date(item.expiry).toLocaleDateString()}</td>
-                                <td>
-                                    <div class="actions">
-                                        <button onclick="location.href='/Inventory/EditStock?stockId=${item.stockId}'">
-                                            <i class="fas fa-edit"></i>
-                                        </button>
-                                        <button onclick="location.href='/Inventory/DeleteStock?stockId=${item.stockId}'">
-                                            <i class="fas fa-trash"></i>
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
-                        `);
-                    });
-                } else {
-                    tbody.append('<tr><td colspan="7">No Material Categories Found</td></tr>');
-                }
-            },
-            error: function (xhr, status, error) {
-                console.error("AJAX Error:", error);
-                alert("Error fetching material categories.");
-            }
-        });
-    }
-</script>
-
-
-
-<script>
-
-    function openRejectModal(stockId) {
-
-          console.log(stockId);
-          const id = stockId;
-          Swal.fire({
-            title: "Are you sure?",
-            text: "You won't be able to revert this!",
-            icon: "warning",
-            showCancelButton: true,
-            confirmButtonColor: "#3085d6",
-            cancelButtonColor: "#d33",
-            confirmButtonText: "Yes, delete it!"
-          }).then((result) => {
-            if (result.isConfirmed) {
-              if (stockId) {
-
-                let url = `/Inventory/DeleteStock?stockId=${id}`;
-
-                console.log('Redirecting to', url);
-                window.location.href = url;
-              }
-            }
-          });
-
-        }
-</script>
-
- *@
- @using ERP_Component_DAL.Models;
+﻿ @using ERP_Component_DAL.Models;
 @{
     ViewBag.Title = "Stock";
     Layout = "~/Views/Shared/_LayoutINV.cshtml";
@@ -196,7 +7,7 @@
 
 <link rel="stylesheet" href="~/css/Product.css">
 
- @* @model List<AddCustomer> *@
+@* @model List<AddCustomer> *@
 
 <style>
     .tab-buttons {
@@ -250,15 +61,15 @@
 
 
 
-    <div class="button" style="margin-bottom:3px;">
-        <button style="width:120px;margin:0px" onclick="showSection('main')">specification</button>
-        <button style="margin:0px 32px 0px 1px" onclick="showSection('address')">Stock Details</button>
-    </div>
+<div class="button" style="margin-bottom:3px;">
+    <button style="width:120px;margin:0px" onclick="showSection('main')">specification</button>
+    <button style="margin:0px 32px 0px 1px" onclick="showSection('address')">Stock Details</button>
+</div>
 
 
 <div class="vendor-section">
-      <div class="table" id="main" style="display: block;">
-          <h3 style="top:-1.5em">Specification</h3>
+    <div class="table" id="main" style="display: block;">
+        <h3 style="top:-1.5em">Specification</h3>
         <table>
             <thead>
                 <tr>
@@ -271,30 +82,30 @@
                 </tr>
             </thead>
             <tbody>
-            <tr>
-                <td>1</td>
-                <td>Item1</td>
-                <td>Category1</td>
-                <td>SubCategory1</td>
-                <td>1234</td>
-                <td>18%</td>
-            </tr>
-            <tr>
-                <td>2</td>
-                <td>Item2</td>
-                <td>Category2</td>
-                <td>SubCategory2</td>
-                <td>5678</td>
-                <td>12%</td>
-            </tr>
-            <tr>
-                <td>3</td>
-                <td>Item3</td>
-                <td>Category3</td>
-                <td>SubCategory3</td>
-                <td>9101</td>
-                <td>5%</td>
-            </tr>
+                <tr>
+                    <td>1</td>
+                    <td>Item1</td>
+                    <td>Category1</td>
+                    <td>SubCategory1</td>
+                    <td>1234</td>
+                    <td>18%</td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td>Item2</td>
+                    <td>Category2</td>
+                    <td>SubCategory2</td>
+                    <td>5678</td>
+                    <td>12%</td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td>Item3</td>
+                    <td>Category3</td>
+                    <td>SubCategory3</td>
+                    <td>9101</td>
+                    <td>5%</td>
+                </tr>
             </tbody>
         </table>
     </div>
@@ -330,15 +141,15 @@
                     <td>30.00</td>
                     <td>2023-11-01</td>
                     <td>2024-11-01</td>
-                 </tr>
-                 <tr>
+                </tr>
+                <tr>
                     <td>3</td>
                     <td>Item3</td>
                     <td>150</td>
                     <td>20.00</td>
                     <td>2023-12-01</td>
                     <td>2024-12-01</td>
-                 </tr>
+                </tr>
             </tbody>
         </table>
     </div>

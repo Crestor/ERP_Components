@@ -1,2 +1,155 @@
-﻿<p>dfhdfgidhfuisdfdjkufgdyufgsdfy7gefyuadtfyadgfyadfgasdyufgasyfgasdyfgasdf
-    7yasdgfyadfghedf3yrfeggfgherfeyfvae76rgsdyfawegrfy7eg</p>
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>Weaver Dashboard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', sans-serif;
+            background: #f4f6f9;
+        }
+
+        .dashboard-container {
+            padding: 20px;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+            .header h1 {
+                font-size: 26px;
+                margin: 0;
+                color: #343a40;
+            }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 10px;
+            padding: 15px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+            .card h3 {
+                margin: 0;
+                font-size: 18px;
+                margin-bottom: 10px;
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                color: #007bff;
+            }
+
+            .card p {
+                margin: 0;
+                font-size: 16px;
+                color: #333;
+            }
+
+        .progress-bar {
+            background-color: #e9ecef;
+            border-radius: 5px;
+            overflow: hidden;
+            margin-top: 10px;
+        }
+
+        .progress-fill {
+            height: 10px;
+            background-color: #28a745;
+            width: 60%; /* Dynamic value */
+        }
+
+        .status-good {
+            color: #28a745;
+        }
+
+        .status-warning {
+            color: #ffc107;
+        }
+
+        .status-bad {
+            color: #dc3545;
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <div class="header">
+            <h1><i class="fas fa-user-cog"></i> Weaver Dashboard</h1>
+            <i class="fas fa-arrow-up-right-from-square"></i>
+        </div>
+
+        <div class="grid">
+            <!-- Weaver Profile -->
+            <div class="card">
+                <h3><i class="fas fa-user"></i> Profile</h3>
+                <p>Name: Tushar Chauhan</p>
+                <p>Firm: Silk Threads India</p>
+                <p>Contact: +91-9876543210</p>
+            </div>
+
+            <!-- Order Summary -->
+            <div class="card">
+                <h3><i class="fas fa-boxes"></i> Orders</h3>
+                <p>Total: 14</p>
+                <p>Active: 6 | Completed: 8</p>
+            </div>
+
+            <!-- Material Status -->
+            <div class="card">
+                <h3><i class="fas fa-cubes"></i> Material</h3>
+                <p>Received: 10</p>
+                <p>Pending: 2</p>
+            </div>
+
+            <!-- Production Progress -->
+            <div class="card">
+                <h3><i class="fas fa-industry"></i> Production</h3>
+                <p>Progress:</p>
+                <div class="progress-bar"><div class="progress-fill"></div></div>
+                <p>Status: <span class="status-good">On Track</span></p>
+            </div>
+
+            <!-- Earnings -->
+            <div class="card">
+                <h3><i class="fas fa-wallet"></i> Payments</h3>
+                <p>This Month: ₹45,000</p>
+                <p>Pending: ₹5,000</p>
+            </div>
+
+            <!-- Documents -->
+            <div class="card">
+                <h3><i class="fas fa-file-alt"></i> Documents</h3>
+                <p>PAN: ✅ Verified</p>
+                <p>Aadhar: ✅ Verified</p>
+            </div>
+
+            <!-- Notifications -->
+            <div class="card">
+                <h3><i class="fas fa-bell"></i> Notifications</h3>
+                <p>✔️ Order #102 completed</p>
+                <p>⚠️ Material for Order #110 delayed</p>
+            </div>
+
+            <!-- Deadlines -->
+            <div class="card">
+                <h3><i class="fas fa-calendar-alt"></i> Deadlines</h3>
+                <p>Next Delivery: 20th June</p>
+                <p>Material Due: 18th June</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

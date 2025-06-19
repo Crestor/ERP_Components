@@ -1,0 +1,219 @@
+﻿@using ERP_Component_DAL.Models;
+@{
+    ViewBag.Title = "Inventory";
+    Layout = "~/Views/Shared/_LayoutINV.cshtml";
+}
+@model Items
+<link rel="stylesheet" href="~/css/Product.css">
+<style>
+    .card-title{
+        display:grid;
+            width: 99px;
+            float: left;
+            font-size: 1.1rem;
+            font-weight: 400;
+            margin: 0;
+         }
+        .card {
+            border-radius: 1rem;
+            transition: 0.3s;
+        }
+
+            .card:hover {
+                transform: scale(1.02);
+            }
+
+        .icon {
+            font-size: 2rem;
+        }
+
+        .card-body {
+        border-radius: 15px;
+        min-height: 75px;
+        display: flex;
+        background-color: lightcyan;
+    }
+
+    .inventory-table {
+        display: none;
+        margin-top: 20px;
+    }
+    p{
+        margin:0px !important;
+    }
+
+    .border-shade-1 {
+        border-left: 4px solid #138496;
+        border-right: 4px solid #138496;
+    }
+
+    .border-shade-2 {
+        border-left: 4px solid #1a9aad; 
+        border-right: 4px solid #1a9aad;
+    }
+
+    .border-shade-3 {
+        border-left: 4px solid #117180; 
+        border-right: 4px solid #117180;
+    }
+
+    .border-shade-4 {
+        border-left: 4px solid #117180;
+        border-right: 4px solid #117180;
+    }
+
+    .icon {
+        font-size: 1.8rem;
+    }
+    .expand-span {
+        display: inline-block;
+        width: 70px;
+        text-align: center;
+        white-space: nowrap;
+    }
+
+    .expand-span:hover {
+        color:white;
+        border-radius:10px;
+        background-color:#138496;
+    }
+    h5{
+        width:100% !important;
+    }
+   
+</style>
+
+
+<div class="container mt-5">
+        <div class="row g-4">
+            <div class="col-md-6 col-lg-4">
+                <div class="card shadow-sm   border-shade-1" onclick="showTable('productionMaterial')">
+                    <div class="card-body">
+                    <h5 class="card-title d-flex align-items-center" style="color: #138496;"><i class="fas fa-industry icon"></i>
+                        Production Material
+                    </h5>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-4">
+                <div class="card shadow-sm   border-shade-2" onclick="showTable('weaverMaterial')">
+                    <div class="card-body">
+                        <h5 class="card-title d-flex align-items-center" style="color: #1a9aad;">
+                        <i class="fas fa-user-cog icon"></i>Weaver Material
+                         </h5>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-4">
+                <div class="card shadow-sm   border-shade-3" onclick="showTable('finishedProduct')">
+                    <div class="card-body">
+                        <h5 class="card-title d-flex align-items-center" style="color: #117180;">
+                        <i class="fas fa-box-open icon"></i>Finished Product
+                    </h5>
+                    </div>
+                </div>
+            </div>
+
+         
+        </div>
+ </div>
+
+<div>
+    <div id="finishedProduct" class="inventory-table">
+        <h2 class="mt-4">Finished Product</h2>
+        <div class="table">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Sr no</th>
+                        <th>Product Name</th>
+                        <th>Specification</th>
+                        <th>InStock</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (int i = 0; i < Model.FinishedProduct.Count; i++)
+                    {
+                        <tr>
+                            <td>@(i + 1)</td>
+                            <td>@Model.FinishedProduct[i].itemName</td>
+                            <td>@Model.FinishedProduct[i].specification</td>
+                            <td>@Model.FinishedProduct[i].inStock<small><small><small>@Model.FinishedProduct[i].UOM</small></small></small></td>
+                       </tr>
+                    }
+
+               </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div id="productionMaterial" class="inventory-table">
+        <h2 class="mt-4">Production Material</h2>
+        <div class="table">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Sr no</th>
+                        <th>Material Name</th>
+                        <th>Specification</th>
+                        <th>InStock</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (int i = 0; i < Model.ProductionMaterial.Count; i++)
+                    {
+                        <tr>
+                            <td>@(i + 1)</td>
+                            <td>@Model.ProductionMaterial[i].itemName</td>
+                            <td>@Model.ProductionMaterial[i].specification</td>
+                            <td>@Model.ProductionMaterial[i].inStock<small><small><small>@Model.ProductionMaterial[i].UOM</small></small></small></td>
+                        </tr>
+                    }
+
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div id="weaverMaterial" class="inventory-table">
+        <h2 class="mt-4">Weaver Material</h2>
+        <div class="table">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Sr no</th>
+                        <th>Material Name</th>
+                        <th>Specification</th>
+                        <th>InStock</th>
+                    </tr>
+                </thead>
+             <tbody>
+                    @for (int i = 0; i < Model.WeaverMaterial.Count; i++)
+                    {
+                        <tr>
+                            <td>@(i + 1)</td>
+                            <td>@Model.WeaverMaterial[i].itemName</td>
+                            <td>@Model.WeaverMaterial[i].specification</td>
+                            <td>@Model.WeaverMaterial[i].inStock<small><small><small>@Model.WeaverMaterial[i].UOM</small></small></small></td>
+                        </tr>
+                    }
+             </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+
+<!-- Script to toggle tables -->
+<script>
+    function showTable(id) {
+      document.querySelectorAll('.inventory-table').forEach(table => {
+        table.style.display = 'none';
+      });
+      document.getElementById(id).style.display = 'block';
+    }
+</script>

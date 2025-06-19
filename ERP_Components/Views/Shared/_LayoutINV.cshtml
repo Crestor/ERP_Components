@@ -52,6 +52,12 @@
             background-color: #1592a6;
         }
     </style> *@
+    <style>
+        nav ul li a {
+            padding: 5px !important;
+            background-color: white;
+        }
+    </style>
 </head>
 @{
     var Role = Context.Session.GetString("Role");
@@ -322,6 +328,37 @@
                                 </a>
 
                             </li>
+                            <li class="nav-item">
+                                <a href="/Weaver/WorkOrder" class="nav-link">
+                                    <i class="fas fa-tasks me-2"></i>
+                                    <p>
+                                        Work Order
+                                    </p>
+                                </a>
+
+                            </li>
+
+                            <li class="nav-item">
+                                <a href="@Url.Action("InventoryForAll", "Weaver")" class="nav-link">
+                                    <i class="fas fa-boxes me-2"></i><p>Inventory</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="@Url.Action("ViewCompletedWorkOrder", "Weaver")" class="nav-link">
+                                    <i class="fas fa-check-double me-2"></i><p>Completed Work Order</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="/Production/CreateMaterialRequisition" class="nav-link">
+                                    <i class="fas fa-file-signature me-2"></i>
+                                    <p>
+                                        Create Material Requisition
+                                    </p>
+                                </a>
+
+                            </li>
+                               
+
                         }
                         else if (Role == "Production")
                         {
@@ -633,6 +670,11 @@
                                 <li class="nav-item">
                                     <a href="/Manager/ApproveVendorQuotation" class="nav-link">
                                         <i class="fas fa-file-invoice me-2"></i> <p>View Vendor Quotation</p>
+                                    </a>
+                                </li>
+                                      <li class="nav-item">
+                                    <a href="/Manager/Productsales" class="nav-link">
+                                        <i class="fas fa-file me-2"></i> <p>Add Productsales</p>
                                     </a>
                                 </li>
 
@@ -1008,7 +1050,7 @@
                         </li>
                         <li class="nav-item">
                             <a href="/Home/Index" class="nav-link">
-                                <i class="fas fa-sign-out-alt"></i>
+                                <i id="changeicon" class="fas fa-sign-out-alt" style="cursor:pointer;"></i>
 
                                 <p>Logout</p>
 
@@ -1044,7 +1086,26 @@
         </div>
         Copyright &copy; @DateTime.Now.Year  <a href="#">SILK_ERP</a>.  All rights reserved.
     </footer>
+    <script>
+        function toggleIconOnHover(elementId, class1, class2) {
+          const el = document.getElementById(elementId);
+          if (!el) return;
 
+          el.addEventListener("mouseenter", function () {
+            el.classList.toggle(class1);
+            el.classList.toggle(class2);
+          });
+
+          el.addEventListener("mouseleave", function () {
+            el.classList.toggle(class1);
+            el.classList.toggle(class2);
+          });
+        }
+
+        document.addEventListener("DOMContentLoaded", function () {
+          toggleIconOnHover("changeicon", "fa-sign-out-alt", "fa-running");
+        });
+    </script>
 
 
     <script src="~/js/jquery.min.js"></script>

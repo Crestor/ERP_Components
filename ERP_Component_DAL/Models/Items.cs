@@ -63,7 +63,13 @@ namespace ERP_Component_DAL.Models
 
         public Guid warehouseId { get; set; }
 
-        public List<Category> categories { get; set; }
-        public List<Warehouse> Warehouse { get; set; }
+        public List<Category>? categories { get; set; }
+        public List<Warehouse>? Warehouse { get; set; }
+
+        public List<Items> ProductionMaterial {  get; set; }
+        public List<Items> WeaverMaterial {  get; set; }
+
+        public List<Items> FinishedProduct { get; set; }
+
     }
 }

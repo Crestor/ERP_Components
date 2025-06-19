@@ -38,6 +38,30 @@ namespace ERP_Component_DAL.Models
             public IFormFile? DocPANCard { get; set; }
 
             public IFormFile? DocAadhar { get; set; }
-        }
+
+        public Guid WorkOrderId { get; set; }
+        public string? WorkOrderSeries {  get; set; }
+
+        public string? ProductName { get; set; }
+
+        public string? MaterialName { get; set; }
+
+        public int Quantity { get; set; }
+
+        public string? Status { get; set; }
+
+        public int requiredQuantity { get; set; }
+        public int? availableQuantity { get; set; }
+
+        public string? Specification { get; set; }
+
+        public List<Weaver>? PendingWorkOrder { get; set; }
+        public List<Weaver>? OngoingWorkOrder { get; set; }
+        public List<Weaver>? CompletedWorkOrder { get; set; }
+        public List<Weaver>? DispatchedWorkOrder { get; set; }
+        public List<Weaver> MaterialRequired { get; set; }
+
+
+    }
  }
 

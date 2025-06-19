@@ -1,0 +1,42 @@
+﻿@using ERP_Component_DAL.Models
+@{
+    ViewBag.Title = "Completed Work Order";
+    Layout = "~/Views/Shared/_LayoutINV.cshtml";
+}
+<link rel="stylesheet" href="~/css/Product.css" />
+@model List<Weaver>
+<style>
+    button {
+        justify-self: center;
+    }
+</style>
+
+    <div class="table">
+        <table>
+            <thead>
+                <tr>
+                    <th>Sr No</th>
+                    <th>Work Order Series</th>
+                    <th>Product Name</th>
+                    <th>Quantity</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (int i = 0; i < Model.Count; i++)
+                {
+                    var x = Model[i];
+                    var index = i + 1;
+                    <tr>
+                        <td>@index</td>
+                        <td>@x.WorkOrderSeries</td>
+                        <td>@x.ProductName</td>
+                        <td>@x.Quantity</td>
+                        <td>
+                            <button onclick="viewDetails('@x.WorkOrderId')">Dispatch</button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>

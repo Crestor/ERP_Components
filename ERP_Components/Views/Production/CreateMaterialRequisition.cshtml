@@ -14,7 +14,7 @@
 
             <label for="ItemName">ItemName</label>
             <select id="ItemId" class="form-control" name="ItemId">
-            <option selected disabled>Select Product</option>
+            <option selected disabled>Select Material</option>
                 @foreach (var product in Model.ItemNames)
                 {
                         <option value="@product.ItemId">@product.ItemName</option>

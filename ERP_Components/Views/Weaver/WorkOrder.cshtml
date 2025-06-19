@@ -1,0 +1,177 @@
+﻿@using ERP_Component_DAL.Models
+@{
+    ViewBag.Title = "Work Order";
+    Layout = "~/Views/Shared/_LayoutINV.cshtml";
+}
+<link rel="stylesheet" href="~/css/Product.css" />
+@model Weaver
+<style>
+    button{
+        justify-self:center;
+    }
+</style>
+    <div style="display:flex">
+    <div class="col-6">
+        <button  id="view">View</button>
+    </div>
+    <div class="col-6">
+        <button id="ongoing">ongoing</button>
+    </div>
+    </div>
+<div>
+        <div id="viewtable" class="table">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Sr No</th>
+                        <th>Work Order Series</th>
+                        <th>Product Name</th>
+                        <th>Quantity</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (int i = 0; i < Model.PendingWorkOrder.Count; i++)
+                    {
+                        var x = Model.PendingWorkOrder[i];
+                        var index = i + 1;
+                        <tr>
+                            <td>@index</td>
+                            <td>@x.WorkOrderSeries</td>
+                            <td>@x.ProductName</td>
+                            <td>@x.Quantity</td>
+                            <td>
+                                <button onclick="viewDetails('@x.WorkOrderId')">View</button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        <div id="ongoingtable" class="table" style="display:none">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Sr No</th>
+                        <th>Work Order Series</th>
+                        <th>Product Name</th>
+                        <th>Quantity</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (int i = 0; i < Model.OngoingWorkOrder.Count; i++)
+                    {
+                        var x = Model.OngoingWorkOrder[i];
+                        var index = i + 1;
+                        <tr>
+                            <td>@index</td>
+                            <td>@x.WorkOrderSeries</td>
+                            <td>@x.ProductName</td>
+                            <td>@x.Quantity</td>
+                            <td>
+                                <button id="viewphase">View phase</button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+</div>
+<!-- Modal -->
+<div id="viewModal" style="display:none; position:fixed; top:10%; margin-left:45px;
+     background:#fff; padding:20px; box-shadow:0 0 10px rgba(0,0,0,0.5); border-radius:10px; z-index:999; width:75%;">
+    <div id="modalContent">
+        <div id="TableBody"></div>
+    </div>
+</div>
+
+<!-- Overlay -->
+<div id="overlay" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%;
+     background:rgba(0,0,0,0.5); z-index:998;" onclick="closeModal()"></div>
+
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<!-- View Details Script -->
+<script>
+    function viewDetails(workOrderId) {
+        document.getElementById('viewModal').style.display = 'block';
+        document.getElementById('overlay').style.display = 'block';
+
+        let tableBody = document.getElementById("TableBody");
+        tableBody.innerHTML = '<p><span>Loading...</span></p>';
+
+        $.ajax({
+            type: 'POST',
+            url: '/Weaver/ViewWorkOrderItems',
+            data: { WorkOrderId: workOrderId },
+            success: function (response) {
+                tableBody.innerHTML = "";
+
+                $(response).each(function (index, item) {
+                    let seq = index + 1;
+                    let buttonText = (item.requiredQuantity <= item.availableQuantity) ? "Allocate" : "Start Weaving";
+
+                    const div = document.createElement("div");
+                    div.className = "form-section";
+                    div.innerHTML = `
+                        <h3>Details</h3>
+                        <div class="form-row">
+                            <label class="required">Product Name</label>
+                            <input type="text" value="${item.productName}" readonly />
+                            <label class="required">Required</label>
+                            <input type="text" value="${item.requiredQuantity}" readonly />
+                        </div>
+                        <div class="form-row" style="width:50%">
+                            <label class="required">Available</label>
+                            <input type="text" value="${item.availableQuantity}" readonly />
+                        </div>
+                        <div class="button">
+                            <button class="ButtonForRedirect" data-id="${item.workOrderId}">${buttonText}</button>
+                        </div>
+                    `;
+                    tableBody.appendChild(div);
+                });
+            },
+            error: function () {
+                tableBody.innerHTML = '<p><span>Error loading data.</span></p>';
+            }
+        });
+    }
+
+    function closeModal() {
+        document.getElementById('viewModal').style.display = 'none';
+        document.getElementById('overlay').style.display = 'none';
+    }
+
+    // Delegated click event
+    document.getElementById("TableBody").addEventListener("click", function (event) {
+        if (event.target.tagName === "BUTTON") {
+            const buttonText = event.target.innerText;
+            const workOrderId = event.target.getAttribute("data-id");
+
+            if (buttonText === "Allocate") {
+                window.location.href = `/Weaver/AllocateToWarehouse?WorkOrderId=${workOrderId}`;
+            } else if (buttonText === "Start Weaving") {
+                window.location.href = `/Weaver/StartWeaving?WorkOrderId=${workOrderId}`;
+            }
+        }
+    });
+</script>
+<script>
+const view =document.getElementById("view");
+const ongoing =document.getElementById("ongoing");
+view.addEventListener("click", function() {
+    document.getElementById("viewtable").style.display = "block";
+    document.getElementById("ongoingtable").style.display = "none";
+});
+ongoing.addEventListener("click", function() {
+    document.getElementById("viewtable").style.display = "none";
+    document.getElementById("ongoingtable").style.display = "block";
+});
+const viewphase = document.getElementById("viewphase");
+viewphase.addEventListener("click", function() {
+    window.location.href = "/Weaver/ViewPhases";
+});
+</Script>

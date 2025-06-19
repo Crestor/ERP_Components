@@ -8,6 +8,7 @@ using ERP_Component_DAL.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
 
 namespace ERP_Component_DAL.Services
 {
@@ -53,13 +54,13 @@ namespace ERP_Component_DAL.Services
                     }
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 throw;
             }
         }
 
-        private byte[] GetBytesFromIFormFile(IFormFile? file)
+        private byte[]? GetBytesFromIFormFile(IFormFile? file)
         {
             if (file == null || file.Length == 0)
                 return null;
@@ -99,9 +100,8 @@ namespace ERP_Component_DAL.Services
 
                 return weavers;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                // Log exception here if needed
                 throw;
             }
         }
@@ -189,7 +189,7 @@ namespace ERP_Component_DAL.Services
                     }
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 throw;
             }
@@ -212,12 +212,456 @@ namespace ERP_Component_DAL.Services
                     }
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 throw;
             }
         }
 
+        public List<Weaver> ViewWorkOrder()
+        {
+           List <Weaver> weaver = new List<Weaver>();
+
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    string query = @"select wo.WorkOrderSeries,wo.WorkOrderID,wo.Quantity,ws.StatusName,wo.WorkOrderStatus,it.ItemName  from WorkOrder wo 
+                                    join Items it on wo.ProductID = it.ItemId join WorkOrderStatuses ws on ws.WorkOrderStatus = wo.WorkOrderStatus where wo.WorkOrderStatus = 1";
+
+
+
+                    using (SqlCommand cmd = new SqlCommand(query, connection))
+                    {
+                        connection.Open();
+
+                        using (SqlDataReader reader = cmd.ExecuteReader())
+                        {
+                        
+                                while (reader.Read())
+                                {
+                                    weaver.Add(new Weaver
+                                    {
+                                        WorkOrderSeries = reader["WorkOrderSeries"] != DBNull.Value ? reader["WorkOrderSeries"].ToString() : string.Empty,
+                                        WorkOrderId = reader["WorkOrderID"] != DBNull.Value ? (Guid)reader["WorkOrderID"] : Guid.Empty,
+                                        Quantity = reader["Quantity"] != DBNull.Value ? Convert.ToInt32(reader["Quantity"]) : 0,
+                                        Status = reader["StatusName"] != DBNull.Value ? reader["StatusName"].ToString() : string.Empty,
+                                        ProductName = reader["ItemName"] != DBNull.Value ? reader["ItemName"].ToString() : string.Empty
+                                    });
+                                }
+
+
+                        }
+                        
+                    }
+                }
+
+                return weaver;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        
+        public Weaver ViewProductOfWorkOrder(Guid WorkOrederId)
+        {
+            Weaver weaver = new Weaver();
+
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    string query = $"SELECT wo.WorkOrderSeries,wo.WorkOrderID,wo.Quantity,wo.WorkOrderStatus,i.ItemName,iv.InStock from WorkOrder wo \r\njoin Items i on wo.ProductID = i.ItemId join Inventory iv on iv.ItemId = i.ItemId JOIN DistributionCenter dc ON dc.CenterID = iv.CenterID where WorkOrderID = '{WorkOrederId}' AND dc.CenterType = 6";
+
+
+
+                    using (SqlCommand cmd = new SqlCommand(query, connection))
+                    {
+                        connection.Open();
+
+                        using (SqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            
+                                while (reader.Read())
+                                {
+                                weaver = new Weaver
+                                {
+                                    WorkOrderSeries = reader["WorkOrderSeries"]?.ToString(),
+                                    WorkOrderId = reader["WorkOrderID"] != DBNull.Value ? (Guid)reader["WorkOrderID"] : Guid.Empty,
+                                    requiredQuantity = reader["Quantity"] != DBNull.Value ? Convert.ToInt32(reader["Quantity"]) : 0,
+                                    availableQuantity = reader["InStock"] != DBNull.Value ? Convert.ToInt32(reader["InStock"]) : 0,
+                                    Status = reader["WorkOrderStatus"]?.ToString(),
+                                    ProductName = reader["ItemName"]?.ToString()
+                                };
+                            }
+
+
+                        }
+                        
+                    }
+                }
+
+                return weaver;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public Weaver ViewProductOfStartWeaving(Guid WorkOrederId)
+        {
+            Weaver weaver = new Weaver();
+
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    string query = $"SELECT wo.WorkOrderSeries,wo.WorkOrderID,wo.Quantity,wo.WorkOrderStatus,i.ItemName,i.Specification,iv.InStock from WorkOrder wo \r\njoin Items i on wo.ProductID = i.ItemId join Inventory iv on iv.ItemId = i.ItemId JOIN DistributionCenter dc ON dc.CenterID = iv.CenterID where WorkOrderID = '{WorkOrederId}' AND dc.CenterType = 6";
+
+
+
+                    using (SqlCommand cmd = new SqlCommand(query, connection))
+                    {
+                        connection.Open();
+
+                        using (SqlDataReader reader = cmd.ExecuteReader())
+                        {
+
+                            while (reader.Read())
+                            {
+                                weaver = new Weaver
+                                {
+                                    WorkOrderSeries = reader["WorkOrderSeries"]?.ToString(),
+                                    WorkOrderId = reader["WorkOrderID"] != DBNull.Value ? (Guid)reader["WorkOrderID"] : Guid.Empty,
+                                    requiredQuantity = reader["Quantity"] != DBNull.Value ? Convert.ToInt32(reader["Quantity"]) : 0,
+                                    availableQuantity = reader["InStock"] != DBNull.Value ? Convert.ToInt32(reader["InStock"]) : 0,
+                                    Status = reader["WorkOrderStatus"]?.ToString(),
+                                    ProductName = reader["ItemName"]?.ToString(),
+                                    Specification = reader["Specification"] != DBNull.Value ? reader["Specification"].ToString() : string.Empty
+                                };
+                            }
+
+
+                        }
+
+                    }
+                }
+
+                return weaver;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+        public bool AllocateToWarehouse(Guid WorkOrderId)
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    string query = $"update Workorder set WorkOrderStatus = 2  Where WorkOrderId = '{WorkOrderId}' ";
+
+                    using (SqlCommand cmd = new SqlCommand(query, connection))
+                    {
+                        connection.Open();
+
+                        int rowsAffected = cmd.ExecuteNonQuery();
+                        return rowsAffected > 0;
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public List<Items> GetProductionMaterial()
+        {
+            List<Items> weaver = new List<Items>();
+
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    string query = @"SELECT it.ItemName,it.ItemId,it.Specification,i.InStock,it.UnitOFMeasure FROM Inventory i 
+                                    JOIN DistributionCenter dc ON dc.CenterId = i.CenterId 
+                                    JOIN Items it ON it.ItemId = i.ItemId
+                                    WHERE dc.CenterType = 3 and it.ItemType = 1";
+
+                    using (SqlCommand cmd = new SqlCommand(query, connection))
+                    {
+                        connection.Open();
+
+                        using (SqlDataReader reader = cmd.ExecuteReader())
+                        {
+
+                            while (reader.Read())
+                            {
+                                weaver.Add(new Items
+                                {
+                                    itemName = reader["ItemName"] != DBNull.Value ? reader["ItemName"].ToString() : string.Empty,
+                                    itemId = reader["ItemId"] != DBNull.Value ? (Guid)reader["ItemId"] : Guid.Empty,
+                                    specification = reader["Specification"] != DBNull.Value ? reader["Specification"].ToString() : string.Empty,
+                                    inStock = reader["InStock"] != DBNull.Value ? Convert.ToInt32(reader["InStock"]) : 0,
+                                    UOM = reader["UnitOFMeasure"] != DBNull.Value ? reader["UnitOFMeasure"].ToString() : string.Empty
+
+                                });
+                            }
+
+
+                        }
+
+                    }
+                }
+
+                return weaver;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+        public List<Items> GetWeaverMaterial()
+        {
+            List<Items> weaver = new List<Items>();
+
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    string query = @"SELECT it.ItemName,it.ItemId,it.Specification,i.InStock,it.UnitOFMeasure FROM Inventory i 
+                                        JOIN DistributionCenter dc ON dc.CenterId = i.CenterId 
+                                        JOIN Items it ON it.ItemId = i.ItemId
+                                        WHERE dc.CenterType = 6 and it.ItemType = 2";
+
+
+
+                    using (SqlCommand cmd = new SqlCommand(query, connection))
+                    {
+                        connection.Open();
+
+                        using (SqlDataReader reader = cmd.ExecuteReader())
+                        {
+
+                            while (reader.Read())
+                            {
+                                weaver.Add(new Items
+                                {
+                                    itemName = reader["ItemName"] != DBNull.Value ? reader["ItemName"].ToString() : string.Empty,
+                                    itemId = reader["ItemId"] != DBNull.Value ? (Guid)reader["ItemId"] : Guid.Empty,
+                                    specification = reader["Specification"] != DBNull.Value ? reader["Specification"].ToString() : string.Empty,
+                                    inStock = reader["InStock"] != DBNull.Value ? Convert.ToInt32(reader["InStock"]) : 0,
+                                    UOM = reader["UnitOFMeasure"] != DBNull.Value ? reader["UnitOFMeasure"].ToString() : string.Empty
+
+                                });
+                            }
+
+
+                        }
+
+                    }
+                }
+
+                return weaver;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+        public List<Items> GetWeaverProduct()
+        {
+            List<Items> weaver = new List<Items>();
+
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    string query = @"SELECT it.ItemName,it.ItemId,it.Specification,i.InStock,it.UnitOFMeasure FROM Inventory i 
+                                        JOIN DistributionCenter dc ON dc.CenterId = i.CenterId 
+                                        JOIN Items it ON it.ItemId = i.ItemId
+                                        WHERE dc.CenterType = 6 and it.ItemType = 1";
+
+
+
+                    using (SqlCommand cmd = new SqlCommand(query, connection))
+                    {
+                        connection.Open();
+
+                        using (SqlDataReader reader = cmd.ExecuteReader())
+                        {
+
+                            while (reader.Read())
+                            {
+                                weaver.Add(new Items
+                                {
+                                    itemName = reader["ItemName"] != DBNull.Value ? reader["ItemName"].ToString() : string.Empty,
+                                    itemId = reader["ItemId"] != DBNull.Value ? (Guid)reader["ItemId"] : Guid.Empty,
+                                    specification = reader["Specification"] != DBNull.Value ? reader["Specification"].ToString() : string.Empty,
+                                    inStock = reader["InStock"] != DBNull.Value ? Convert.ToInt32(reader["InStock"]) : 0,
+                                    UOM = reader["UnitOFMeasure"] != DBNull.Value ? reader["UnitOFMeasure"].ToString() : string.Empty
+
+                                });
+                            }
+
+
+                        }
+
+                    }
+                }
+
+                return weaver;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public List<Weaver> ViewCompletedWorkOrder()
+        {
+            List<Weaver> weaver = new List<Weaver>();
+
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    string query = @"select wo.WorkOrderSeries,wo.WorkOrderID,wo.Quantity,ws.StatusName,wo.WorkOrderStatus,it.ItemName  from WorkOrder wo 
+                                    join Items it on wo.ProductID = it.ItemId join WorkOrderStatuses ws on ws.WorkOrderStatus = wo.WorkOrderStatus where wo.WorkOrderStatus = 3";
+
+
+
+                    using (SqlCommand cmd = new SqlCommand(query, connection))
+                    {
+                        connection.Open();
+
+                        using (SqlDataReader reader = cmd.ExecuteReader())
+                        {
+
+                            while (reader.Read())
+                            {
+                                weaver.Add(new Weaver
+                                {
+                                    WorkOrderSeries = reader["WorkOrderSeries"] != DBNull.Value ? reader["WorkOrderSeries"].ToString() : string.Empty,
+                                    WorkOrderId = reader["WorkOrderID"] != DBNull.Value ? (Guid)reader["WorkOrderID"] : Guid.Empty,
+                                    Quantity = reader["Quantity"] != DBNull.Value ? Convert.ToInt32(reader["Quantity"]) : 0,
+                                    Status = reader["StatusName"] != DBNull.Value ? reader["StatusName"].ToString() : string.Empty,
+                                    ProductName = reader["ItemName"] != DBNull.Value ? reader["ItemName"].ToString() : string.Empty
+                                });
+                            }
+
+
+                        }
+
+                    }
+                }
+
+                return weaver;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+        public List<Weaver> ViewOngoingWorkOrder()
+        {
+            List<Weaver> weaver = new List<Weaver>();
+
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    string query = @"select wo.WorkOrderSeries,wo.WorkOrderID,wo.Quantity,ws.StatusName,wo.WorkOrderStatus,it.ItemName  from WorkOrder wo 
+                                    join Items it on wo.ProductID = it.ItemId join WorkOrderStatuses ws on ws.WorkOrderStatus = wo.WorkOrderStatus where wo.WorkOrderStatus = 2";
+
+
+
+                    using (SqlCommand cmd = new SqlCommand(query, connection))
+                    {
+                        connection.Open();
+
+                        using (SqlDataReader reader = cmd.ExecuteReader())
+                        {
+
+                            while (reader.Read())
+                            {
+                                weaver.Add(new Weaver
+                                {
+                                    WorkOrderSeries = reader["WorkOrderSeries"] != DBNull.Value ? reader["WorkOrderSeries"].ToString() : string.Empty,
+                                    WorkOrderId = reader["WorkOrderID"] != DBNull.Value ? (Guid)reader["WorkOrderID"] : Guid.Empty,
+                                    Quantity = reader["Quantity"] != DBNull.Value ? Convert.ToInt32(reader["Quantity"]) : 0,
+                                    Status = reader["StatusName"] != DBNull.Value ? reader["StatusName"].ToString() : string.Empty,
+                                    ProductName = reader["ItemName"] != DBNull.Value ? reader["ItemName"].ToString() : string.Empty
+                                });
+                            }
+
+
+                        }
+
+                    }
+                }
+
+                return weaver;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+        public List<Weaver> GetRequiredMaterial()
+        {
+            List<Weaver> weaver = new List<Weaver>();
+
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    string query = @"SELECT p.ItemName AS ProductName, m.ItemName AS RequiredMaterial, (pmm.Quantity * wo.Quantity) AS RequiredQuantity, i.InStock AS AvailableQuantity
+                                    FROM WorkOrder wo JOIN Items p ON p.ItemId = wo.ProductID
+                                    JOIN ProductMaterialMapping pmm ON wo.ProductID = pmm.ProductID
+                                    JOIN Items m ON m.ItemId = pmm.MaterialID
+                                    JOIN Inventory i ON pmm.MaterialID = i.ItemId
+                                    JOIN DistributionCenter dc ON i.CenterId = dc.CenterId
+                                    WHERE dc.CenterType = 6";
+
+
+
+                    using (SqlCommand cmd = new SqlCommand(query, connection))
+                    {
+                        connection.Open();
+
+                        using (SqlDataReader reader = cmd.ExecuteReader())
+                        {
+
+                            while (reader.Read())
+                            {
+                                weaver.Add(new Weaver
+                                {
+                                    ProductName = reader["ProductName"] != DBNull.Value ? reader["ProductName"].ToString() : string.Empty,
+                                    requiredQuantity = reader["RequiredQuantity"] != DBNull.Value ? Convert.ToInt32(reader["RequiredQuantity"]) : 0,
+                                    availableQuantity = reader["AvailableQuantity"] != DBNull.Value ? Convert.ToInt32(reader["AvailableQuantity"]) : 0,
+                                    MaterialName = reader["RequiredMaterial"] != DBNull.Value ? reader["RequiredMaterial"].ToString() : string.Empty,
+                                });
+                            }
+
+
+                        }
+
+                    }
+                }
+
+                return weaver;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
 
 
     }
