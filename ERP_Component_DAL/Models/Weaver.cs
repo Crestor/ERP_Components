@@ -11,7 +11,10 @@ namespace ERP_Component_DAL.Models
         {
             public Guid WeaverId { get; set; }
 
-            public string? WeaverName { get; set; }
+        public List<Weaver> Weavers { get; set; }
+
+        public List<Weaver> Dyer { get; set; }
+        public string? WeaverName { get; set; }
 
             public string? Firm { get; set; }
 
@@ -44,7 +47,13 @@ namespace ERP_Component_DAL.Models
 
         public string? ProductName { get; set; }
 
+        public string? ProductId { get; set; }
+
+        public string? Description { get; set; }
+
         public string? MaterialName { get; set; }
+
+        public Guid MaterialId { get; set; }
 
         public int Quantity { get; set; }
 
@@ -53,8 +62,13 @@ namespace ERP_Component_DAL.Models
         public int requiredQuantity { get; set; }
         public int? availableQuantity { get; set; }
 
-        public string? Specification { get; set; }
+        public int? pendingQuantity { get; set; }
+        public int? AllocatedQuantity { get; set; }
 
+       public string AllocationSeries { get; set; }
+        public string? RequisitionSeries { get; set; }
+        public string? Specification { get; set; }
+         public int? PerPiecePrize { get; set; }
         public List<Weaver>? PendingWorkOrder { get; set; }
         public List<Weaver>? OngoingWorkOrder { get; set; }
         public List<Weaver>? CompletedWorkOrder { get; set; }

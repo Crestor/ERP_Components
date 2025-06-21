@@ -132,12 +132,26 @@ namespace ERP_Components.Controllers
 
             return View(model);
         }
-        public IActionResult ViewPhases()
+        public IActionResult ViewPhases(Guid WorkOrderId)
         {
-            Weaver weaver = new Weaver();
+            Weaver workOrders = weaverServices.ViewProductOfStartWeaving(WorkOrderId);
+            List<Weaver> weaver = weaverServices.GetWeavers();
+            List<Weaver> Dyer = weaverServices.GetDyer();
+            var workOrder = new Weaver
+            {
+                WorkOrderId = WorkOrderId,
+                WorkOrderSeries = workOrders.WorkOrderSeries,
+                ProductName = workOrders.ProductName,
+                Quantity = workOrders.requiredQuantity,
+                Specification = workOrders.Specification,
+                Weavers = weaver,
+                Dyer = Dyer
+            };
 
-            return View(weaver);
+            return View(workOrder);
         }
+
+
         public IActionResult ViewCompletedWorkOrder()
         {
             List<Weaver> weaver = weaverServices.ViewCompletedWorkOrder();
@@ -160,6 +174,33 @@ namespace ERP_Components.Controllers
                 MaterialRequired = weaver
             };
             return View(workOrder);
+        }
+        public  IActionResult SaveMaterialRequisition(Weaver weaver)
+        {
+           
+                weaverServices.InsertMaterialRequisition(weaver);
+            return RedirectToAction("WorkOrder");
+           
+        }
+        public IActionResult AllocateToWeaver(Weaver weaver)
+        {
+            weaverServices.AllocateToWeaver(weaver);
+            return RedirectToAction("WorkOrder");
+        }
+        public IActionResult AllocateToDeyer()
+        {
+            return View();
+        }
+
+        public IActionResult Allocationfordying(Weaver weaver)
+        {
+            return View();
+        }
+        public IActionResult SendingForDying()
+
+        {
+           Weaver weavers = new Weaver();
+            return View(weavers);
         }
     }
 }

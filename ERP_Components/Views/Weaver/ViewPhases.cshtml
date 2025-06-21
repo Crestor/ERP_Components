@@ -4,21 +4,10 @@
     Layout = "~/Views/Shared/_LayoutINV.cshtml";
 }
 <link rel="stylesheet" href="~/css/Product.css" />
- @model Weaver
-<style>
-    #popupforWeaver {
-        display: none;
-        position: fixed;
-        top: 10%;
-        margin-left: 45px;
-        background: #fff;
-        padding: 20px;
-        box-shadow: 0 0 10px rgba(0,0,0,0.5);
-        border-radius: 10px;
-        z-index: 9999;
-        width: 75%;
-    }
+@model Weaver
 
+<style>
+    #popupforWeaver,
     #popupforDeyer {
         display: none;
         position: fixed;
@@ -42,131 +31,196 @@
         background: rgba(0,0,0,0.5);
         z-index: 9998;
     }
+
+    #showinvalidinput {
+        color: red;
+        position: absolute;
+        font-size: 0.9rem;
+        margin-top: 52px;
+        left: 100px;
+        z-index: 0;
+    }
 </style>
-<form method="post">
+
+<div class="form-section">
+    <h3>Start Weaving</h3>
+    <div class="form-row">
+        <label for="workOrderSeries">Work Order Series:</label>
+        <input type="text" id="workOrderSeries" name="workOrderSeries" value="@Model.WorkOrderSeries" required />
+        <label for="productName">Product Name:</label>
+        <input type="text" id="productName" name="productName" value="@Model.ProductName" required />
+    </div>
+    <div class="form-row">
+        <label for="quantity">Quantity:</label>
+        <input type="number" id="quantity" name="quantity" value="@Model.Quantity" required />
+        <label for="Specification">Specification:</label>
+        <input type="text" id="Specification" name="Specification" value="@Model.Specification" required />
+    </div>
+    <div class="form-row">
+        <label for="AllocationQuantity">Allocated Quantity:</label>
+        <input type="text" id="AllocationQuantity" name="AllocationQuantity" required />
+        <label for="AllocatedDate">Allocated Date:</label>
+        <input type="date" id="AllocatedDate" name="AllocatedDate" value="@Model.AllocatedQuantity" required />
+    </div>
+</div>
+
+<h2>Material Details</h2>
+<div class="table mt-7">
+    <table>
+        <thead>
+            <tr>
+                <th>Phase</th>
+                <th>Work</th>
+                <th>Time</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>1</td>
+                <td>Weaving</td>
+                <td>2 hours</td>
+                <td>In Progress</td>
+            </tr>
+            <tr>
+                <td>2</td>
+                <td>Deying</td>
+                <td>1 hour</td>
+                <td>Pending</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<form method="post" asp-action="AllocateToWeaver" asp-controller="Weaver">
+    <div id="popupforWeaver">
+        <i class="fas fa-window-close float-end" onclick="closePopup()"></i>
         <div class="form-section">
-            <h3>Start Weaving</h3>
-                <h3>Start Weaving</h3>
-                <div class="form-row">
-                    <label for="workOrderSeries">Work Order Series:</label>
-                    <input type="text" id="workOrderSeries" name="workOrderSeries" value="@Model.WorkOrderSeries" required />
-                    <label for="productName">Product Name:</label>
-                    <input type="text" id="productName" name="productName" value="@Model.ProductName" required />
-                </div>
-                <div class="form-row">
-                    <label for="quantity">Quantity:</label>
-                    <input type="number" id="quantity" name="quantity" value="@Model.requiredQuantity" required />
-                    <label for="Specification">Specification:</label>
-                    <input type="text" id="Specification" name="Specification" value="@Model.Specification" required />
-                </div>
-                <div class="form-row">
-                    <label for="AllocationQuantity">Allocated Quantity:</label>
-                    <input type="text" id="AllocationQuantity" name="AllocationQuantity" required />
-                    <label for="AllocatedDate">Allocated Date:</label>
-                    <input type="date" id="AllocatedDate" name="AllocatedDate" required />
-                </div>
-        </div>
+            <h3>Allocate Material To Weaver</h3>
+            <div class="form-row">
+                <label for="AllocationSeries">Allocation Series:</label>
+                <input type="text" id="AllocationSeries" name="AllocationSeries" readonly />
+                <label for="weaverName">Weaver Name:</label>
+                <select id="weaverName" name="WeaverId" required>
+                    <option value="">Select Weaver</option>
+                    @foreach (var weaver in Model.Weavers)
+                    {
+                        <option value="@weaver.WeaverId">@weaver.WeaverName</option>
+                    } 
 
-              
-  <h2>Material Details</h2>
-    <div class="table mt-7">
-        <table>
-            <thead>
-                <tr>
-                    <th>Phase</th>
-                    <th>Work</th>
-                    <th>Time</th>
-                    <th>Status</th>
+                </select>
+            </div>
+            <div class="form-row">
+                <label for="AllocationQuantity">Allocated Quantity:</label>
+                <input type="text" id="AllocatedQuantity" name="AllocatedQuantity" required />
+                <div id="showinvalidinput"></div>
+                <label for="PerPiecePrize">Per Piece Prize:</label>
+                <input type="number" id="PerPiecePrize" name="PerPiecePrize" required />
+            </div>
 
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>1</td>
-                    <td>Weaving</td>
-                    <td>2 hours</td>
-                    <td>In Progress</td>
-                </tr>
-                <tr>
-                    <td>2</td>
-                    <td>Deying</td>
-                    <td>1 hour</td>
-                    <td>Pending</td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
- </form>
-<div id="popupforWeaver">
-    <i class="fas fa-window-close float-end" onclick="closePopup()"></i>
-    <div class="form-section">
-        <h3>Allocate Material To Weaver</h3>
-        <div class="form-row">
-            <label for="AllocationSeries">Allocation Series:</label>
-            <input type="text" id="AllocationSeries" name="AllocationSeries" required />
-            <label for="weaverName">Weaver Name:</label>
-            <select id="weaverName" name="weaverName" required>
-                <option value="">Select Weaver</option>
-                <option value="1">Weaver 1</option>
-                <option value="2">Weaver 2</option>
-            </select>
-        </div>
-        <div class="form-row">
-            <label for="AllocationQuantity">Allocated Quantity:</label>
-            <input type="text" id="AllocationQuantity" name="AllocationQuantity" required />
-            <label for="PerPiecePrize">Per Peice Prize:</label>
-            <input type="number" id="PerPiecePrize" name="PerPiecePrize" required />
-        </div>
-        <div class="button">
-            <button type="submit">Allocate</button>
+            <input type="hidden" name="WorkOrderId" value="@Model.WorkOrderId" />
+
+
+            <div class="button">
+                <button type="submit">Allocate</button>
+            </div>
         </div>
     </div>
-</div>
-<div id="popupforDeyer">
-    <i class="fas fa-window-close float-end" onclick="closePopup()"></i>
-    <div class="form-section">
-        <h3>Allocate Material To Weaver</h3>
-        <div class="form-row">
-            <label for="AllocationSeries">Allocation Series:</label>
-            <input type="text" id="AllocationSeries" name="AllocationSeries" required />
-            <label for="DeyerName">Deyer Name:</label>
-            <select id="DeyerName" name="DeyerName" required>
-                <option value="">Select Deyer</option>
-                <option value="1">Deyer 1</option>
-                <option value="2">Deyer 2</option>
-            </select>
-        </div>
-        <div class="form-row" style="width:50%">
-            <label for="PerPiecePrize">Per Peice Prize:</label>
-            <input type="number" id="PerPiecePrize" name="PerPiecePrize" required />
-        </div>
-        <div class="button">
-            <button type="submit">Allocate</button>
+</form>
+
+<form method="post" asp-action="AllocateToDeyer" asp-controller="Weaver">
+    <div id="popupforDeyer">
+        <i class="fas fa-window-close float-end" onclick="closePopup()"></i>
+        <div class="form-section">
+            <h3>Allocate Material To Deyer</h3>
+            <div class="form-row">
+                <label for="AllocationSeries">Allocation Series:</label>
+                <input type="text" id="AllocationSeries" name="AllocationSeries" readonly />
+                <label for="DeyerName">Deyer Name:</label>
+                <select id="DeyerName" name="DeyerName" required>
+                    <option value="">Select Deyer</option>
+                    @foreach (var Dyer in Model.Dyer)
+                    {
+                        <option value="@Dyer.WeaverId">@Dyer.WeaverName</option>
+                    }
+
+                </select>
+            </div>
+            <div class="form-row" style="width:50%">
+                <label for="PerPiecePrize">Per Piece Prize:</label>
+                <input type="number" id="PerPiecePrize" name="PerPiecePrize" required />
+            </div>
+
+            <input type="hidden" name="WorkOrderId" value="@Model.WorkOrderId" />
+
+
+            <div class="button">
+                <button type="submit">Allocate</button>
+            </div>
         </div>
     </div>
-</div>
+</form>
 
-    <div id="overlay" onclick="closePopup()"></div>
+<div id="overlay" onclick="closePopup()"></div>
+
 <div class="button">
-    <button id="showpopupforWaever" type="button">Allocate To Waever</button>
-    <button id="showpopupforDeyer" type="submit">Allocate for Deying</button>
-    <button id="Completeorder" type="submit">Complete</button>
+    <button id="showpopupforWaever" type="button">Allocate To Weaver</button>
+    <button id="showpopupforDeyer" type="button">Allocate for Deying</button>
+    <button id="Completeorder" type="submit" form="mainForm">Complete</button>
 </div>
+
 <script>
     function closePopup() {
         document.getElementById("popupforWeaver").style.display = "none";
-        document.getElementById("overlay").style.display = "none";
         document.getElementById("popupforDeyer").style.display = "none";
+        document.getElementById("overlay").style.display = "none";
     }
+
     const showpopup = document.getElementById("showpopupforWaever");
-    showpopup.addEventListener("click", function() {
+    showpopup.addEventListener("click", function () {
         document.getElementById("popupforWeaver").style.display = "block";
         document.getElementById("overlay").style.display = "block";
     });
+
     const showpopupforDeyer = document.getElementById("showpopupforDeyer");
-    showpopupforDeyer.addEventListener("click", function() {
+    showpopupforDeyer.addEventListener("click", function () {
         document.getElementById("popupforDeyer").style.display = "block";
         document.getElementById("overlay").style.display = "block";
     });
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const input = document.getElementById("AllocationSeries");
+
+        const year = new Date().getFullYear();
+        let lastCode = localStorage.getItem("lastAllocationCode");
+
+        let newNumber = 1;
+
+        if (lastCode) {
+            const parts = lastCode.split("-");
+            const lastYear = parseInt(parts[1]);
+            const lastNum = parseInt(parts[2]);
+
+            if (lastYear === year) {
+                newNumber = lastNum + 1;
+            }
+        }
+
+        const newCode = `AL-${year}-${String(newNumber).padStart(4, '0')}`;
+        input.value = newCode;
+
+        localStorage.setItem("lastAllocationCode", newCode);
+    });
+
+      const totalQuantity = @Model.Quantity;
+   document.getElementById("AllocatedQuantity").addEventListener("input", function () {
+        if (parseInt(this.value) >= totalQuantity) {
+             document.getElementById("showinvalidinput").innerHTML = "<span style='color: red;'>Allocated quantity cannot exceed total quantity.</span>";
+            this.value = totalQuantity;
+        }
+    });
 
 </script>
+

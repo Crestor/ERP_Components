@@ -12,10 +12,10 @@
 </style>
     <div style="display:flex">
     <div class="col-6">
-        <button  id="view">View</button>
+        <button class="mb-1" id="view">View</button>
     </div>
     <div class="col-6">
-        <button id="ongoing">ongoing</button>
+        <button class="mb-1" id="ongoing">ongoing</button>
     </div>
     </div>
 <div>
@@ -70,8 +70,8 @@
                             <td>@x.ProductName</td>
                             <td>@x.Quantity</td>
                             <td>
-                                <button id="viewphase">View phase</button>
-                            </td>
+                            <button class="viewphase-btn" data-id="@x.WorkOrderId">View phase</button>
+                        </td>
                         </tr>
                     }
                 </tbody>
@@ -160,18 +160,26 @@
     });
 </script>
 <script>
-const view =document.getElementById("view");
-const ongoing =document.getElementById("ongoing");
-view.addEventListener("click", function() {
-    document.getElementById("viewtable").style.display = "block";
-    document.getElementById("ongoingtable").style.display = "none";
-});
-ongoing.addEventListener("click", function() {
-    document.getElementById("viewtable").style.display = "none";
-    document.getElementById("ongoingtable").style.display = "block";
-});
-const viewphase = document.getElementById("viewphase");
-viewphase.addEventListener("click", function() {
-    window.location.href = "/Weaver/ViewPhases";
-});
-</Script>
+    const view = document.getElementById("view");
+    const ongoing = document.getElementById("ongoing");
+
+    view.addEventListener("click", function () {
+        document.getElementById("viewtable").style.display = "block";
+        document.getElementById("ongoingtable").style.display = "none";
+    });
+
+    ongoing.addEventListener("click", function () {
+        document.getElementById("viewtable").style.display = "none";
+        document.getElementById("ongoingtable").style.display = "block";
+    });
+
+    document.addEventListener("DOMContentLoaded", function () {
+        const phaseButtons = document.querySelectorAll(".viewphase-btn");
+        phaseButtons.forEach(button => {
+            button.addEventListener("click", function () {
+                const workorderid = this.getAttribute("data-id");
+                window.location.href = `/Weaver/ViewPhases?WorkOrderId=${workorderid}`;
+            });
+        });
+    });
+</script>

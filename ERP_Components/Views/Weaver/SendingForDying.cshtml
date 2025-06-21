@@ -1,0 +1,60 @@
+﻿@using ERP_Component_DAL.Models;
+@{
+    ViewBag.Title = "Sending for Dying ";
+    Layout = "~/Views/Shared/_LayoutINV.cshtml";
+}
+<link rel="stylesheet" href="~/css/Product.css" />
+@model Weaver
+
+<div class="form-section">
+    <h3>Send for Dying</h3>
+    <div class="form-row">
+        <label for="DyingOrderSeries">Dying Order Series:</label>
+        <input type="text" id="DyingOrderSeries" name="DyingOrderSeries" value="Model.DyingOrderSeries" required />
+
+        <label for="productName">Product Name:</label>
+        <input type="text" id="productName" name="productName" value="@Model.ProductName" required />
+    </div>
+    <div class="form-row">
+        <label for="quantity">Quantity:</label>
+        <input type="number" id="quantity" name="quantity" value="@Model.Quantity" required />
+        <label for="AllocationQuantity">Allocated Quantity:</label>
+        <input type="number" id="AllocationQuantity" name="AllocationQuantity" value="Model.AllocationQuantity" required />
+    </div>
+    <h2>Details of WorkOrder</h2>
+    <div class="table">
+        <table>
+            <thead>
+                <tr>
+                    <th>Work Order Series</th>
+                    <th>Product Name</th>
+                    <th>Specification</th>
+                    <th>Available For Dying</th>
+                    <th>Quantity Send For Dying</th>
+                </tr>
+            </thead>
+            <tbody>
+
+                <tr>
+                    <td>WorkOrderSeries</td>
+                    <td>ProductName</td>
+                    <td>Specification</td>
+                    <td>AvailableForDying</td>
+                    <td><input type="number" name="allocatefordying" /></td>
+                </tr>
+                <tr>
+                    <td>WorkOrderSeries</td>
+                    <td>ProductName</td>
+                    <td>Specification</td>
+                    <td>AvailableForDying</td>
+                    <td><input type="number" name="allocatefordying" /></td>
+                </tr>
+
+            </tbody>
+        </table>
+    </div>
+    <div class="button">
+        <button class="">Allocate To Dyer</button>
+    </div>
+</div>
+

@@ -4,56 +4,47 @@
     Layout = "~/Views/Shared/_LayoutINV.cshtml";
 }
 <link rel="stylesheet" href="~/css/Product.css" />
-
-
 @model Weaver
 
 <form method="post" asp-action="SaveMaterialRequisition" asp-controller="Weaver">
     <div class="form-section">
         <h3>Items</h3>
         <div class="form-row">
-            <label for="SalesSeries">Material Series</label>
+            <label for="RequisitionSeries">Material Series</label>
             <input type="text" name="RequisitionSeries" id="RequisitionSeries" readonly />
 
-            <label for="ItemName">ItemName</label>
-            <input type="text" name="productName" value="@Model.ProductName">
+            <label for="ProductName">Item Name</label>
+            <input type="text" name="ProductName" value="@Model.ProductName" />
         </div>
         <div class="form-row" style="width:50%">
             <label for="Description">Description</label>
             <input type="text" name="Description" id="Description" />
-            <input type="hidden" name="productionOrderId" value="@Model.WorkOrderId" />
-
+            <input type="hidden" name="WorkOrderId" value="@Model.WorkOrderId" />
         </div>
-        <input type="text" id="ItemId" name="ItemId" value="" hidden />
     </div>
-
-
 
     <div class="table">
         <table>
             <thead>
                 <tr>
                     <th>Material Name</th>
-
                     <th>Required Quantity</th>
-
                 </tr>
             </thead>
             <tbody>
-
-                @if (Model.MaterialRequired.Count != null && Model.MaterialRequired.Any())
+                @if (Model.MaterialRequired != null && Model.MaterialRequired.Any())
                 {
-                    for (var i = 0; i < Model.MaterialRequired.Count; i++)
+                    for (int i = 0; i < Model.MaterialRequired.Count; i++)
                     {
-                        var v = Model.MaterialRequired[i];
                         <tr>
                             <td>
-                                <input type="hidden" name="materials[@i].materialId" value="" />
-                                @v.MaterialName
+                                <input type="hidden" name="MaterialRequired[@i].MaterialName" value="@Model.MaterialRequired[i].MaterialName" />
+                                <input type="hidden" name="MaterialRequired[@i].MaterialId" value="@Model.MaterialRequired[i].MaterialId" />
+                                @Model.MaterialRequired[i].MaterialName
                             </td>
                             <td>
-                                <input type="hidden" name="materials[@i].quantityRequired" value="" />
-                                @v.requiredQuantity
+                                <input type="hidden" name="MaterialRequired[@i].requiredQuantity" value="@Model.MaterialRequired[i].requiredQuantity" />
+                                @Model.MaterialRequired[i].requiredQuantity
                             </td>
                         </tr>
                     }
@@ -62,66 +53,49 @@
                 {
                     <tr><td colspan="2">No materials found.</td></tr>
                 }
-
-
             </tbody>
         </table>
     </div>
 
     <div class="button">
-        <button id="submitbtn" type="submit">
-            submit
-        </button>
+        <button id="submitbtn" type="submit">Submit</button>
     </div>
 </form>
 
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-        const orderInput = document.getElementById("RequisitionSeries");
-        // const hiddenInput = document.getElementById("hiddenQuotationSeries");
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const orderInput = document.getElementById("RequisitionSeries");
+            const year = new Date().getFullYear();
+            let nextNumber = 1;
+            let lastOrder = localStorage.getItem("lastQuotationSeries");
 
-        const year = new Date().getFullYear();
-        let nextNumber = 1;
-
-
-        let lastOrder = localStorage.getItem("lastQuotationSeries");
-
-        if (lastOrder) {
-            let parts = lastOrder.split("-");
-            let lastYear = parseInt(parts[1]);
-            let lastNum = parseInt(parts[2]);
-
-            if (lastYear === year) {
-                nextNumber = lastNum + 1;
+            if (lastOrder) {
+                let parts = lastOrder.split("-");
+                let lastYear = parseInt(parts[1]);
+                let lastNum = parseInt(parts[2]);
+                if (lastYear === year) {
+                    nextNumber = lastNum + 1;
+                }
             }
-        }
 
-        const newSeries = `MAR-${year}-${String(nextNumber).padStart(4, "0")}`;
+            const newSeries = `MAR-${year}-${String(nextNumber).padStart(4, "0")}`;
+            orderInput.value = newSeries;
+            localStorage.setItem("lastQuotationSeries", newSeries);
+        });
 
-
-        orderInput.value = newSeries;
-        // hiddenInput.value = newSeries;
-
-        localStorage.setItem("lastQuotationSeries", newSeries);
-    });
-
-</script>
-<script>
-    const submitbtn = document.getElementById("submitbtn");
-    submitbtn.addEventListener("click", function(){
-     Swal.fire({
+        const submitbtn = document.getElementById("submitbtn");
+        submitbtn.addEventListener("click", function () {
+            Swal.fire({
                 title: "Created",
                 text: "Your Requisition is created",
                 icon: "success",
                 timer: 1500,
                 timerProgressBar: true,
                 showConfirmButton: false
-                        });
-    });
-</script>
-
-
-
-
-
+            });
+        });
+    </script>
+}

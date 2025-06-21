@@ -1,0 +1,52 @@
+﻿@using ERP_Component_DAL.Models;
+@{
+    ViewBag.Title = "Allocation for Dying ";
+    Layout = "~/Views/Shared/_LayoutINV.cshtml";
+}
+<link rel="stylesheet" href="~/css/Product.css" />
+@model Weaver
+<div class="button">
+    <button class="me-5 mb-1" onclick="location.href='@Url.Action("SendingForDying", "Weaver")'" id="SendforDying">
+        Send for Dying
+    </button>
+</div>
+<div class="table">
+    <table>
+        <thead>
+            <tr>
+                <th>Work Order Series </th>
+                <th>Product Name</th>
+                <th>Specification</th>
+                <th>Quantity</th>
+                <th>Avaiable For Dying</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><input type="checkbox" class="sendfordying me-3" />WorkOrderSeries</td>
+                <td>ProductName</td>
+                <td>Specification</td>
+                <td>Quantity</td>
+                <td>AvailableForDying</td>
+            </tr>
+            <tr>
+                <td><input type="checkbox" class="sendfordying me-3" />WorkOrderSeries</td>
+                <td>ProductName</td>
+                <td>Specification</td>
+                <td>Quantity</td>
+                <td>AvailableForDying</td>
+            </tr>
+            @* @foreach (var item in Model.Allocationfordying)
+            {
+                <tr>
+                    <td>@item.WorkOrderSeries</td>
+                    <td>@item.ProductName</td>
+                    <td>@item.Quantity</td>
+                    <td>@item.Specification</td>
+                    <td>@item.AllocationQuantity</td>
+                    <td><button class="send-for-dying" data-id="@item.Id">Send for Dying</button></td>
+                </tr>
+            } *@
+        </tbody>
+    </table>
+</div>

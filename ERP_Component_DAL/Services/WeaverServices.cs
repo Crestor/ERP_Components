@@ -621,7 +621,7 @@ namespace ERP_Component_DAL.Services
             {
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
-                    string query = @"SELECT p.ItemName AS ProductName, m.ItemName AS RequiredMaterial, (pmm.Quantity * wo.Quantity) AS RequiredQuantity, i.InStock AS AvailableQuantity
+                    string query = @"SELECT p.ItemName AS ProductName,p.ItemId, m.ItemName AS RequiredMaterial, (pmm.Quantity * wo.Quantity) AS RequiredQuantity, i.InStock AS AvailableQuantity
                                     FROM WorkOrder wo JOIN Items p ON p.ItemId = wo.ProductID
                                     JOIN ProductMaterialMapping pmm ON wo.ProductID = pmm.ProductID
                                     JOIN Items m ON m.ItemId = pmm.MaterialID
@@ -646,6 +646,7 @@ namespace ERP_Component_DAL.Services
                                     requiredQuantity = reader["RequiredQuantity"] != DBNull.Value ? Convert.ToInt32(reader["RequiredQuantity"]) : 0,
                                     availableQuantity = reader["AvailableQuantity"] != DBNull.Value ? Convert.ToInt32(reader["AvailableQuantity"]) : 0,
                                     MaterialName = reader["RequiredMaterial"] != DBNull.Value ? reader["RequiredMaterial"].ToString() : string.Empty,
+                                    MaterialId = reader["ItemId"] != DBNull.Value ? (Guid)reader["ItemId"] : Guid.Empty
                                 });
                             }
 
@@ -660,6 +661,180 @@ namespace ERP_Component_DAL.Services
             catch (Exception)
             {
                 throw;
+            }
+        }
+        public bool InsertMaterialRequisition(Weaver model)
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    connection.Open();
+
+                    string insertRequisitionQuery = @"
+                INSERT INTO Requisitions (Description, RequisitionType, RequisitionSeries, RequisitionStatus)
+                OUTPUT INSERTED.RequisitionID
+                VALUES (@Description, 3, @Series, 1)";
+
+                    SqlCommand cmd1 = new SqlCommand(insertRequisitionQuery, connection);
+                    cmd1.Parameters.AddWithValue("@Description", model.Description ?? "");
+                    cmd1.Parameters.AddWithValue("@Series", model.RequisitionSeries ?? "");
+
+                    Guid requisitionId = (Guid)cmd1.ExecuteScalar();
+
+                    string bridgeQuery = @"
+                INSERT INTO WorkOrderRequisitonBridge (WorkOrderID, RequisitionID)
+                VALUES (@WorkOrderID, @RequisitionID)";
+
+                    SqlCommand cmd2 = new SqlCommand(bridgeQuery, connection);
+                    cmd2.Parameters.AddWithValue("@WorkOrderID", model.WorkOrderId);
+                    cmd2.Parameters.AddWithValue("@RequisitionID", requisitionId);
+                    cmd2.ExecuteNonQuery();
+
+                    if (model.MaterialRequired != null)
+                    {
+                        foreach (var item in model.MaterialRequired)
+                        {
+                            string insertItemQuery = @"
+                        INSERT INTO RequisitionItems (ItemID, Quantity, RequisitionID)
+                        VALUES (@ItemID, @Quantity, @RequisitionID)";
+
+                            SqlCommand itemCmd = new SqlCommand(insertItemQuery, connection);
+                            itemCmd.Parameters.AddWithValue("@ItemID", item.MaterialId);
+                            itemCmd.Parameters.AddWithValue("@Quantity", item.requiredQuantity);
+                            itemCmd.Parameters.AddWithValue("@RequisitionID", requisitionId);
+                            itemCmd.ExecuteNonQuery();
+                        }
+                    }
+
+                    string updateWorkOrderQuery = @"
+                UPDATE WorkOrder
+                SET WorkOrderStatus = 4
+                WHERE WorkOrderID = @WorkOrderID";
+
+                    SqlCommand cmd3 = new SqlCommand(updateWorkOrderQuery, connection);
+                    cmd3.Parameters.AddWithValue("@WorkOrderID", model.WorkOrderId);
+                    cmd3.ExecuteNonQuery();
+
+                    return true;
+                }
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+        public List<Weaver> GetWeavers()
+        {
+            List<Weaver> weaver = new List<Weaver>();
+
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    string query = @"SELECT WorkerID, WorkerName FROM Workers WHERE WorkerType = 1";
+
+
+
+                    using (SqlCommand cmd = new SqlCommand(query, connection))
+                    {
+                        connection.Open();
+
+                        using (SqlDataReader reader = cmd.ExecuteReader())
+                        {
+
+                            while (reader.Read())
+                            {
+                                weaver.Add(new Weaver
+                                {
+                                    WeaverId = reader["WorkerID"] != DBNull.Value ? (Guid)reader["WorkerID"] : Guid.Empty,
+                                    WeaverName = reader["WorkerName"] != DBNull.Value ? reader["WorkerName"].ToString() : string.Empty
+                                });
+                            }
+
+
+                        }
+
+                    }
+                }
+
+                return weaver;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+        public List<Weaver> GetDyer()
+        {
+            List<Weaver> weaver = new List<Weaver>();
+
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    string query = @"SELECT WorkerID, WorkerName FROM Workers WHERE WorkerType = 2";
+
+
+
+                    using (SqlCommand cmd = new SqlCommand(query, connection))
+                    {
+                        connection.Open();
+
+                        using (SqlDataReader reader = cmd.ExecuteReader())
+                        {
+
+                            while (reader.Read())
+                            {
+                                weaver.Add(new Weaver
+                                {
+                                    WeaverId = reader["WorkerID"] != DBNull.Value ? (Guid)reader["WorkerID"] : Guid.Empty,
+                                    WeaverName = reader["WorkerName"] != DBNull.Value ? reader["WorkerName"].ToString() : string.Empty
+                                });
+                            }
+
+
+                        }
+
+                    }
+                }
+
+                return weaver;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+        public bool AllocateToWeaver(Weaver model)
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    connection.Open();
+
+                    string query = @"
+                INSERT INTO AllocatedWork (WorkOrderID, AllocationCode, WorkerID, Quantity, RatePerPeices)
+                VALUES (@WorkOrderID, @AllocationCode, @WorkerID, @Quantity, @RatePerPieces)";
+
+                    using (SqlCommand cmd = new SqlCommand(query, connection))
+                    {
+                        cmd.Parameters.AddWithValue("@WorkOrderID", model.WorkOrderId);
+                        cmd.Parameters.AddWithValue("@AllocationCode", model.AllocationSeries ?? "");
+                        cmd.Parameters.AddWithValue("@WorkerID", model.WeaverId);
+                        cmd.Parameters.AddWithValue("@Quantity", model.AllocatedQuantity);
+                        cmd.Parameters.AddWithValue("@RatePerPieces", model.PerPiecePrize);
+
+                        cmd.ExecuteNonQuery();
+                    }
+
+                    return true;
+                }
+            }
+            catch (Exception ex)
+            {
+                return false;
             }
         }
 
