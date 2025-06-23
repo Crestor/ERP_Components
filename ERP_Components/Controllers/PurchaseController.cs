@@ -250,7 +250,8 @@ namespace ERP_Components.Controllers
 
         public JsonResult SetQuotation(Vendor vendor)
         {
-              purchaseServices.AddVendorQuotation(vendor);
+            Guid vendorQuotationID =  purchaseServices.AddVendorQuotation(vendor);
+            purchaseServices.AddVendorQuotationItems(vendor, vendorQuotationID);
             List<Vendor> lists = purchaseServices.GetRequisitionQuotationListData(vendor.requisitionId);
             return Json(lists);
         }

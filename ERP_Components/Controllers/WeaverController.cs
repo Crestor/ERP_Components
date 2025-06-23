@@ -189,6 +189,7 @@ namespace ERP_Components.Controllers
         }
         public IActionResult AllocateToDeyer()
         {
+            weaverServices.GetOrdersWithCompletedWeavingProducts();
             return View();
         }
 

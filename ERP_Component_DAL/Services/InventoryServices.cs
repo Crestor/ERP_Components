@@ -2631,7 +2631,7 @@ namespace ERP_Component_DAL.Services
                 SqlCommand cmd = new SqlCommand();
                 cmd.CommandType = System.Data.CommandType.Text;
 
-                cmd.CommandText = $"insert into Requisitions([Description],[TotalAmount],[RequisitionSeries],[RequisitionStatus],[RequisitionType]) " + "OUTPUT INSERTED.RequisitionID" + " values (@description,@totalAmount,@RequisitionSeries, 1,3)";
+                cmd.CommandText = $"insert into PurchaseRequisitions([Description],[TotalAmount],[RequisitionSeries],[RequisitionStatus]) " + "OUTPUT INSERTED.PurchaseRequisitionID" + " values (@description,@totalAmount,@RequisitionSeries, 1)";
 
                 cmd.Parameters.AddWithValue("@description", Add.Descripion ?? (object)DBNull.Value);
                 cmd.Parameters.AddWithValue("@RequisitionSeries", Add.requisitionSeries ?? (object)DBNull.Value);
@@ -2667,7 +2667,7 @@ namespace ERP_Component_DAL.Services
                 SqlCommand cmd = new SqlCommand();
                 cmd.CommandType = System.Data.CommandType.Text;
 
-                cmd.CommandText = $"insert into RequisitionItems (ItemID,Quantity,UnitPrice,RequisitionID ) values (@ItemId,@Quantity,@UnitPrice,@PurchaseRequisitionID)";
+                cmd.CommandText = $"insert into PurchaseRequisitionItems (ItemID,Quantity,UnitPrice,PurchaseRequisitionID ) values (@ItemId,@Quantity,@UnitPrice,@PurchaseRequisitionID)";
                 cmd.Parameters.AddWithValue("@PurchaseRequisitionID", requisition.RequisitionId);
                 cmd.Parameters.AddWithValue("@ItemId", requisition.itemId);
                 cmd.Parameters.AddWithValue("@Quantity", requisition.quantity);

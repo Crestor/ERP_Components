@@ -32,7 +32,7 @@ namespace ERP_Component_DAL.Services
                 connection = new SqlConnection(connectionstring);
                 SqlCommand cmd = new();
                 cmd.CommandType = System.Data.CommandType.Text;
-                cmd.CommandText = $"Select RequisitionID, Description,RequisitionSeries, CreatedAt, TotalAmount From Requisitions Where RequisitionStatus = 2 ";
+                cmd.CommandText = $"Select PurchaseRequisitionID, Description,RequisitionSeries, CreatedAt, TotalAmount From PurchaseRequisitions Where RequisitionStatus = 2";
                 cmd.Connection = connection;
 
 
@@ -43,7 +43,7 @@ namespace ERP_Component_DAL.Services
                 {
                     prod.Add(new AddPurchaseRequisition
                     {
-                        RequisitionId = reader["RequisitionID"] != DBNull.Value ? (Guid)reader["RequisitionID"] : Guid.Empty,
+                        RequisitionId = reader["PurchaseRequisitionID"] != DBNull.Value ? (Guid)reader["PurchaseRequisitionID"] : Guid.Empty,
                         Descripion = reader["Description"] != DBNull.Value ? (string)reader["Description"] : string.Empty,
                         requisitionSeries = reader["RequisitionSeries"] != DBNull.Value ? (string)reader["RequisitionSeries"] : string.Empty,
                         TotalAmount = reader["TotalAmount"] != DBNull.Value ? Convert.ToDecimal(reader["TotalAmount"]) : 0m,
@@ -75,7 +75,7 @@ namespace ERP_Component_DAL.Services
                 connection = new SqlConnection(connectionstring);
                 SqlCommand cmd = new();
                 cmd.CommandType = System.Data.CommandType.Text;
-                cmd.CommandText = $" SELECT vq.RequisitionID,ve.VendorID, ve.VendorName,vq.DiscountAmount, vq.Amount, vq.PaymentTerms, vq.DeliveryTerms,vq.AdvancedAmount,vq.FinalAmount,vq.DiscountRate  FROM VendorQuotations vq JOIN Vendors ve ON vq.VendorID = Ve.VendorID  Where vq.RequisitionID = '{RequisitionID}' ORDER BY vq.FinalAmount";
+                cmd.CommandText = $" SELECT ve.VendorID, ve.VendorName,vq.DiscountAmount, vq.Amount, vq.PaymentTerms, vq.DeliveryTerms,vq.AdvancedAmount,vq.FinalAmount,vq.DiscountRate  FROM VendorQuotations vq JOIN Vendors ve ON vq.VendorID = Ve.VendorID  Where vq.PurchaseRequisitionID = '{RequisitionID}' ORDER BY vq.FinalAmount";
                 cmd.Parameters.AddWithValue("@RequisitionID", RequisitionID);
                 cmd.Connection = connection;
 
@@ -87,7 +87,7 @@ namespace ERP_Component_DAL.Services
                     product.Add(new Vendor
                     {
 
-                        requisitionId = reader["RequisitionID"] != DBNull.Value ? (Guid)reader["RequisitionID"] : Guid.Empty,
+                        requisitionId = RequisitionID,
                         vendorId = reader["VendorID"] != DBNull.Value ? (Guid)reader["VendorID"] : Guid.Empty,
 
                         vendorName = reader["VendorName"] != DBNull.Value ? (string)reader["VendorName"] : string.Empty,
@@ -127,7 +127,7 @@ namespace ERP_Component_DAL.Services
                 connection = new SqlConnection(connectionstring);
                 SqlCommand cmd = new();
                 cmd.CommandType = System.Data.CommandType.Text;
-                cmd.CommandText = $" SELECT  it.ItemName, it.HSN, it.Specification, it.UnitOfMeasure,ri.RequisitionID, ri.UnitPrice,ri.TotalPrice,ri.Quantity, c.CategoryName, i.TypeName FROM Items it JOIN RequisitionItems ri ON it.ItemId = ri.ItemId  Left Join Categories c On it.CategoryId = c.CategoryID Left Join ItemTypes i On it.ItemType = i.ItemTypeId Where ri.RequisitionID = '{RequisitionID}'";
+                cmd.CommandText = $" SELECT  it.ItemName, it.HSN, it.Specification, it.UnitOfMeasure, ri.UnitPrice,ri.TotalPrice,ri.Quantity, c.CategoryName, i.TypeName FROM Items it JOIN PurchaseRequisitionItems ri ON it.ItemId = ri.ItemId  Left Join Categories c On it.CategoryId = c.CategoryID Left Join ItemTypes i On it.ItemType = i.ItemTypeId Where ri.PurchaseRequisitionID = '{RequisitionID}'";
                 cmd.Parameters.AddWithValue("@RequisitionID", RequisitionID);
                 cmd.Connection = connection;
 
@@ -139,7 +139,7 @@ namespace ERP_Component_DAL.Services
                     product.Add(new AddPurchaseRequisition
                     {
 
-                        RequisitionId = reader["RequisitionID"] != DBNull.Value ? (Guid)reader["RequisitionID"] : Guid.Empty,
+                        RequisitionId = RequisitionID,
 
                         itemName = reader["ItemName"] != DBNull.Value ? (string)reader["ItemName"] : string.Empty,
                         itemtype = reader["TypeName"] != DBNull.Value ? (string)reader["TypeName"] : string.Empty,
@@ -181,7 +181,7 @@ namespace ERP_Component_DAL.Services
                 connection = new SqlConnection(connectionstring);
                 SqlCommand cmd = new SqlCommand();
                 cmd.CommandType = System.Data.CommandType.Text;
-                cmd.CommandText = $"Update VendorQuotations set QuotationStatus = 3 Where VendorID = '{vendorId}' And RequisitionID = '{requisitionId}'; Update Requisitions set RequisitionStatus = 3 Where RequisitionID = '{requisitionId}' ";
+                cmd.CommandText = $"Update VendorQuotations set QuotationStatus = 3 Where VendorID = '{vendorId}' And PurchaseRequisitionID = '{requisitionId}'; Update PurchaseRequisitions set RequisitionStatus = 3 Where PurchaseRequisitionID = '{requisitionId}' ";
 
                 cmd.Connection = connection;
                 connection.Open();

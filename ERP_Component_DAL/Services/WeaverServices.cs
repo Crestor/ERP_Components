@@ -1,14 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ERP_Component_DAL.Models;
+﻿using ERP_Component_DAL.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
+using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Linq;
+using System.Reflection;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace ERP_Component_DAL.Services
 {
@@ -319,7 +320,7 @@ namespace ERP_Component_DAL.Services
             {
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
-                    string query = $"SELECT wo.WorkOrderSeries,wo.WorkOrderID,wo.Quantity,wo.WorkOrderStatus,i.ItemName,i.Specification,iv.InStock from WorkOrder wo \r\njoin Items i on wo.ProductID = i.ItemId join Inventory iv on iv.ItemId = i.ItemId JOIN DistributionCenter dc ON dc.CenterID = iv.CenterID where WorkOrderID = '{WorkOrederId}' AND dc.CenterType = 6";
+                    string query = $"SELECT wo.WorkOrderSeries,wo.WorkOrderID,wo.Quantity,wo.WorkOrderStatus,i.ItemName,i.Specification,iv.InStock, (SELECT SUM(Quantity) FROM AllocatedWork WHERE WorkOrderID = '{WorkOrederId}') AS AllocatedQuantity from WorkOrder wo \r\njoin Items i on wo.ProductID = i.ItemId join Inventory iv on iv.ItemId = i.ItemId JOIN DistributionCenter dc ON dc.CenterID = iv.CenterID where WorkOrderID = '{WorkOrederId}' AND dc.CenterType = 6";
 
 
 
@@ -340,7 +341,8 @@ namespace ERP_Component_DAL.Services
                                     availableQuantity = reader["InStock"] != DBNull.Value ? Convert.ToInt32(reader["InStock"]) : 0,
                                     Status = reader["WorkOrderStatus"]?.ToString(),
                                     ProductName = reader["ItemName"]?.ToString(),
-                                    Specification = reader["Specification"] != DBNull.Value ? reader["Specification"].ToString() : string.Empty
+                                    Specification = reader["Specification"] != DBNull.Value ? reader["Specification"].ToString() : string.Empty,
+                                    AllocatedQuantity = reader["AllocatedQuantity"] != DBNull.Value ? Convert.ToInt32(reader["AllocatedQuantity"]) : 0
                                 };
                             }
 
@@ -838,7 +840,42 @@ namespace ERP_Component_DAL.Services
             }
         }
 
+        public void GetOrdersWithCompletedWeavingProducts()
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    connection.Open();
 
+                    string query = @"SELECT wo.WorkOrderID, wo.WorkOrderSeries, i.ItemName, wo.Quantity, i.specification, (SUM(aw.RecievedQuantity) - ISNULL(SUM(dom.Quantity), 0)) AS TotalReceived
+                                    FROM WorkOrder wo JOIN AllocatedWork aw ON aw.WorkOrderID = wo.WorkOrderID
+                                    JOIN Items i ON wo.ProductID = i.ItemID
+                                    LEFT JOIN DyeingOrderMapping dom ON wo.WorkOrderID = dom.WorkOrderID
+                                    LEFT JOIN DyeingOrder do ON do.DyeingOrderID = dom.DyeingOrderID
+                                    GROUP BY wo.WorkOrderID, wo.WorkOrderSeries, i.ItemName, i.specification, wo.Quantity
+                                    HAVING (SUM(aw.RecievedQuantity) - ISNULL(SUM(dom.Quantity), 0)) > 0;
+                                    ";
+
+                    using (SqlCommand cmd = new SqlCommand(query, connection))
+                    {
+                        cmd.Parameters.AddWithValue("@WorkOrderID", model.WorkOrderId);
+                        cmd.Parameters.AddWithValue("@AllocationCode", model.AllocationSeries ?? "");
+                        cmd.Parameters.AddWithValue("@WorkerID", model.WeaverId);
+                        cmd.Parameters.AddWithValue("@Quantity", model.AllocatedQuantity);
+                        cmd.Parameters.AddWithValue("@RatePerPieces", model.PerPiecePrize);
+
+                        cmd.ExecuteNonQuery();
+                    }
+
+                    return true;
+                }
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
     }
 }
 
