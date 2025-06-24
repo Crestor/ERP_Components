@@ -3,6 +3,8 @@
     public class QuotationModel
     {
 
+
+        public Guid RetailCustomerId { get; set; }
         public List<QuotationModel> items { get; set; }
         public string Description { get; set; }
         public string ItemName { get; set; }
@@ -51,6 +53,7 @@
 
 
         public decimal DiscountAmount { get; set; }
+        public decimal TotalDiscountAmount { get; set; }
 
 
         public decimal CGST { get; set; }
@@ -64,6 +67,7 @@
         public decimal TotalAmount { get; set; }
         //public decimal GrossTotal { get; set; }
 
+        public decimal grossTotal { get; set; }
 
         public string DeliveryTerms { get; set; }
 
@@ -80,10 +84,12 @@
         public decimal finalAmount { get; set; }
         public decimal TotalDiscountPercent { get; set; }
 
-        public decimal TotalDiscountAmount { get; set; }
+     
         public decimal totalPriceBeforeDiscount { get; set; }
         public decimal GrossTotal { get; set; }
         public decimal TotalAmountAfterDiscount { get; set; }
 
+
+        public List<QuotationModel> ItemLists { get; set; }
     }
 }

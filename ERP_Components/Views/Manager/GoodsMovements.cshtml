@@ -1,0 +1,66 @@
+﻿@using ERP_Component_DAL.Models;
+@{
+	ViewBag.Title = "Goods Movements";
+	Layout = "~/Views/Shared/_LayoutINV.cshtml";
+}
+<link rel="stylesheet" href="/css/Product.css" />
+
+
+@model List<Order>
+
+<div class="table">
+
+
+
+	<table>
+		<thead>
+			<tr>
+				<th>S.No.</th>
+				<th>Product Name</th>
+				<th>Quantity</th>
+				<th>Date</th>
+				<th>Source Center</th>
+				<th>Destination Center</th>
+				<th>Reason</th>
+
+			</tr>
+		</thead>
+
+
+
+		<tbody id="geeks">
+
+
+			@for (var i = 0; i < Model.Count; i++)
+			{
+
+				var x = Model[i];
+				var index = i + 1;
+
+						<tr>
+							<td>@index</td>
+							<td>@x.itemName</td>
+							<td>@x.quantity</td>
+							<td>@x.orderDate.ToShortDateString()</td>
+							<td>@x.sourceName</td>
+							<td>@x.destinationName</td>
+							<td>@x.reason</td>
+
+
+						</tr>
+			}
+		</tbody>
+
+	</table>
+
+
+
+
+</div>
+
+
+
+
+
+
+

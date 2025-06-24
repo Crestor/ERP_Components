@@ -19,6 +19,8 @@ namespace ERP_Component_DAL.Models
         public Guid sourceDc { get; set; }
         public Guid destinationDc { get; set; }
         public string? itemName {  get; set; }
+        public string? sourceName {  get; set; }
+        public string? destinationName { get; set; }
         public string? reason {  get; set; }
         public string? warehouseName {  get; set; }
         public string? customerName {  get; set; }

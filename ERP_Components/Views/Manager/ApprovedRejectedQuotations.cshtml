@@ -1,0 +1,115 @@
+﻿@using ERP_Component_DAL.Models;
+@{
+    ViewBag.Title = "Production Order";
+    Layout = "~/Views/Shared/_LayoutINV.cshtml";
+}
+
+@model List<Vendor>
+<link rel="stylesheet" href="~/css/Product.css">
+
+<div class="button-container" style="margin-bottom:20px; display:flex; justify-content:space-around">
+    <button onclick="showSection('pending')">Rejected</button>
+    <button onclick="showSection('complete')">Approved</button>
+
+</div>
+
+<div class="vendor-section">
+
+    @* Approved Quotations *@
+    @{
+        var pendingOrders = Model.Where(x => x.status == 0).ToList();
+    }
+    <div class="table" id="pending" style="display: block;">
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Sr no.</th>
+                    <th>Vendor Name</th>
+                   
+                    <th>Vendor Code</th>
+                    <th>Amount</th>
+					<th>Delivery Terms</th>
+					<th>PaymentTerms Terms</th>
+                    <th>Discount Amount</th>
+                    <th>Final Amount</th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (var i = 0; i < pendingOrders.Count; i++)
+                {
+                    var x = pendingOrders[i];
+                    var index = i + 1;
+                    <tr>
+                        <td>@index</td>
+                        <td>@x.vendorName</td>
+                        <td>@x.vendorCode</td>
+                        <td>@x.amount</td>
+                        <td>@x.deliveryTerms</td>
+                        <td>@x.paymentTerms</td>
+                        <td>@x.discountAmount</td>
+                        <td>@x.finalAmount</td>
+                       
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    @* Rejected Quotations *@
+    @{
+        var completedOrders = Model.Where(x => x.status == 3).ToList();
+    }
+    <div class="table" id="complete" style="display: none;">
+        <table>
+            <thead>
+                <tr>
+                    <th>Sr no.</th>
+                    <th>Vendor Name</th>
+                 
+                    <th>Vendor Code</th>
+                    <th>Amount</th>
+                    <th>Delivery Terms</th>
+                    <th>PaymentTerms Terms</th>
+                    <th>Discount Amount</th>
+                    <th>Final Amount</th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (var i = 0; i < completedOrders.Count; i++)
+                {
+                    var x = completedOrders[i];
+                    var index = i + 1;
+                    <tr>
+                        <td>@index</td>
+                        <td>@x.vendorName</td>
+                       
+                        <td>@x.vendorCode</td>
+                        <td>@x.amount</td>
+                        <td>@x.deliveryTerms</td>
+                        <td>@x.paymentTerms</td>
+                        <td>@x.discountAmount</td>
+                        <td>@x.finalAmount</td>
+
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+   
+
+</div>
+
+<script>
+    function showSection(sectionId) {
+        localStorage.setItem("selectedSection", sectionId);
+        document.querySelectorAll('.vendor-section > div').forEach(el => el.style.display = 'none');
+        document.getElementById(sectionId).style.display = 'block';
+    }
+    document.addEventListener("DOMContentLoaded", function () {
+        var sectionId = localStorage.getItem("selectedSection") || "pending";
+        showSection(sectionId);
+    });
+</script>
+

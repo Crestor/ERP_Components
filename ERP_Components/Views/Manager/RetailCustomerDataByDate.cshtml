@@ -1,0 +1,131 @@
+﻿@using ERP_Component_DAL.Models
+
+@{
+    ViewBag.Title = "Retail Customer Data";
+
+}
+
+
+<link rel="stylesheet" href="/css/Product.css" />
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<style>
+    .summary-header {
+        background-color: #138486;
+        color: white;
+        padding: 15px;
+        text-align: center;
+        font-size: 24px;
+    }
+
+    .filter-buttons {
+        text-align: center;
+        margin: 20px 0;
+    }
+
+        .filter-buttons button {
+            margin: 5px;
+            min-width: 100px;
+        }
+
+    table {
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+
+    .table thead th {
+        background-color: #138486;
+        color: white;
+        text-align: center;
+    }
+
+    .table tbody td, .table tbody th {
+        text-align: center;
+    }
+
+    .table tbody tr:nth-child(even) {
+        background-color: #f9f9f9;
+    }
+</style>
+
+
+
+
+
+
+
+<div class="table-responsive">
+    <table class="table" id="summary-table">
+        <thead>
+            <tr id="date-row">
+                <th>Customer Name</th>
+                <th>Contact Number</th>
+                
+            </tr>
+        </thead>
+        <tbody id="summary-body">
+        </tbody>
+    </table>
+</div>
+
+
+
+      <script>
+    const year = 2025;
+    const month = 5; 
+    const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+    const dateRow = document.getElementById("date-row");
+    const body = document.getElementById("summary-body");
+
+    for (let day = 1; day <= daysInMonth; day++) {
+        const th = document.createElement("th");
+        th.textContent = `${String(day).padStart(2, '0')}/06/${year}`;
+        dateRow.appendChild(th);
+    }
+
+    
+    fetch('/Manager/GetRetailCustomerPurchases') 
+        .then(response => response.json())
+        .then(data => {
+            console.log("Purchase data received:", data);
+
+            data.forEach(entry => {
+                const date = new Date(entry.createdAt);
+
+              
+                if (date.getMonth() !== month || date.getFullYear() !== year) return;
+
+                const day = date.getDate(); 
+
+              
+                const tr = document.createElement("tr");
+
+                const nameTd = document.createElement("td");
+                nameTd.textContent = entry.customerName || '';
+                tr.appendChild(nameTd);
+
+                const contactTd = document.createElement("td");
+                contactTd.textContent = entry.contactNumber || '';
+                tr.appendChild(contactTd);
+
+                for (let d = 1; d <= daysInMonth; d++) {
+                    const td = document.createElement("td");
+                    td.textContent = d === day ? (entry.grossTotal || 0).toFixed(2) : '';
+                    tr.appendChild(td);
+                }
+
+                body.appendChild(tr);
+            });
+        })
+        .catch(error => {
+            console.error("Error fetching purchase data:", error);
+        });
+</script>
+
+
+
+
+
+
+    

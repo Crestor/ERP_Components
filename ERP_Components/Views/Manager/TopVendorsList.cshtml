@@ -1,0 +1,59 @@
+﻿@using ERP_Component_DAL.Models;
+@{
+	ViewBag.Title = "Top Vendors";
+	Layout = "~/Views/Shared/_LayoutINV.cshtml";
+}
+<link rel="stylesheet" href="/css/Product.css" />
+
+
+@model List<Vendor>
+
+<div class="table">
+
+
+
+	<table>
+		<thead>
+			<tr>
+				<th>S.No.</th>
+				<th>Vendor Name</th>
+				<th>Vendor Code</th>
+
+				<th>Gst In</th>
+				<th>Amount</th>
+			</tr>
+		</thead>
+
+
+
+		<tbody id="geeks">
+
+
+			@for (var i = 0; i < Model.Count; i++)
+			{
+
+				var x = Model[i];
+				var index = i + 1;
+
+				<tr id="row-@x.vendorId">
+					<td>@index</td>
+					<td>@x.vendorName</td>
+					<td>@x.vendorCode</td>
+
+					<td>@x.GstIn</td>
+					<td>@x.amount</td>
+
+
+
+				</tr>
+			}
+		</tbody>
+
+	</table>
+
+
+
+
+</div>
+
+

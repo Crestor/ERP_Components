@@ -1,0 +1,83 @@
+﻿@using ERP_Component_DAL.Models;
+@{
+	ViewBag.Title = "Retail Store";
+	Layout = "~/Views/Shared/_LayoutINV.cshtml";
+}
+<link rel="stylesheet" href="/css/Product.css" />
+
+
+@model List<Warehouse>
+
+
+	
+	<div style="display:Grid">
+		<label style="float:left">Select Store:</label>
+		<select style="font-size: 14px;float:right;border-radius: 5px;margin: 10px 10px;padding: 5px;width: 200px;">
+			<option selected disabled>Select</option>
+		@for (var i = 0; i < Model.Count; i++)
+		{
+
+			<option value="@Model[i].centerId">@Model[i].centerName</option>
+		}
+	</select>
+
+	</div>
+	
+
+	
+		<div class="button" style="justify-content:space-evenly; margin-bottom:30px"> 
+		<button>Daily</button>
+		<button>Weekly</button>
+		<button>Monthly</button>
+		<button>Yearly</button>
+
+
+</div>
+<div class="table">
+
+	<table>
+		<thead>
+			<tr>
+				<th>S.No.</th>
+				<th>Opening Inventory</th>
+				<th>Current Stock Value</th>
+				<th>Monthly Sales</th>
+				<th>Yearly Sales</th>
+				
+
+			</tr>
+		</thead>
+
+
+
+		<tbody id="geeks">
+
+
+			@* @for (var i = 0; i < Model.Count; i++)
+			{
+
+				var x = Model[i];
+				var index = i + 1;
+
+				<tr>
+					<td>@index</td>
+					<td>@x.itemName</td>
+					<td>@x.inStock</td>
+
+					<td>@x.stockAlert</td>
+
+
+				</tr>
+			} *@
+		</tbody>
+
+	</table>
+
+
+
+
+</div>
+
+
+
+

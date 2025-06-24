@@ -11,7 +11,7 @@ namespace ERP_Components.Controllers
 		private readonly UserServices _userServices;
 		private readonly PurchaseServices purchaseServices;
 		private readonly IConfiguration _configuration;
-		private readonly SalesServices salesServices ;
+		private readonly RetailSalesServices retailsalesServices ;
 
 
 		public RetailSalesController(ILogger<RetailSalesController> logger, IConfiguration configuration)
@@ -21,7 +21,7 @@ namespace ERP_Components.Controllers
 			_configuration = configuration;
 			_userServices = new UserServices(configuration);
 			purchaseServices = new PurchaseServices(configuration);
-			salesServices = new SalesServices(configuration);
+			retailsalesServices = new RetailSalesServices(configuration);
 
 		}
 		public IActionResult Index()
@@ -34,7 +34,7 @@ namespace ERP_Components.Controllers
 
 		public IActionResult CustomerBill()
 		{
-			List<QuotationModel> aq = salesServices.AddBillItemName();
+			List<QuotationModel> aq = retailsalesServices.AddBillItemName();
 			var model = new QuotationViewModel
 			{
 				ItemNames = aq,
@@ -42,6 +42,35 @@ namespace ERP_Components.Controllers
 
 			};
 			return View(model);
+
 		}
+
+
+
+		public IActionResult SetCustomerBill(QuotationModel quotation)
+		{
+		quotation.RetailCustomerId  =	retailsalesServices.AddRetailCustomer(quotation);
+			retailsalesServices.AddCustomerBill(quotation,quotation.ItemLists);
+			return RedirectToAction("CustomerBill");
+		}
+
+
+
+        public IActionResult ViewCustomerBills()
+		{
+			return View();
+		}
+
+		public IActionResult CustomerInvoice()
+		{
+			return View();
+		}
+
+
+
+
+
+
+
 	}
 }

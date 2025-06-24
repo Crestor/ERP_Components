@@ -1,0 +1,57 @@
+﻿@using ERP_Component_DAL.Models;
+@{
+	ViewBag.Title = "Stock Store Summary";
+	Layout = "~/Views/Shared/_LayoutINV.cshtml";
+}
+<link rel="stylesheet" href="/css/Product.css" />
+
+
+@model List<Items>
+
+<div class="table">
+
+
+
+	<table>
+		<thead>
+			<tr>
+				<th>S.No.</th>
+				<th>Product Name</th>
+				<th>Instock</th>
+				<th>Stock Alert</th>
+				
+			</tr>
+		</thead>
+
+
+
+		<tbody id="geeks">
+
+
+			@for (var i = 0; i < Model.Count; i++)
+			{
+
+				var x = Model[i];
+				var index = i + 1;
+
+				<tr>
+					<td>@index</td>
+					<td>@x.itemName</td>
+					<td>@x.inStock</td>
+
+					<td>@x.stockAlert</td>
+					
+
+				</tr>
+			}
+		</tbody>
+
+	</table>
+
+
+
+
+</div>
+
+
+

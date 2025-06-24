@@ -203,6 +203,7 @@ namespace ERP_Components.Controllers
         {
             productionServices.SaveBilOlfMaterial(product);
 
+<<<<<<< Updated upstream
             return RedirectToAction("BillofMaterial" , "Production");
         }
         public IActionResult AddStages()
@@ -210,6 +211,90 @@ namespace ERP_Components.Controllers
             List<Production> product = productionServices.GetProductDetailforbill();
             return View(product);
         }
+=======
+
+        //<------------------------------ View Production Stages---------------------->
+
+
+        public IActionResult ViewProductionStages()
+        {
+          List<Items> item =  productionServices.ViewProductionItems();
+            return View(item);
+        }
+
+        public JsonResult ViewProductionItemsStages(Guid itemId)
+        {
+
+            List<Production> lists = productionServices.ViewProductionItemsStages(itemId);
+            return Json(new { list = lists });
+        }
+
+        public IActionResult ViewProductionMaterials()
+        {
+            List<Items> item = productionServices.ViewProductionItems();
+            return View(item);
+        }
+
+        public JsonResult ViewProductionMaterialsList(Guid itemId)
+        {
+
+            List<Items> lists = productionServices.ViewProductionMaterialsList(itemId);
+            return Json(new { list = lists });
+        }
+
+
+        //sales forecasting
+
+
+        //[HttpPost]
+        //public JsonResult SetMaterialforecasting(QuotationModel O)
+        //{
+        //    var QuotationCreated = HttpContext.Session.GetString("SalesforecastingADD");
+        //    if (QuotationCreated == "False")
+        //    {
+        //        O.RequisitionID = productionServices.AddSFDetails(O);// get QuotationID 
+        //        HttpContext.Session.SetString("SalesforecastingADD", "True");
+        //        HttpContext.Session.SetString("RequisitionID", O.RequisitionID.ToString());
+        //        var x = productionServices.AddSFItems(O);
+
+        //    }
+        //    else
+        //    {
+        //        O.RequisitionID = Guid.Parse(HttpContext.Session.GetString("RequisitionID"));
+
+        //        var x = productionServices.AddSFItems(O);
+
+
+
+        //    }
+
+
+        //    List<QuotationModel> ol = productionServices.OrderTable(O.RequisitionID);
+
+
+        //    var model = new QuotationViewModel
+        //    {
+        //        OrderTable = ol,
+
+        //    };
+
+
+
+        //    return Json(model);
+        //}
+
+
+        //// update details  
+        //public IActionResult FinalSalesforecasting(QuotationModel O)
+        //{
+        //    O.RequisitionID = Guid.Parse(HttpContext.Session.GetString("RequisitionID"));
+
+        //    productionServices.updateSFDetails(O);
+        //    return RedirectToAction("Salesforecasting");
+        //}
+
+
+>>>>>>> Stashed changes
 
     }
 }

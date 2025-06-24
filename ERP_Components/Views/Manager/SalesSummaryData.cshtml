@@ -1,0 +1,182 @@
+﻿@using ERP_Component_DAL.Models
+@model SalesSummary
+
+@{
+    ViewBag.Title = "Sales Summary";
+    Layout = "~/Views/Shared/_LayoutINV.cshtml";
+}
+
+<!-- External Stylesheets -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+<link rel="stylesheet" href="~/css/Product.css">
+
+<style>
+    .icon-btn {
+        font-size: 1.5rem;
+        color: #138496;
+        background: transparent;
+        border: none;
+        padding: 0;
+    }
+
+        .icon-btn:disabled {
+            color: #ccc;
+        }
+    .btn-container{
+        display:flex;
+        justify-content:space-between;
+    }
+
+
+    .financial-year{
+        display:grid;
+        width: 12%;
+        margin-left:40px;
+    }
+
+
+    .financial-year select{
+        border-radius:5px;
+            margin-bottom: 20px;
+            padding:3px;
+    }
+
+
+</style>
+
+
+<div class="financial-year">
+    <label>Select Financial Year</label>
+    <select name='financial_year'></select>
+</div>
+
+
+<div class="btn-container">
+
+    <div>
+<form method="get" asp-action="SalesSummaryData" class="mb-4">
+    <div class="button" style="margin-left: 40px; justify-content: start;">
+        <button type="submit" name="filterType" value="Daily" class="@(ViewBag.CurrentFilter == "Daily" ? "active" : "")">Daily</button>
+        <button type="submit" name="filterType" value="Weekly" class="@(ViewBag.CurrentFilter == "Weekly" ? "active" : "")">Weekly</button>
+        <button type="submit" name="filterType" value="Monthly" class="@(ViewBag.CurrentFilter == "Monthly" ? "active" : "")">Monthly</button>
+        <button type="submit" name="filterType" value="Quarterly" class="@(ViewBag.CurrentFilter == "Quarterly" ? "active" : "")">Quarterly</button>
+        <button type="submit" name="filterType" value="Yearly" class="@(ViewBag.CurrentFilter == "Yearly" ? "active" : "")">Yearly</button>
+    </div>
+</form>
+    </div>
+
+<div>
+@if (ViewBag.CurrentFilter == "Daily")
+{
+    <form method="get" asp-action="SalesSummaryData" class="mb-3 d-flex justify-content-end align-items-center gap-2">
+        <input type="hidden" name="filterType" value="Daily" />
+
+        <button type="submit"
+                name="weekNumber"
+                value="@(ViewBag.CurrentWeek - 1)"
+                class="icon-btn"
+                style="width: 0px;"
+                @(ViewBag.CurrentWeek == 1 ? "disabled" : "")>
+            <i class="fa-solid fa-circle-chevron-left"></i>
+        </button>
+
+        <button type="submit"
+                name="weekNumber"
+                value="@(ViewBag.CurrentWeek + 1)"
+                class="icon-btn"
+                @(ViewBag.CurrentWeek == ViewBag.MaxWeek ? "disabled" : "")>
+            <i class="fa-solid fa-circle-chevron-right"></i>
+        </button>
+    </form>
+}
+    </div>
+</div>
+
+@{
+    var columnTotals = new Dictionary<string, decimal>();
+    foreach (var period in Model.Periods)
+    {
+        columnTotals[period] = 0;
+    }
+    decimal grandTotal = 0;
+}
+
+<div class="table">
+    <table>
+        <thead>
+            <tr>
+                <th class="text-start">Centers</th>
+                @foreach (var period in Model.Periods)
+                {
+                    <th>@period</th>
+                }
+                <th>Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var row in Model.Data)
+            {
+                decimal rowTotal = 0;
+                <tr>
+                    <td class="text-start" style="font-weight:600" >@row.StoreName</td>
+                    @foreach (var period in Model.Periods)
+                    {
+                        decimal value = row.SalesByPeriod.ContainsKey(period) ? row.SalesByPeriod[period] : 0;
+                        rowTotal += value;
+                        columnTotals[period] += value;
+                        <td>@(value == 0 ? "-" : value.ToString("0.00"))</td>
+
+                    }
+                    @{
+                        grandTotal += rowTotal;
+                    }
+                    <td>@(rowTotal == 0 ? "-" : rowTotal.ToString("0.00"))</td>
+
+                </tr>
+            }
+
+        </tbody>
+        <tfoot>
+            <tr>
+                <td style="float:left;font-weight:600">Total</td>
+                @foreach (var period in Model.Periods)
+                {
+                    <td>@(columnTotals[period] == 0 ? "-" : columnTotals[period].ToString("0.00"))</td>
+
+                }
+                <td>@(grandTotal == 0 ? "-" : grandTotal.ToString("0.00"))</td>
+
+            </tr>
+        </tfoot>
+    </table>
+</div>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script>
+        $(document).ready(function() {
+     var current_year = new Date().getFullYear()
+     var amount_of_years = 30
+
+      for (var i = 0; i < amount_of_years+1; i++) {
+        var year = (current_year-i).toString();
+        var element = '<option value="' + year + '">' + year + '</option>';
+        $('select[name="financial_year"]').append(element)
+      }
+    })
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+

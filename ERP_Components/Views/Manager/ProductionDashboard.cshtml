@@ -1,0 +1,383 @@
+﻿@using ERP_Component_DAL.Models;
+@{
+    ViewBag.Title = "Production Dashboard";
+    ViewBag.UserName = "Himalyan Silk Mills";
+}
+<link href="~/css/Product.css" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script asp-append-version="true" src="~/lib/jquery/dist/jquery.min.js"></script>
+
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    .topbar {
+        margin: 10px;
+        background-color: #a14040;
+        color: white;
+        padding: 10px 30px;
+        text-align: center;
+        font-size: 1.5rem;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    .dashboard {
+        padding: 10px;
+    }
+
+    .cards {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        gap: 20px;
+    }
+
+    .card {
+        background-color: white;
+        padding: 20px;
+        border-radius: 12px;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+        text-align: center;
+    }
+
+        .card h3 {
+            margin-bottom: 10px;
+            color: #555;
+        }
+
+        .card p {
+            font-size: 1.6rem;
+            font-weight: bold;
+            color: #138496;
+        }
+
+    .charts {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+        justify-content: space-between;
+    }
+
+    .chart-container {
+        flex: 1 1 600px;
+        background: white;
+        padding: 20px;
+        border-radius: 12px;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+    }
+
+    .top-tabs {
+        display: flex;
+        cursor: pointer;
+        justify-content: space-evenly;
+        gap: 30px;
+        margin-bottom: 20px;
+        border-bottom: 2px solid #ccc;
+    }
+
+    .tab-card {
+        display: flex;
+        justify-content: center;
+        padding: 12px 20px;
+        font-size: 1.2rem;
+        cursor: pointer;
+        position: relative;
+        color: #666;
+        transition: all 0.3s ease;
+    }
+
+        .tab-card.active {
+            color: #138496;
+            font-weight: bold;
+        }
+
+            .tab-card.active::after {
+                content: '';
+                position: absolute;
+                bottom: -2px;
+                left: 0;
+                height: 3px;
+                width: 100%;
+                background-color: #138496;
+            }
+
+
+    .info-box-icon .fas {
+        color: #138496 !important;
+        background: white !important;
+    }
+
+    .info-box-icon .bi {
+        color: #138496 !important;
+        background: white !important;
+    }
+
+    .info-box-content {
+        font-size: 18px;
+    }
+
+    .shadow-sm {
+        color: #138496 !important;
+        background: none !important;
+    }
+
+</style>
+
+
+
+<div class="top-tabs">
+    <div onclick="location.href='@Url.Action("ManagerDashboard", "Manager")'" class="tab-card">
+        <span class="info-box-icon">
+            <i class="fas fa-shopping-cart"></i>
+        </span>
+        <div class="info-box-content">
+            <span class="info-box-text">Sales Dashboard</span>
+
+        </div>
+    </div>
+    <div onclick="location.href='@Url.Action("PurchaseDashboard", "Manager")'" class="tab-card">
+        <span class="info-box-icon">
+            <i class="fas fa-clock"></i>
+        </span>
+        <div class="info-box-content">
+            <span class="info-box-text">Purchase Dashboard</span>
+
+        </div>
+    </div>
+    <div onclick="location.href='@Url.Action("StoreDashboard", "Manager")'" class="tab-card">
+        <span class="info-box-icon">
+            <i class="bi bi-cart-fill"></i>
+        </span>
+        <div class="info-box-content">
+            <span class="info-box-text">Store Dashboard</span>
+
+        </div>
+    </div>
+    <div onclick="location.href='@Url.Action("ProductionDashboard", "Manager")'" class="tab-card active" data-target="productionDashboard">
+        <span class="info-box-icon">
+            <i class="bi bi-truck"></i>
+        </span>
+        <div class="info-box-content">
+            <span class="info-box-text">Production Dashboard</span>
+
+        </div>
+    </div>
+    <a>
+        <div onclick="location.href='@Url.Action("WarehouseDashboard", "Manager")'" >
+            <span class="info-box-icon">
+                <i class="fas fa-warehouse me-2"></i>
+            </span>
+            <div class="info-box-content">
+                <span class="info-box-text">Warehouse Dashboard</span>
+
+            </div>
+        </div>
+    </a>
+</div>
+
+
+
+
+
+
+
+
+<div class="app-content" style="margin-top:60px">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12 col-sm-6 col-md-3">
+                <div class="info-box">
+                    <span class="info-box-icon text-bg-primary shadow-sm">
+                        <i class="fas fa-boxes"></i>
+                    </span>
+                    <div class="info-box-content">
+                        <span class="info-box-text">Total Silk Yarn Stock</span>
+                        <span class="info-box-number"><strong>12,450 kg</strong></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 col-sm-6 col-md-3">
+                <div class="info-box">
+                    <span class="info-box-icon text-bg-primary shadow-sm" style="background-color:#2BCBE4 !important">
+                        <i class="fas fa-file-invoice"></i>
+                    </span>
+                    <div class="info-box-content">
+                        <span class="info-box-text">Total Inventory Value</span>
+                        <span class="info-box-number"><strong>₹</strong>1,56,20,000</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 col-sm-6 col-md-3">
+                <div class="info-box">
+                    <span class="info-box-icon text-bg-primary shadow-sm">
+                        <i class="bi bi-people-fill"></i>
+                    </span>
+                    <div class="info-box-content">
+                        <span class="info-box-text">Low Yarn Stock Items</span>
+                        <span class="info-box-number">18</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 col-sm-6 col-md-3">
+                <div class="info-box">
+                    <span class="info-box-icon text-bg-primary shadow-sm">
+                        <i class="bi bi-cart-fill"></i>
+                    </span>
+                    <div class="info-box-content">
+                        <span class="info-box-text">Expired Dye Lots</span>
+                        <span class="info-box-number"><strong>₹</strong>2,75,000</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<main class="dashboard">
+    <section class="charts">
+        <div class="chart-container" style="display:flex;justify-content:center; width:430px;height:400px">
+            <canvas id="InventoryLevelsChart"></canvas>
+        </div>
+
+        <div class="chart-container" style="display:flex;justify-content:center; width:430px;height:400px">
+            <canvas id="StockInOutChart"></canvas>
+        </div>
+
+        <div class="chart-container" style="display:flex;justify-content:center; width:430px;height:400px">
+            <canvas id="StockCategoryChart"></canvas>
+        </div>
+
+        <div class="chart-container" style="display:flex;justify-content:center; width:430px;height:400px">
+            <canvas id="TurnoverRatioChart"></canvas>
+        </div>
+    </section>
+</main>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        // Silk Yarn Usage Trend
+        new Chart(document.getElementById('InventoryLevelsChart').getContext('2d'), {
+            type: 'line',
+            data: {
+                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+                datasets: [{
+                    label: 'Silk Yarn Used (kg)',
+                    data: [1050, 1220, 1175, 1100, 1340, 1450],
+                    backgroundColor: '#dee2e6',
+                    borderColor: '#138496',
+                    borderWidth: 2,
+                    fill: true,
+                    tension: 0.4
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Silk Yarn Usage Trend'
+                    }
+                }
+            }
+        });
+
+        // Yarn In vs Fabric Out
+        new Chart(document.getElementById('StockInOutChart').getContext('2d'), {
+            type: 'bar',
+            data: {
+                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+                datasets: [
+                    {
+                        label: 'Yarn Purchased (kg)',
+                        data: [1400, 1300, 1450, 1380, 1500, 1480],
+                        backgroundColor: '#138496'
+                    },
+                    {
+                        label: 'Fabric Produced (m)',
+                        data: [1250, 1200, 1280, 1190, 1380, 1400],
+                        backgroundColor: '#dee2e6'
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Yarn In vs. Fabric Out'
+                    }
+                }
+            }
+        });
+
+        // Stock by Category
+        new Chart(document.getElementById('StockCategoryChart').getContext('2d'), {
+            type: 'pie',
+            data: {
+                labels: ['Raw Silk', 'Dyed Yarn', 'Printed Fabric', 'Silk Waste'],
+                datasets: [{
+                    data: [45, 30, 20, 5],
+                    backgroundColor: ['#55d5e9', '#2BCBE4', '#19ACC3', '#138496']
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Stock by Silk Material Category'
+                    }
+                }
+            }
+        });
+
+        // Turnover Ratio
+        new Chart(document.getElementById('TurnoverRatioChart').getContext('2d'), {
+            type: 'line',
+            data: {
+                labels: ['Q1', 'Q2', 'Q3', 'Q4'],
+                datasets: [{
+                    label: 'Turnover Ratio',
+                    data: [3.8, 4.2, 4.6, 4.0],
+                    borderColor: '#138496',
+                    borderWidth: 2,
+                    fill: false,
+                    tension: 0.3
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Silk Inventory Turnover Ratio (Quarterly)'
+                    }
+                }
+            }
+        });
+    });
+</script>
+
+<script>
+        document.querySelectorAll('.tab-card').forEach(tab => {
+        tab.addEventListener('click', () => {
+
+            document.querySelectorAll('.tab-card').forEach(t => t.classList.remove('active'));
+            tab.classList.add('active');
+
+
+            document.querySelectorAll('.dashboard-section').forEach(section => section.style.display = 'none');
+
+
+            const targetId = tab.getAttribute('data-target');
+            document.getElementById(targetId).style.display = 'block';
+        });
+    });
+
+</script>

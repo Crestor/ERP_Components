@@ -1,0 +1,146 @@
+﻿@using ERP_Component_DAL.Models;
+
+
+@{
+    ViewBag.Title = "Add Stock Adjustment";
+    Layout = "~/Views/Shared/_LayoutINV.cshtml";
+}
+
+<link rel="stylesheet" href="~/css/Product.css">
+
+@model List<Product>
+
+
+@* <h4>Add Stock Adjustment</h4> *@
+<div id="material" class="container">
+    <form method="post" asp-action="SetAdjustment" asp-controller="Inventory" onsubmit="return savedDetail()">
+
+        <div class="form-section">
+            <h3>Stock Adjustment</h3>
+            <div class="form-row">
+
+                <label class="required" for="itemName">Product Name:</label>
+                <select name="itemId" id="itemDropdown">
+
+                    <option selected disabled>Select Item</option>
+                    @foreach (var scheme in Model)
+                    {
+                        @foreach (var item in scheme.items)
+                        {
+                            <option value="@item.itemId">@item.itemName</option>
+                        }
+                    }
+                </select>
+
+
+
+                <label for="warehouse">Source Distribution Center:</label>
+                <select name="sourceDc">
+                    <option selected disabled>Select</option>
+                    @foreach (var scheme in Model)
+                    {
+                        @foreach (var warehouse in scheme.warehouse)
+                        {
+                            <option value="@warehouse.warehouseId">@warehouse.warehouseName</option>
+                        }
+                    }
+                </select>
+            </div>
+            <div class="form-row">
+
+                <label for="warehouse">Destination Distribution Center:</label>
+                <select name="destinationDc">
+                    <option selected disabled>Select</option>
+                    @foreach (var scheme in Model)
+                    {
+                        @foreach (var warehouse in scheme.warehouse)
+                        {
+                            <option value="@warehouse.warehouseId">@warehouse.warehouseName</option>
+                        }
+                    }
+                </select>
+
+
+
+
+                <label class="required" for="supplier">Current Stock:</label>
+                <input type="number" id="currentStock" name="currentStock" readonly />
+
+
+
+            </div>
+            <div class="form-row">
+                <label class="required" for="subCategory">Quantity:</label>
+                <input type="text" name="quantity" />
+                <label for="descr">Reason For Adjustment:</label>
+                <textarea name="reason"></textarea>
+
+            </div>
+            <div class="form-row">
+                <label for="date">Date:</label>
+                <input type="date" name="date" value="@DateTime.Now.ToString("yyyy-MM-dd")" />
+
+                <label for="uom">Reference Number:</label>
+                <input type="text" name="reference" />
+            </div>
+
+
+        </div>
+
+
+        <div class="button-container">
+            <button type="submit">Submit</button>
+            <button type="reset">Reset</button>
+        </div>
+    </form>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        $('#itemDropdown').change(function () {
+            var itemId = $(this).val();
+
+            if (itemId) {
+                $.ajax({
+                    url: '/Inventory/GetCurrentStock',
+                    type: 'GET',
+                    data: { itemId: itemId },
+                    success: function (data) {
+                        $('#currentStock').val(data);
+                    },
+                    error: function () {
+                        alert('Failed to fetch stock');
+                    }
+                });
+            }
+        });
+    });
+</script>
+<script>
+      function savedDetail(){
+                Swal.fire({
+      position: "center",
+      icon: "success",
+      title: "Your work has been saved",
+      showConfirmButton: false,
+      timer: 1500
+    });
+    }
+</script>

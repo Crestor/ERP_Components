@@ -934,5 +934,140 @@ namespace ERP_Component_DAL.Services
         }
 
 
+
+
+        //<--------------------------------------Dashboard Services-------------------------------------------->
+        public DashBoard GetWarehouseDashBoardData()
+        {
+            try
+            {
+                DashBoard Item = new();
+                string connectionstring = configuration.GetConnectionString("DefaultConnectionString");
+                connection = new SqlConnection(connectionstring);
+                SqlCommand cmd = new();
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.CommandText = @"SELECT (SELECT SUM(InStock) FROM Inventory) AS TotalStorageItems,
+                            (
+                               SELECT COUNT(*) 
+                                 FROM (SELECT r.RequisitionID 
+                           FROM Requisitions r 
+                         JOIN ProductionOrder po ON po.SalesForcastID = r.RequisitionID 
+                          WHERE r.RequisitionType = 1 AND r.RequisitionStatus = 4 
+                         GROUP BY r.RequisitionID 
+                       HAVING COUNT(*) = SUM(CASE WHEN po.ProductionStatus = 4 THEN 1 ELSE 0 END)
+                          ) AS Sub
+                       ) AS PendingDispatch";
+                cmd.Connection = connection;
+
+                connection.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+
+                    Item.TotalStorageItems = reader["TotalStorageItems"] != DBNull.Value ? Convert.ToInt32(reader["TotalStorageItems"]) : 0;
+                    Item.PendingDispatch = reader["PendingDispatch"] != DBNull.Value ? Convert.ToInt32(reader["PendingDispatch"]) : 0;
+
+                    //Item.TotalStockValue = reader["TotalStockValue"] != DBNull.Value ? Convert.ToDecimal(reader["TotalStockValue"]) : 0m;
+
+                }
+
+
+                return Item;
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                connection.Close();
+            }
+
+
+        }
+        public List<DashBoard> WareHouseDashBoardPieChartData()
+        {
+            try
+            {
+                List<DashBoard> prod = new();
+                string connectionstring = configuration.GetConnectionString("DefaultConnectionString");
+                connection = new SqlConnection(connectionstring);
+                SqlCommand cmd = new();
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.CommandText = $"SELECT C.CategoryName,SUM(IV.InStock) AS TotalStock FROM Categories C JOIN Items IT ON C.CategoryID = IT.CategoryID JOIN Inventory IV ON IT.ItemID = IV.ItemID GROUP BY  C.CategoryName;";
+                cmd.Connection = connection;
+                connection.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    prod.Add(new DashBoard
+                    {
+                        TotalStock = reader["TotalStock"] != DBNull.Value ? (int)reader["TotalStock"] : 0,
+                        CategoryName = reader["CategoryName"] != DBNull.Value ? (string)reader["CategoryName"] : string.Empty,
+
+
+                    });
+                }
+
+                return prod;
+
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+
+            }
+            finally
+            {
+                connection.Close();
+            }
+        }
+        public List<DashBoard> WareHouseDashBoardItemsINItemsOut()
+        {
+            try
+            {
+                List<DashBoard> prod = new();
+                string connectionstring = configuration.GetConnectionString("DefaultConnectionString");
+                connection = new SqlConnection(connectionstring);
+                SqlCommand cmd = new();
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.CommandText = $"	select InStock ,LastUpdated from Inventory ";
+                cmd.Connection = connection;
+                connection.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    prod.Add(new DashBoard
+                    {
+                        InStock = reader["InStock"] != DBNull.Value ? (int)reader["InStock"] : 0,
+
+                        LastUpdated = reader["LastUpdated"] != DBNull.Value ? DateOnly.FromDateTime((DateTime)reader["LastUpdated"]) : default(DateOnly),
+
+                    });
+                }
+
+                return prod;
+
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+
+            }
+            finally
+            {
+                connection.Close();
+            }
+        }
+
+
+
+
+
+
+
     }
 }

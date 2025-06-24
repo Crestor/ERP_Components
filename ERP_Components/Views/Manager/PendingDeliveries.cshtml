@@ -1,0 +1,66 @@
+﻿@using ERP_Component_DAL.Models;
+@{
+	ViewBag.Title = "Pending Deliveries";
+	Layout = "~/Views/Shared/_LayoutINV.cshtml";
+}
+<link rel="stylesheet" href="/css/Product.css" />
+
+
+@model List<AddCustomer>
+
+<div class="table">
+
+
+
+	<table>
+		<thead>
+			<tr>
+				<th>S.No.</th>
+				<th>Customer Name</th>
+				<th>Customer Code</th>
+				<th>Customer Industry</th>
+				<th>Date</th>
+				<th>Quotation Series</th>
+				<th>Amount</th>
+
+			</tr>
+		</thead>
+
+
+
+		<tbody id="geeks">
+
+
+			@for (var i = 0; i < Model.Count; i++)
+			{
+
+				var x = Model[i];
+				var index = i + 1;
+
+				<tr>
+					<td>@index</td>
+					<td>@x.CustomerName</td>
+					<td>@x.CustomerCode</td>
+					<td>@x.CustomerIndustry</td>
+					<td>@x.OpeningDate.ToShortDateString()</td>
+					<td>@x.series</td>
+					<td>@x.Amount</td>
+
+
+				</tr>
+			}
+		</tbody>
+
+	</table>
+
+
+
+
+</div>
+
+
+
+
+
+
+

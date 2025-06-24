@@ -36,7 +36,10 @@ namespace ERP_Components.Controllers
 
         public IActionResult Dashboard()
         {
-            return View();
+            DashBoard model = inventoryServices.GetInventryDashBoardData();
+            model.Stockdata = inventoryServices.InventryDashBoardStockINStockOUT();
+            model.PieChartData = inventoryServices.InventryDashBoardPieChartData();
+            return View(model);
         }
 
 
@@ -529,10 +532,32 @@ namespace ERP_Components.Controllers
             return View(product);
         }
 
+
+
+
+        public IActionResult AddStocksTransfer()
+        {
+            var product = new List<Product>
+    {
+        new Product
+        {
+
+            items = inventoryServices.GetItemsNames() ?? new List<Items>(),
+            warehouse = inventoryServices.getWarehouseName() ?? new List<Warehouse>()
+
+        }
+    };
+            return View(product);
+        }
+
+
+
+
+
         public IActionResult SetAdjustment(Order order)
         {
             inventoryServices.AddStockAdjustment(order);
-            return RedirectToAction("AddStockAdjustment");
+            return RedirectToAction("AddStocksTransfer");
         }
 
         public JsonResult GetCurrentStock(Guid itemId)

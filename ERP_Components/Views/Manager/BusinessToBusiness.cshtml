@@ -1,0 +1,75 @@
+﻿@using ERP_Component_DAL.Models;
+@{
+	ViewBag.Title = "Business To Business";
+	Layout = "~/Views/Shared/_LayoutINV.cshtml";
+}
+<link rel="stylesheet" href="/css/Product.css" />
+
+
+@model List<Items>
+
+<div class="table">
+	<div class="form-section">
+	<div class="form-row">
+		<select style="font-size: 14px;float:right;border-radius: 5px;margin: 10px 10px;padding: 5px;width: 200px;">
+			<option selected disabled>Select</option>
+			<option>Store A</option>
+			<option>Store B</option>
+			<option>Store C</option>
+			<option>Store D</option>
+		</select>
+		<label>Business Type</label>
+		<input  value="businessType"/>
+
+			<label>GSTIN</label>
+			<input value="businessType" />
+
+		</div>
+	</div>
+	<table>
+		<thead>
+			<tr>
+				<th>S.No.</th>
+				<th>Billing Address</th>
+				<th>Shipping Address</th>
+				<th>Total Sales</th>
+				<th>Outstanding Balance</th>
+				<th>Last Order Date</th>
+				<th>Total Order Placed</th>
+			</tr>
+		</thead>
+
+
+
+		<tbody id="geeks">
+
+
+			@* @for (var i = 0; i < Model.Count; i++)
+			{
+
+				var x = Model[i];
+				var index = i + 1;
+
+				<tr>
+					<td>@index</td>
+					<td>@x.itemName</td>
+					<td>@x.inStock</td>
+
+					<td>@x.stockAlert</td>
+
+
+				</tr>
+			} *@
+		</tbody>
+
+	</table>
+
+
+
+
+</div>
+
+
+
+
+

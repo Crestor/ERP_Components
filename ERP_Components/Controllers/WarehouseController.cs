@@ -31,8 +31,15 @@ namespace ERP_Components.Controllers
 
         public IActionResult Dashboard()
         {
-            return View();
+            DashBoard model = warehouseServices.GetWarehouseDashBoardData();
+            model.PieChartData = warehouseServices.WareHouseDashBoardPieChartData();
+            model.Stockdata = warehouseServices.WareHouseDashBoardItemsINItemsOut();
+            return View(model);
         }
+
+
+
+
 
         //<---------------------------Warehouse Location------------------------->
         public IActionResult WarehouseLocation()

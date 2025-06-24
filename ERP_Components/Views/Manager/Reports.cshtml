@@ -1,0 +1,197 @@
+﻿@using ERP_Component_DAL.Models;
+@model DashBoard
+@{
+    ViewBag.Title = "Reports";
+    ViewBag.UserName = "Himalyan Silk Mills";
+}
+<link href="~/css/Product.css" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script asp-append-version="true" src="~/lib/jquery/dist/jquery.min.js"></script>
+
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    .topbar {
+        margin: 10px;
+        background-color: #a14040;
+        color: white;
+        padding: 10px 30px;
+        text-align: center;
+        font-size: 1.5rem;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    .dashboard {
+        padding: 10px;
+    }
+
+    .cards {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        gap: 20px;
+    }
+
+    .card {
+        width:350px;
+        height:150px;
+        background-color: white;
+        /* padding: 20px; */
+        border-radius: 12px;
+        /* box-shadow: 0 4px 8px rgba(0,0,0,0.05); */
+        text-align: center;
+    }
+
+        .card h3 {
+            margin-bottom: 10px;
+            color: #555;
+        }
+
+        .card p {
+            font-size: 1.6rem;
+            font-weight: bold;
+            color: #138496;
+        }
+
+   .row{
+       width:100%;
+        margin-bottom: 30px;
+       justify-content:space-evenly;
+   }
+
+    .box-text {
+        padding: 5px;
+        font-size:14px;
+        font-weight:500;
+    }
+
+    .report{
+        cursor:pointer;
+        font-size:10px;
+    }
+
+    .info-box{
+        height: 120px;
+    }
+
+        .info-box .info-box-content {
+        line-height: 1.5;
+    }
+</style>
+
+<div class="app-content" style="margin-top:80px">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="card">
+                <span class="box-text">Sales Reports</span>
+                <div class="info-box" onclick="location.href='@Url.Action("PurchaseReport", "Purchase")'">
+                    <span class="info-box-icon shadow-sm" style=" width: 85px;background-color:#55d5e9 !important">
+                        <i class="fas fa-shopping-cart"></i>
+                    </span>
+                    <div class="info-box-content">
+                        <span class="report"><a href="/Manager/MonthlyStoreSalesData">Monthly Sales Report</a></span>
+                        <span class="report"><a href="/Manager/TopSellingProducts">Top Selling Products</a></span>
+                        <span class="report"><a href="/Manager/SalesGrowth">Sales Growth</a></span>
+                        <span class="report"><a href="/Manager/PendingDeliveries">Pending Deliveries</a></span>
+                        <span class="report"><a href="/Manager/SalesReturnNote">Sales Return</a></span> 
+                        <span class="report"><a href="/Manager/SalesInventory">Sales Stock</a></span>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <span class="box-text">Purchase Reports</span>
+                <div class="info-box" onclick="location.href='@Url.Action("PendingOrders", "Purchase")'">
+                    <span class="info-box-icon shadow-sm" style="width: 85px;background-color:#2BCBE4 !important">
+                        <i class="fas fa-clock"></i>
+                    </span>
+                    <div class="info-box-content">
+                        <span class="report"><a href="/Manager/TopVendorsList">Top Vendor Report</a></span>
+                        <span class="report"><a href="/Manager/PendingPurchaseOrders">Pending Orders</a></span>
+                        <span class="report"><a href="/Manager/ApprovedRejectedQuotations">Quotation Report</a>
+                        </span>
+                    </div>
+                </div>
+            </div>
+       
+            <div class="card">
+                <span class="box-text">Store Reports</span>
+                <div class="info-box" onclick="location.href='@Url.Action("PurchaseReport", "Purchase")'">
+                    <span class="info-box-icon shadow-sm" style="width: 85px;background-color:#55d5e9 !important">
+                        <i class="fas fa-shopping-cart"></i>
+                    </span>
+                    <div class="info-box-content">
+                        <span class="report"><a href="/Manager/StockSummary">Stock Summary</a></span>
+
+                    </div>
+                </div>
+            </div>
+            </div>
+
+        <div class="row">
+            <div class="card">
+                <span class="box-text">Retail Reports</span>
+                <div class="info-box" onclick="location.href='@Url.Action("PendingOrders", "Purchase")'">
+                    <span class="info-box-icon shadow-sm" style="width:85px;background-color:#2BCBE4 !important">
+                        <i class="fas fa-clock"></i>
+                    </span>
+                    <div class="info-box-content">
+                        <span class="report"><a href="/Manager/RetailStoreInventory">Retail Stores Inventory</a></span>
+                        <span class="report"><a href="/Manager/GetCustomerRetailData">Customer Purchase Data</a></span>
+
+                        
+                    </div>
+                </div>
+            </div>
+       
+
+
+
+       
+            <div class="card">
+                <span class="box-text">Production Reports</span>
+                <div class="info-box" onclick="location.href='@Url.Action("VendorReport", "Purchase")'">
+                    <span class="info-box-icon shadow-sm" style="width:85px;background-color:#138496 !important">
+                        <i class="bi bi-truck"></i>
+                    </span>
+                    <div class="info-box-content">
+                        <span class="report"><a href="/Manager/ProductionStockInventory">Production Inventory</a></span>
+
+                        @* <span class="report"><a>Monthly Sales Report</a></span> *@
+                        
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <span class="box-text">Warehouse Reports</span>
+                <div class="info-box">
+                    <span class="info-box-icon text-bg-success shadow-sm" style="width: 85px;background-color:#19ACC3 !important">
+                        <i class="bi bi-cart-fill"></i>
+                    </span>
+                    <div class="info-box-content">
+                        <span class="report"><a href="/Manager/GoodsMovements">Stock Transfer</a></span>
+                        <span class="report"><a href="/Manager/ViewStockIn">Stock In</a></span>
+                        <span class="report">
+                            <a href="/Manager/ViewStockOut">Stock Out</a>
+                        </span>
+                        <span class="report">
+                            <a href="/Manager/WarehouseStock">Warehouse Stock</a>
+                        </span>
+
+                       
+               
+                    </div>
+                   
+                </div>
+               
+            </div>
+        </div>
+    </div>
+</div>
+

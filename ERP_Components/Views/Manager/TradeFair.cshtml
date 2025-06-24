@@ -1,0 +1,72 @@
+﻿@using ERP_Component_DAL.Models;
+@{
+	ViewBag.Title = "Trade Fair";
+	Layout = "~/Views/Shared/_LayoutINV.cshtml";
+}
+<link rel="stylesheet" href="/css/Product.css" />
+
+
+@model List<Items>
+
+<div class="table">
+	<div>
+		<select style="font-size: 14px;float:right;border-radius: 5px;margin: 10px 10px;padding: 5px;width: 200px;">
+			<option selected disabled>Select</option>
+			<option>Store A</option>
+			<option>Store B</option>
+			<option>Store C</option>
+			<option>Store D</option>
+		</select>
+	</div>
+	<table>
+		<thead>
+			<tr>
+				<th>S.No.</th>
+				<th>Trade Fair Name</th>
+				<th>Location </th>
+				<th>Fair Code</th>
+				<th>Start Date</th>
+				<th>End Date</th>
+				<th>Organizer Name</th>
+				<th>products Showcased</th>
+				<th>Leads Generated</th>
+				<th>Orders Taken</th>
+				<th>Total Sales Value</th>
+				
+
+			</tr>
+		</thead>
+
+
+
+		<tbody id="geeks">
+
+
+			@* @for (var i = 0; i < Model.Count; i++)
+			{
+
+				var x = Model[i];
+				var index = i + 1;
+
+				<tr>
+					<td>@index</td>
+					<td>@x.itemName</td>
+					<td>@x.inStock</td>
+
+					<td>@x.stockAlert</td>
+
+
+				</tr>
+			} *@
+		</tbody>
+
+	</table>
+
+
+
+
+</div>
+
+
+
+

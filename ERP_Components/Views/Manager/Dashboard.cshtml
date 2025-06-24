@@ -1,14 +1,28 @@
+<<<<<<< Updated upstream
 ﻿@using ERP_Component_DAL.Models
 @model DashBoard
 @{
     ViewBag.Title = "Dashboard";
     // ViewBag.UserName = "Himalyan Goats";
+=======
+﻿
+@using ERP_Component_DAL.Models
+@model DashBoard
+@{
+    ViewBag.Title = "Dashboard";
+  
+>>>>>>> Stashed changes
 
 }
 
 <style>
+<<<<<<< Updated upstream
     #salesPurchaseChart{
         height:446px !important;
+=======
+    #salesPurchaseChart {
+        height: 446px !important;
+>>>>>>> Stashed changes
     }
 </style>
 
@@ -60,7 +74,11 @@
 
                     <i class="fas fa-clipboard-list"></i>
                     @* <strong>5</strong><br>Cancelled *@
+<<<<<<< Updated upstream
                    <strong>@Model.TotalPurchaseRequisition</strong><br> Purchase Requisition
+=======
+                    <strong>@Model.TotalPurchaseRequisition</strong><br> Purchase Requisition
+>>>>>>> Stashed changes
                 </div>
                 <div class="stat">
                     <i class="fas fa-undo icon"></i>
@@ -118,6 +136,7 @@
                     </div>
                 </div>
 
+<<<<<<< Updated upstream
                 
             </div>
         </div>
@@ -129,6 +148,19 @@
 
 
        
+=======
+
+            </div>
+        </div>
+
+        <div class="summary-card1">
+            <h4><i class="fas fa-clipboard-list icon"></i>Order Summary</h4>
+            <canvas id="orderChart"></canvas>
+        </div>
+
+
+
+>>>>>>> Stashed changes
     </div>
 
 </div>
@@ -139,6 +171,7 @@
 
 <script asp-append-version="true" src="~/lib/jquery/dist/jquery.min.js"></script>
 <script>
+<<<<<<< Updated upstream
 
                 const modelData = @Html.Raw(JsonConvert.SerializeObject(Model.ComparisonSalesPurchase));
 
@@ -245,6 +278,126 @@
 </script>
 
 
+=======
+
+                const modelData = @Html.Raw(JsonConvert.SerializeObject(Model.ComparisonSalesPurchase));
+
+            // Step 1: Group and sum Stock In and Stock Out by month
+            const monthlyData = {};
+
+            modelData.forEach(item => {
+                const date = new Date(item.CreatedAt);
+                const monthKey = date.toLocaleString('default', { month: 'short', year: 'numeric' }); // e.g., "Jun 2025"
+
+                if (!monthlyData[monthKey]) {
+                    monthlyData[monthKey] = { Sales: 0, Purchase: 0 };
+                }
+
+                monthlyData[monthKey].Sales += item.InStock || 0; // replace with actual stock out property if needed
+                monthlyData[monthKey].Purchase += item.TotalAmount || 0;
+            });
+
+            // Step 2: Prepare labels and datasets
+               const labels = Object.keys(monthlyData);
+    const salesData = labels.map(month => monthlyData[month].Sales);
+    const purchaseData = labels.map(month => monthlyData[month].Purchase);
+
+
+            // Step 3: Create the Chart
+            new Chart(document.getElementById('salesPurchaseChart').getContext('2d'), {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [
+                        {
+                      label: 'Sales',
+                      backgroundColor: '#0f4c5c',
+                       data: salesData
+                        },
+                        {
+                    label: 'Purchase',
+                backgroundColor: '#3b8a9e',
+                 data: purchaseData
+                        }
+                    ]
+                },
+               options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+          y: {
+            beginAtZero: true,
+            ticks: { color: '#000' },
+            grid: { color: '#ccc' }
+          },
+          x: {
+            ticks: { color: '#000' },
+            grid: { color: '#eee' }
+          }
+        },
+        plugins: {
+          legend: {
+            labels: { color: '#000', font: { weight: 'bold' } }
+          }
+        }
+      }
+    });
+
+
+        const orderData = @Html.Raw(JsonConvert.SerializeObject(Model.OrderSummary));
+
+        console.log(orderData); // Debug
+
+        let orderLabels = ['Completed', 'Pending', 'Cancelled']; // Avoid name conflict
+
+        const datasets = orderData.map((item, idx) => {
+            return {
+                label: item.FilterType,
+                data: [
+                    item.Complete || 0,
+                    item.Pending || 0,
+                    // item.Cancelled || 0
+                ],
+                backgroundColor: idx === 0
+                    ? ['#0f4c5c', '#3b8a9e', '#DC3545']
+                    : ['#3b8a9e', '#0f4c5c', '#E78AC3']
+            };
+        });
+
+        new Chart(document.getElementById('orderChart'), {
+            type: 'bar',
+            data: {
+                labels: orderLabels,
+                datasets: datasets
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: { color: '#000' },
+                        grid: { color: '#ddd' }
+                    },
+                    x: {
+                        ticks: { color: '#000' },
+                        grid: { color: '#eee' }
+                    }
+                },
+                plugins: {
+                    legend: { labels: { color: '#000' } }
+                }
+            }
+        });
+</script>
+
+
+
+
+
+
+
+>>>>>>> Stashed changes
 <style>
     body {
         background-color: #f0f4f7;
@@ -257,8 +410,13 @@
     .dashboard-container {
         display: flex;
         gap: 24px;
+<<<<<<< Updated upstream
         /* padding: 24px; */
         max-width: 1300px;
+=======
+        padding: 24px;
+      /*   max-width: 1300px; */
+>>>>>>> Stashed changes
         margin: auto;
         align-items: stretch;
         min-height: 100vh;
@@ -297,12 +455,17 @@
         }
 
     .summary-card1 {
+<<<<<<< Updated upstream
         width:94%;
+=======
+        width: 94%;
+>>>>>>> Stashed changes
         background: #e8f0f2;
         border-radius: 14px;
         box-shadow: 0 8px 24px rgba(0,0,0,0.05);
         padding: 24px;
         height: 100%;
+<<<<<<< Updated upstream
         min-height: 160px; 
         color: #000;
     }
@@ -318,6 +481,23 @@
     }
 
   
+=======
+        min-height: 160px;
+        color: #000;
+    }
+
+        .summary-card1 h3 {
+            color: #0f4c5c;
+            margin-bottom: 16px;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            font-size: 1.2rem;
+            align-items: center;
+        }
+
+
+>>>>>>> Stashed changes
 
     .icon {
         margin-right: 10px;
@@ -331,12 +511,16 @@
         gap: 10px;
     }
 
+<<<<<<< Updated upstream
    /*  .overview-content1 {
         display: flex;
         justify-content: space-around;
         flex-wrap: wrap;
         gap: 36px;
     } */
+=======
+
+>>>>>>> Stashed changes
 
     .overview-content1 {
         display: flex;
@@ -389,7 +573,11 @@
     }
 
 
+<<<<<<< Updated upstream
    
+=======
+
+>>>>>>> Stashed changes
 
     canvas {
         width: 100% !important;

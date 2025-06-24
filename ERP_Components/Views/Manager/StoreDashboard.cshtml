@@ -1,0 +1,456 @@
+﻿@using ERP_Component_DAL.Models
+@model DashBoard
+<link href="~/css/Product.css" rel="stylesheet" />
+@{
+    ViewBag.Title = "Store Dashboard";
+    ViewBag.UserName = "Himalyan Goats";
+
+}
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    /* body { */
+
+
+    .topbar {
+        margin: 10px;
+        background-color: #a14040;
+        color: white;
+        padding: 10px 30px;
+        text-align: center;
+        font-size: 1.5rem;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    .dashboard {
+        padding: 10px;
+    }
+
+    .cards {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        gap: 20px;
+    }
+
+    .card {
+        background-color: white;
+        padding: 20px;
+        border-radius: 12px;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+        text-align: center;
+    }
+
+        .card h3 {
+            margin-bottom: 10px;
+            color: #555;
+        }
+
+        .card p {
+            font-size: 1.6rem;
+            font-weight: bold;
+            color: #138496;
+        }
+
+    .charts {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+        justify-content: space-between;
+    }
+
+    .chart-container {
+        flex: 1 1 600px;
+        background: white;
+        padding: 20px;
+        border-radius: 12px;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+    }
+
+    .top-tabs {
+        display: flex;
+        justify-content: space-evenly;
+        gap: 30px;
+        margin-bottom: 20px;
+        border-bottom: 2px solid #ccc;
+    }
+
+    .tab-card {
+        display: flex;
+        justify-content: center;
+        padding: 12px 20px;
+        font-size: 1.2rem;
+        cursor: pointer;
+        position: relative;
+        color: #666;
+        transition: all 0.3s ease;
+    }
+
+        .tab-card.active {
+            color: #138496;
+            font-weight: bold;
+        }
+
+            .tab-card.active::after {
+                content: '';
+                position: absolute;
+                bottom: -2px;
+                left: 0;
+                height: 3px;
+                width: 100%;
+                background-color: #138496;
+            }
+
+
+    .info-box-icon .fas {
+        color: #138496 !important;
+        background: white !important;
+    }
+
+    .info-box-icon .bi {
+        color: #138496 !important;
+        background: white !important;
+    }
+    .info-box-content {
+        font-size: 18px;
+    }
+
+    .shadow-sm {
+        color: #138496 !important;
+        background: white !important;
+    }
+
+</style>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+
+
+<div class="top-tabs">
+    <div onclick="location.href='@Url.Action("ManagerDashboard", "Manager")'" class="tab-card">
+        <span class="info-box-icon">
+            <i class="fas fa-shopping-cart"></i>
+        </span>
+        <div class="info-box-content">
+            <span class="info-box-text">Sales Dashboard</span>
+
+        </div>
+    </div>
+    <div onclick="location.href='@Url.Action("PurchaseDashboard", "Manager")'" class="tab-card">
+        <span class="info-box-icon" >
+            <i class="fas fa-clock"></i>
+        </span>
+        <div class="info-box-content">
+            <span class="info-box-text">Purchase Dashboard</span>
+
+        </div>
+    </div>
+    @* <div onclick="location.href='@Url.Action("StoreDashboard", "Manager")'" class="tab-card" data-target="productDashboard"> *@
+        <div onclick="location.href='@Url.Action("ManagerDashboard", "Manager")'" class="tab-card active">
+
+        <span class="info-box-icon" >
+            <i class="bi bi-cart-fill"></i>
+        </span>
+        <div class="info-box-content">
+            <span class="info-box-text">Store Dashboard</span>
+
+        </div>
+    </div>
+    <div onclick="location.href='@Url.Action("ProductionDashboard", "Manager")'" class="tab-card">
+        <span class="info-box-icon" >
+            <i class="bi bi-truck"></i>
+        </span>
+        <div class="info-box-content">
+            <span class="info-box-text">Production Dashboard</span>
+
+        </div>
+    </div>
+    <a>
+        <div onclick="location.href='@Url.Action("WarehouseDashboard", "Manager")'" class="tab-card">
+            <span class="info-box-icon">
+                <i class="fas fa-warehouse me-2"></i>
+            </span>
+            <div class="info-box-content">
+                <span class="info-box-text">Warehouse Dashboard</span>
+
+            </div>
+        </div>
+    </a>
+</div>
+
+
+
+
+<div class="app-content" style="margin-top:60px">
+    <!--begin::Container-->
+    <div class="container-fluid">
+        <!-- Info boxes -->
+        <div class="row">
+            <div class="col-12 col-sm-6 col-md-3">
+                <div class="info-box">
+                    <span class="info-box-icon text-bg-primary shadow-sm">
+                        <i class="fas fa-boxes"></i>
+                    </span>
+                    <div class="info-box-content">
+                        <span class="info-box-text">Total Stock Value</span>
+                        <span class="info-box-number">
+                            <strong>₹</strong> @Model.TotalStockValue
+
+                        </span>
+                    </div>
+                    <!-- /.info-box-content -->
+                </div>
+                <!-- /.info-box -->
+            </div>
+            <!-- /.col -->
+            <div class="col-12 col-sm-6 col-md-3">
+                <div class="info-box">
+                    <span class="info-box-icon text-bg-danger shadow-sm">
+                        <i class="fas fa-file-invoice"></i>
+
+                    </span>
+                    <div class="info-box-content">
+                        <span class="info-box-text">Material Requisition</span>
+                        <span class="info-box-number">
+                            <strong></strong>@Model.TotalMaterialRequisition
+                        </span>
+                    </div>
+                    <!-- /.info-box-content -->
+                </div>
+                <!-- /.info-box -->
+            </div>
+            <!-- /.col -->
+            <!-- fix for small devices only -->
+            <!-- <div class="clearfix hidden-md-up"></div> -->
+            <div class="col-12 col-sm-6 col-md-3">
+                <div class="info-box">
+                    <span class="info-box-icon text-bg-success shadow-sm">
+                        <i class="bi bi-cart-fill"></i>
+                    </span>
+                    <div class="info-box-content">
+                        <span class="info-box-text">Purchase Requisition</span>
+                        <span class="info-box-number">@Model.TotalPurchaseRequisition</span>
+                    </div>
+                    <!-- /.info-box-content -->
+                </div>
+                <!-- /.info-box -->
+            </div>
+            <!-- /.col -->
+            <div class="col-12 col-sm-6 col-md-3">
+                <div class="info-box">
+                    <span class="info-box-icon text-bg-warning shadow-sm">
+                        <i class="bi bi-people-fill"></i>
+                    </span>
+                    <div class="info-box-content">
+                        <span class="info-box-text">Vender Invoice</span>
+                        <span class="info-box-number">@Model.VenderInvoice</span>
+                    </div>
+                    <!-- /.info-box-content -->
+                </div>
+                <!-- /.info-box -->
+            </div>
+            <!-- /.col -->
+        </div>
+
+    </div>
+</div>
+
+
+
+
+<main class="dashboard">
+    <section class="cards">
+    </section>
+
+    <section class="charts">
+        <div class="chart-container" style="display:flex;justify-content:center; width:430px;height:400px">
+            <canvas id="InventoryLevelsChart"></canvas>
+        </div>
+        <div class="chart-container" style="display:flex;justify-content:center; width:430px;height:400px">
+            <canvas id="StockInOutChart"></canvas>
+        </div>
+        <div class="chart-container" style="display:flex;justify-content:center; width:430px;height:400px">
+            <canvas id="StockCategoryChart"></canvas>
+        </div>
+        <div class="chart-container" style="display:flex;justify-content:center; width:430px;height:400px">
+            <canvas id="TurnoverRatioChart"></canvas>
+        </div>
+    </section>
+</main>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+@using Newtonsoft.Json
+<script>
+    const modelData = @Html.Raw(Json.Serialize(Model.Stockdata));
+    const pieChartData = @Html.Raw(Json.Serialize(Model.PieChartData));
+
+</script>
+<script asp-append-version="true" src="~/lib/jquery/dist/jquery.min.js"></script>
+<script>
+
+    document.addEventListener("DOMContentLoaded", function () {
+      // 1. Inventory Levels Over Time - Line Chart
+      new Chart(document.getElementById('InventoryLevelsChart').getContext('2d'), {
+        type: 'line',
+        data: {
+          labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'],
+          datasets: [{
+            label: 'Inventory Level',
+            data: [1200, 1350, 1280, 1500, 1400, 1600, 1550],
+            backgroundColor: '#dee2e6',
+            borderColor: '#138496',
+            borderWidth: 2,
+            fill: true,
+            tension: 0.4
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            title: {
+              display: true,
+              text: 'Inventory Levels Over Time'
+            }
+          }
+        }
+      });
+
+
+            const modelData = @Html.Raw(JsonConvert.SerializeObject(Model.Stockdata));
+
+        // Step 1: Group and sum Stock In and Stock Out by month
+        const monthlyData = {};
+
+        modelData.forEach(item => {
+            const date = new Date(item.LastUpdated);
+            const monthKey = date.toLocaleString('default', { month: 'short', year: 'numeric' }); // e.g., "Jun 2025"
+
+            if (!monthlyData[monthKey]) {
+                monthlyData[monthKey] = { inStock: 0, stockOut: 0 };
+            }
+
+            monthlyData[monthKey].inStock += item.InStock || 0;
+            monthlyData[monthKey].stockOut += item.TotalOrder || 0; // replace with actual stock out property if needed
+        });
+
+        // Step 2: Prepare labels and datasets
+        const labels = Object.keys(monthlyData);
+        const stockInData = labels.map(month => monthlyData[month].inStock);
+        const stockOutData = labels.map(month => monthlyData[month].stockOut);
+
+        // Step 3: Create the Chart
+        new Chart(document.getElementById('StockInOutChart').getContext('2d'), {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [
+                    {
+                        label: 'Stock In',
+                        data: stockInData,
+                        backgroundColor: '#138496'
+                    },
+                    {
+                        label: 'Stock Out',
+                        data: stockOutData,
+                        backgroundColor: '#DEE2E6'
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Monthly Stock In vs. Stock Out'
+                    }
+                }
+            }
+        });
+
+
+
+
+
+      // 3. Current Stock Distribution by Category - Pie Chart
+
+
+
+
+    const pieChartData = @Html.Raw(JsonConvert.SerializeObject(Model.PieChartData));
+
+      const pieLabels = pieChartData.map(item => item.CategoryName);
+    const dataValues = pieChartData.map(item => item.TotalStock);
+    const backgroundColors = ['#55d5e9', '#2BCBE4', '#19ACC3', '#138496']; // Extend as needed
+
+    new Chart(document.getElementById('StockCategoryChart').getContext('2d'), {
+        type: 'pie',
+        data: {
+            labels: pieLabels,
+            datasets: [{
+                data: dataValues,
+                backgroundColor: backgroundColors.slice(0, pieLabels.length)
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                title: {
+                    display: true,
+                    text: 'Stock by Category'
+                }
+            }
+        }
+    });
+
+
+
+      // 4. Inventory Turnover Ratio - Line Chart
+      new Chart(document.getElementById('TurnoverRatioChart').getContext('2d'), {
+        type: 'line',
+        data: {
+          labels: ['Q1', 'Q2', 'Q3', 'Q4'],
+          datasets: [{
+            label: 'Turnover Ratio',
+            data: [4.2, 4.8, 5.1, 5.5],
+            borderColor: '#138496',
+            borderWidth: 2,
+            fill: false,
+            tension: 0.3
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            title: {
+              display: true,
+              text: 'Inventory Turnover Ratio (Quarterly)'
+            }
+          }
+        }
+      });
+    });
+    //
+
+
+</script>
+
+
+<script>
+        document.querySelectorAll('.tab-card').forEach(tab => {
+        tab.addEventListener('click', () => {
+
+            document.querySelectorAll('.tab-card').forEach(t => t.classList.remove('active'));
+            tab.classList.add('active');
+
+
+            document.querySelectorAll('.dashboard-section').forEach(section => section.style.display = 'none');
+
+
+            const targetId = tab.getAttribute('data-target');
+            document.getElementById(targetId).style.display = 'block';
+        });
+    });
+
+</script>
+
+

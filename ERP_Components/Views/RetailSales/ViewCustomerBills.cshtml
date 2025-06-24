@@ -1,0 +1,67 @@
+﻿@using ERP_Component_DAL.Models;
+
+@{
+	ViewBag.Title = "View Customer Bill";
+	Layout = "~/Views/Shared/_LayoutINV.cshtml";
+}
+<link rel="stylesheet" href="/css/Product.css" />
+
+
+
+
+@model List<AddCustomer>
+
+<div class="table">
+
+	<table>
+		<thead>
+			<tr>
+				<th>S.No.</th>
+				<th>Customer Name</th>
+				<th>Contact Number</th>
+				<th>Total Amount</th>
+				<th>Discount Amount</th>
+				<th>Gross Total</th>
+				<th>Actions</th>
+			</tr>
+		</thead>
+
+
+
+		<tbody id="geeks">
+
+@* 
+			@for (var i = 0; i < Model.Count; i++)
+			{
+
+				var x = Model[i];
+				var index = i + 1;
+
+				<tr>
+
+					<td>@index</td>
+					<td>@x.CustomerName</td>
+					<td>@x.contact</td>
+					<td>@x.Amount</td>
+					<td></td>
+					<td></td>
+					<td>
+						<div class="table-button">
+
+							<button onclick="location.href='@Url.Action("GeneratePurchaseInvoice", "Purchase")'">View Purchase Bills</button>
+					
+
+						</div>
+					</td>
+
+				</tr>
+			} *@
+		</tbody>
+
+	</table>
+
+
+
+
+</div>
+

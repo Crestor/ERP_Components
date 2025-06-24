@@ -1,0 +1,161 @@
+﻿@using ERP_Component_DAL.Models
+
+@{
+    ViewBag.Title = "Monthly Sales Report";
+    var months = new[] { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" };
+}
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+
+@model List<MonthlyRetailSales>
+<link rel="stylesheet" href="~/css/Product.css">
+
+<div>
+
+<select style="padding:5px; border-radius:10px; width:80px; margin-bottom:20px; margin-left:30px">
+    <option selected disabled>select</option>
+    <option value="1">Stores</option>
+    <option value="2">Others</option>
+    <option value="3">All</option>
+
+</select>
+
+</div>
+
+    <div class="table">
+        <table id="salesTable">
+            <thead>
+                <tr>
+                    <th>Store Name</th>
+                    <th>Jan</th>
+                    <th>Feb</th>
+                    <th>Mar</th>
+                    <th>Apr</th>
+                    <th>May</th>
+                    <th>Jun</th>
+                    <th>Jul</th>
+                    <th>Aug</th>
+                    <th>Sep</th>
+                    <th>Oct</th>
+                    <th>Nov</th>
+                    <th>Dec</th>
+                    <th>Annual Sales</th>
+                </tr>
+            </thead>
+
+
+
+
+        <tbody class="text-center">
+            @foreach (var row in Model)
+            {
+                var rowType = row.centerType == 5 ? "store" : "other";
+                <tr data-type="@rowType" class="@(row.StoreName == "Total (Month)" ? "table-info fw-bold" : "")">
+                    <td class="text-start">@row.StoreName</td>
+                    <td class="month-col">@row.Jan.ToString("0.00")</td>
+                    <td class="month-col">@row.Feb.ToString("0.00")</td>
+                    <td class="month-col">@row.Mar.ToString("0.00")</td>
+                    <td class="month-col">@row.Apr.ToString("0.00")</td>
+                    <td class="month-col">@row.May.ToString("0.00")</td>
+                    <td class="month-col">@row.Jun.ToString("0.00")</td>
+                    <td class="month-col">@row.Jul.ToString("0.00")</td>
+                    <td class="month-col">@row.Aug.ToString("0.00")</td>
+                    <td class="month-col">@row.Sep.ToString("0.00")</td>
+                    <td class="month-col">@row.Oct.ToString("0.00")</td>
+                    <td class="month-col">@row.Nov.ToString("0.00")</td>
+                    <td class="month-col">@row.Dec.ToString("0.00")</td>
+                     <td class="store-total">@row.TotalStore.ToString("0.00")</td> 
+                </tr>
+            }
+
+
+        </tbody>
+       
+        </table>
+    </div>
+
+
+<script>
+    window.addEventListener('DOMContentLoaded', () => {
+        const rows = document.querySelectorAll('#retailSalesTable tbody tr');
+        const footerCells = document.querySelectorAll('#monthlyTotalsRow td');
+        const grandTotalCell = document.getElementById('grandTotal');
+
+        let monthlyTotals = new Array(12).fill(0);
+        let grandTotal = 0;
+
+        rows.forEach(row => {
+            const monthCells = row.querySelectorAll('.month-col');
+            let rowTotal = 0;
+
+            monthCells.forEach((cell, i) => {
+                const val = parseFloat(cell.textContent) || 0;
+                rowTotal += val;
+                monthlyTotals[i] += val;
+            });
+
+            row.querySelector('.store-total').innerText = rowTotal.toFixed(2);
+            grandTotal += rowTotal;
+        });
+
+        for (let i = 0; i < 12; i++) {
+            footerCells[i + 1].innerText = monthlyTotals[i].toFixed(2);
+        }
+
+        grandTotalCell.innerText = grandTotal.toFixed(2);
+    });
+</script>
+
+
+@* <script>
+    document.querySelector('select').addEventListener('change', function () {
+        const selectedValue = this.value;
+        const rows = document.querySelectorAll('#salesTable tbody tr');
+
+            rows.forEach(row => {
+        const type = row.getAttribute('data-type');
+        const isTotalRow = row.classList.contains('table-info');
+
+        if (isTotalRow) {
+            row.style.display = ""; 
+        } else if (selectedValue === "1" && type === "store") {
+            row.style.display = "";
+        } else if (selectedValue === "2" && type === "other") {
+            row.style.display = "";
+        } else if (selectedValue === "3") {
+            row.style.display = "";
+        } else {
+            row.style.display = "none";
+        }
+    });
+
+    });
+</script> *@
+
+<script>
+document.querySelector('select').addEventListener('change', function () {
+    const selectedValue = this.value;
+    const rows = document.querySelectorAll('#salesTable tbody tr');
+
+    rows.forEach(row => {
+        const type = row.getAttribute('data-type');
+        const isTotalRow = row.classList.contains('table-info');
+
+        if (selectedValue === "1" && type === "store") {
+            row.style.display = "";
+        } else if (selectedValue === "2" && type === "other") {
+            row.style.display = "";
+        } else if (selectedValue === "3") {
+            row.style.display = "";
+        } else {
+            row.style.display = "none";
+        }
+
+      
+        if (isTotalRow) {
+            row.style.display = (selectedValue === "2") ? "none" : "";
+        }
+    });
+});
+
+</script>
+

@@ -1,0 +1,103 @@
+﻿@using ERP_Component_DAL.Models;
+@{
+	ViewBag.Title = "Retail Store";
+	Layout = "~/Views/Shared/_LayoutINV.cshtml";
+}
+<link rel="stylesheet" href="/css/Product.css" />
+
+
+@model List<Warehouse>
+
+
+
+<div style="display:Grid">
+	<label style="float:left">Select Store:</label>
+	<select id="centerId" style="font-size: 14px;border-radius: 5px;margin: 10px 10px;padding: 5px;width: 200px;" onchange="getInventoryData()">
+		<option selected disabled>Select</option>
+		@for (var i = 0; i < Model.Count; i++)
+		{
+			<option value="@Model[i].centerId">@Model[i].centerName</option>
+		}
+	</select>
+
+
+</div>
+
+
+<div class="table">
+
+	<table>
+		<thead>
+			<tr>
+				<th>S.No.</th>
+				<th>Product Name</th>
+				<th>In Stock </th>
+				<th>Stock Alert</th>
+				
+
+
+			</tr>
+		</thead>
+
+
+
+		<tbody id="TableBody">
+
+
+			@* @for (var i = 0; i < Model.Count; i++)
+			{
+
+				var x = Model[i];
+				var index = i + 1;
+
+				<tr>
+					<td>@index</td>
+					<td>@x.itemName</td>
+					<td>@x.inStock</td>
+
+					<td>@x.stockAlert</td>
+
+
+				</tr>
+			} *@
+		</tbody>
+
+	</table>
+
+
+
+
+</div>
+
+
+<script>
+	   function getInventoryData() {
+		const centerId = $('#centerId').val();
+
+		if (centerId) {
+			$.ajax({
+				url: '/Manager/RetailStoreInventoryDetails',
+				type: 'GET',
+				data: { centerId: centerId },
+			success: function (response) {
+		$('#TableBody').empty();
+		$(response.list).each(function (index, item) {
+			const tr = document.createElement("tr");
+			tr.innerHTML = `
+				<td>${index + 1}</td>
+				<td>${item.itemName}</td>
+				<td>${item.inStock}</td>
+				<td>${item.stockAlert}</td>
+			`;
+			document.getElementById("TableBody").appendChild(tr);
+		});
+	},
+
+				error: function () {
+					alert('Error retrieving pending amount.');
+				}
+			});
+		}
+	}
+</script>
+

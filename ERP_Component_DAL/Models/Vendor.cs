@@ -19,6 +19,7 @@
         public DateTime createdAt { get; set; }
          
         public int creditPeriod { get; set; }
+        public int status { get; set; }
 
         public string? paymentTerms { get; set; }
         public string? GstIn { get; set; }

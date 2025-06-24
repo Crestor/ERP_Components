@@ -909,34 +909,183 @@ RequisitionStatus=1
 
 
 
-        //public List<Production> GoToNextStage(Guid productionOrderId, Guid productId)
-        //{
-        //    try
-        //    {
-        //        List<Production> production = new();
-        //        string connectionstring = configuration.GetConnectionString("DefaultConnectionString");
+        public List<Items> ViewProductionItems()
+        {
+            try
+            {
+                List<Items> prod = new();
+                string connectionstring = configuration.GetConnectionString("DefaultConnectionString");
+                connection = new SqlConnection(connectionstring);
+                SqlCommand cmd = new();
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.CommandText = $"Select it.ItemId, it.ItemName, it.Specification, ct.CategoryName From Items it JOIN Categories ct ON it.CategoryId = ct.CategoryId  Where  it.ItemType = 1";
+                cmd.Connection = connection;
 
-        //        using (SqlConnection connection = new SqlConnection(connectionstring))
-        //        {
-        //            using (SqlCommand cmd = new SqlCommand("ProceedToNextStage", connection))
-        //            {
-        //                cmd.CommandType = CommandType.StoredProcedure;
 
-        //                cmd.Parameters.AddWithValue("ProductionOrderID",productionOrderId);
-        //                cmd.Parameters.AddWithValue("@ProductID", productId);
+                cmd.CommandTimeout = 300;
+                connection.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    prod.Add(new Items
+                    {
+                        itemId = reader["ItemId"] != DBNull.Value ? (Guid)reader["ItemId"] : Guid.Empty,
+                        itemName = reader["ItemName"] != DBNull.Value ? (string)reader["ItemName"] : string.Empty,
+                        category = reader["CategoryName"] != DBNull.Value ? (string)reader["CategoryName"] : string.Empty,
+                        specification = reader["Specification"] != DBNull.Value ? (string)reader["Specification"] : string.Empty,
+                        //HSN = reader["HSN"] != DBNull.Value ? (string)reader["HSN"] : string.Empty,
 
-        //                connection.Open();
-        //                cmd.ExecuteNonQuery();
-        //            }
-        //        }
 
-        //        return production;
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        throw ex;
-        //    }
-        //}
+                    });
+                }
+
+                return prod;
+
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+
+            }
+            finally
+            {
+                connection.Close();
+            }
+        }
+
+
+
+        public List<Production> ViewProductionItemsStages(Guid productId)
+        {
+            try
+            {
+                List<Production> prod = new();
+                string connectionstring = configuration.GetConnectionString("DefaultConnectionString");
+                connection = new SqlConnection(connectionstring);
+                SqlCommand cmd = new();
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.CommandText = $"Select StageWork,  StageTime from ProductionStages where ProductID = '{productId}'";
+                cmd.Connection = connection;
+
+
+                cmd.CommandTimeout = 300;
+                connection.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    prod.Add(new Production
+                    {
+                  
+                        stageWork = reader["StageWork"] != DBNull.Value ? (string)reader["StageWork"] : string.Empty,
+
+                        stageTime = reader["StageTime"] != DBNull.Value ? (int)reader["StageTime"] : 0,
+
+                    });
+                }
+
+                return prod;
+
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+
+            }
+            finally
+            {
+                connection.Close();
+            }
+        }
+
+
+        public List<Items> ViewProductionMaterialsList(Guid productId)
+        {
+            try
+            {
+                List<Items> prod = new();
+                string connectionstring = configuration.GetConnectionString("DefaultConnectionString");
+                connection = new SqlConnection(connectionstring);
+                SqlCommand cmd = new();
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.CommandText = $" SELECT m.ItemID AS MaterialID, m.ItemName AS Material, m.UnitOFMeasure FROM ProductMaterialMapping pmm  JOIN ProductionOrder po ON pmm.ProductID =  po.ProductID Left JOIN Items m ON pmm.MaterialID = m.ItemId Where pmm.ProductID ='{productId}'";
+                cmd.Connection = connection;
+
+
+                cmd.CommandTimeout = 300;
+                connection.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    prod.Add(new Items
+                    {
+                        itemId = reader["MaterialID"] != DBNull.Value ? (Guid)reader["MaterialID"] : Guid.Empty,
+
+                        itemName = reader["Material"] != DBNull.Value ? (string)reader["Material"] : string.Empty,
+                        UOM = reader["UnitOFMeasure"] != DBNull.Value ? (string)reader["UnitOFMeasure"] : string.Empty,
+
+                       
+
+                    });
+                }
+
+                return prod;
+
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+
+            }
+            finally
+            {
+                connection.Close();
+            }
+        }
+
+        public List<Production> ViewProductionListOfMaterials(Guid productionOrderId)
+        {
+            try
+            {
+                List<Production> material = new();
+                string connectionstring = configuration.GetConnectionString("DefaultConnectionString");
+                connection = new SqlConnection(connectionstring);
+                SqlCommand cmd = new();
+                cmd.CommandType = System.Data.CommandType.Text;
+                 cmd.CommandText = $"SELECT m.ItemID AS MaterialID, m.ItemName AS Material, (pmm.Quantity * po.Quantity) AS RequiredQuantity, m.UnitOFMeasure, i.InStock AS AvailableQuantity FROM ProductionOrder po JOIN ProductMaterialMapping pmm ON po.ProductID = pmm.ProductID JOIN Items m ON pmm.MaterialID = m.ItemId JOIN Inventory i ON pmm.MaterialID = i.ItemId WHERE po.ProductionOrderID = '{productionOrderId}' AND i.InventoryCenter = 3";
+
+                cmd.Connection = connection;
+
+                cmd.CommandTimeout = 300;
+                connection.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    material.Add(new Production()
+                    {
+                        materialName = reader["Material"] != DBNull.Value ? (string)reader["Material"] : string.Empty,
+                        unitOfMeasure = reader["UnitOFMeasure"] != DBNull.Value ? (string)reader["UnitOFMeasure"] : string.Empty,
+                        quantityRequired = reader["RequiredQuantity"] != DBNull.Value ? Convert.ToDecimal(reader["RequiredQuantity"]) : 0m,
+                        availableQuantity = reader["AvailableQuantity"] != DBNull.Value ? (int)reader["AvailableQuantity"] : 0,
+                        materialId = reader["MaterialID"] != DBNull.Value ? (Guid)reader["MaterialID"] : Guid.Empty
+
+                    });
+                }
+
+                return material;
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                connection.Close();
+            }
+        }
 
     }
 }

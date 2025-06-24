@@ -10,6 +10,8 @@ namespace ERP_Component_DAL.Models
     {
         public int Complete { get; set; }
         public int Pending { get; set; }
+
+        public string FilterType { get; set; }
         public decimal TotalAmount { get; set; }
         public DateOnly CreatedAt { get; set; }
         public int Categories { get; set; }

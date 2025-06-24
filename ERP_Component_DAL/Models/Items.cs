@@ -23,6 +23,7 @@ namespace ERP_Component_DAL.Models
         public string? subCategory { get; set; }
         public string? specification { get; set; }
         public int gst { get; set; }
+        public decimal gstRate { get; set; }
         public string? UOM { get; set; }
         public int categoryId {  get; set; }
       public int subCategoryId { get; set; }
@@ -31,6 +32,7 @@ namespace ERP_Component_DAL.Models
         public Guid priceId { get; set; }
         public decimal unitPrice { get; set; }
         public decimal mrp { get; set; }
+        public decimal revenue { get; set; }
         public decimal costPrice { get; set; }
         public decimal sellingPrice { get; set; }
        

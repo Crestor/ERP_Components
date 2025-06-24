@@ -11,7 +11,9 @@ namespace ERP_Component_DAL.Models
         public Guid warehouseId { get; set; }
         public Guid itemId { get; set; }
         public Guid detailId { get; set; }
+        public Guid centerId { get; set; }
         public string warehouseName { get; set; }
+        public string centerName { get; set; }
         public string itemName { get; set; }
         public int addressId { get; set; }
         public int quantity { get; set; }

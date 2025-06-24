@@ -947,7 +947,11 @@ namespace ERP_Component_DAL.Services
                 connection = new SqlConnection(connectionstring);
                 SqlCommand cmd = new();
                 cmd.CommandType = System.Data.CommandType.Text;
+<<<<<<< Updated upstream
                 cmd.CommandText = $"Select it.ItemId, it.ItemName,it.specification, rq.RequisitionID,rq.UnitPrice,rq.Quantity, rq.TotalPrice From RequisitionItems  rq Join Items it ON it.ItemId = rq.ItemID Where RequisitionID = '{requisitionId}'";
+=======
+                cmd.CommandText = $"Select it.ItemId, it.ItemName, rq.RequisitionID,lb.CostPrice,rq.Quantity, rq.TotalPrice From RequisitionItems  rq Join Items it ON it.ItemId = rq.ItemID Left JOIN LotBatch lb ON it.ItemId = lb.ItemId Where RequisitionID = '{requisitionId}'";
+>>>>>>> Stashed changes
                 cmd.Connection = connection;
 
 
@@ -963,8 +967,12 @@ namespace ERP_Component_DAL.Services
                         itemId = reader["ItemId"] != DBNull.Value ? (Guid)reader["ItemId"] : Guid.Empty,
                         itemName = reader["ItemName"] != DBNull.Value ? (string)reader["ItemName"] : string.Empty,
                         TotalAmount = reader["TotalPrice"] != DBNull.Value ? Convert.ToDecimal(reader["TotalPrice"]) : 0m,
+<<<<<<< Updated upstream
                         unitPrice = reader["UnitPrice"] != DBNull.Value ? Convert.ToDecimal(reader["UnitPrice"]) : 0m,
                         specification = reader["Specification"] != DBNull.Value ? (string)reader["Specification"] : string.Empty,
+=======
+                        unitPrice = reader["CostPrice"] != DBNull.Value ? Convert.ToDecimal(reader["CostPrice"]) : 0m,
+>>>>>>> Stashed changes
 
 
                     });
@@ -1496,6 +1504,51 @@ namespace ERP_Component_DAL.Services
                 connection.Close();
             }
         }
+
+
+        //<-------------------------------------------------Dashboard------------------------------------------------------------>
+
+        public DashBoard GetPurchaseDashBoardData()
+        {
+            try
+            {
+                DashBoard Item = new();
+                string connectionstring = configuration.GetConnectionString("DefaultConnectionString");
+                connection = new SqlConnection(connectionstring);
+                SqlCommand cmd = new();
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.CommandText = $" SELECT (select count(*) from Vendors) as TotalVendor,(Select Count(RequisitionID) From Requisitions Where RequisitionType = 3) AS TotalPurchaseRequisition,(select sum( R.TotalAmount ) from Requisitions R join PurchaseOrders P on R.RequisitionID=P.RequisitionID) as TotalPurchases,(SELECT COUNT(*) FROM PurchaseOrders WHERE OrderStatus = 1) as PendingOrder";
+                cmd.Connection = connection;
+
+                cmd.CommandTimeout = 300;
+                connection.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+
+                    Item.TotalVendor = reader["TotalVendor"] != DBNull.Value ? Convert.ToInt32(reader["TotalVendor"]) : 0;
+                    Item.TotalPurchaseRequisition = reader["TotalPurchaseRequisition"] != DBNull.Value ? Convert.ToInt32(reader["TotalPurchaseRequisition"]) : 0;
+                    Item.PendingOrder = reader["PendingOrder"] != DBNull.Value ? Convert.ToInt32(reader["PendingOrder"]) : 0;
+                    Item.TotalPurchases = reader["TotalPurchases"] != DBNull.Value ? Convert.ToDecimal(reader["TotalPurchases"]) : 0m;
+
+                }
+
+                return Item;
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                connection.Close();
+            }
+
+
+        }
+
+
 
     }
 

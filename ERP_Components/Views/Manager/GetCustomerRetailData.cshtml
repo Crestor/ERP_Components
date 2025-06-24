@@ -1,0 +1,185 @@
+﻿@using ERP_Component_DAL.Models
+@model List<MonthlyRetailSales>
+
+@{
+    ViewBag.Title = "Retail Customer Data";
+    Layout = "~/Views/Shared/_LayoutINV.cshtml";
+}
+<link rel="stylesheet" href="/css/Product.css" />
+
+<style>
+    .container-main {
+        display: flex;
+        flex-direction: row;
+        width: 100%;
+    }
+
+    #leftSection {
+        flex: 1;
+        padding: 20px;
+        transition: width 0.3s ease;
+    }
+
+    #rightSection {
+        width: 0;
+        overflow: hidden;
+        padding: 0;
+        transition: width 0.3s ease;
+        background-color: #f8f9fa;
+        display: none;
+        border-left: 1px solid #ccc;
+    }
+</style>
+
+<div class="container-main">
+
+
+    <div class="table" id="leftSection">
+     <table>
+        @* <table class="table table-bordered table-striped">  *@
+            <thead style="background-color: #138486; color: white;">
+                <tr>
+                    <th>Sno</th>
+                    <th>Name</th>
+                    <th>Contact</th>
+                    <th>Bill Count</th>
+                    <th>Amount</th>
+                    <th>Last Purchase</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (var i = 0; i < Model.Count; i++)
+                {
+                    var x = Model[i];
+                    <tr>
+                        <td>@(i + 1)</td>
+                        <td>@x.CustomerName</td>
+                        <td>@x.ContactNumber</td>
+                        <td>@x.BillCount</td>
+                        <td>₹@x.GrossTotal.ToString("0.00")</td>
+                        <td>@x.CreatedAt.ToShortDateString()</td>
+                        <td>
+                            <div class="table-button">
+                                <button class="view-history" data-id="@x.RetailId">View History</button>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <div id="rightSection" style="margin-right:10px">
+        <div style="position:relative;">
+            <button onclick="closeHistoryPanel()"
+                    style="font-weight: 700;position: absolute; right:-28px;top:0; font-size: 22px; border: none; background: none; color: #138486; cursor: pointer;">
+                ×
+            </button>
+
+            <h4 style="color: #138486; text-align:center;margin-top: 10px;">Purchase History</h4>
+            <h6 id="customerName" style="text-align:center;margin-top:20px"></h6>
+
+            <div id="historyContent" style="margin-right: 30px;">
+               <table>
+                @* <table class="table table-bordered table-striped"> *@
+                    <thead style="background-color: #138486; color: white;">
+                        <tr>
+                            <th>Sno.</th>
+                            <th>Product Name</th>
+                            <th>Quantity</th>
+                            <th>Amount</th>
+                            <th>Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                       
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).on("click", ".view-history", function () {
+        var retailId = $(this).data("id");
+
+
+        $("#leftSection").css("flex", "0 0 50%");
+        $("#rightSection").css({ "width": "50%", "display": "block" });
+
+ 
+        $.ajax({
+            url: '/Manager/RetailCustomerHistory',
+            type: 'GET',
+            data: { retailId: retailId },
+               success: function (data) {
+        if (!data) {
+            alert("No data returned.");
+            return;
+        }
+
+       
+        $("#rightSection h6").text(data.customerName);
+
+        var html = '<table class="table table-bordered table-striped">' +
+            '<thead style="background-color: #138486; color: white;">' +
+            '<tr><th>Sno</th><th>Product Name</th><th>Quantity</th><th>Amount</th><th>Date</th></tr>' +
+            '</thead><tbody>';
+
+        if (data.items && data.items.length > 0) {
+            for (var i = 0; i < data.items.length; i++) {
+                var item = data.items[i];
+                html += '<tr>' +
+                    '<td>' + (i + 1) + '</td>' +
+                    '<td>' + item.productName + '</td>' +
+                    '<td>' + item.quantity + '</td>' +
+                    '<td>' + parseFloat(item.grossTotal || 0).toFixed(2) + '</td>' +
+                    '<td>' + new Date(item.createdAt).toLocaleDateString() + '</td>' +
+                    '</tr>';
+            }
+        } else {
+            html += '<tr><td colspan="5" class="text-center">No history found.</td></tr>';
+        }
+
+        html += '</tbody></table>';
+        $("#historyContent").html(html);
+    },
+
+            error: function () {
+                alert("Could not load history.");
+            }
+        });
+    });
+
+    function closeHistoryPanel() {
+        $("#rightSection").css({ "width": "0", "display": "none" });
+        $("#leftSection").css("flex", "1");
+        $("#historyContent").empty();
+    }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

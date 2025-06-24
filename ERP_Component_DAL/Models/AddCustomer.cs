@@ -21,6 +21,9 @@ namespace ERP_Component_DAL.Models
         public string vendorIndustry { get; set; }
         public string ContactName { get; set; }
         public string Email { get; set; }
+        public string series { get; set; }
+
+        public Decimal Amount { get; set; }
         public string CompanyEmail { get; set; }
         public string ContactNo { get; set; }
         public string alternate { get; set; }

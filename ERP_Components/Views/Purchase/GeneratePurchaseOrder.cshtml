@@ -1,5 +1,10 @@
 ﻿@using ERP_Component_DAL.Models;
 
+<script src="sweetalert2.min.js"></script>
+<link rel="stylesheet" href="sweetalert2.min.css">
+
+
+
 @{
 	ViewBag.Title = "Purchase Order";
 	Layout = "~/Views/Shared/_LayoutINV.cshtml";
@@ -39,7 +44,8 @@
 				var x = Model[i];
 				var index = i + 1;
 
-				<tr id="row-@x.vendorId; @x.purchaseOrderId">
+				<tr id="row-@x.vendorId-@x.purchaseOrderId">
+
 
 							<td>@index</td>
 							<td>@x.vendorName</td>
@@ -50,8 +56,9 @@
 							<td>
 						<div class="table-button">
 
-							<button onclick="location.href='@Url.Action("PurchaseOrderForm", "Purchase", new { vendorId = @x.vendorId,purchaseOrderId = x.purchaseOrderId }, null)'">Generate PO</button>
-	                        <button type="button" class="convert-btn" data-purchase-id="@x.purchaseOrderId">Convert To Bill</button>
+							<button onclick="location.href='@Url.Action("PurchaseOrderForm", "Purchase", new { vendorId = @x.vendorId,purchaseOrderId = x.purchaseOrderId }, null)'">Generate Purchase Order</button>
+							<button type="button" onclick="AddInvoice('@x.purchaseOrderId')">Convert To Bill</button>
+
 
 								</div>
 							</td>
@@ -68,75 +75,68 @@
 </div>
 
 
-<div id="invoiceModal" style="display:none; position:fixed; top:25%; left:35%; background:#fff; padding:20px; border-radius:10px; z-index:9999; box-shadow:0 0 10px rgba(0,0,0,0.4);">
-	<h3>Enter Invoice Details</h3>
-	<form id="invoiceForm">
-		<input type="hidden" id="purchaseIdInput" name="purchaseOrderId" />
-		<div>
-			<label for="invoiceNumber">Invoice Number:</label>
-			<input type="text" id="invoiceNumber" name="invoiceNumber" required />
-		</div>
-		<div style="margin-top:10px;">
-			<label for="invoiceDate">Invoice Date:</label>
-			<input type="date" id="invoiceDate" name="createdAt" required />
-		</div>
-		<div style="margin-top:15px;">
-			<button type="submit">Generate</button>
-			<button type="button" onclick="closeModal()">Cancel</button>
-		</div>
-	</form>
-</div>
 
 
 
 
 <script>
 
-	document.addEventListener("DOMContentLoaded", function () {
-		document.querySelectorAll(".convert-btn").forEach(button => {
-			button.addEventListener("click", function () {
-				const purchaseOrderId = this.getAttribute("data-purchase-id");
-				document.getElementById("purchaseIdInput").value = purchaseOrderId;
-				document.getElementById("invoiceModal").style.display = "block";
-			});
+		async function AddInvoice(purchaseOrderId) {
+		const { value: formValues } = await Swal.fire({
+			title: "Enter Invoice Details",
+			html: `
+				<div style="display: flex; flex-direction: column; gap: 10px;">
+					<label style="display: flex; justify-content: space-between; align-items: center;">
+						<span>Invoice Number:</span>
+						<input type="text" id="swal-input1" class="swal2-input" style="width: 60%;" />
+					</label>
+					<label style="display: flex; justify-content: space-between; align-items: center;">
+						<span>Invoice Date:</span>
+						<input type="date" id="swal-input2" class="swal2-input" style="width: 60%;" />
+					</label>
+				</div>
+			`,
+			focusConfirm: false,
+			preConfirm: () => {
+				const invoiceNumber = document.getElementById("swal-input1").value;
+				const createdAt = document.getElementById("swal-input2").value;
+
+				if (!invoiceNumber || !createdAt) {
+					Swal.showValidationMessage(`Please enter both invoice number and date`);
+					return false;
+				}
+				return { invoiceNumber, createdAt };
+			},
+			showCancelButton: true,
+			confirmButtonText: "Submit"
 		});
 
-		
-		document.getElementById("invoiceForm").addEventListener("submit", function (e) {
-			e.preventDefault();
-
+		if (formValues) {
 			const data = {
-				purchaseOrderId: document.getElementById("purchaseIdInput").value,
-				invoiceNumber: document.getElementById("invoiceNumber").value,
-				createdAt: document.getElementById("invoiceDate").value
+				purchaseOrderId: purchaseOrderId,
+				invoiceNumber: formValues.invoiceNumber,
+				createdAt: formValues.createdAt
 			};
 
-			fetch("/Purchase/AddPurchaseInvoice", {
-				method: "POST",
+			fetch('/Purchase/AddPurchaseInvoice', {
+				method: 'POST',
 				headers: {
-					"Content-Type": "application/json"
+					'Content-Type': 'application/json'
 				},
 				body: JSON.stringify(data)
 			})
 			.then(response => {
 				if (response.ok) {
-				
-					closeModal();
+					Swal.fire('Success', 'Invoice submitted successfully!', 'success');
 				} else {
-					alert("Error submitting invoice.");
+					Swal.fire('Error', 'Failed to submit invoice.', 'error');
 				}
 			})
 			.catch(error => {
-				console.error("AJAX Error:", error);
-				alert("Error: " + error);
+				console.error('Error:', error);
+				Swal.fire('Error', 'Something went wrong.', 'error');
 			});
-		});
-	});
-
-	function closeModal() {
-		document.getElementById("invoiceModal").style.display = "none";
+		}
 	}
+
 </script>
-
-
-

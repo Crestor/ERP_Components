@@ -227,6 +227,27 @@
                             <li class="nav-item">
                                 <a href="#" class="nav-link">
                                     <i class="fas fa-truck-moving me-2"></i><p>
+                                        Stock Adjustment
+
+                                        <i class="fas fa-chevron-left right "></i>
+                                    </p>
+                                </a>
+                                <ul class="nav nav-treeview">
+                                    <li class="nav-item">
+                                        <a href="@Url.Action("AddStockAdjustment", "Inventory")" class="list-group-item list-group-item-action ps-5">
+                                            <i class="fas fa-plus me-2"></i> Add Adjustment
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="@Url.Action("ViewStockTransfer", "Inventory")" class="list-group-item list-group-item-action ps-5">
+                                            <i class="fas fa-eye me-2"></i> View Transfer
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="nav-item">
+                                <a href="#" class="nav-link">
+                                    <i class="fas fa-truck-moving me-2"></i><p>
                                         Stock Transfer
 
                                         <i class="fas fa-chevron-left right "></i>
@@ -234,7 +255,7 @@
                                 </a>
                                 <ul class="nav nav-treeview">
                                     <li class="nav-item">
-                                        <a href="@Url.Action("StockTransfer", "Inventory")" class="list-group-item list-group-item-action ps-5">
+                                        <a href="@Url.Action("AddStocksTransfer", "Inventory")" class="list-group-item list-group-item-action ps-5">
                                             <i class="fas fa-plus me-2"></i> Add Transfer
                                         </a>
                                     </li>
@@ -291,6 +312,7 @@
                                             <i class="fas fa-receipt me-2"></i> Purchase Requisition
                                         </a>
                                     </li> *@
+                             
                                     <li class="nav-item">
                                         <a asp-controller="Purchase" asp-action="ViewRequisition" class="list-group-item list-group-item-action ps-5">
                                             <i class="fas fa-eye me-2"></i> View Requisition
@@ -398,6 +420,30 @@
                                     <p>
                                         View Inventory
                                     </p>
+
+                            <li class="nav-item">
+                                <a href="/Production/ViewProductionStages" class="nav-link">
+                                    <i class="fas fa-tachometer-alt me-2"></i>
+                                    <p>
+                                        View Production Stages
+                                    </p>
+                                </a>
+
+                            </li>
+                            <li class="nav-item">
+                                <a href="/Production/ViewProductionMaterials" class="nav-link">
+                                    <i class="fas fa-tachometer-alt me-2"></i>
+                                    <p>
+                                        View Production Materials
+                                    </p>
+                                </a>
+
+                            </li>
+
+
+                            @*  <li>
+                                <a href="@Url.Action("Dashboard", "Production")" class="list-group-item list-group-item-action">
+                                    <i class="fas fa-tachometer-alt me-2"></i>  Dashboard
                                 </a>
 
                             </li>
@@ -788,6 +834,66 @@
 
 
 
+                            <li class="nav-item">
+                                <a href="/Manager/ManagerDashboard" class="nav-link">
+                                    <i class="fas fa-chart-line"></i>
+                                    <p>
+                                       Manager Dashboard
+                                    </p>
+                                </a>
+
+                            </li>
+                          
+
+
+<li class="nav-item">
+    <a href="/Manager/ApproveVendorQuotation" class="nav-link position-relative">
+        <i class="fas fa-tachometer-alt me-2 position-relative">
+        <span id="quotationBadge" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger d-none">
+    0
+</span>
+
+              
+        </i>
+        <p>View Vendor Quotation</p>
+    </a>
+</li>
+
+
+
+
+                            <li class="nav-item">
+                                <a href="/Manager/ProductSales" class="nav-link">
+                                    <i class="fas fa-tachometer-alt me-2"></i>
+                                    <p>
+                                        Sales services
+                                    </p>
+                                </a>
+
+                            </li>
+                           
+
+                            <li class="nav-item">
+                                <a href="#" class="nav-link">
+                                    <i class="fas fa-users me-2"></i>
+                                    <p>Sales Data<i class="fas fa-angle-left right"></i></p>
+                                </a>
+                                <ul class="nav nav-treeview ps-4">
+                                    <li class="nav-item"><a href="@Url.Action("SalesSummaryData", "Manager")" class="nav-link"><i class="fas fa-user-plus me-2"></i> Sales Summary</a></li>
+                     
+
+                                </ul>
+                            </li>
+                          
+                            <li class="nav-item">
+                                <a href="/Manager/Reports" class="nav-link">
+                                    <i class="fas fa-tachometer-alt me-2"></i>
+                                    <p>
+                                       Reports
+                                    </p>
+                                </a>
+
+                            </li>
 
                         }
 
@@ -977,6 +1083,7 @@
                                             <i class="fas fa-money-bill-wave me-2"></i> Make Payment
                                         </a>
                                     </li>
+                                    
                                 </ul>
                             </li>
 
@@ -997,6 +1104,15 @@
                                     <i class="fas fa-headset"></i>
 
                                     <p>Create Bill</p>
+
+                                </a>
+
+                            </li>
+                            <li class="nav-item">
+                                <a href="/RetailSales/ViewCustomerBills" class="nav-link">
+                                    <i class="fas fa-headset"></i>
+
+                                    <p>View Customer Bill</p>
 
                                 </a>
 
@@ -1116,6 +1232,8 @@
         });
     </script>
 
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 
     <script src="~/js/jquery.min.js"></script>
     <!-- Bootstrap 4 -->
@@ -1134,3 +1252,77 @@
 </body>
 
 </html>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        $.ajax({
+            url: '/Manager/GetPendingQuotationCount',
+            method: 'GET',
+            success: function (count) {
+                if (count > 0) {
+    $('#quotationBadge').text(count).removeClass('d-none');
+}
+
+            }
+        });
+    });
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

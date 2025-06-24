@@ -1,179 +1,6 @@
-﻿
-@* <link href="~/css/Product.css" rel="stylesheet" /> *@
-@* <style> *@
-@*     * { *@
-@*         margin: 0; *@
-@*         padding: 0; *@
-@*         box-sizing: border-box; *@
-@*     } *@
-
-@*     /* body { */ *@
-@*     /*     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; */ *@
-@*     /*     background-color: #f2f5f9; */ *@
-@*     /*     color: #333; */ *@
-@*     /* } */ *@
-
-@*     .topbar { *@
-@*         margin:10px; *@
-@*         /* background-color: #2c3e50; */ *@
-@*         background-color: #a14040; *@
-@*         color: white; *@
-@*         padding: 10px 30px; *@
-@*         text-align: center; *@
-@*         font-size: 1.5rem; *@
-@*         box-shadow: 0 2px 5px rgba(0,0,0,0.1); *@
-@*     } *@
-
-@*     .dashboard { *@
-@*         padding: 30px; *@
-@*     } *@
-
-@*     .cards { *@
-@*         margin:10px; *@
-@*         display: grid; *@
-@*         grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); *@
-@*         gap: 20px; *@
-@*         margin-bottom: 40px; *@
-@*     } *@
-
-@*     .card { *@
-@*         background-color: white; *@
-@*         padding: 20px; *@
-@*         border-radius: 12px; *@
-@*         box-shadow: 0 4px 8px rgba(0,0,0,0.05); *@
-@*         text-align: center; *@
-@*     } *@
-
-@*         .card h3 { *@
-@*             margin-bottom: 10px; *@
-@*             color: #555; *@
-@*         } *@
-
-@*         .card p { *@
-@*             font-size: 1.6rem; *@
-@*             font-weight: bold; *@
-@*             color: #1abc9c; *@
-@*         } *@
-
-@*     .charts { *@
-@*         display: flex; *@
-@*         flex-wrap: wrap; *@
-@*         gap: 20px; *@
-@*         justify-content: space-between; *@
-@*     } *@
-
-@*     .chart-container { *@
-@*         flex: 1 1 450px; *@
-@*         background: white; *@
-@*         padding: 20px; *@
-@*         border-radius: 12px; *@
-@*         box-shadow: 0 4px 8px rgba(0,0,0,0.05); *@
-@*     } *@
-
-@* </style> *@
-
-@* @{ *@
-@*     ViewBag.Title = " Dashboard"; *@
-@*     Layout = "~/Views/Shared/_LayoutINV.cshtml"; *@
-@* } *@
-
-
- 
-@*     @* <h4>Inventory Dashboard</h4> *@ 
-
-
-
-
-
-@* <main class="dashboard"> *@
-@*     <section class="cards"> *@
-@*         <div class="card"> *@
-@*             <h3>Total Items</h3> *@
-@*             <p>420</p> *@
-@*         </div> *@
-@*         <div class="card"> *@
-@*             <h3>In Stock</h3> *@
-@*             <p>310</p> *@
-@*         </div> *@
-@*         <div class="card"> *@
-@*             <h3>Out of Stock</h3> *@
-@*             <p>55</p> *@
-@*         </div> *@
-@*         <div class="card"> *@
-@*             <h3>Low Stock</h3> *@
-@*             <p>25</p> *@
-@*         </div> *@
-@*     </section> *@
-
-@*     <section class="charts"> *@
-@*         <div class="chart-container" > *@
-@*             <canvas id="categoryChart"></canvas> *@
-@*         </div> *@
-@*         <div class="chart-container"> *@
-@*             <canvas id="statusChart"></canvas> *@
-@*         </div> *@
-@*     </section> *@
-@* </main> *@
-@* <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> *@
-@* <script> *@
-@*         const ctxCategory = document.getElementById('categoryChart').getContext('2d'); *@
-@*     const ctxStatus = document.getElementById('statusChart').getContext('2d'); *@
-
-@*     new Chart(ctxCategory, { *@
-@*       type: 'pie', *@
-@*       data: { *@
-@*         labels: ['Laptops', 'Monitors', 'Printers', 'Phones'], *@
-@*         datasets: [{ *@
-@*           data: [50, 30, 20, 15], *@
-@*           backgroundColor: ['#1abc9c', '#3498db', '#9b59b6', '#e67e22'], *@
-@*         }] *@
-@*       }, *@
-@*       options: { *@
-@*         plugins: { *@
-@*           title: { *@
-@*             display: true, *@
-@*             text: 'Asset Categories', *@
-@*             font: { *@
-@*               size: 18 *@
-@*             } *@
-@*           } *@
-@*         } *@
-@*       } *@
-@*     }); *@
-
-@*     new Chart(ctxStatus, { *@
-@*       type: 'bar', *@
-@*       data: { *@
-@*         labels: ['In Use', 'In Stock', 'Retired', 'Maintenance'], *@
-@*         datasets: [{ *@
-@*           label: 'Status', *@
-@*           data: [132, 78, 35, 20], *@
-@*           backgroundColor: '#3498db' *@
-@*         }] *@
-@*       }, *@
-@*       options: { *@
-@*         plugins: { *@
-@*           title: { *@
-@*             display: true, *@
-@*             text: 'Asset Status Overview', *@
-@*             font: { *@
-@*               size: 18 *@
-@*             } *@
-@*           } *@
-@*         }, *@
-@*         scales: { *@
-@*           y: { *@
-@*             beginAtZero: true *@
-@*           } *@
-@*         } *@
-@*       } *@
-@*     }); *@
-
-@* </script> *@
-
-
+﻿@using ERP_Component_DAL.Models
+@model DashBoard
 <link href="~/css/Product.css" rel="stylesheet" />
-
 @{
     ViewBag.Title = "Dashboard";
     ViewBag.UserName = "Himalyan Goats";
@@ -260,7 +87,7 @@
                     <div class="info-box-content">
                         <span class="info-box-text">Total Stock Value</span>
                         <span class="info-box-number">
-                            <strong>₹</strong> 10,45,684
+                            <strong>₹</strong> @Model.TotalStockValue
 
                         </span>
                     </div>
@@ -278,7 +105,7 @@
                     <div class="info-box-content">
                         <span class="info-box-text">Material Requisition</span>
                         <span class="info-box-number">
-                            <strong></strong>9
+                            <strong></strong>@Model.TotalMaterialRequisition
                         </span>
                     </div>
                     <!-- /.info-box-content -->
@@ -295,7 +122,7 @@
                     </span>
                     <div class="info-box-content">
                         <span class="info-box-text">Purchase Requisition</span>
-                        <span class="info-box-number">6</span>
+                        <span class="info-box-number">@Model.TotalPurchaseRequisition</span>
                     </div>
                     <!-- /.info-box-content -->
                 </div>
@@ -309,7 +136,7 @@
                     </span>
                     <div class="info-box-content">
                         <span class="info-box-text">Vender Invoice</span>
-                        <span class="info-box-number">3</span>
+                        <span class="info-box-number">@Model.VenderInvoice</span>
                     </div>
                     <!-- /.info-box-content -->
                 </div>
@@ -344,7 +171,12 @@
     </section>
 </main>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+@using Newtonsoft.Json
+<script>
+    const modelData = @Html.Raw(Json.Serialize(Model.Stockdata));
+    const pieChartData = @Html.Raw(Json.Serialize(Model.PieChartData));
 
+</script>
 <script asp-append-version="true" src="~/lib/jquery/dist/jquery.min.js"></script>
 <script>
 
@@ -375,55 +207,94 @@
         }
       });
 
-      // 2. Stock In vs. Stock Out - Bar Chart
-      new Chart(document.getElementById('StockInOutChart').getContext('2d'), {
-        type: 'bar',
-        data: {
-          labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'],
-          datasets: [
-            {
-              label: 'Stock In',
-              data: [400, 450, 420, 500, 480, 520, 510],
-              backgroundColor: '#138496'
+
+            const modelData = @Html.Raw(JsonConvert.SerializeObject(Model.Stockdata));
+
+        // Step 1: Group and sum Stock In and Stock Out by month
+        const monthlyData = {};
+
+        modelData.forEach(item => {
+            const date = new Date(item.LastUpdated);
+            const monthKey = date.toLocaleString('default', { month: 'short', year: 'numeric' }); // e.g., "Jun 2025"
+
+            if (!monthlyData[monthKey]) {
+                monthlyData[monthKey] = { inStock: 0, stockOut: 0 };
+            }
+
+            monthlyData[monthKey].inStock += item.InStock || 0;
+            monthlyData[monthKey].stockOut += item.TotalOrder || 0; // replace with actual stock out property if needed
+        });
+
+        // Step 2: Prepare labels and datasets
+        const labels = Object.keys(monthlyData);
+        const stockInData = labels.map(month => monthlyData[month].inStock);
+        const stockOutData = labels.map(month => monthlyData[month].stockOut);
+
+        // Step 3: Create the Chart
+        new Chart(document.getElementById('StockInOutChart').getContext('2d'), {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [
+                    {
+                        label: 'Stock In',
+                        data: stockInData,
+                        backgroundColor: '#138496'
+                    },
+                    {
+                        label: 'Stock Out',
+                        data: stockOutData,
+                        backgroundColor: '#DEE2E6'
+                    }
+                ]
             },
-            {
-              label: 'Stock Out',
-              data: [380, 430, 410, 470, 460, 490, 500],
-              backgroundColor: '#dee2e6'
+            options: {
+                responsive: true,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Monthly Stock In vs. Stock Out'
+                    }
+                }
             }
-          ]
-        },
-        options: {
-          responsive: true,
-          plugins: {
-            title: {
-              display: true,
-              text: 'Stock In vs. Stock Out'
-            }
-          }
-        }
-      });
+        });
+
+
+
+
 
       // 3. Current Stock Distribution by Category - Pie Chart
-      new Chart(document.getElementById('StockCategoryChart').getContext('2d'), {
+
+
+
+
+    const pieChartData = @Html.Raw(JsonConvert.SerializeObject(Model.PieChartData));
+
+      const pieLabels = pieChartData.map(item => item.CategoryName);
+    const dataValues = pieChartData.map(item => item.TotalStock);
+    const backgroundColors = ['#55d5e9', '#2BCBE4', '#19ACC3', '#138496']; // Extend as needed
+
+    new Chart(document.getElementById('StockCategoryChart').getContext('2d'), {
         type: 'pie',
         data: {
-          labels: ['Electronics', 'Furniture', 'Stationery', 'Appliances'],
-          datasets: [{
-            data: [40, 25, 20, 15],
-                      backgroundColor: ['#55d5e9', '#2BCBE4', '#19ACC3', '#138496']
-          }]
+            labels: pieLabels,
+            datasets: [{
+                data: dataValues,
+                backgroundColor: backgroundColors.slice(0, pieLabels.length)
+            }]
         },
         options: {
-          responsive: true,
-          plugins: {
-            title: {
-              display: true,
-              text: 'Stock by Category'
+            responsive: true,
+            plugins: {
+                title: {
+                    display: true,
+                    text: 'Stock by Category'
+                }
             }
-          }
         }
-      });
+    });
+
+
 
       // 4. Inventory Turnover Ratio - Line Chart
       new Chart(document.getElementById('TurnoverRatioChart').getContext('2d'), {
@@ -450,21 +321,11 @@
         }
       });
     });
-</script>
+    //
+
 
 </script>
 
-<script>
-    // $(document).ready(function ()
-    // {
-    //     // Show the welcome popup after 1 second
-    //     setTimeout(function () {
-    //         $('#WelcomePopup').fadeIn();
-    //     }, 1000);
 
-    //     // Hide the popup when clicked
-    //     $('#WelcomePopup').click(function () {
-    //         $(this).fadeOut();
-    //     });
-    // });
-</script>
+
+

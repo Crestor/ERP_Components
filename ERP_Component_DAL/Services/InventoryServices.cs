@@ -2828,8 +2828,105 @@ namespace ERP_Component_DAL.Services
             }
         }
 
+        //<----------------------------------Dashboard-------------------------------------------->
 
 
+        public DashBoard GetInventryDashBoardData()
+        {
+            try
+            {
+                DashBoard Item = new();
+                string connectionstring = configuration.GetConnectionString("DefaultConnectionString");
+                connection = new SqlConnection(connectionstring);
+                SqlCommand cmd = new();
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.CommandText = $" SELECT (Select Count(*) From Requisitions Where RequisitionType = 2) AS TotalMaterialRequisition ,(Select Count(RequisitionID) From Requisitions Where RequisitionType = 3) AS TotalPurchaseRequisition,(SELECT count(PB.PurchaseOrderID) FROM PurchaseBills PB JOIN PurchaseOrders P ON PB.PurchaseOrderID = P.PurchaseOrderID JOIN Vendors V ON P.VendorID = V.VendorID) AS VenderInvoice,(SELECT sum (i.InStock * l.SellingPrice) FROM  Inventory i JOIN Lotbatch l ON i.ItemId = l.ItemId)  AS TotalStockValue";
+                cmd.Connection = connection;
+                cmd.CommandTimeout = 300;
+                connection.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    Item.TotalMaterialRequisition = reader["TotalMaterialRequisition"] != DBNull.Value ? Convert.ToInt32(reader["TotalMaterialRequisition"]) : 0;
+                    Item.TotalPurchaseRequisition = reader["TotalPurchaseRequisition"] != DBNull.Value ? Convert.ToInt32(reader["TotalPurchaseRequisition"]) : 0;
+                    Item.VenderInvoice = reader["VenderInvoice"] != DBNull.Value ? Convert.ToInt32(reader["VenderInvoice"]) : 0;
+                    Item.TotalStockValue = reader["TotalStockValue"] != DBNull.Value ? Convert.ToDecimal(reader["TotalStockValue"]) : 0m;
+                }
+                return Item;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                connection.Close();
+            }
+        }
+        public List<DashBoard> InventryDashBoardStockINStockOUT()
+        {
+            try
+            {
+                List<DashBoard> prod = new();
+                string connectionstring = configuration.GetConnectionString("DefaultConnectionString");
+                connection = new SqlConnection(connectionstring);
+                SqlCommand cmd = new();
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.CommandText = $"	select InStock ,LastUpdated from Inventory ";
+                cmd.Connection = connection;
+                connection.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    prod.Add(new DashBoard
+                    {
+                        InStock = reader["InStock"] != DBNull.Value ? (int)reader["InStock"] : 0,
+                        LastUpdated = reader["LastUpdated"] != DBNull.Value ? DateOnly.FromDateTime((DateTime)reader["LastUpdated"]) : default(DateOnly),
+                    });
+                }
+                return prod;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                connection.Close();
+            }
+        }
+        public List<DashBoard> InventryDashBoardPieChartData()
+        {
+            try
+            {
+                List<DashBoard> prod = new();
+                string connectionstring = configuration.GetConnectionString("DefaultConnectionString");
+                connection = new SqlConnection(connectionstring);
+                SqlCommand cmd = new();
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.CommandText = $"SELECT C.CategoryName,SUM(IV.InStock) AS TotalStock FROM Categories C JOIN Items IT ON C.CategoryID = IT.CategoryID JOIN Inventory IV ON IT.ItemID = IV.ItemID GROUP BY  C.CategoryName;";
+                cmd.Connection = connection;
+                connection.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    prod.Add(new DashBoard
+                    {
+                        TotalStock = reader["TotalStock"] != DBNull.Value ? (int)reader["TotalStock"] : 0,
+                        CategoryName = reader["CategoryName"] != DBNull.Value ? (string)reader["CategoryName"] : string.Empty,
+                    });
+                }
+                return prod;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                connection.Close();
+            }
+        }
 
 
     }

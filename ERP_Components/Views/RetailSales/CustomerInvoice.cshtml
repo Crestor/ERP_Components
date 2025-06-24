@@ -1,0 +1,404 @@
+﻿@using ERP_Component_DAL.Models;
+@{
+    ViewBag.Title = "Customer Invoice";
+    Layout = "~/Views/Shared/_LayoutINV.cshtml";
+}
+@* <link rel="stylesheet" href="/css/Product.css" /> *@
+@model Vendor
+<style>
+    .container {
+        width: 100%;
+        max-width: 800px;
+        margin: auto;
+        border: 1px solid #ccc;
+        padding: 15px;
+    }
+
+    .header {
+        justify-content: center;
+        align-items: center;
+        border-bottom: 1px solid #eee;
+        margin-bottom: 10px;
+    }
+
+    .header-left {
+        align-items: center;
+    }
+
+        .header-left img {
+            height: 30px;
+            margin-right: 5px;
+        }
+
+    .header-center {
+        text-align: center;
+        flex-grow: 1;
+    }
+
+        .header-center h1 {
+            font-size: 18px;
+            margin: 0;
+            font-weight: bold;
+        }
+
+        .header-center p {
+            margin: 2px 0;
+            font-size: 9px;
+        }
+
+    .header-right {
+        text-align: right;
+        font-size: 9px;
+    }
+
+        .header-right p {
+            margin: 2px 0;
+        }
+
+    .purchase-order-title {
+        text-align: center;
+        font-size: 16px;
+        font-weight: bold;
+        margin: 10px 0;
+        text-decoration: underline;
+    }
+
+    .item-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 10px;
+        font-size: 9px;
+    }
+
+        .item-table th, .item-table td {
+            border: 1px solid #ccc;
+            padding: 3px;
+            text-align: left;
+        }
+
+        .item-table th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+        }
+
+        .item-table td.text-right {
+            text-align: right;
+        }
+
+        .item-table td.text-center {
+            text-align: center;
+        }
+
+    .totals-section {
+        margin-top: 10px;
+        font-size: 10px;
+        text-align: left;
+    }
+
+        .totals-section p {
+            margin: 3px 0;
+        }
+
+        .totals-section strong {
+            font-weight: bold;
+        }
+
+    .footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
+        margin-top: 20px;
+        padding-top: 10px;
+        border-top: 1px solid #eee;
+        font-size: 9px;
+    }
+
+    .footer-left {
+        display: flex;
+        align-items: center;
+    }
+
+        .footer-left img {
+            width: 40px;
+            height: 40px;
+            margin-right: 5px;
+        }
+
+    .footer-right {
+        text-align: right;
+    }
+
+    .bold {
+        font-weight: bold;
+    }
+
+    .startup-india {
+        font-size: 8px;
+        margin-top: 5px;
+    }
+
+    .company-details {
+        font-size: 9px;
+        margin-bottom: 5px;
+    }
+
+        .company-details p {
+            margin: 1px 0;
+        }
+
+    .underline {
+        text-decoration: underline;
+    }
+
+    .btn button {
+        background-color: #007bff;
+        color: white;
+        border: none;
+        padding: 6px 12px;
+        margin-right: 10px;
+        cursor: pointer;
+        border-radius: 4px;
+        font-size: 12px;
+    }
+
+        .btn button:hover {
+            background-color: #0056b3;
+        }
+</style>
+@{
+    decimal grandTotal = 0;
+    decimal totalTaxable = 0;
+    decimal TotalTax = 0;
+}
+<div class="container">
+    <div class="header">
+        <div class="header-center">
+
+            <p class="bold">Uttarakhand Cooperative Silk Federation</p>
+            <p>Silk Park Bhawan,</p>
+            <p>PREMNAGAR, DEHRADUN, UTTARAKHAND, 248007</p>
+        </div>
+        <div style="Display:flex; justify-content:space-evenly; align-items:center;margin:10px 0px">
+            <div class="company-details">
+                <p>GST : GST-05AAAAU1203C2ZC</p>
+                <p>CIN : </p>
+                <p>STARTUP DIPP: </p>
+                <p>MSME :</p>
+            </div>
+            <div class="header-right">
+                <p>CONTACT: 0135-2770093</p>
+                <p>ucrf.silk@gmail.com</p>
+                <p>www.ucrf.org.in</p>
+            </div>
+        </div>
+    </div>
+    <div class="purchase-order-title">Invoice</div>
+    <div style="  display: flex; justify-content:space-between;margin-bottom: 10px; font-size: 9px;">
+        <div class="company-details" style="font-size:10px">
+            <strong>Vendor's Details</strong>
+            <p>Name: @Model.vendorName</p>
+            <p>Code: @Model.vendorCode </p>
+            <p>Address: @Model.Address1</p>
+            <p>District: @Model.District</p>
+            <p>State: @Model.State</p>
+            <p>Country: @Model.Country</p>
+            <p>Postal Code: @Model.PostalCode</p>
+            <p>GSTIN / PAN: @Model.GstIn</p>
+        </div>
+        <div class="company-details" style="font-size:10px">
+            <strong>Bill To / Ship To</strong>
+            <p>Name: Uttarakhand Cooperative Silk Federation</p>
+            <p>Address: Silk Park Bhawan,</p>
+            <p>Premnagar, Dehradun, Dehradun</p>
+            <p>District: Dehradun</p>
+            <p>State: UTTARAKHAND</p>
+            <p>Postal Code: 248007</p>
+        </div>
+        <div class="company-details" style="font-size:10px">
+
+            <p>Invoice No.:@Model.invoiceNumber </p>
+            <p>Date: @Model.createdAt.ToShortDateString()</p>
+
+        </div>
+    </div>
+    <table class="item-table">
+        <thead>
+            <tr>
+                <th>SNo</th>
+                <th>Description</th>
+                <th>HSN</th>
+                <th>Qty</th>
+                <th>Unit</th>
+                <th>Rate</th>
+                @* <th>Total</th> *@
+                <th>Taxable value</th>
+                <th>Disc</th>
+
+                <th>CGST Rate</th>
+                <th>CGST Amt</th>
+                <th>SGST Rate</th>
+                <th>SGST Amt</th>
+                <th>IGST Rate</th>
+                <th>IGST Amt</th>
+                <th>Net Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (var i = 0; i < Model.Items.Count; i++)
+            {
+                var item = Model.Items[i];
+                grandTotal += item.TotalAmount;
+                totalTaxable += item.taxableValue;
+                TotalTax = grandTotal - totalTaxable;
+                <tr>
+                    <td>@(i + 1)</td>
+                    <td>@item.itemName</td>
+                    <td>@item.hsn</td>
+                    <td>@item.quantity</td>
+                    <td>@item.unitofmeasure</td>
+                    <td>@item.unitPrice</td>
+                    @* <td>@item.NetAmount</td> *@
+                    <td>@item.taxableValue</td>
+                    <td>@item.discount</td>
+
+                    <td>@item.cgstRate</td>
+                    <td>@item.cgstAmount.ToString("N2")</td>
+                    <td>@item.sgstRate</td>
+                    <td>@item.sgstAmount.ToString("N2")</td>
+                    <td>@item.igstRate</td>
+                    <td>@item.igstAmount.ToString("N2")</td>
+                    <td>@item.TotalAmount.ToString("N2")</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <div style=" margin-top: 5px;
+            font-size: 10px;
+            text-align: right">
+        <p><strong>Grand Total : ₹ @grandTotal.ToString("N2")</strong></p>
+    </div>
+    <div class="totals-section">
+        <p>Total Taxable Amount:₹ @totalTaxable.ToString("N2")</p>
+        <p>Total Tax Amount:₹ @TotalTax.ToString("N2")  </p>
+        <p><strong class="bold">Total Purchase Value (In figure): ₹ @grandTotal.ToString("N2")</strong></p>
+        <p>Total Purchase Value (In words): <span id="amount-in-words"></span></p>
+    </div>
+    <div style="min-height: 50px; border-bottom: 1px solid #ccc; margin-bottom: 10px;">
+        <!-- Placeholder for signatures -->
+    </div>
+    <div class="footer">
+        <div class="footer-left">
+            <span>Scan Digital copy</span>
+        </div>
+        <div style="text-align: center; flex-grow:1; margin-left: -60px;">
+            Page 1 of 1
+        </div>
+        <div class="footer-right">
+            <p>Countrees Manufacturing and Trading Pvt Ltd</p>
+            <p>(Authorised Signatory)</p>
+            <div style="height: 30px; border-bottom: 1px dotted #333; margin-top:5px;"></div>
+        </div>
+    </div>
+</div>
+<div class="btn" style="display:flex; justify-content:center; margin-top:10px">
+    <button id="download-btn">Download PDF</button>
+    <button id="print-btn">Print PDF</button>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const grandTotalStr = "@grandTotal.ToString("N2")".replace(/,/g, "");
+        const grandTotal = parseFloat(grandTotalStr);
+        const words = convertNumberToWords(Math.floor(grandTotal));
+        document.getElementById("amount-in-words").textContent = words + " Rupees Only";
+        // Download PDF
+        document.getElementById("download-btn").addEventListener("click", function () {
+            const element = document.querySelector(".container");
+            const opt = {
+                margin: 0.3,
+                filename: 'PurchaseOrder.pdf',
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { scale: 2 },
+                jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' }
+            };
+            html2pdf().set(opt).from(element).save();
+        });
+        // Print PDF
+        document.getElementById("print-btn").addEventListener("click", function () {
+            const printContents = document.querySelector(".container").innerHTML;
+            const originalContents = document.body.innerHTML;
+            document.body.innerHTML = printContents;
+            window.print();
+            document.body.innerHTML = originalContents;
+            location.reload();
+        });
+    });
+    function convertNumberToWords(amount) {
+        if (amount === 0) return "Zero";
+        const units = [
+            { value: 10000000, label: "Crore" },
+            { value: 100000, label: "Lakh" },
+            { value: 1000, label: "Thousand" },
+            { value: 100, label: "Hundred" }
+        ];
+        let result = "";
+        for (let i = 0; i < units.length; i++) {
+            const unitValue = units[i].value;
+            const segment = Math.floor(amount / unitValue);
+            if (segment > 0) {
+                result += `${numToWords(segment)} ${units[i].label} `;
+                amount %= unitValue;
+            }
+        }
+        if (amount > 0 && result !== "") result += "and ";
+        result += numToWords(amount);
+        return result.trim();
+    }
+    function numToWords(num) {
+        const ones = ["", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine"];
+        const teens = ["Ten", "Eleven", "Twelve", "Thirteen", "Fourteen", "Fifteen", "Sixteen", "Seventeen", "Eighteen", "Nineteen"];
+        const tens = ["", "", "Twenty", "Thirty", "Forty", "Fifty", "Sixty", "Seventy", "Eighty", "Ninety"]
+        if (num < 10) return ones[num];
+        if (num < 20) return teens[num - 10];
+        if (num < 100) return tens[Math.floor(num / 10)] + (num % 10 ? " " + ones[num % 10] : "");
+        const hundredPart = Math.floor(num / 100);
+        const rest = num % 100;
+        return ones[hundredPart] + " Hundred" + (rest ? " and " + numToWords(rest) : "");
+    }
+</script>}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

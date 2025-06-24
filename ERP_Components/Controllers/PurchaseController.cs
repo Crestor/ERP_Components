@@ -29,15 +29,14 @@ namespace ERP_Components.Controllers
 
         public IActionResult Index()
         {
-            //HttpContext.Session.SetString("IsFirstItem", "True");
-            //List<addeditems> detail = new List<addeditems>();
-            //HttpContext.Session.SetObject("details", detail);
+            
             return View();
         }
 
         public IActionResult Dashboard()
         {
-            return View();
+            DashBoard model = purchaseServices.GetPurchaseDashBoardData();
+            return View(model);
         }
 
 
@@ -115,11 +114,7 @@ namespace ERP_Components.Controllers
             return Json(new { list = lists });
         }
 
-        //public IActionResult UpdateRequisitionStatusToPending(Guid RequisitionID)
-        //{
-        //    purchaseServices.UpdateRequisitionStatusToPending(RequisitionID);
-        //    return RedirectToAction("ViewRequisition");
-        //}
+      
 
         public IActionResult DeleteRequisition(Guid RequisitionId)
         {
@@ -274,7 +269,7 @@ namespace ERP_Components.Controllers
 
 
 
-
+        
 
 
 
@@ -294,11 +289,7 @@ namespace ERP_Components.Controllers
             return RedirectToAction("ViewVendorQuotation");
         }
 
-        //public IActionResult PurchaseInvoiceForm()
-        //{
-        //    return View();
-        //}
-
+       
 
         //<----------------------------------Vendor--------------------------------->
 

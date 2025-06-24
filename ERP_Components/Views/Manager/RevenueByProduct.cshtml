@@ -1,0 +1,62 @@
+﻿@using ERP_Component_DAL.Models;
+@{
+	ViewBag.Title = "Revenue By Product";
+	Layout = "~/Views/Shared/_LayoutINV.cshtml";
+}
+<link rel="stylesheet" href="/css/Product.css" />
+
+
+@model List<Items>
+
+<div class="table">
+
+
+
+	<table>
+		<thead>
+			<tr>
+				<th>S.No.</th>
+				<th>Product Name</th>
+				<th>MRP</th>
+				<th>Cost Price</th>
+				<th>Selling Price</th>
+				<th>Revenue By Product</th>
+
+			</tr>
+		</thead>
+
+
+
+		<tbody id="geeks">
+
+
+			@for (var i = 0; i < Model.Count; i++)
+			{
+
+				var x = Model[i];
+				var index = i + 1;
+
+				<tr>
+					<td>@index</td>
+					<td>@x.itemName</td>
+					<td>@x.mrp</td>
+					<td>@x.costPrice</td>
+					<td>@x.sellingPrice</td>
+					<td>@x.revenue</td>
+
+
+				</tr>
+			}
+		</tbody>
+
+	</table>
+
+
+
+
+</div>
+
+
+
+
+

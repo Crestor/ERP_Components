@@ -1,4 +1,5 @@
 ﻿@using ERP_Component_DAL.Models;
+@model DashBoard
 @{
     ViewBag.Title = "Purchase Dashboard";
     ViewBag.UserName = "Himalyan Silk Mills";
@@ -83,7 +84,7 @@
                     </span>
                     <div class="info-box-content">
                         <span class="info-box-text">Total Purchases</span>
-                        <span class="info-box-number">₹ 1,95,00,000</span>
+                        <span class="info-box-number">₹ @Model.TotalPurchases</span>
                     </div>
                 </div>
             </div>
@@ -95,7 +96,7 @@
                     </span>
                     <div class="info-box-content">
                         <span class="info-box-text">Pending Orders</span>
-                        <span class="info-box-number">24</span>
+                        <span class="info-box-number">@Model.PendingOrder</span>
                     </div>
                 </div>
             </div>
@@ -107,21 +108,23 @@
                     </span>
                     <div class="info-box-content">
                         <span class="info-box-text">Vendors</span>
-                        <span class="info-box-number">58</span>
+                        <span class="info-box-number">@Model.TotalVendor</span>
                     </div>
                 </div>
             </div>
 
             <div class="col-12 col-sm-6 col-md-3">
-                <div class="info-box" onclick="location.href='@Url.Action("DelayedDeliveries", "Purchase")'">
-                    <span class="info-box-icon shadow-sm" style="background-color:#19ACC3 !important">
-                        <i class="bi bi-exclamation-circle-fill"></i>
+                <div class="info-box">
+                    <span class="info-box-icon text-bg-success shadow-sm" style="background-color:#19ACC3 !important">
+                        <i class="bi bi-cart-fill"></i>
                     </span>
                     <div class="info-box-content">
-                        <span class="info-box-text">Delayed Deliveries</span>
-                        <span class="info-box-number">6</span>
+                        <span class="info-box-text">Purchase Requisition</span>
+                        <span class="info-box-number">@Model.TotalPurchaseRequisition</span>
                     </div>
+                    <!-- /.info-box-content -->
                 </div>
+                <!-- /.info-box -->
             </div>
         </div>
     </div>
