@@ -220,7 +220,7 @@ namespace ERP_Component_DAL.Services
             }
         }
 
-        public List<Weaver> ViewWorkOrder()
+        public List<Weaver> ViewWorkOrder(WorkOrderStatuses workOrderStatus)
         {
            List <Weaver> weaver = new List<Weaver>();
 
@@ -228,8 +228,9 @@ namespace ERP_Component_DAL.Services
             {
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
-                    string query = @"select wo.WorkOrderSeries,wo.WorkOrderID,wo.Quantity,ws.StatusName,wo.WorkOrderStatus,it.ItemName from WorkOrder wo 
-                                    join Items it on wo.ProductID = it.ItemId join WorkOrderStatuses ws on ws.WorkOrderStatus = wo.WorkOrderStatus where wo.WorkOrderStatus = 1 ORDER BY wo.WorkOrderSeries";
+                    string query = $"select wo.WorkOrderSeries,wo.WorkOrderID,wo.Quantity,ws.StatusName,wo.WorkOrderStatus,it.ItemName from WorkOrder wo " +
+                                   $"join Items it on wo.ProductID = it.ItemId join WorkOrderStatuses ws on ws.WorkOrderStatus = wo.WorkOrderStatus " +
+                                   $"where wo.WorkOrderStatus = '{(byte)workOrderStatus}' ORDER BY wo.WorkOrderSeries";
 
 
 
@@ -885,7 +886,7 @@ namespace ERP_Component_DAL.Services
                         cmd.Parameters.AddWithValue("@Quantity", model.AllocatedQuantity);
                         cmd.Parameters.AddWithValue("@RatePerPieces", model.PerPiecePrize);
 
-                        cmd.ExecuteNonQuery();
+                        cmd.ExecuteScalar();
                     }
 
                     return true;
@@ -918,6 +919,7 @@ namespace ERP_Component_DAL.Services
 
                     using(SqlCommand cmd = new SqlCommand(query, connection))
                     {
+                        eiwOrdersReadyForDyeing.orders = new List<VeiwOrdersReadyForDyeing.ReadyToDye>();
                         using(SqlDataReader reader = cmd.ExecuteReader())
                         {
                             while (reader.Read())
@@ -929,7 +931,7 @@ namespace ERP_Component_DAL.Services
                                         workOrderSeries = reader.GetString("WorkOrderSeries"),
                                         productName = reader.GetString("ItemName"),
                                         specifications = reader.GetString("specification"),
-                                        totalQuantity = reader.GetInt32("Quantity"),
+                                        totalQuantity = reader.GetDecimal("Quantity"),
                                         totalReceived = reader.GetInt32("TotalReceived")
                                     }
                                 );
@@ -945,7 +947,7 @@ namespace ERP_Component_DAL.Services
             }
         }
 
-        public void MoveToOngoing(Guid workOrderId)
+        public void UpdateWorkOrderStatus(Guid workOrderId, WorkOrderStatuses status)
         {
             try
             {
@@ -953,7 +955,7 @@ namespace ERP_Component_DAL.Services
                 {
                     connection.Open();
 
-                    string query = $"UPDATE WorkOrder SET WorkOrderStatus = '{(byte)WorkOrderStatuses.UNDER_PROGRESS}' WHERE WorkOrderID = '{workOrderId}'";
+                    string query = $"UPDATE WorkOrder SET WorkOrderStatus = '{(byte)status}' WHERE WorkOrderID = '{workOrderId}'";
                                     
 
                     using(SqlCommand cmd = new SqlCommand(query, connection))
@@ -967,6 +969,166 @@ namespace ERP_Component_DAL.Services
                 throw;
             }
 
+        }
+
+        public void AllocateToDyer(DyeingOrder dyeingOrder)
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    connection.Open();
+
+                    string query = @"INSERT INTO DyeingOrder (WorkerID, Quantity, OrderStatus, WorkOrderID)
+                                 VALUES (@WorkerID, @Quantity, @OrderStatus, @WorkOrderID)";
+
+                    using (SqlCommand cmd = new SqlCommand(query, connection))
+                    {
+                        cmd.Parameters.AddWithValue("@WorkerID", dyeingOrder.WorkerID);
+                        cmd.Parameters.AddWithValue("@Quantity", dyeingOrder.Quantity);
+                        cmd.Parameters.AddWithValue("@OrderStatus", (byte)WorkOrderStatuses.PENDING);
+                        cmd.Parameters.AddWithValue("@WorkOrderID", dyeingOrder.WorkOrderID);
+
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {            
+                throw;
+            }
+        }
+
+        public List<AllocatedWork> FindWeavingOrders()
+        {
+            List<AllocatedWork> weavingOrders = new List<AllocatedWork>();
+
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    connection.Open();
+
+                    string query = @"SELECT aw.WorkOrderID, aw.AllocationCode, aw.WorkerID, w.WorkerName, aw.Quantity, aw.RatePerPeices, aw.CreatedAt, 
+                                    aw.RecievedQuantity, aw.WorkStatus, aw.AllocatedYarnID FROM AllocatedWork aw JOIN Workers w ON aw.WorkerID = w.WorkerID;";
+
+                    using (SqlCommand cmd = new SqlCommand(query, connection))
+                    {
+                        using (SqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                AllocatedWork allocatedWork = new AllocatedWork
+                                {
+                                    WorkOrderID = reader.GetGuid(reader.GetOrdinal("WorkOrderID")),
+                                    AllocationCode = reader.GetString(reader.GetOrdinal("AllocationCode")),
+                                    WorkerID = reader.GetGuid(reader.GetOrdinal("WorkerID")),
+                                    WorkerName = reader.GetString(reader.GetOrdinal("WorkerName")),
+                                    Quantity = reader.GetInt32(reader.GetOrdinal("Quantity")),
+                                    RatePerPeices = reader.GetDecimal(reader.GetOrdinal("RatePerPeices")),
+                                    CreatedAt = reader.GetDateTime(reader.GetOrdinal("CreatedAt")),
+                                    RecievedQuantity = reader.GetInt32(reader.GetOrdinal("RecievedQuantity")),
+                                    WorkStatus = reader.GetByte(reader.GetOrdinal("WorkStatus")),
+                                    AllocatedYarnID = reader.GetGuid(reader.GetOrdinal("AllocatedYarnID"))
+                                };
+                                weavingOrders.Add(allocatedWork);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+
+            return weavingOrders;
+        }
+
+        public List<DyeingOrder> FindDyeingOrders()
+        {
+            List<DyeingOrder> dyeingOrders = new List<DyeingOrder>();
+
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    connection.Open();
+                    string query = @"SELECT do.DyeingOrderID, do.WorkerID, w.WorkerName, do.Quantity, do.OrderStatus, do.WorkOrderID FROM DyeingOrder do JOIN Workers w ON do.WorkerID = w.WorkerID;";
+
+                    using (SqlCommand cmd = new SqlCommand(query, connection))
+                    {
+                        using (SqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                DyeingOrder dyeingOrder = new DyeingOrder
+                                {
+                                    DyeingOrderID = reader.GetGuid(reader.GetOrdinal("DyeingOrderID")),
+                                    WorkerID = reader.GetGuid(reader.GetOrdinal("WorkerID")),
+                                    WorkerName = reader.GetString(reader.GetOrdinal("WorkerName")),
+                                    Quantity = reader.GetInt32(reader.GetOrdinal("Quantity")),
+                                    OrderStatus = (WorkOrderStatuses)reader.GetInt32(reader.GetOrdinal("OrderStatus")),
+                                    WorkOrderID = reader.GetGuid(reader.GetOrdinal("WorkOrderID"))
+                                };
+                                dyeingOrders.Add(dyeingOrder);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+
+            return dyeingOrders;
+        }
+
+        public void UpdateDyeingOrder(Guid dyeingOrderID)
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    connection.Open();
+                    string query = @"UPDATE DyeingOrder SET OrderStatus = 3 WHERE DyeingOrderID = @DyeingOrderID";
+
+                    using (SqlCommand cmd = new SqlCommand(query, connection))
+                    {
+                        cmd.Parameters.AddWithValue("@DyeingOrderID", dyeingOrderID);
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw; 
+            }
+        }
+
+        public void UpdateWeavingOrder(Guid allocatedWorkID, int recievedQuantity)
+        {
+
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    connection.Open();
+                    string query = @"UPDATE AllocatedWork SET RecievedQuantity = @RecievedQuantity WHERE AllocatedWorkID = @AllocatedWorkID";
+
+                    using (SqlCommand cmd = new SqlCommand(query, connection))
+                    {
+                        cmd.Parameters.AddWithValue("@RecievedQuantity", recievedQuantity);
+                        cmd.Parameters.AddWithValue("@AllocatedWorkID", allocatedWorkID);
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
         }
     }
 }

@@ -58,7 +58,7 @@
     </div>
     <div class="form-row">
         <label for="AllocationQuantity">Allocated Quantity:</label>
-        <input type="text" id="AllocationQuantity" name="AllocationQuantity" required readonly/>
+        <input type="text" id="AllocationQuantity" name="AllocationQuantity" value="@Model.AllocatedQuantity" required readonly/>
         <label for="AllocatedDate">Allocated Date:</label>
         <input type="date" id="AllocatedDate" name="AllocatedDate" required />
     </div>
@@ -125,7 +125,7 @@
     </div>
 </form>
 
-<form method="post" asp-action="AllocateToDeyer" asp-controller="Weaver">
+<form method="post" asp-action="Allocationfordying" asp-controller="Weaver">
     <div id="popupforDeyer">
         <i class="fas fa-window-close float-end" onclick="closePopup()"></i>
         <div class="form-section">

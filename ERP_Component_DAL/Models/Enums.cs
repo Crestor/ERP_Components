@@ -12,6 +12,6 @@ namespace ERP_Component_DAL.Models
     }
     public enum WorkOrderStatuses
     {
-       PENDING = 1, UNDER_PROGRESS = 2,	RECEIVED = 3, SENT_FOR_MR = 4
+       PENDING = 1, UNDER_PROGRESS = 2,	RECEIVED = 3, SENT_FOR_MR = 4, COMPLETED = 5
     }
 }

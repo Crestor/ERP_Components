@@ -17,7 +17,7 @@ namespace ERP_Component_DAL.Models
             public string workOrderSeries { get; set; }
             public string productName { get; set; }
             public string specifications { get; set; }
-            public int totalQuantity { get; set; }
+            public decimal totalQuantity { get; set; }
             public int totalReceived { get; set; }
 
         }

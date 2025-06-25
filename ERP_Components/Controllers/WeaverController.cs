@@ -73,17 +73,26 @@ namespace ERP_Components.Controllers
             weaverServices.DeleteWeaver(id);
             return RedirectToAction("ViewWeaver");
         }
+
+        //Bhaii ek baar isko bhi dekh lena ye controller ab completed work orders bhi return kar raha hai
+        //Or kisi bhi service ya controller ko chhedna mat 
+        //Agar koi problem hui toh mujhe bata dena pehle
+        //View work order mai ek completed ka button de dena
         public IActionResult WorkOrder()
         {
-            List<Weaver> PendingWorkOrder = weaverServices.ViewWorkOrder();
-            List<Weaver> OngoingWorkOrder = weaverServices.ViewOngoingWorkOrder();
+            List<Weaver> PendingWorkOrder = weaverServices.ViewWorkOrder(WorkOrderStatuses.PENDING);
+            List<Weaver> OngoingWorkOrder = weaverServices.ViewWorkOrder(WorkOrderStatuses.UNDER_PROGRESS);
+            List<Weaver> CompletedWorkOrder = weaverServices.ViewWorkOrder(WorkOrderStatuses.COMPLETED);
             var WorkOrder = new Weaver
             {
                 PendingWorkOrder = PendingWorkOrder,
-                OngoingWorkOrder = OngoingWorkOrder
+                OngoingWorkOrder = OngoingWorkOrder,
+                CompletedWorkOrder = CompletedWorkOrder
             };
             return View(WorkOrder);
         }
+
+        //Isko call karlena Dispatch button par
         public IActionResult AllocateToWarehouse(Guid WorkOrderId)
         {
             weaverServices.AllocateToWarehouse(WorkOrderId);
@@ -150,7 +159,9 @@ namespace ERP_Components.Controllers
                 Specification = workOrders.Specification,
                 Weavers = weaver,
                 Dyer = Dyer,
-                workOrderPhases = workOrders.workOrderPhases
+                workOrderPhases = workOrders.workOrderPhases,
+                AllocatedQuantity = workOrders.AllocatedQuantity,
+                dyeingQuantity = workOrders.dyeingQuantity
             };
 
             return View(workOrder);
@@ -197,20 +208,66 @@ namespace ERP_Components.Controllers
             return View(veiwOrdersReadyForDyeing);
         }
 
-        public IActionResult Allocationfordying(Weaver weaver)
+        // tushar ye action call to ho raha hai lekin ismey data nahi araha
+        // ek baar ye vala model check kar liyo or ismey data send kar dena 
+        // frontend say; bas vo pop up se send kar diyo bhaii
+        public IActionResult Allocationfordying(DyeingOrder dyeingOrder)
         {
+            // ye service dyer lo allocatekarney ke liye likhi hai
+            weaverServices.AllocateToDyer(dyeingOrder);
             return View();
         }
         public IActionResult SendingForDying()
-
         {
            Weaver weavers = new Weaver();
             return View(weavers);
         }
         public IActionResult MoveToOngoing(Weaver weaver)
         {
-            weaverServices.MoveToOngoing(weaver.WorkOrderId);
+            weaverServices.UpdateWorkOrderStatus(weaver.WorkOrderId, WorkOrderStatuses.UNDER_PROGRESS);
             return RedirectToAction("WorkOrder");
         }
+
+
+        //Bhaii ye waala controller call kar lena WorkOrder Complete ke liye
+        public IActionResult WorkOrderCompleted(Guid workOrderID)
+        {
+            weaverServices.UpdateWorkOrderStatus(workOrderID, WorkOrderStatuses.COMPLETED);
+            return RedirectToAction();
+        }
+
+        //ye jo bhi weaving orders hain vo jo weaver ko allocatekiye hain unko view karney ke liye hai
+        public IActionResult ViewWeavingOrders()
+        {
+            AllocatedWork allocatedWork = new AllocatedWork();
+            allocatedWork.allocatedWorks =  weaverServices.FindWeavingOrders();
+            return View(allocatedWork);
+        }
+
+        //Ye jo bhi dyeing orders hain unko view karney ke liye hian
+        public IActionResult ViewDyeingOrders()
+        {
+            DyeingOrder dyeingOrder = new DyeingOrder();
+            dyeingOrder.dyeingOrders = weaverServices.FindDyeingOrders();
+            return View(dyeingOrder);
+        }
+
+        // Tushar ye dyeing orders ko recive karne ka hai bss dyienng order id bhej diyo
+        public IActionResult RecieveDyeingOrder(Guid dyeingOrderID)
+        {
+            weaverServices.UpdateDyeingOrder(dyeingOrderID);
+            return View();
+        }
+
+        //Tushar yaha allocatedWorkID or recieved quantity bhej dena
+        // ye allcate to weaver vaaley orders ko receive karney ke liye hai
+        // ek baar AllocatedWork model check kar liyo bhaii
+        public IActionResult RecieveWeavingOrder(AllocatedWork allocatedWork)
+        {
+            weaverServices.UpdateWeavingOrder(allocatedWork.AllocatedWorkID, allocatedWork.RecievedQuantity);
+            return View();
+        }
+
+
     }
 }
