@@ -293,6 +293,7 @@ namespace ERP_Components.Controllers
       public IActionResult ViewMR()
         {
             List<Production> materials = new List<Production>();
+            materials = productionServices.viewMaterialRequisitions();
             return View(materials);
         }
         public IActionResult AllocateToWeaver()

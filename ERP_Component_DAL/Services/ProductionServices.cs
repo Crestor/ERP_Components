@@ -14,11 +14,13 @@ namespace ERP_Component_DAL.Services
     {
         private readonly IConfiguration configuration;
         SqlConnection connection;
+        private string _connectionString;
 
 
         public ProductionServices(IConfiguration config)
         {
             this.configuration = config;
+            this._connectionString = configuration.GetConnectionString("DefaultConnectionString");
         }
 
 
@@ -1087,5 +1089,43 @@ RequisitionStatus=1
             }
         }
 
+        public List<Production> viewMaterialRequisitions()
+        {
+            try
+            {
+                List<Production> requisitions = new List<Production>();
+                using (SqlConnection connection = new SqlConnection(_connectionString))
+                {
+                    connection.Open();
+
+                    string query = $"SELECT RequisitionID, RequisitionSeries, CreatedAt, [Description] FROM Requisitions WHERE RequisitionType = 3 AND RequisitionStatus = 1";
+
+
+                    using (SqlCommand cmd = new SqlCommand(query, connection))
+                    {
+                        using(SqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                requisitions.Add(new Production
+                                {
+                                    createdAt = reader.GetDateTime("CreatedAt"),
+                                    description = reader.GetString("Description"),
+                                    RequisitionID = reader.GetGuid("RequisitionID"),
+                                    RequisitionSeries = reader.GetString("RequisitionSeries")
+
+                                });
+                            }
+                        }
+                    }
+                }
+                return requisitions;
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+
+        }
     }
 }

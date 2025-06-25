@@ -209,6 +209,7 @@ namespace ERP_Components.Controllers
         }
         public IActionResult MoveToOngoing(Weaver weaver)
         {
+            weaverServices.MoveToOngoing(weaver.WorkOrderId);
             return RedirectToAction("WorkOrder");
         }
     }
