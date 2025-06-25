@@ -83,6 +83,7 @@ namespace ERP_Component_DAL.Models
             public byte phase { get; set; }
             public decimal phaseTime { get; set; }
             public string? phaseWork { get; set; }
+            public string? status { get; set; }
         }
 
 

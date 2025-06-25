@@ -372,8 +372,13 @@ namespace ERP_Component_DAL.Services
                 workOrders.workOrderPhases = new List<WorkOrderPhases>();
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
-                    string query = $"SELECT wop.Phase, (wop.PhaseTime* wo.Quantity) AS PhaseTime, wop.PhaseWork " +
-                        $"FROM WorkOrder wo JOIN WorkOrderPhases wop ON wo.ProductID = wop.ProductID WHERE WorkOrderID = '{workOrders.WorkOrderId}'";
+                    string query = $"WITH StatusCTE AS ( SELECT wo.WorkOrderID, CASE  WHEN ISNULL(SUM(aw.RecievedQuantity), 0) > wo.Quantity THEN 'IN_PROGRESS' " +
+                        $"WHEN ISNULL(SUM(aw.RecievedQuantity), 0) = wo.Quantity THEN 'COMPLETED' ELSE 'PENDING' END AS Status FROM WorkOrder wo " +
+                        $"LEFT JOIN AllocatedWork aw ON aw.WorkOrderID = wo.WorkOrderID WHERE wo.WorkOrderID = '{workOrders.WorkOrderId}' " +
+                        $"GROUP BY wo.WorkOrderID, wo.Quantity) " +
+                        $"SELECT wop.Phase, (wop.PhaseTime * wo.Quantity) AS PhaseTime, wop.PhaseWork, sc.Status FROM WorkOrder wo " +
+                        $"JOIN WorkOrderPhases wop ON wo.ProductID = wop.ProductID JOIN StatusCTE sc ON wo.WorkOrderID = sc.WorkOrderID " +
+                        $"WHERE wo.WorkOrderID = '{workOrders.WorkOrderId}';";
 
 
 
