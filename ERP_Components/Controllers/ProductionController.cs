@@ -240,55 +240,6 @@ namespace ERP_Components.Controllers
         }
 
 
-        //sales forecasting
-
-
-        //[HttpPost]
-        //public JsonResult SetMaterialforecasting(QuotationModel O)
-        //{
-        //    var QuotationCreated = HttpContext.Session.GetString("SalesforecastingADD");
-        //    if (QuotationCreated == "False")
-        //    {
-        //        O.RequisitionID = productionServices.AddSFDetails(O);// get QuotationID 
-        //        HttpContext.Session.SetString("SalesforecastingADD", "True");
-        //        HttpContext.Session.SetString("RequisitionID", O.RequisitionID.ToString());
-        //        var x = productionServices.AddSFItems(O);
-
-        //    }
-        //    else
-        //    {
-        //        O.RequisitionID = Guid.Parse(HttpContext.Session.GetString("RequisitionID"));
-
-        //        var x = productionServices.AddSFItems(O);
-
-
-
-        //    }
-
-
-        //    List<QuotationModel> ol = productionServices.OrderTable(O.RequisitionID);
-
-
-        //    var model = new QuotationViewModel
-        //    {
-        //        OrderTable = ol,
-
-        //    };
-
-
-
-        //    return Json(model);
-        //}
-
-
-        //// update details  
-        //public IActionResult FinalSalesforecasting(QuotationModel O)
-        //{
-        //    O.RequisitionID = Guid.Parse(HttpContext.Session.GetString("RequisitionID"));
-
-        //    productionServices.updateSFDetails(O);
-        //    return RedirectToAction("Salesforecasting");
-        //}
 
       public IActionResult ViewMR()
         {
