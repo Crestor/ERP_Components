@@ -395,7 +395,8 @@ namespace ERP_Component_DAL.Services
                                     {
                                         phase = reader.GetByte("Phase"),
                                         phaseTime = reader.GetDecimal("PhaseTime"),
-                                        phaseWork = reader.GetString("PhaseWork")                                   
+                                        phaseWork = reader.GetString("PhaseWork"),
+                                        status = reader.GetString("Status")
 
                                     }
                                 );
