@@ -204,5 +204,9 @@ namespace ERP_Components.Controllers
            Weaver weavers = new Weaver();
             return View(weavers);
         }
+        public IActionResult MoveToOngoing(Weaver weaver)
+        {
+            return RedirectToAction("WorkOrder");
+        }
     }
 }
