@@ -80,8 +80,8 @@ namespace ERP_Component_DAL.Models
 
         public class WorkOrderPhases
         {
-            public int phase { get; set; }
-            public float phaseTime { get; set; }
+            public byte phase { get; set; }
+            public decimal phaseTime { get; set; }
             public string? phaseWork { get; set; }
         }
 

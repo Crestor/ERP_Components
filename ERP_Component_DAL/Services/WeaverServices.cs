@@ -10,6 +10,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using static ERP_Component_DAL.Models.Weaver;
 
 namespace ERP_Component_DAL.Services
 {
@@ -368,12 +369,11 @@ namespace ERP_Component_DAL.Services
         {
             try
             {
+                workOrders.workOrderPhases = new List<WorkOrderPhases>();
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
-                    string query = $"SELECT wop.Phase, (wop.PhaseTime* wo.Quantity) AS PhaseTime, wop.PhaseWork, " +
-                        $"SELECT WorkStatus FROM AllocatedWork WHERE WorkOrderID = '{workOrders.WorkOrderId}' AS PhaseStatus, " +
-                        $"SELECT do.OrderStatus FROM DyeingOrderMapping dom JOIN DyeingOrder do ON dom.DyeingOrderID = do.DyeingOrderID WHERE dom.WorkOrderID = '{workOrders.WorkOrderId}'" +
-                        $"FROM WorkOrderPhases wop JOIN WorkOrder wo ON wo.ProductID = wop.ProductID WHERE WorkOrderID = '{workOrders.WorkOrderId}'";
+                    string query = $"SELECT wop.Phase, (wop.PhaseTime* wo.Quantity) AS PhaseTime, wop.PhaseWork " +
+                        $"FROM WorkOrder wo JOIN WorkOrderPhases wop ON wo.ProductID = wop.ProductID WHERE WorkOrderID = '{workOrders.WorkOrderId}'";
 
 
 
@@ -388,8 +388,8 @@ namespace ERP_Component_DAL.Services
                             {
                                 workOrders.workOrderPhases.Add(new Weaver.WorkOrderPhases
                                     {
-                                        phase = reader.GetInt32("Phase"),
-                                        phaseTime = reader.GetFloat("PhaseTime"),
+                                        phase = reader.GetByte("Phase"),
+                                        phaseTime = reader.GetDecimal("PhaseTime"),
                                         phaseWork = reader.GetString("PhaseWork")                                   
 
                                     }
