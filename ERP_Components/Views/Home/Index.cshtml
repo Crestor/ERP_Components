@@ -1,37 +1,12 @@
-﻿@* @using ERP_Component_DAL.Models; *@
-@{
+﻿@{
     ViewBag.Title = "Login Authentication";
     Layout = "~/Views/Shared/_loginLayout.cshtml";
 
 }
-@* @model Users *@
 
 
- <link asp-append-version="true" rel="stylesheet" href="/css/Login.css" type="text/css" /> 
-<style>
-    .form-control-container {
-        position: relative;
-        display: flex;
-        align-items: center;
-    }
-
-    .form-control {
-        width: 100%;
-        padding-right: 35px;
-    }
-
-    .eye-icon {
-        
-        position: absolute;
-        right: 10px;
-        top: 50%;
-        transform: translateY(-50%);
-        cursor: pointer;
-        color: #666;
-        font-size: 16px;
-    }
-</style>
-
+ <link asp-append-version="true" rel="stylesheet" href="/css/Login.css" type="text/css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
 
 
 <div class="text-center">
@@ -53,23 +28,84 @@
 
         <div class="form-floating" style="margin-top:5%">
                 <label style="font-size:14px;font-weight:500" for="password">Password</label>
-                <input type="password" class="form-control" id="password" name="password" placeholder="Password" required style="margin-top:7px;padding: 10px 5px;border:1px solid #138496;border-radius:5px">
-           <i class="fa-solid fa-eye-slash eye-icon" onclick="togglePassword('password', this)"></i> 
-        </div>
+                <div class="form-control-container" style="position: relative;">
+                    <input type="password" class="form-control" id="password" name="password"
+                           placeholder="Password" required
+                           style="margin-top:7px;padding: 10px 35px 10px 5px;border:1px solid #138496;border-radius:5px;" />
 
-        <div style="display:flex;justify-content:center; margin-top:25px;">
-                <button type="submit" >Log In</button>
-        </div>
+                    <i class="fa-solid fa-eye-slash eye-icon"
+                       onclick="togglePassword('password', this)"
+                       style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%);
+              cursor: pointer; color: #666; font-size: 16px;"></i>
+                </div>
+            </div>
 
+            <div style="display:flex; justify-content:center; margin-top:25px;">
+                <button type="submit" class="cool-button">
+                    <span class="main-text">Log In</span>
+                    <span class="rocket-content" id="rocket">🚀</span>
+                </button>
+            </div>
     </form>
 </main>
 </div>
 
-
+<div class="toast" id="toast">✅ Login successful!</div>
+<div id="loginLoader" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;   background-color: rgba(128, 128, 128, 0.4); z-index: 9999; display: none; justify-content: center; align-items: center;">
+    <i class="fas fa-spinner fa-spin" style="font-size: 30px; color: #138496;"></i>
+</div>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 
+<script>
+
+    function Validate() {
+        var user = {
+            userName: $('#username').val(),
+            password: $('#password').val(),
+        };
+         document.getElementById("loginLoader").style.display = "flex";
+             $('.cool-button').prop('disabled', true);
+
+
+        $.ajax({
+            type: "POST",
+            url: "/Home/Login",
+            data: user,
+            success: function (result) {
+                if (result.status) {
+                    launchRocket();
+                    login();
+                    setTimeout(() => {
+                        window.location.href = result.url;
+                        document.getElementById("loginLoader").style.display = "none";
+                    }, 1000);
+                } else {
+                    $('#error-message').text('Incorrect username or password').show();
+                         document.getElementById("loginLoader").style.display = "none";
+
+                }
+            },
+            error: function (xhr, status, error) {
+                console.error('Error:', status, error);
+                $('#error-message').text('An error occurred: ' + error).show();
+                      document.getElementById("loginLoader").style.display = "none";
+
+            }
+        });
+
+        return false;
+    }
+     
+
+
+    $(document).ready(function () {
+        $('#username, #password').on('input', function () {
+            $('#error-message').hide();
+        });
+    });
+</script>
 <script>
     function togglePassword(inputId, eyeIcon) {
         let inputField = document.getElementById(inputId);
@@ -84,38 +120,24 @@
             eyeIcon.classList.add("fa-eye-slash");
         }
     }
+        function launchRocket() {
+        const rocket = document.getElementById("rocket");
+        const isVisible = getComputedStyle(rocket).visibility === "visible";
 
-    function Validate() {
-        var user = {
-            userName: $('#username').val(),
-            password: $('#password').val()
-
-        };
-
-        $.ajax({
-            type: "POST",
-            url: "/Home/Login",
-            data: user,
-            success: function (result) {
-                if (result.status) {
-                    window.location.href = result.url;
-                } else {
-                    $('#error-message').text('Incorrect username or password').show();
-                }
-            },
-            error: function (xhr, status, error) {
-                console.error('Error:', status, error);
-                $('#error-message').text('An error occurred: ' + error).show();
-            }
-        });
-
-        return false;
+        if (isVisible && !rocket.classList.contains("launch")) {
+            rocket.classList.add("launch");
+            setTimeout(() => {
+                rocket.classList.remove("launch");
+            }, 2000);
+        }
     }
 
+    function login() {
+          const toast = document.getElementById("toast");
+          toast.classList.add("show");
 
-    $(document).ready(function () {
-        $('#username, #password').on('input', function () {
-            $('#error-message').hide();
-        });
-    });
+          setTimeout(() => {
+            toast.classList.remove("show");
+          }, 1000);
+        }
 </script>

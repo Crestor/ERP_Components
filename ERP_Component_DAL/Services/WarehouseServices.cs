@@ -564,7 +564,7 @@ namespace ERP_Component_DAL.Services
 
                 using (SqlConnection connection = new SqlConnection(connectionstring))
                 {
-                    using (SqlCommand cmd = new SqlCommand("CreateProductionOrder", connection))
+                    using (SqlCommand cmd = new SqlCommand("CreateWorkOrder", connection))
                     {
                         cmd.CommandType = CommandType.StoredProcedure;
 

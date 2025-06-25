@@ -5,206 +5,144 @@
     ViewBag.Title = "Register User";
     Layout = "~/Views/Shared/_LayoutINV.cshtml";
 }
-
-
+<style>
+    .form-section{
+        display: none;
+    }
+</style>
 <div class="container">
     <form asp-action="RegisterCustomer" asp-controller="Customer" enctype="multipart/form-data">
 
+        <h2><span class="section-toggle" onclick="showSection(this, 'BasicDetails')">Basic Details</span></h2>
+        <h2><span class="section-toggle" onclick="showSection(this, 'Billingdetails')">Billing Details</span></h2>
+        <h2><span class="section-toggle" onclick="showSection(this, 'shipingdetails')">Shipping Details</span></h2>
+       <h2> <span class="section-toggle" onclick="showSection(this, 'openingbalance')">Opening Balance</span></h2>
 
-      <div class="form-section">
-        <h3>Basic Details</h3>
+        <div id="BasicDetails" class="form-section">
+            <h3>Basic Details</h3>
             <div class="form-row">
-                
-                    <label for="gst">GST No </label>
-                    <input type="text" id="gstin" name="GstIn" maxlength="15" pattern="[0-9A-Z]{15}" placeholder="Enter a GST Number" />
-                      <input id="vendorCode"  type="hidden"/>
-                    <div id="gstError" class="error-message"></div>
-               
-                
-                    <label for="pan">PAN No</label>
-                    <input type="text" id="panno" name="PAN" maxlength="10" pattern="[A-Z]{5}[0-9]{4}[A-Z]{1}" placeholder="Enter PAN Number (e.g., ABCDE1234F)" />
-                    <div id="panError" class="error-message"></div>
-              
+
+                <label for="gst">GST No </label>
+                <input type="text" id="gstin" name="GstIn" maxlength="15" pattern="[0-9A-Z]{15}" placeholder="Enter a GST Number" required />
+                <input id="vendorCode" type="hidden" />
+                <div id="gstError" class="error-message"></div>
+
+
+                <label for="pan">PAN No</label>
+                <input type="text" id="panno" name="PAN" maxlength="10" pattern="[A-Z]{5}[0-9]{4}[A-Z]{1}" placeholder=" ABCDE1234F" required />
+                <div id="panError" class="error-message"></div>
+
             </div>
             <div class="form-row">
-                    <label for="CustomerName">Customer Name<span class="required">*</span></label>
-                    <input type="text" id="CustomerName" name="CustomerName" placeholder="Enter Customer Name" required>
-                    <label for="email">Email </label>
-                    <input type="email" id="Email" name="Email" placeholder="Enter Email ID" />
-              </div>
-                <div class="form-row">
-                    <label for="ContactNo">Contact No </label>
-                    <input type="text" id="Contact" name="ContactNo" placeholder="Enter Contact Number" />
-
-                    <label for="AlternteContactNo">Alternate Contact No </label>
-                    <input type="text" id="Contact" name="alterContactNo" placeholder="Enter Alternate Contact Number" />
-
-                </div>
-           
-      </div>
-      <div class="form-section">
-        <h3>Opening Balance</h3>
+                <label for="CustomerName">Customer Name<span class="required">*</span></label>
+                <input type="text" id="CustomerName" name="CustomerName" placeholder="Enter Customer Name" required>
+                <label for="email">Email </label>
+                <input type="email" id="Email" name="Email" placeholder="Enter Email ID" required />
+            </div>
             <div class="form-row">
-                    <label for="date">As On Date<span class="required">*</span></label>
-                    <input type="date" id="date" name="OpeningDate" required>
-                    <label for="Balance">Balance</label>
-                    <input type="text" id="Balance" name="Balance">
+                <label for="ContactNo">Contact No </label>
+                <input type="text" id="Contact" name="ContactNo" placeholder="Enter Contact Number" required />
 
-             </div>
-              <div class="form-row" style="width:50%">
-                <div class="field" id="modeRow">
+                <label for="AlternteContactNo">Alternate Contact No </label>
+                <input type="text" id="Contact" name="alterContactNo" placeholder="Enter Alternate Contact Number" required />
+
+            </div>
+
+        </div>
+
+        <div id="Billingdetails" class="form-section">
+            <h3>Billing Details</h3>
+            <div class="form-row">
+                <label for="country">Country<span class="required">*</span></label>
+                <select id="country" name="Country" required>
+                    <option selected disabled>-Select-</option>
+                    <option value="India">India</option>
+                </select>
+                <label for="state">State<span class="required">*</span></label>
+                <select id="state" name="State" required>
+                    <option selected disabled>-Select State-</option>
+                </select>
+
+            </div>
+            <div class="form-row">
+                <label for="district">District<span class="required">*</span></label>
+                <select id="district" name="District" required>
+                    <option selected disabled>-Select District-</option>
+                </select>
+                <label for="city">City<span class="required">*</span></label>
+                <input type="text" id="city" name="City" />
+            </div>
+            <div class="form-row">
+
+                <label for="pin">Pin Code<span class="required">*</span></label>
+                <input type="text" id="pin" name="PinCode" required>
+                <label for="address">Address(Line1)<span class="required">*</span></label>
+                <input type="text" id="address" name="Address" required>
+            </div>
+        </div>
+
+        <div id="shipingdetails" class="form-section">
+            <h3>Shipping Details</h3>
+            <div class="form-row">
+                <label for="CustomerName">Customer Name</label>
+                <input type="text" id="CustomerName" name="CustomerName">
+                <label for="ContactNo">ContactNo</label>
+                <input type="text" id="ContactNo" name="ContactNo">
+            </div>
+
+            <div class="form-row">
+                <label for="Street">Street/Locality</label>
+                <input type="text" name="Street">
+                <label for="Area">Area</label>
+                <input type="text" id="Area" name="Area" required />
+            </div>
+            <div class="form-row">
+                <label for="state">State<span class="required">*</span></label>
+                <input id="state" name="State" required />
+
+                <label for="district">District<span class="required">*</span></label>
+                <input id="district" name="District" required />
+            </div>
+
+
+            <div class="form-row">
+                <label for="City">City</label>
+                <input type="text" id="City" name="City" />
+
+                <label for="PinCode">PinCode</label>
+                <input type="text" id="PinCode" name="PinCode" />
+            </div>
+            <div class="form-row" style="width:50%">
+
+                <label for="other">Other Reference</label>
+                <input id="other" name="other" />
+            </div>
+        </div>
+        <div id="openingbalance" class="form-section">
+            <h3>Opening Balance</h3>
+            <div class="form-row">
+                <label for="date">As On Date<span class="required">*</span></label>
+                <input type="date" id="date" name="OpeningDate" required>
+                <label for="Balance">Balance</label>
+                <input type="text" id="Balance" name="Balance" required>
+
+            </div>
+            <div class="form-row" style="width:50%">
                     <label for="mode">Mode</label>
-                    <select id="mode" name="Mode">
+                    <select id="mode" name="Mode" required>
                         <option selected disabled>-Select-</option>
                         <option value="Credit">Credit</option>
                         <option value="Debit">Debit</option>
                     </select>
-                 </div>
-             </div>
-       </div>
-      <div class="form-section">
-        <h3>Billing Details</h3>
-            <div class="form-row">
-                    <label for="country">Country<span class="required">*</span></label>
-                    <select id="country" name="Country" required>
-                        <option selected disabled>-Select-</option>
-                        <option value="India">India</option>
-                    </select>
-                    <label for="state">State<span class="required">*</span></label>
-                    <select id="state" name="State" required>
-                    <option selected disabled>-Select State-</option>
-                    </select>
-
-            </div>
-            <div class="form-row">
-                    <label for="district">District<span class="required">*</span></label>
-                    <select id="district" name="District" required>
-                    <option selected disabled>-Select District-</option>
-                    </select>
-                    <label for="city">City<span class="required">*</span></label>
-                    <input type="text" id="city" name="City" />
-             </div>
-            <div class="form-row">
-
-                    <label for="pin">Pin Code<span class="required">*</span></label>
-                    <input type="text" id="pin" name="PinCode" required>
-                    <label for="address">Address(Line1)<span class="required">*</span></label>
-                    <input type="text" id="address" name="Address" required>
-             </div>
-      </div>
-        
-       <div class="form-section">
-        <h3>Bank Details</h3>
-            <div class="form-row">
-                    <label for="accountHolder">Account Holder Name<span class="required">*</span></label>
-                    <input type="text" id="accountHolder" name="AccountHolderName" required>
-                    <label for="bankName">Bank Name<span class="required">*</span></label>
-                    <input type="text" id="bankName" name="BankName" required>
-            </div>
-
-            <div class="form-row">
-                    <label for="branchName">Branch Name<span class="required">*</span></label>
-                    <input type="text" id="branchName" name="BranchName" required>
-                    <label for="accountNo">Account Number<span class="required">*</span></label>
-                    <input type="text" id="AccountNumber" name="AccountNo" required>
-                </div>
-
-                <div class="form-row">
-                    <label for="reconfirm">Re-confirm Account Number<span class="required">*</span></label>
-                    <input type="text" id="ConfirmAccountNumber" name="reconfirm" required>
-                    <label for="ifsc">IFSC<span class="required">*</span></label>
-                    <input type="text" id="ifsc" name="IfscCode" required>
-                </div>
-        </div>
-
-      <div class="form-section">
-        <h3>Shipping Details</h3>
-            <div class="form-row">
-                    <label for="CustomerName">Customer Name</label>
-                    <input type="text" id="CustomerName" name="CustomerName">
-                    <label for="ContactNo">ContactNo</label>
-                    <input type="text" id="ContactNo" name="ContactNo">
-            </div>
-
-            <div class="form-row">
-                    <label for="Street">Street/Locality</label>
-                    <input type="text" name="Street">
-                    <label for="Area">Area</label>
-                    <input type="text" id="Area" name="Area" required />
-             </div>
-                <div class="form-row">
-                    <label for="state">State<span class="required">*</span></label>
-                    <input id="state" name="State" required />
-
-                    <label for="district">District<span class="required">*</span></label>
-                    <input id="district" name="District" required />
-                </div>
-
-         
-            <div class="form-row">
-                    <label for="City">City</label>
-                    <input type="text" id="City" name="City" />
-
-                    <label for="PinCode">PinCode</label>
-                    <input type="text" id="PinCode" name="PinCode" />
-              </div>
-                <div class="form-row" style="width:50%">
-
-                    <label for="other">Other Reference</label>
-                    <input id="other" name="other" />
             </div>
         </div>
 
-     <div class="form-section">
-        <h3>Upload Document(Optional)</h3>
-            <div class="form-row">
-             @*    <div class="field"> *@
-                    <label for="GstCertificate">Upload  Gst Certificate</label>
-                    <input name="GstCertificate" type="file" placeholder="Enter a file" />
-        @*         </div>
-                <div class="field"> *@
-                    <label for="PanCard">Upload  Pan Card</label>
-                    <input name="PanCard" type="file" placeholder="Enter a file" />
-            @*     </div> *@
-            </div>
-            <div class="form-row" style="width:50%">
-            @*     <div class="field"> *@
-                    <label for="Other">Other</label>
-                    <input type='file' placeholder="Enter a file" />
-            @*     </div> *@
-              </div>
-                <div class="form-row">
-               @*      <div class="field"> *@
-                        <label for="CustomerName">Customer Name<span class="required">*</span></label>
-                        <input type="text" id="CustomerName" name="ContactName" placeholder="Enter Customer Name" required>
-              @*       </div>
-                    <div class="field"> *@
-                        <label for="CustomerName">Industry<span class="required">*</span></label>
-                        <input type="text" id="CustomerName" name="CustomerIndustry" placeholder="Enter Industry type" required>
-                 @*    </div>
-                    <div class="field"> *@
-
-            </div>
-            <div class="form-row" style="width:50%">
-                        <label for="CustomerName">Customer Code<span class="required">*</span></label>
-                        <input type="text" id="CustomerName" name="CustomerCode" placeholder="Enter Customer Code" required>
-               @*      </div> *@
-                </div>
-            </div>
-            <div class="form-section">
-            <h3>Additional Remark</h3>
-                <div class="form-row">
-               @*      <div class="field"> *@
-                        <textarea></textarea>
-                  @*   </div> *@
-                </div>
-            </div>
         <div class="button-container" style="padding-right: 30px;float: right; padding-bottom:13px">
             <button type="submit">Submit</button>
             <button type="reset">Reset</button>
         </div>
-    </form>
 
+    </form>
 </div>
 
 
@@ -456,6 +394,41 @@
             selectElement.setAttribute('name', 'VendorType');
         }
     }
+</script>
+<script>
+    function showSection(clickedText, sectionId) {
+        // Hide all sections
+        document.querySelectorAll('.form-section').forEach(section => {
+            section.classList.remove('animate-show');
+            section.style.display = 'none';
+        });
+
+        // Show all headers again
+        document.querySelectorAll('.section-toggle').forEach(span => {
+            span.style.display = 'inline';
+        });
+
+        // Hide the clicked header
+        clickedText.style.display = 'none';
+
+        const section = document.getElementById(sectionId);
+
+        // Move the section right after the clicked header
+        clickedText.insertAdjacentElement('afterend', section);
+
+        // Show and animate
+        section.style.display = 'block';
+        void section.offsetWidth; // trigger reflow
+        section.classList.add('animate-show');
+    }
+
+    // Automatically show "Basic Details" on page load
+    window.onload = function () {
+        const basicToggle = document.querySelector('[onclick*="BasicDetails"]');
+        if (basicToggle) {
+            showSection(basicToggle, 'BasicDetails');
+        }
+    };
 </script>
 
 

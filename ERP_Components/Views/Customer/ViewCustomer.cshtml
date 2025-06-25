@@ -6,34 +6,19 @@
 
 
 <link rel="stylesheet" href="~/css/ProductTwo.css" />
-<link rel="stylesheet" href="~/css/ListQuotation.css" />
+@* <link rel="stylesheet" href="~/css/ListQuotation.css" /> *@
 
  @model List<AddCustomer>
-
-
-
- 
-
-
-<div class="table">
-    <div class="tab-buttons" style="padding-left: 10px;padding-top: 10px; gap:5px">
-        <button class="button" onclick="showSection('main')" style="background-color:#138496;color: white; ">Basic Details</button>
-        <button class="button" onclick="showSection('address')" style="background-color:#138496;color: white;width:80px ">Address</button>
-        <button class="button" onclick="showSection('bank')" style="background-color:#138496;color: white;">Account Details</button>
-@*     </div>
-
-    <div class="table-actions" style="float: right;margin-bottom: 16px;padding-right: 38px;"> *@
-
-        <button onclick="editSelected()" style="background-color:#138496;color: white;  float:right; margin-right:10px;width:80px " id="editbutton" disabled>Edit</button>
-        <button onClick="confirmDelete()" id="deletebutton" style="background-color:#138496;color: white; float:right; width:80px " disabled>Delete</button>
-    </div>
+<div class="tab-buttons" style="padding-left: 10px;padding-top: 10px; gap:5px">
+    <button class="button me-2 tab-btn" data-section="main" onclick="showSection('main')">Basic Details</button>
+    <button class="button me-2 tab-btn" data-section="address" onclick="showSection('address')">Address</button>
+</div>
 
 
     <div class="vendor-section" id="main" style="display: block;">
         <table class="vendor-table">
             <thead>
                 <tr>
-                    <th></th>
                     <th>S.No.</th>
                     <th>Customer Name</th>
                     <th>Contact Name</th>
@@ -42,7 +27,7 @@
                     <th>Gst</th>
                     <th>Pan</th>
                     <th>Balance</th>
-                    <th>Created On</th>
+                    <th>Action</th>
                
                 </tr>
             </thead>
@@ -51,7 +36,6 @@
                 {
                     var v = Model[i];
                     <tr data-id="@v.CustomerId">
-                        <td><input type="checkbox" class="row-check" onchange="toggleActionButtons(this)"></td>
                         <td>@(i + 1)</td>
                         <td>@v.CustomerName</td>
                         <td>@v.ContactName</td>
@@ -60,7 +44,7 @@
                         <td>@v.GstIn</td>
                         <td>@v.PAN</td>
                         <td>@v.Balance</td>
-                        <td>@v.OpeningDate.ToShortDateString()</td>
+                        <td><button onclick="location.href='@Url.Action("EditCustomer","Customer", new{customerId = v.CustomerId},null)'">Edit</button></td>
                        
 
                     </tr>
@@ -74,7 +58,6 @@
         <table class="vendor-table">
             <thead>
                 <tr>
-                    <th></th>
                     <th>S.No.</th>
                     <th>Address</th>
                   
@@ -83,6 +66,7 @@
                     <th>State</th>
                     <th>District</th>
                     <th>City</th>
+                    <th>Action</th>
                     
                 
 
@@ -93,7 +77,6 @@
                 {
                     var v = Model[i];
                     <tr data-id="@v.AddressId">
-                        <td><input type="checkbox" class="row-check" onchange="toggleActionButtons(this)"></td>
                         <td>@(i + 1)</td>
                         <td>@v.Address</td>
                        
@@ -102,55 +85,29 @@
                         <td>@v.State</td>
                         <td>@v.District</td>
                         <td>@v.City</td>
-                        
-
+                        <td><button onclick="location.href='@Url.Action("EditCustomer","Customer", new{customerId = v.CustomerId})'">Edit</button></td>
                     </tr>
                 }
             </tbody>
         </table>
     </div>
-
-
-    <div class="vendor-section" id="bank" style="display: none;">
-        <table class="vendor-table">
-            <thead>
-                <tr>
-                    <th></th>
-                    <th>S.No.</th>
-                    <th>Account Holder Name</th>
-                    <th>Account Number</th>
-                    <th>Branch Name</th>
-                    <th>IFSC Code</th>
-
-                </tr>
-            </thead>
-            <tbody>
-                @for (var i = 0; i < Model.Count; i++)
-                {
-                    var v = Model[i];
-                    <tr data-id="@v.AccountId">
-                        <td><input type="checkbox" class="row-check" onchange="toggleActionButtons(this)"></td>
-                        <td>@(i + 1)</td>
-                        <td>@v.AccountHolderName</td>
-                        <td>@v.AccountNo</td>
-                        <td>@v.BranchName</td>
-                        <td>@v.IfscCode</td>
-
-                    </tr>
-                }
-            </tbody>
-        </table>
-    </div>
-</div>
 
 
 
 <script>
-    function showSection(sectionId) {
+          function showSection(sectionId) {
         document.querySelectorAll('.vendor-section').forEach(el => el.style.display = 'none');
         document.getElementById(sectionId).style.display = 'block';
+        document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+        const clickedBtn = document.querySelector(`.tab-btn[data-section="${sectionId}"]`);
+        if (clickedBtn) {
+            clickedBtn.classList.add('active');
+        }
+
         clearCheckboxes();
     }
+
+
 
     function toggleActionButtons(checkbox) {
         document.querySelectorAll('.row-check').forEach(cb => {
@@ -206,37 +163,6 @@
         document.querySelectorAll('.row-check').forEach(cb => cb.checked = false);
         toggleActionButtons(null);
     }
+
+
 </script>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
