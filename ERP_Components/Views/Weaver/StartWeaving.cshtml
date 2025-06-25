@@ -69,32 +69,8 @@
             </tbody>
         </table>
     </div>
-        <div id="popup">
-            <div class="form-section">
-                <h3>Allocate Material To Weaver</h3>
-                <div class="form-row">
-                    <label for="AllocationSeries">Allocation Series:</label>
-                    <label for="weaverName">Weaver Name:</label>
-                    <select id="weaverName" name="weaverName" required>
-                        <option value="">Select Weaver</option>
-                        @* @foreach (var weaver in Model.Weavers)
-                        {
-                            <option value="@weaver.WeaverId">@weaver.Name</option>
-                        } *@
-                        <option value="1">Weaver 1</option>
-                        <option value="2">Weaver 2</option>
-                    </select>
-                </div>
-                <button onclick="closePopup()">Close</button>
-                <button type="submit">Allocate</button>
-            </div>
-            <div id="overlay" onclick="closePopup()"></div>
-
-
-        </div>
-
         <div class="button">
-         <button id="showpopup" type="button">Start Weaving</button>
+         <button id="showpopup" type="submit">Start Weaving</button>
             <button id="CreateMR"  type="submit">Create MR</button>
         </div>
     </form>
