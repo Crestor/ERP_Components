@@ -6,20 +6,13 @@
 
 
 <link rel="stylesheet" href="~/css/ProductTwo.css" />
-<link rel="stylesheet" href="~/css/ListQuotation.css" />
+@* <link rel="stylesheet" href="~/css/ListQuotation.css" /> *@
 
  @model List<AddCustomer>
-
-
-
- 
-
-
-<div class="table">
-    <div class="tab-buttons" style="padding-left: 10px;padding-top: 10px; gap:5px">
-        <button class="button" onclick="showSection('main')" style="background-color:#138496;color: white; ">Basic Details</button>
-        <button class="button" onclick="showSection('address')" style="background-color:#138496;color: white;width:80px ">Address</button>
-    </div>
+<div class="tab-buttons" style="padding-left: 10px;padding-top: 10px; gap:5px">
+    <button class="button me-2 tab-btn" data-section="main" onclick="showSection('main')">Basic Details</button>
+    <button class="button me-2 tab-btn" data-section="address" onclick="showSection('address')">Address</button>
+</div>
 
 
     <div class="vendor-section" id="main" style="display: block;">
@@ -98,16 +91,23 @@
             </tbody>
         </table>
     </div>
-</div>
 
 
 
 <script>
-    function showSection(sectionId) {
+          function showSection(sectionId) {
         document.querySelectorAll('.vendor-section').forEach(el => el.style.display = 'none');
         document.getElementById(sectionId).style.display = 'block';
+        document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+        const clickedBtn = document.querySelector(`.tab-btn[data-section="${sectionId}"]`);
+        if (clickedBtn) {
+            clickedBtn.classList.add('active');
+        }
+
         clearCheckboxes();
     }
+
+
 
     function toggleActionButtons(checkbox) {
         document.querySelectorAll('.row-check').forEach(cb => {
@@ -163,37 +163,6 @@
         document.querySelectorAll('.row-check').forEach(cb => cb.checked = false);
         toggleActionButtons(null);
     }
+
+
 </script>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

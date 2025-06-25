@@ -149,7 +149,8 @@ namespace ERP_Components.Controllers
                 Quantity = workOrders.requiredQuantity,
                 Specification = workOrders.Specification,
                 Weavers = weaver,
-                Dyer = Dyer
+                Dyer = Dyer,
+                workOrderPhases = workOrders.workOrderPhases
             };
 
             return View(workOrder);
