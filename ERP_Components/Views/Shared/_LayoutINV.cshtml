@@ -26,7 +26,6 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4Q6Gf2aSP4eDXB8Miphtr37CMZZQ5oXLH2yaXMJ2w8e2ZtHTl7GptT4jmndRuHDT" crossorigin="anonymous">
     <!-- Include this in your layout if not already present -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <!-- Stock Transfer Dropdown -->
     @*   <style>
@@ -52,12 +51,6 @@
             background-color: #1592a6;
         }
     </style> *@
-    <style>
-        nav ul li a {
-            padding: 5px !important;
-            background-color: white;
-        }
-    </style>
 </head>
 @{
     var Role = Context.Session.GetString("Role");
@@ -105,7 +98,7 @@
                     </div>
                     <div class="info" style="font-size:20px; color:white">
                         @Role Department
-                        @*  <a href="/Inventory/Dashboard" class="d-block" style="text-decoration:none"></a> *@
+                       @*  <a href="/Inventory/Dashboard" class="d-block" style="text-decoration:none"></a> *@
                     </div>
                 </div>
 
@@ -158,7 +151,7 @@
                                 </a>
 
                             </li>
-
+                    
 
                             <!-- Products -->
                             <li class="nav-item">
@@ -302,16 +295,6 @@
                                             <i class="fas fa-file-alt me-2"></i> Add Purchase Requisition
                                         </a>
                                     </li>
-                                    @*  <li class="nav-item">
-                                        <a asp-controller="Purchase" asp-action="materialRequisition" class="list-group-item list-group-item-action ps-5">
-                                            <i class="fas fa-receipt me-2"></i> Material Requisition
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a asp-controller="Purchase" asp-action="AddPurchaseReq" class="list-group-item list-group-item-action ps-5">
-                                            <i class="fas fa-receipt me-2"></i> Purchase Requisition
-                                        </a>
-                                    </li> *@
                              
                                     <li class="nav-item">
                                         <a asp-controller="Purchase" asp-action="ViewRequisition" class="list-group-item list-group-item-action ps-5">
@@ -323,74 +306,7 @@
 
 
                         }
-                        else if (Role == "Weaver")
-                        {
-                            <li class="nav-item">
-                                <a href="/Weaver/WeaverDashboard" class="nav-link">
-                                    <i class="fas fa-chart-line"></i>
-                                    <p>
-                                        Dashboard
-                                    </p>
-                                </a>
 
-                            </li>
-                            <li class="nav-item">
-                                <a href="/Weaver/AddWeaver" class="nav-link">
-                                    <i class="fas fa-spa"></i>	                                    <p>
-                                       Add Weaver
-                                    </p>
-                                </a>
-
-                            </li>
-                            <li class="nav-item">
-                                <a href="/Weaver/ViewWeaver" class="nav-link">
-                                    <i class="fas fa-eye"></i>	                                    <p>
-                                        View Weaver
-                                    </p>
-                                </a>
-
-                            </li>
-                            <li class="nav-item">
-                                <a href="/Weaver/WorkOrder" class="nav-link">
-                                    <i class="fas fa-tasks me-2"></i>
-                                    <p>
-                                        Work Order
-                                    </p>
-                                </a>
-
-                            </li>
-
-                            <li class="nav-item">
-                                <a href="@Url.Action("InventoryForAll", "Weaver")" class="nav-link">
-                                    <i class="fas fa-boxes me-2"></i><p>Inventory</p>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="@Url.Action("ViewCompletedWorkOrder", "Weaver")" class="nav-link">
-                                    <i class="fas fa-check-double me-2"></i><p>Completed Work Order</p>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="/Production/CreateMaterialRequisition" class="nav-link">
-                                    <i class="fas fa-file-signature me-2"></i>
-                                    <p>
-                                        Create Material Requisition
-                                    </p>
-                                </a>
-
-                            </li>
-                            <li class="nav-item">
-                                <a href="/Weaver/Allocationfordying" class="nav-link">
-                                    <i class="fas fa-tasks fa-lg"></i>
-                                    <p>
-                                        Allocate to dyer
-                                    </p>
-                                </a>
-
-                            </li>
-                               
-
-                        }
                         else if (Role == "Production")
                         {
 
@@ -414,12 +330,6 @@
                                 </a>
 
                             </li>
-                            <li class="nav-item">
-                                <a href="/Production/ViewInventory" class="nav-link">
-                                    <i class="fas fa-eye me-2"></i>
-                                    <p>
-                                        View Inventory
-                                    </p>
 
                             <li class="nav-item">
                                 <a href="/Production/ViewProductionStages" class="nav-link">
@@ -445,18 +355,12 @@
                                 <a href="@Url.Action("Dashboard", "Production")" class="list-group-item list-group-item-action">
                                     <i class="fas fa-tachometer-alt me-2"></i>  Dashboard
                                 </a>
-
                             </li>
-                            <li class="nav-item">
-                                <a href="/Production/CreateMaterialRequisition" class="nav-link">
-                                    <i class="fas fa-file-signature me-2"></i>
-                                    <p>
-                                        Create Material Requisition
-                                    </p>
+                            <li>
+                                <a href="@Url.Action("ViewProductionOrder", "Production")" class="list-group-item list-group-item-action">
+                                    <i class="fas fa-industry me-2"></i> View Production Order
                                 </a>
-
-                            </li>
-                            
+                            </li> *@
 
 
                         }
@@ -504,7 +408,7 @@
                                 </a>
                                 <ul class="nav nav-treeview ps-4">
                                     <li class="nav-item">
-                                        <a href="@Url.Action("BillofMaterial", "Production")" class="nav-link">
+                                        <a href="@Url.Action("WarehouseLocation", "Warehouse")" class="nav-link">
                                             <i class="fas fa-plus-circle me-2"></i> Add Warehouse Location
                                         </a>
                                     </li>
@@ -677,26 +581,6 @@
                                 </a>
 
                             </li>
-
-                            <li class="nav-item">
-                                <a href="/Account/Receivable" class="nav-link">
-                                    <i class="fas fa-hand-holding-usd"></i>
-                                    <p>
-                                        Receivable
-                                    </p>
-                                </a>
-
-                            </li>
-
-                            <li class="nav-item">
-                                <a href="/Account/Payable" class="nav-link">
-                                    <i class="fas fa-money-check-alt"></i>
-                                    <p>
-                                        Payable
-                                    </p>
-                                </a>
-
-                            </li>
                             <li class="nav-item">
                                 <a href="/Account/Chartofaccount" class="nav-link">
                                     <i class="fas fa-chart-line"></i>
@@ -714,125 +598,6 @@
 
                         else if (Role == "Manager")
                         {
-                                <!-- Dashboard -->
-                                <li class="nav-item">
-                                    <a href="/Manager/Dashboard" class="nav-link">
-                                        <i class="fas fa-chart-line me-2"></i> <p>Dashboard</p>
-                                    </a>
-                                </li>
-
-                                <!-- View Vendor Quotation -->
-                                <li class="nav-item">
-                                    <a href="/Manager/ApproveVendorQuotation" class="nav-link">
-                                        <i class="fas fa-file-invoice me-2"></i> <p>View Vendor Quotation</p>
-                                    </a>
-                                </li>
-                                      <li class="nav-item">
-                                    <a href="/Manager/Productsales" class="nav-link">
-                                        <i class="fas fa-file me-2"></i> <p>Add Productsales</p>
-                                    </a>
-                                </li>
-
-                                <!-- Purchase Module -->
-                                <li class="nav-item">
-                                    <a href="#" class="nav-link">
-                                        <i class="fas fa-shopping-cart me-2"></i> <p>Purchase Module <i class="fas fa-chevron-left float-end"></i></p>
-                                    </a>
-                                    <ul class="nav nav-treeview">
-                                        <li class="nav-item"><a href="#" class="nav-link ps-5"><i class="fas fa-users me-2"></i> Top Vendor and Customer</a></li>
-                                        <li class="nav-item"><a href="#" class="nav-link ps-5"><i class="fas fa-hourglass-half me-2"></i> Pending Purchase Order</a></li>
-                                        <li class="nav-item"><a href="#" class="nav-link ps-5"><i class="fas fa-balance-scale me-2"></i> Approve vs Rejected Quotation</a></li>
-                                    </ul>
-                                </li>
-
-                                <!-- Store Module -->
-                                <li class="nav-item">
-                                    <a href="#" class="nav-link">
-                                        <i class="fas fa-store me-2"></i> <p>Store Module <i class="fas fa-chevron-left float-end"></i></p>
-                                    </a>
-                                    <ul class="nav nav-treeview">
-                                        <li class="nav-item"><a href="#" class="nav-link ps-5"><i class="fas fa-chart-pie me-2"></i> Stock Summary</a></li>
-                                        <li class="nav-item"><a href="#" class="nav-link ps-5"><i class="fas fa-exchange-alt me-2"></i> Stock In / Out</a></li>
-                                        <li class="nav-item"><a href="#" class="nav-link ps-5"><i class="fas fa-box-open me-2"></i> Damaged and Lost Goods</a></li>
-                                    </ul>
-                                </li>
-
-                                <!-- Warehouse Module -->
-                                <li class="nav-item">
-                                    <a href="#" class="nav-link">
-                                        <i class="fas fa-warehouse me-2"></i> <p>Warehouse Module <i class="fas fa-chevron-left float-end"></i></p>
-                                    </a>
-                                    <ul class="nav nav-treeview">
-                                        <li class="nav-item"><a href="#" class="nav-link ps-5"><i class="fas fa-cube me-2"></i> Warehouse Capacity</a></li>
-                                        <li class="nav-item"><a href="#" class="nav-link ps-5"><i class="fas fa-cogs me-2"></i> Storage Initialization</a></li>
-                                        <li class="nav-item"><a href="#" class="nav-link ps-5"><i class="fas fa-truck-loading me-2"></i> Goods Movement & Report</a></li>
-                                    </ul>
-                                </li>
-
-                                <!-- Sales Module -->
-                                <li class="nav-item">
-                                    <a href="#" class="nav-link">
-                                        <i class="fas fa-tags me-2"></i> <p>Sales Module <i class="fas fa-chevron-left float-end"></i></p>
-                                    </a>
-                                    <ul class="nav nav-treeview">
-                                        <li class="nav-item"><a href="#" class="nav-link ps-5"><i class="fas fa-file-invoice-dollar me-2"></i> Sales Order Summary</a></li>
-                                        <li class="nav-item"><a href="#" class="nav-link ps-5"><i class="fas fa-star me-2"></i> Top Selling Product</a></li>
-                                        <li class="nav-item"><a href="#" class="nav-link ps-5"><i class="fas fa-chart-bar me-2"></i> Revenue by Product</a></li>
-                                    </ul>
-                                </li>
-
-                                <!-- Production Module -->
-                                <li class="nav-item">
-                                    <a href="#" class="nav-link">
-                                        <i class="fas fa-industry me-2"></i> <p>Production Module <i class="fas fa-chevron-left float-end"></i></p>
-                                    </a>
-                                    <ul class="nav nav-treeview">
-                                        <li class="nav-item">
-                                            <a href="#" class="nav-link ps-5">
-                                                <i class="fas fa-tasks me-2"></i> Total Production Order
-                                            </a>
-                                            <ul class="nav nav-treeview ps-5">
-                                                <li class="nav-item"><a href="#" class="nav-link"><i class="fas fa-clipboard-check me-2"></i> Status</a></li>
-                                                <li class="nav-item"><a href="#" class="nav-link"><i class="fas fa-times-circle me-2"></i> Waste / Defective Product</a></li>
-                                                <li class="nav-item"><a href="#" class="nav-link"><i class="fas fa-boxes me-2"></i> Total Output Quantity</a></li>
-                                            </ul>
-                                        </li>
-
-                                        <li class="nav-item">
-                                            <a href="#" class="nav-link ps-5">
-                                                <i class="fas fa-flask me-2"></i> Raw Material Consumption
-                                            </a>
-                                            <ul class="nav nav-treeview ps-5">
-                                                <li class="nav-item"><a href="#" class="nav-link"><i class="fas fa-file-invoice me-2"></i> Material Summary</a></li>
-                                                <li class="nav-item"><a href="#" class="nav-link"><i class="fas fa-box me-2"></i> Top Used Material</a></li>
-                                                <li class="nav-item"><a href="#" class="nav-link"><i class="fas fa-percentage me-2"></i> Cost by Material</a></li>
-                                            </ul>
-                                        </li>
-                                        <!-- Work Order Tracking -->
-                                        <li class="nav-item">
-                                            <a href="#" class="nav-link ps-5">
-                                                <i class="fas fa-clipboard-list me-2"></i> Work Order Tracking
-                                            </a>
-                                            <ul class="nav nav-treeview ps-5">
-                                                <li class="nav-item"><a href="#" class="nav-link ps-5"><i class="fas fa-calendar-alt me-2"></i> Work Date</a></li>
-                                                <li class="nav-item"><a href="#" class="nav-link ps-5"><i class="fas fa-balance-scale-left me-2"></i> Expected vs Actual Completion</a></li>
-                                            </ul>
-                                        </li>
-                                        <!-- Quality Control -->
-                                        <li class="nav-item">
-                                            <a href="#" class="nav-link ps-5">
-                                                <i class="fas fa-check-circle me-2"></i>Quality Control
-                                            </a>
-                                            <ul class="nav nav-treeview ps-5">
-                                                <li class="nav-item"><a href="#" class="nav-link ps-5"><i class="fas fa-bug me-2"></i> Defects Found</a></li>
-                                                <li class="nav-item"><a href="#" class="nav-link ps-5"><i class="fas fa-redo me-2"></i> Rework Report</a></li>
-                                                <li class="nav-item"><a href="#" class="nav-link ps-5"><i class="fas fa-search me-2"></i> QC Check Per Stage</a></li>
-                                            </ul>
-                                        </li>
-                                    </ul>
-                                </li>
-
-
 
                             <li class="nav-item">
                                 <a href="/Manager/ManagerDashboard" class="nav-link">
@@ -1088,7 +853,7 @@
                             </li>
 
                         }
-                        else if (Role == "RetailCustomer")
+                       else if (Role == "RetailSales")
                         {
                             <li class="nav-item">
                                 <a href="/Retailsales/Index" class="nav-link">
@@ -1175,7 +940,7 @@
                         </li>
                         <li class="nav-item">
                             <a href="/Home/Index" class="nav-link">
-                                <i id="changeicon" class="fas fa-sign-out-alt" style="cursor:pointer;"></i>
+                                <i class="fas fa-sign-out-alt"></i>
 
                                 <p>Logout</p>
 
@@ -1211,26 +976,7 @@
         </div>
         Copyright &copy; @DateTime.Now.Year  <a href="#">SILK_ERP</a>.  All rights reserved.
     </footer>
-    <script>
-        function toggleIconOnHover(elementId, class1, class2) {
-          const el = document.getElementById(elementId);
-          if (!el) return;
 
-          el.addEventListener("mouseenter", function () {
-            el.classList.toggle(class1);
-            el.classList.toggle(class2);
-          });
-
-          el.addEventListener("mouseleave", function () {
-            el.classList.toggle(class1);
-            el.classList.toggle(class2);
-          });
-        }
-
-        document.addEventListener("DOMContentLoaded", function () {
-          toggleIconOnHover("changeicon", "fa-sign-out-alt", "fa-running");
-        });
-    </script>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
@@ -1247,7 +993,6 @@
     @Html.Raw("<script src=\"https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js\" integrity=\"sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r\" crossorigin=\"anonymous\"></script>")
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.min.js" integrity="sha384-RuyvpeZCxMJCqVUGFI0Do1mQrods/hhxYlcVfGPOfQtPJh0JCw12tUAZ/Mv10S7D" crossorigin="anonymous"></script>
-    @RenderSection("Scripts", required: false)
 
 </body>
 

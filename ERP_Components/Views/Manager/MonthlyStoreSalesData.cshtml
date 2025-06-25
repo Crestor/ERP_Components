@@ -69,9 +69,29 @@
 
 
         </tbody>
-       
+        <tfoot>
+            <tr id="monthlyTotalsRow">
+                <td class="text-center">Monthly Total</td>
+                <td class="month-col">0.00</td> <!-- Jan -->
+                <td class="month-col">0.00</td> <!-- Feb -->
+                <td class="month-col">0.00</td> <!-- Mar -->
+                <td class="month-col">0.00</td> <!-- Apr -->
+                <td class="month-col">0.00</td> <!-- May -->
+                <td class="month-col">0.00</td> <!-- Jun -->
+                <td class="month-col">0.00</td> <!-- Jul -->
+                <td class="month-col">0.00</td> <!-- Aug -->
+                <td class="month-col">0.00</td> <!-- Sep -->
+                <td class="month-col">0.00</td> <!-- Oct -->
+                <td class="month-col">0.00</td> <!-- Nov -->
+                <td class="month-col">0.00</td> <!-- Dec -->
+                <td class="month-col" id="grandTotal">0.00</td> 
+            </tr>
+        </tfoot>
+
+
         </table>
     </div>
+
 
 
 <script>
@@ -159,3 +179,40 @@ document.querySelector('select').addEventListener('change', function () {
 
 </script>
 
+<script>
+    window.addEventListener('DOMContentLoaded', () => {
+        const rows = document.querySelectorAll('#salesTable tbody tr');
+        const footerCells = document.querySelectorAll('#monthlyTotalsRow td');
+        const grandTotalCell = document.getElementById('grandTotal');
+
+        let monthlyTotals = new Array(12).fill(0);
+        let grandTotal = 0;
+
+        rows.forEach(row => {
+            const monthCells = row.querySelectorAll('.month-col');
+            let rowTotal = 0;
+
+            monthCells.forEach((cell, i) => {
+                const val = parseFloat(cell.textContent) || 0;
+                rowTotal += val;
+                monthlyTotals[i] += val;
+            });
+
+          
+            const totalCell = row.querySelector('.store-total');
+            if (totalCell) {
+                totalCell.textContent = rowTotal.toFixed(2);
+            }
+
+            grandTotal += rowTotal;
+        });
+
+     
+        for (let i = 0; i < 12; i++) {
+            footerCells[i + 1].textContent = monthlyTotals[i].toFixed(2);
+        }
+
+        // Update last cell (grand total)
+        grandTotalCell.textContent = grandTotal.toFixed(2);
+    });
+</script>

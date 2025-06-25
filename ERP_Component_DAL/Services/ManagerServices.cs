@@ -9,11 +9,9 @@ using ERP_Component_DAL.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
-<<<<<<< Updated upstream
 using System.Numerics;
-=======
-using static ERP_Component_DAL.Models.SalesSummary;
->>>>>>> Stashed changes
+
+
 
 namespace ERP_Component_DAL.Services
 {
@@ -205,49 +203,49 @@ namespace ERP_Component_DAL.Services
                 connection.Close();
             }
         }
-        public DashBoard GetManagerDashboardData()
-        {
-            try
-            {
-                DashBoard Item = new();
-                string connectionstring = configuration.GetConnectionString("DefaultConnectionString");
-                connection = new SqlConnection(connectionstring);
-                SqlCommand cmd = new();
-                cmd.CommandType = System.Data.CommandType.Text;
-                cmd.CommandText = $" select(select sum(InStock) from Inventory)As InStock,(select count(*) from Vendors) as TotalVendor,(select Count(*) from Categories) As Categories ,(Select Count(RequisitionID) From Requisitions Where RequisitionType = 3) AS TotalPurchaseRequisition,(select sum( R.TotalAmount ) from Requisitions R join PurchaseOrders P on R.RequisitionID=P.RequisitionID) as TotalPurchases,(SELECT COUNT(*) FROM PurchaseOrders WHERE OrderStatus = 1) as PendingOrder ";
-                cmd.Connection = connection;
+        //public DashBoard GetManagerDashboardData()
+        //{
+        //    try
+        //    {
+        //        DashBoard Item = new();
+        //        string connectionstring = configuration.GetConnectionString("DefaultConnectionString");
+        //        connection = new SqlConnection(connectionstring);
+        //        SqlCommand cmd = new();
+        //        cmd.CommandType = System.Data.CommandType.Text;
+        //        cmd.CommandText = $" select(select sum(InStock) from Inventory)As InStock,(select count(*) from Vendors) as TotalVendor,(select Count(*) from Categories) As Categories ,(Select Count(RequisitionID) From Requisitions Where RequisitionType = 3) AS TotalPurchaseRequisition,(select sum( R.TotalAmount ) from Requisitions R join PurchaseOrders P on R.RequisitionID=P.RequisitionID) as TotalPurchases,(SELECT COUNT(*) FROM PurchaseOrders WHERE OrderStatus = 1) as PendingOrder ";
+        //        cmd.Connection = connection;
 
-                cmd.CommandTimeout = 300;
-                connection.Open();
-                SqlDataReader reader = cmd.ExecuteReader();
-                while (reader.Read())
-                {
-
-
-                    Item.InStock = reader["InStock"] != DBNull.Value ? Convert.ToInt32(reader["InStock"]) : 0;
-                    Item.TotalVendor = reader["TotalVendor"] != DBNull.Value ? Convert.ToInt32(reader["TotalVendor"]) : 0;
-                    Item.Categories = reader["Categories"] != DBNull.Value ? Convert.ToInt32(reader["Categories"]) : 0;
-                    Item.TotalPurchaseRequisition = reader["TotalPurchaseRequisition"] != DBNull.Value ? Convert.ToInt32(reader["TotalPurchaseRequisition"]) : 0;
-                    Item.PendingOrder = reader["PendingOrder"] != DBNull.Value ? Convert.ToInt32(reader["PendingOrder"]) : 0;
-                    Item.TotalPurchases = reader["TotalPurchases"] != DBNull.Value ? Convert.ToDecimal(reader["TotalPurchases"]) : 0m;
-
-                }
+        //        cmd.CommandTimeout = 300;
+        //        connection.Open();
+        //        SqlDataReader reader = cmd.ExecuteReader();
+        //        while (reader.Read())
+        //        {
 
 
-                return Item;
+        //            Item.InStock = reader["InStock"] != DBNull.Value ? Convert.ToInt32(reader["InStock"]) : 0;
+        //            Item.TotalVendor = reader["TotalVendor"] != DBNull.Value ? Convert.ToInt32(reader["TotalVendor"]) : 0;
+        //            Item.Categories = reader["Categories"] != DBNull.Value ? Convert.ToInt32(reader["Categories"]) : 0;
+        //            Item.TotalPurchaseRequisition = reader["TotalPurchaseRequisition"] != DBNull.Value ? Convert.ToInt32(reader["TotalPurchaseRequisition"]) : 0;
+        //            Item.PendingOrder = reader["PendingOrder"] != DBNull.Value ? Convert.ToInt32(reader["PendingOrder"]) : 0;
+        //            Item.TotalPurchases = reader["TotalPurchases"] != DBNull.Value ? Convert.ToDecimal(reader["TotalPurchases"]) : 0m;
 
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-            finally
-            {
-                connection.Close();
-            }
+        //        }
 
 
-        }
+        //        return Item;
+
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        throw ex;
+        //    }
+        //    finally
+        //    {
+        //        connection.Close();
+        //    }
+
+
+        //}
         public List<DashBoard> ManagerSalesAndPurchaseComparison()
         {
             try
@@ -289,7 +287,7 @@ namespace ERP_Component_DAL.Services
             }
         }
 
-        public List<DashBoard> SummaryOrderData()
+        /*public List<DashBoard> SummaryOrderData()
         {
             try
             {
@@ -322,7 +320,7 @@ namespace ERP_Component_DAL.Services
             {
                 connection.Close();
             }
-        }
+        }*/
 
 
 
@@ -1010,7 +1008,7 @@ namespace ERP_Component_DAL.Services
 
 
         }
-        public List<DashBoard> ManagerSalesAndPurchaseComparison()
+        /*public List<DashBoard> ManagerSalesAndPurchaseComparison()
         {
             try
             {
@@ -1049,7 +1047,7 @@ namespace ERP_Component_DAL.Services
             {
                 connection.Close();
             }
-        }
+        }*/
 
 
 
@@ -1497,65 +1495,59 @@ namespace ERP_Component_DAL.Services
             }
         }
 
-       
+
 
 
 
         public List<MonthlyRetailSales> GetMonthlySalesReport()
         {
-            var materials = new List<MonthlyRetailSales>();
+            var salesList = new List<MonthlyRetailSales>();
+
             try
             {
                 string connectionstring = configuration.GetConnectionString("DefaultConnectionString");
 
                 using (SqlConnection connection = new SqlConnection(connectionstring))
+                using (SqlCommand cmd = new SqlCommand("GetMonthlySalesReport", connection))
                 {
-                    using (SqlCommand cmd = new SqlCommand("GetMonthlySalesReport", connection))
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    connection.Open();
+
+                    using (SqlDataReader reader = cmd.ExecuteReader())
                     {
-                        cmd.CommandType = CommandType.StoredProcedure;
-
-                     
-
-                        connection.Open();
-
-                        using (SqlDataReader reader = cmd.ExecuteReader())
+                        while (reader.Read())
                         {
-                            while (reader.Read())
+                            salesList.Add(new MonthlyRetailSales
                             {
-                                materials.Add(new MonthlyRetailSales
-                                {
+                                StoreName = reader["StoreName"].ToString(),
+                                Jan = reader["Jan"] != DBNull.Value ? Convert.ToDecimal(reader["Jan"]) : 0,
+                                Feb = reader["Feb"] != DBNull.Value ? Convert.ToDecimal(reader["Feb"]) : 0,
+                                Mar = reader["Mar"] != DBNull.Value ? Convert.ToDecimal(reader["Mar"]) : 0,
+                                Apr = reader["Apr"] != DBNull.Value ? Convert.ToDecimal(reader["Apr"]) : 0,
+                                May = reader["May"] != DBNull.Value ? Convert.ToDecimal(reader["May"]) : 0,
+                                Jun = reader["Jun"] != DBNull.Value ? Convert.ToDecimal(reader["Jun"]) : 0,
+                                Jul = reader["Jul"] != DBNull.Value ? Convert.ToDecimal(reader["Jul"]) : 0,
+                                Aug = reader["Aug"] != DBNull.Value ? Convert.ToDecimal(reader["Aug"]) : 0,
+                                Sep = reader["Sep"] != DBNull.Value ? Convert.ToDecimal(reader["Sep"]) : 0,
+                                Oct = reader["Oct"] != DBNull.Value ? Convert.ToDecimal(reader["Oct"]) : 0,
+                                Nov = reader["Nov"] != DBNull.Value ? Convert.ToDecimal(reader["Nov"]) : 0,
+                                Dec = reader["Dec"] != DBNull.Value ? Convert.ToDecimal(reader["Dec"]) : 0,
+                                centerType = reader["CenterType"] != DBNull.Value ? Convert.ToInt32(reader["CenterType"]) : 0,
+                            });
 
-
-                                    StoreName = reader["StoreName"].ToString(),
-                                    Jan = Convert.ToDecimal(reader["Jan"]),
-                                    Feb = Convert.ToDecimal(reader["Feb"]),
-                                    Mar = Convert.ToDecimal(reader["Mar"]),
-                                    Apr = Convert.ToDecimal(reader["Apr"]),
-                                    May = Convert.ToDecimal(reader["May"]),
-                                    Jun = Convert.ToDecimal(reader["Jun"]),
-                                    Jul = Convert.ToDecimal(reader["Jul"]),
-                                    Aug = Convert.ToDecimal(reader["Aug"]),
-                                    Sep = Convert.ToDecimal(reader["Sep"]),
-                                    Oct = Convert.ToDecimal(reader["Oct"]),
-                                    Nov = Convert.ToDecimal(reader["Nov"]),
-                                    Dec = Convert.ToDecimal(reader["Dec"]),
-                                    TotalStore = Convert.ToDecimal(reader["Total_Store"]),
-                                    centerType = reader["CenterType"] != DBNull.Value ? Convert.ToInt32(reader["CenterType"]) : 0,
-
-
-                                });
-                            }
                         }
                     }
                 }
 
-                return materials;
+                return salesList;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 throw;
             }
         }
+
+
 
         public List<MonthlyRetailSales> GetDailyData()
         {
@@ -1798,7 +1790,7 @@ namespace ERP_Component_DAL.Services
 
 
 
-        public SalesSummary GetSalesSummary(string filterType, int? weekNumber)
+        public SalesSummary GetSalesSummary(string filterType, int? halfMonthNumber)
         {
             var result = new SalesSummary();
 
@@ -1809,13 +1801,15 @@ namespace ERP_Component_DAL.Services
                 using (SqlCommand cmd = new SqlCommand("GetSalesSummary", connection))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
+
                     cmd.Parameters.AddWithValue("@FilterType", filterType);
                     cmd.Parameters.AddWithValue("@SourceType", "All");
 
-                    if (weekNumber.HasValue)
-                        cmd.Parameters.AddWithValue("@WeekNumber", weekNumber.Value);
+                    // Replaced @WeekNumber with @HalfMonthNumber
+                    if (halfMonthNumber.HasValue)
+                        cmd.Parameters.AddWithValue("@HalfMonthNumber", halfMonthNumber.Value);
                     else
-                        cmd.Parameters.AddWithValue("@WeekNumber", DBNull.Value);
+                        cmd.Parameters.AddWithValue("@HalfMonthNumber", DBNull.Value);
 
                     connection.Open();
 
@@ -1843,16 +1837,13 @@ namespace ERP_Component_DAL.Services
                             foreach (var period in periods)
                             {
                                 decimal value = 0;
-
                                 if (reader[period] != DBNull.Value)
                                 {
-                                    // Safely try to read as decimal
                                     if (decimal.TryParse(reader[period].ToString(), out var parsedValue))
                                     {
                                         value = parsedValue;
                                     }
                                 }
-
                                 storeRow.SalesByPeriod[period] = value;
                             }
 
@@ -1864,6 +1855,8 @@ namespace ERP_Component_DAL.Services
 
             return result;
         }
+
+
 
 
     }

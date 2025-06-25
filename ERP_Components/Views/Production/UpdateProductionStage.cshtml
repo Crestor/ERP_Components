@@ -44,21 +44,8 @@
 
 
                 </tr>
-<<<<<<< Updated upstream
+
             }
-=======
-            </thead>
-            <tbody>
-                @for (var i = 0; i < Model.materials.Count; i++)
-                {
-                    var v = Model.materials[i];
-                    <tr data-id="@v">
-                        <td>Stage @v.stage</td>
-                        <td>@v.stageWork</td>
-                        <td>@v.stageTime</td>
-                        <td>@v.status</td>
-               
->>>>>>> Stashed changes
 
         </tbody>
     </table>
@@ -72,7 +59,7 @@
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
-<<<<<<< Updated upstream
+
     $(document).ready(function () {
         $("#nextStageBtn").click(function () {
             const dataToSend = {
@@ -137,8 +124,8 @@
                         });
     });
 </script>
-=======
-$(document).ready(function () {
+
+@* $(document).ready(function () {
     $("#nextStageBtn").click(function () {
         const dataToSend = {
             productId: $("#productId[name='productId']").val(),
@@ -185,8 +172,4 @@ $(document).ready(function () {
 
 
 });
-</script>
-
-
-
->>>>>>> Stashed changes
+</script> *@

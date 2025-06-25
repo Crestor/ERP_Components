@@ -66,33 +66,29 @@
 </form>
     </div>
 
-<div>
-@if (ViewBag.CurrentFilter == "Daily")
-{
-    <form method="get" asp-action="SalesSummaryData" class="mb-3 d-flex justify-content-end align-items-center gap-2">
-        <input type="hidden" name="filterType" value="Daily" />
+    <div style="display: grid; align-items: center; justify-content: center; margin-right: 40px;">
+        <form method="get" asp-action="SalesSummaryData" class="mb-3 d-flex justify-content-end align-items-center gap-2">
+            <input type="hidden" name="filterType" value="@ViewBag.CurrentFilter" />
 
-        <button type="submit"
-                name="weekNumber"
-                value="@(ViewBag.CurrentWeek - 1)"
-                class="icon-btn"
-                style="width: 0px;"
-                @(ViewBag.CurrentWeek == 1 ? "disabled" : "")>
-            <i class="fa-solid fa-circle-chevron-left"></i>
-        </button>
+            <button type="submit"
+                    name="halfMonthNumber"
+                    value="@(ViewBag.CurrentHalf - 1)"
+                    class="icon-btn"
+                    @(ViewBag.CurrentHalf <= 1 ? "disabled" : "")>
+                <i class="fa-solid fa-circle-chevron-left"></i>
+            </button>
 
-        <button type="submit"
-                name="weekNumber"
-                value="@(ViewBag.CurrentWeek + 1)"
-                class="icon-btn"
-                @(ViewBag.CurrentWeek == ViewBag.MaxWeek ? "disabled" : "")>
-            <i class="fa-solid fa-circle-chevron-right"></i>
-        </button>
-    </form>
-}
-    </div>
+            <button type="submit"
+                    name="halfMonthNumber"
+                    value="@(ViewBag.CurrentHalf + 1)"
+                    class="icon-btn"
+                    @(ViewBag.CurrentHalf >= ViewBag.MaxHalf ? "disabled" : "")>
+                <i class="fa-solid fa-circle-chevron-right"></i>
+            </button>
+        </form>
+
 </div>
-
+</div>
 @{
     var columnTotals = new Dictionary<string, decimal>();
     foreach (var period in Model.Periods)

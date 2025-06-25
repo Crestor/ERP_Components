@@ -202,8 +202,6 @@ namespace ERP_Components.Controllers
         public IActionResult SaveBillOfMaterial(Production product)
         {
             productionServices.SaveBilOlfMaterial(product);
-
-<<<<<<< Updated upstream
             return RedirectToAction("BillofMaterial" , "Production");
         }
         public IActionResult AddStages()
@@ -211,7 +209,6 @@ namespace ERP_Components.Controllers
             List<Production> product = productionServices.GetProductDetailforbill();
             return View(product);
         }
-=======
 
         //<------------------------------ View Production Stages---------------------->
 
@@ -292,9 +289,6 @@ namespace ERP_Components.Controllers
         //    productionServices.updateSFDetails(O);
         //    return RedirectToAction("Salesforecasting");
         //}
-
-
->>>>>>> Stashed changes
 
     }
 }

@@ -78,14 +78,14 @@ namespace ERP_Components.Controllers
 
 
 
-        public IActionResult Dashboard()
-        {
-            DashBoard model = managerServices.GetManagerDashboardData();
-            model.ComparisonSalesPurchase = managerServices.ManagerSalesAndPurchaseComparison();
-            model.OrderSummary = managerServices.SummaryOrderData();
+        //public IActionResult Dashboard()
+        //{
+        //    DashBoard model = managerServices.GetManagerDashboardData();
+        //    model.ComparisonSalesPurchase = managerServices.ManagerSalesAndPurchaseComparison();
+        //    model.OrderSummary = managerServices.SummaryOrderData();
 
-            return View(model);
-        }
+        //    return View(model);
+        //}
 
         public IActionResult ApproveVendorQuotation()
         {
@@ -95,16 +95,10 @@ namespace ERP_Components.Controllers
 
         public IActionResult ApproveVendorQuotationDetails(Guid requisitionId)
         {
-<<<<<<< Updated upstream
             var vendor = new Vendor();
-            vendor.Items = managerServices.GetRequisitionItemsListData(requisitionId);
+            vendor.Items = managerServices.GetRequisitionItemsListData (requisitionId);
             vendor.lists = managerServices.GetRequisitionQuotationListData(requisitionId);
-=======
-           var vendor = new Vendor();
-            vendor.Items =  managerServices.GetRequisitionItemsListData(requisitionId);
-             vendor.lists = managerServices.GetRequisitionQuotationListData(requisitionId);
-               managerServices.UpdateVendorQuotationStatusToRejected(requisitionId);
->>>>>>> Stashed changes
+            managerServices.UpdateVendorQuotationStatusToRejected(requisitionId);
             return View(vendor);
 
         }
@@ -116,12 +110,10 @@ namespace ERP_Components.Controllers
             return RedirectToAction("ApproveVendorQuotation");
         }
 
-<<<<<<< Updated upstream
         public IActionResult Productsales()
         {
             return View();
         }   
-=======
 
 
         //<----------------------------------Purchase Data-------------------------------------------->
@@ -331,37 +323,78 @@ namespace ERP_Components.Controllers
         //public IActionResult SalesSummaryData(string filterType = "Daily")
         //{
         //    ViewBag.CurrentFilter = filterType;
-        //    var model = managerServices.GetSalesSummary(filterType); 
+        //    var model = managerServices.GetSalesSummary(filterType);
         //    return View(model);
         //}
 
 
-        public IActionResult SalesSummaryData(string filterType = "Daily", int? weekNumber = null)
+        // week wise data
+
+        //public IActionResult SalesSummaryData(string filterType = "Daily", int? weekNumber = null)
+        //{
+        //    ViewBag.CurrentFilter = filterType;
+
+
+        //    if (filterType == "Daily" && !weekNumber.HasValue)
+        //    {
+        //        int today = DateTime.Now.Day;
+        //        weekNumber = (int)Math.Ceiling(today / 7.0);
+        //    }
+
+        //    ViewBag.CurrentWeek = weekNumber;
+
+
+        //    if (filterType == "Daily" && weekNumber.HasValue)
+        //    {
+        //        var startDay = ((weekNumber.Value - 1) * 7 + 1);
+        //        var startDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, startDay);
+        //        var endDate = startDate.AddDays(6);
+        //        ViewBag.CurrentWeekRange = $"{startDate:dd-MMM} to {endDate:dd-MMM}";
+
+
+        //        ViewBag.MaxWeek = (int)Math.Ceiling(DateTime.Now.Day / 7.0);
+        //    }
+
+        //    var model = managerServices.GetSalesSummary(filterType, weekNumber);
+        //    return View(model);
+        //}
+
+
+
+        // fifteen days wise
+        public IActionResult SalesSummaryData(string filterType = "Daily", int? halfMonthNumber = null)
         {
             ViewBag.CurrentFilter = filterType;
 
-           
-            if (filterType == "Daily" && !weekNumber.HasValue)
+            // Automatically determine the current half if not provided
+            if (!halfMonthNumber.HasValue || halfMonthNumber < 1)
             {
                 int today = DateTime.Now.Day;
-                weekNumber = (int)Math.Ceiling(today / 7.0);
+                halfMonthNumber = today <= 15 ? 1 : 2;
             }
 
-            ViewBag.CurrentWeek = weekNumber;
+            int maxHalf = 2;
+            ViewBag.CurrentHalf = halfMonthNumber;
+            ViewBag.MaxHalf = maxHalf;
 
-            
-            if (filterType == "Daily" && weekNumber.HasValue)
+
+            if (filterType == "Daily")
             {
-                var startDay = ((weekNumber.Value - 1) * 7 + 1);
-                var startDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, startDay);
-                var endDate = startDate.AddDays(6);
-                ViewBag.CurrentWeekRange = $"{startDate:dd-MMM} to {endDate:dd-MMM}";
+                int currentYear = DateTime.Now.Year;
+                int currentMonth = DateTime.Now.Month;
 
-          
-                ViewBag.MaxWeek = (int)Math.Ceiling(DateTime.Now.Day / 7.0);
+                DateTime startDate = (halfMonthNumber == 1)
+                    ? new DateTime(currentYear, currentMonth, 1)
+                    : new DateTime(currentYear, currentMonth, 16);
+
+                DateTime endDate = (halfMonthNumber == 1)
+                    ? new DateTime(currentYear, currentMonth, 15)
+                    : new DateTime(currentYear, currentMonth, DateTime.DaysInMonth(currentYear, currentMonth));
+
+                ViewBag.CurrentHalfRange = $"{startDate:dd-MMM} to {endDate:dd-MMM}";
             }
 
-            var model = managerServices.GetSalesSummary(filterType, weekNumber);
+            var model = managerServices.GetSalesSummary(filterType, halfMonthNumber);
             return View(model);
         }
 
@@ -424,9 +457,5 @@ namespace ERP_Components.Controllers
             var month = managerServices.GetPendingQuotationCount();
             return Json(month.BillCount);
         }
-
-
-
->>>>>>> Stashed changes
     }
 }
