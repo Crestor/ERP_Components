@@ -44,7 +44,7 @@ namespace ERP_Component_DAL.Models
         public string Street { get; set; }
         public string District { get; set; }
         public string Address { get; set; }
-     
+
         public string AccountNo { get; set; }
         public string AccountHolderName { get; set; }
         public string BankName { get; set; }
@@ -58,17 +58,5 @@ namespace ERP_Component_DAL.Models
         public List<AddCustomer> contact { get; set; }
     }
 
-   
+
 }
-
-
-
-
-
-
-
-
-
-
-
-

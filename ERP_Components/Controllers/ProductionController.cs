@@ -290,5 +290,15 @@ namespace ERP_Components.Controllers
         //    return RedirectToAction("Salesforecasting");
         //}
 
+      public IActionResult ViewMR()
+        {
+            List<Production> materials = new List<Production>();
+            return View(materials);
+        }
+        public IActionResult AllocateToWeaver()
+        {
+            List<Production> productionOrders = new List<Production>();
+            return View(productionOrders);
+        }
     }
 }

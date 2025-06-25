@@ -493,7 +493,7 @@ label {
     display: block;
 }
 .tab-btn {
-    background-color: #138496;
+    background-color: #fcbcbc;
     color: white;
     border: none;
     padding: 6px 12px;
@@ -501,6 +501,6 @@ label {
 }
 
     .tab-btn.active {
-        background-color: #fcbcbc !important;
+        background-color: #138496 !important;
         color: white !important;
     }
