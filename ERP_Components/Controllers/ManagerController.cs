@@ -51,7 +51,7 @@ namespace ERP_Components.Controllers
         public IActionResult ApproveVendor(Guid vendorId, Guid requisitionId)
         {
 
-            managerServices.UpdateVendorQuotationStatusAndRequisitionStatusToApproved(vendorId, requisitionId);
+            managerServices.UpdateVendorQuotationStatusAndRequisitionStatusToApproved (vendorId, requisitionId);
             return RedirectToAction("ApproveVendorQuotation");
         }
 

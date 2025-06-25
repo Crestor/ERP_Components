@@ -141,20 +141,19 @@ namespace ERP_Components.Controllers
 
         [HttpGet]
         public IActionResult AddWarehouseStock()
-        
-            {
-                var product = new List<Product>
-    {
-        new Product
         {
+                var product = new List<Product>
+                {
+                    new Product
+                    {
 
-            items = warehouseServices.GetItemsNames() ?? new List<Items>(),
-            warehouse = warehouseServices.getWarehouseName() ?? new List<Warehouse>()
+                        items = warehouseServices.GetItemsNames() ?? new List<Items>(),
+                        warehouse = warehouseServices.getWarehouseName() ?? new List<Warehouse>()
 
+                    }
+                };
+            return View(product);
         }
-    };
-                return View(product);
-            }
 
         public JsonResult GetItemSKU(Guid itemId)
         {

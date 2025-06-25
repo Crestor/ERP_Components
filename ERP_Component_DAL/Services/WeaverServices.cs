@@ -227,8 +227,8 @@ namespace ERP_Component_DAL.Services
             {
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
-                    string query = @"select wo.WorkOrderSeries,wo.WorkOrderID,wo.Quantity,ws.StatusName,wo.WorkOrderStatus,it.ItemName  from WorkOrder wo 
-                                    join Items it on wo.ProductID = it.ItemId join WorkOrderStatuses ws on ws.WorkOrderStatus = wo.WorkOrderStatus where wo.WorkOrderStatus = 1";
+                    string query = @"select wo.WorkOrderSeries,wo.WorkOrderID,wo.Quantity,ws.StatusName,wo.WorkOrderStatus,it.ItemName from WorkOrder wo 
+                                    join Items it on wo.ProductID = it.ItemId join WorkOrderStatuses ws on ws.WorkOrderStatus = wo.WorkOrderStatus where wo.WorkOrderStatus = 1 ORDER BY wo.WorkOrderSeries";
 
 
 
@@ -320,7 +320,11 @@ namespace ERP_Component_DAL.Services
             {
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
-                    string query = $"SELECT wo.WorkOrderSeries,wo.WorkOrderID,wo.Quantity,wo.WorkOrderStatus,i.ItemName,i.Specification,iv.InStock, (SELECT SUM(Quantity) FROM AllocatedWork WHERE WorkOrderID = '{WorkOrederId}') AS AllocatedQuantity from WorkOrder wo \r\njoin Items i on wo.ProductID = i.ItemId join Inventory iv on iv.ItemId = i.ItemId JOIN DistributionCenter dc ON dc.CenterID = iv.CenterID where WorkOrderID = '{WorkOrederId}' AND dc.CenterType = 6";
+                    string query = $"SELECT wo.WorkOrderSeries,wo.Quantity,wo.WorkOrderStatus,i.ItemName,i.Specification,iv.InStock, " +
+                        $"(SELECT SUM(Quantity) FROM AllocatedWork WHERE WorkOrderID = '{WorkOrederId}') AS AllocatedQuantity, " +
+                        $"(SELECT SUM(Quantity) FROM DyeingOrder WHERE WorkOrderID = '{WorkOrederId}') AS DyeingQuantity from WorkOrder wo " +
+                        $"join Items i on wo.ProductID = i.ItemId join Inventory iv on iv.ItemId = i.ItemId " +
+                        $"JOIN DistributionCenter dc ON dc.CenterID = iv.CenterID where WorkOrderID = '{WorkOrederId}' AND dc.CenterType = 6; ";
 
 
 
@@ -331,22 +335,22 @@ namespace ERP_Component_DAL.Services
                         using (SqlDataReader reader = cmd.ExecuteReader())
                         {
 
-                            while (reader.Read())
+                            if(reader.Read())
                             {
                                 weaver = new Weaver
                                 {
                                     WorkOrderSeries = reader["WorkOrderSeries"]?.ToString(),
-                                    WorkOrderId = reader["WorkOrderID"] != DBNull.Value ? (Guid)reader["WorkOrderID"] : Guid.Empty,
+                                    WorkOrderId = WorkOrederId,
                                     requiredQuantity = reader["Quantity"] != DBNull.Value ? Convert.ToInt32(reader["Quantity"]) : 0,
                                     availableQuantity = reader["InStock"] != DBNull.Value ? Convert.ToInt32(reader["InStock"]) : 0,
                                     Status = reader["WorkOrderStatus"]?.ToString(),
                                     ProductName = reader["ItemName"]?.ToString(),
                                     Specification = reader["Specification"] != DBNull.Value ? reader["Specification"].ToString() : string.Empty,
-                                    AllocatedQuantity = reader["AllocatedQuantity"] != DBNull.Value ? Convert.ToInt32(reader["AllocatedQuantity"]) : 0
+                                    AllocatedQuantity = reader["AllocatedQuantity"] != DBNull.Value ? Convert.ToInt32(reader["AllocatedQuantity"]) : 0,
+                                    dyeingQuantity = reader["DyeingQuantity"] != DBNull.Value ? Convert.ToInt32(reader["DyeingQuantity"]): 0,
+
                                 };
                             }
-
-
                         }
 
                     }
@@ -359,18 +363,64 @@ namespace ERP_Component_DAL.Services
                 throw;
             }
         }
+
+        public Weaver GetPhases(Weaver workOrders)
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    string query = $"SELECT wop.Phase, (wop.PhaseTime* wo.Quantity) AS PhaseTime, wop.PhaseWork, " +
+                        $"SELECT WorkStatus FROM AllocatedWork WHERE WorkOrderID = '{workOrders.WorkOrderId}' AS PhaseStatus, " +
+                        $"SELECT do.OrderStatus FROM DyeingOrderMapping dom JOIN DyeingOrder do ON dom.DyeingOrderID = do.DyeingOrderID WHERE dom.WorkOrderID = '{workOrders.WorkOrderId}'" +
+                        $"FROM WorkOrderPhases wop JOIN WorkOrder wo ON wo.ProductID = wop.ProductID WHERE WorkOrderID = '{workOrders.WorkOrderId}'";
+
+
+
+                    using (SqlCommand cmd = new SqlCommand(query, connection))
+                    {
+                        connection.Open();
+
+                        using (SqlDataReader reader = cmd.ExecuteReader())
+                        {
+
+                            while (reader.Read())
+                            {
+                                workOrders.workOrderPhases.Add(new Weaver.WorkOrderPhases
+                                    {
+                                        phase = reader.GetInt32("Phase"),
+                                        phaseTime = reader.GetFloat("PhaseTime"),
+                                        phaseWork = reader.GetString("PhaseWork")                                   
+
+                                    }
+                                );
+                            }
+
+
+                        }
+
+                    }
+                }
+
+                return workOrders;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+
+        }
         public bool AllocateToWarehouse(Guid WorkOrderId)
         {
             try
             {
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
-                    string query = $"update Workorder set WorkOrderStatus = 2  Where WorkOrderId = '{WorkOrderId}' ";
-
-                    using (SqlCommand cmd = new SqlCommand(query, connection))
+                    using (SqlCommand cmd = new SqlCommand("AllocateToWarehouseFromWeaver", connection))
                     {
                         connection.Open();
-
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@WorkOrderID", WorkOrderId);
                         int rowsAffected = cmd.ExecuteNonQuery();
                         return rowsAffected > 0;
                     }
@@ -615,7 +665,7 @@ namespace ERP_Component_DAL.Services
                 throw;
             }
         }
-        public List<Weaver> GetRequiredMaterial()
+        public List<Weaver> GetRequiredMaterial(Guid WorkOrderID)
         {
             List<Weaver> weaver = new List<Weaver>();
 
@@ -629,12 +679,13 @@ namespace ERP_Component_DAL.Services
                                     JOIN Items m ON m.ItemId = pmm.MaterialID
                                     JOIN Inventory i ON pmm.MaterialID = i.ItemId
                                     JOIN DistributionCenter dc ON i.CenterId = dc.CenterId
-                                    WHERE dc.CenterType = 6";
+                                    WHERE dc.CenterType = 6 AND wo.WorkOrderID = @WorkOrderID";
 
 
 
                     using (SqlCommand cmd = new SqlCommand(query, connection))
                     {
+                        cmd.Parameters.AddWithValue("@WorkOrderID", WorkOrderID);
                         connection.Open();
 
                         using (SqlDataReader reader = cmd.ExecuteReader())
@@ -660,7 +711,7 @@ namespace ERP_Component_DAL.Services
 
                 return weaver;
             }
-            catch (Exception)
+            catch (Exception e)
             {
                 throw;
             }
@@ -840,8 +891,10 @@ namespace ERP_Component_DAL.Services
             }
         }
 
-        public void GetOrdersWithCompletedWeavingProducts()
+        public VeiwOrdersReadyForDyeing GetOrdersWithCompletedWeavingProducts()
         {
+            
+            VeiwOrdersReadyForDyeing eiwOrdersReadyForDyeing = new VeiwOrdersReadyForDyeing();
             try
             {
                 using (SqlConnection connection = new SqlConnection(connectionString))
@@ -857,23 +910,32 @@ namespace ERP_Component_DAL.Services
                                     HAVING (SUM(aw.RecievedQuantity) - ISNULL(SUM(dom.Quantity), 0)) > 0;
                                     ";
 
-                    using (SqlCommand cmd = new SqlCommand(query, connection))
+                    using(SqlCommand cmd = new SqlCommand(query, connection))
                     {
-                        cmd.Parameters.AddWithValue("@WorkOrderID", model.WorkOrderId);
-                        cmd.Parameters.AddWithValue("@AllocationCode", model.AllocationSeries ?? "");
-                        cmd.Parameters.AddWithValue("@WorkerID", model.WeaverId);
-                        cmd.Parameters.AddWithValue("@Quantity", model.AllocatedQuantity);
-                        cmd.Parameters.AddWithValue("@RatePerPieces", model.PerPiecePrize);
-
-                        cmd.ExecuteNonQuery();
-                    }
-
-                    return true;
+                        using(SqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                eiwOrdersReadyForDyeing.orders.Add(
+                                    new VeiwOrdersReadyForDyeing.ReadyToDye
+                                    {
+                                        workOrderId = reader.GetGuid("WorkOrderID"),
+                                        workOrderSeries = reader.GetString("WorkOrderSeries"),
+                                        productName = reader.GetString("ItemName"),
+                                        specifications = reader.GetString("specification"),
+                                        totalQuantity = reader.GetInt32("Quantity"),
+                                        totalReceived = reader.GetInt32("TotalReceived")
+                                    }
+                                );
+                            }
+                        }
+                    }                    
                 }
+                return eiwOrdersReadyForDyeing;
             }
             catch (Exception ex)
             {
-                return false;
+                throw;
             }
         }
     }

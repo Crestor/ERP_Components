@@ -94,7 +94,7 @@ namespace ERP_Components.Controllers
         {
             Weaver workOrders = weaverServices.ViewProductOfStartWeaving(WorkOrderId);
 
-            List<Weaver> weaver = weaverServices.GetRequiredMaterial();
+            List<Weaver> weaver = weaverServices.GetRequiredMaterial(WorkOrderId);
 
             var workOrder = new Weaver
             {
@@ -135,6 +135,8 @@ namespace ERP_Components.Controllers
         public IActionResult ViewPhases(Guid WorkOrderId)
         {
             Weaver workOrders = weaverServices.ViewProductOfStartWeaving(WorkOrderId);
+            workOrders = weaverServices.GetPhases(workOrders);
+
             List<Weaver> weaver = weaverServices.GetWeavers();
             List<Weaver> Dyer = weaverServices.GetDyer();
             var workOrder = new Weaver
@@ -155,14 +157,13 @@ namespace ERP_Components.Controllers
         public IActionResult ViewCompletedWorkOrder()
         {
             List<Weaver> weaver = weaverServices.ViewCompletedWorkOrder();
-
             return View(weaver);
         }
         public IActionResult MaterialRequisitionforWeaver(Guid WorkOrderId)
         {
             Weaver workOrders = weaverServices.ViewProductOfStartWeaving(WorkOrderId);
 
-            List<Weaver> weaver = weaverServices.GetRequiredMaterial();
+            List<Weaver> weaver = weaverServices.GetRequiredMaterial(WorkOrderId);
 
             var workOrder = new Weaver
             {
@@ -189,8 +190,8 @@ namespace ERP_Components.Controllers
         }
         public IActionResult AllocateToDeyer()
         {
-            weaverServices.GetOrdersWithCompletedWeavingProducts();
-            return View();
+            VeiwOrdersReadyForDyeing veiwOrdersReadyForDyeing = weaverServices.GetOrdersWithCompletedWeavingProducts();
+            return View(veiwOrdersReadyForDyeing);
         }
 
         public IActionResult Allocationfordying(Weaver weaver)

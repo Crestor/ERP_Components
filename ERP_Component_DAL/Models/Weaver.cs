@@ -64,6 +64,7 @@ namespace ERP_Component_DAL.Models
 
         public int? pendingQuantity { get; set; }
         public int? AllocatedQuantity { get; set; }
+        public int? dyeingQuantity { get; set; }
 
        public string AllocationSeries { get; set; }
         public string? RequisitionSeries { get; set; }
@@ -74,6 +75,15 @@ namespace ERP_Component_DAL.Models
         public List<Weaver>? CompletedWorkOrder { get; set; }
         public List<Weaver>? DispatchedWorkOrder { get; set; }
         public List<Weaver> MaterialRequired { get; set; }
+
+        public List<WorkOrderPhases>? workOrderPhases { get; set; }
+
+        public class WorkOrderPhases
+        {
+            public int phase { get; set; }
+            public float phaseTime { get; set; }
+            public string? phaseWork { get; set; }
+        }
 
 
     }
