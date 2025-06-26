@@ -1,0 +1,33 @@
+﻿@using ERP_Component_DAL.Models;
+@{
+    ViewBag.Title = "View Weaving Order";
+    Layout = "~/Views/Shared/_LayoutINV.cshtml";
+}
+<link rel="stylesheet" href="~/css/Product.css" />
+@model AllocatedWork
+
+<div class="table">
+    <table>
+        <thead>
+            <tr>
+                <th>S.No.</th>
+                <th>Allocation Code</th>
+                <th>Worker Name</th>
+                <th>Quantity</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @for(int i =0;i<Model.allocatedWorks.Count;i++)
+            {
+                <tr>
+                    <td>@(i + 1)</td>
+                    <td>@Model.allocatedWorks[i].AllocationCode</td>
+                    <td>@Model.allocatedWorks[i].WorkerName</td>
+                    <td>@Model.allocatedWorks[i].Quantity</td>
+                    <td><button onclick="location.href='@Url.Action("RecieveWeavingOrder","Weaver",new{AllocatedWorkID = Model.allocatedWorks[i].AllocatedWorkID,RecievedQuantity = Model.allocatedWorks[i].Quantity})'">Recieved</button></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

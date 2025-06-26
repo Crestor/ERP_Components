@@ -96,7 +96,7 @@
             <h3>Allocate Material To Weaver</h3>
             <div class="form-row">
                 <label for="AllocationSeries">Allocation Series:</label>
-                <input type="text" id="AllocationSeries" name="AllocationSeries" readonly />
+                <input type="text" id="AllocationSeriesWeaver" name="AllocationSeries" readonly />
                 <label for="weaverName">Weaver Name:</label>
                 <select id="weaverName" name="WeaverId" required>
                     <option value="">Select Weaver</option>
@@ -112,7 +112,7 @@
                 <input type="text" id="AllocatedQuantity" name="AllocatedQuantity" required />
                 <div id="showinvalidinput"></div>
                 <label for="PerPiecePrize">Per Piece Prize:</label>
-                <input type="number" id="PerPiecePrize" name="PerPiecePrize" required />
+                <input type="number" id="PerPiecePrizeweaver" name="PerPiecePrize" required />
             </div>
 
             <input type="hidden" name="WorkOrderId" value="@Model.WorkOrderId" />
@@ -132,9 +132,9 @@
             <h3>Allocate Material To Deyer</h3>
             <div class="form-row">
                 <label for="AllocationSeries">Allocation Series:</label>
-                <input type="text" id="AllocationSeries" name="AllocationSeries" readonly />
-                <label for="DeyerName">Deyer Name:</label>
-                <select id="DeyerName" name="DeyerName" required>
+                <input type="text" id="AllocationSeriesDeyer" name="AllocationSeries" readonly />
+                <label for="WorkerName">Deyer Name:</label>
+                <select id="DeyerName" name="WorkerID" required>
                     <option value="">Select Deyer</option>
                     @foreach (var Dyer in Model.Dyer)
                     {
@@ -144,8 +144,8 @@
                 </select>
             </div>
             <div class="form-row" style="width:50%">
-                <label for="PerPiecePrize">Per Piece Prize:</label>
-                <input type="number" id="PerPiecePrize" name="PerPiecePrize" required />
+                 <label for="Quantity">Quantity:</label>
+                <input type="number" id="PerPiecePrizedyer" name="Quantity" value="@Model.Quantity" required />
             </div>
 
             <input type="hidden" name="WorkOrderId" value="@Model.WorkOrderId" />
@@ -163,7 +163,7 @@
 <div class="button">
     <button id="showpopupforWaever" type="button">Allocate To Weaver</button>
     <button id="showpopupforDeyer" type="button">Allocate for Deying</button>
-    <button id="Completeorder" type="submit" form="mainForm">Complete</button>
+    <button onclick="location.href='@Url.Action("WorkOrderCompleted","Weaver",new{workOrderID = Model.WorkOrderId})'">Complete</button>
 </div>
 
 <script>
@@ -187,9 +187,7 @@
 </script>
 
 <script>
-    document.addEventListener("DOMContentLoaded", function () {
-        const input = document.getElementById("AllocationSeries");
-
+        document.addEventListener("DOMContentLoaded", function () {
         const year = new Date().getFullYear();
         let lastCode = localStorage.getItem("lastAllocationCode");
 
@@ -206,7 +204,12 @@
         }
 
         const newCode = `AL-${year}-${String(newNumber).padStart(4, '0')}`;
-        input.value = newCode;
+
+        const inputWeaver = document.getElementById("AllocationSeriesWeaver");
+        const inputDeyer = document.getElementById("AllocationSeriesDeyer");
+
+        if (inputWeaver) inputWeaver.value = newCode;
+        if (inputDeyer) inputDeyer.value = newCode;
 
         localStorage.setItem("lastAllocationCode", newCode);
     });

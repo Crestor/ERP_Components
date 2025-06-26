@@ -33,7 +33,7 @@
                         <td>@x.ProductName</td>
                         <td>@x.Quantity</td>
                         <td>
-                            <button onclick="viewDetails('@x.WorkOrderId')">Dispatch</button>
+                        <button onclick="location.href='@Url.Action("AllocateToWarehouse","Weaver",new{WorkOrderId = x.WorkOrderId})'">Dispatch</button>
                         </td>
                     </tr>
                 }

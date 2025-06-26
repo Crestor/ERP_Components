@@ -5,7 +5,7 @@
 	ViewBag.Title = "Material Requisition";
 	Layout = "~/Views/Shared/_LayoutINV.cshtml";
 }
- @model List<AddPurchaseRequisition>
+ @model List<Production>
 <div class="table">
 	<table>
 		<thead>
@@ -29,13 +29,13 @@
 
 				<tr>
 					<td>@index</td>
-					<td>@x.CreatedAt.ToShortDateString()</td>
-					<td>@x.requisitionSeries</td>
-					<td>@x.Descripion</td>
+					<td>@x.createdAt.ToShortDateString()</td>
+					<td>@x.RequisitionSeries</td>
+					<td>@x.description</td>
 					<td>
 						<div class="table-button">
 
-							<button class=".btn-sm2" onclick="location.href='@Url.Action("AllocateToWeaver","Production", new{requisitionId = x.RequisitionId}, null)'">View</button>
+							<button class=".btn-sm2" onclick="location.href='@Url.Action("AllocateToWeaver","Production", new{requisitionId = x.RequisitionID}, null)'">View</button>
 						</div>
 
 					</td>

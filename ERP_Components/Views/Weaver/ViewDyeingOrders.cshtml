@@ -1,0 +1,33 @@
+﻿@using ERP_Component_DAL.Models;
+@{
+    ViewBag.Title = "View Dyeing Order";
+    Layout = "~/Views/Shared/_LayoutINV.cshtml";
+}
+<link rel="stylesheet" href="~/css/Product.css" />
+@model DyeingOrder
+<div class="table">
+    <table>
+        <thead>
+            <tr>
+                <th>S.No.</th>
+                <th>Worker Name</th>
+                <th>Quantity</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @for(int i = 0; i < Model.dyeingOrders.Count; i++)
+            {
+                <tr>
+                    <td>@(i + 1)</td>
+                    <td>@Model.dyeingOrders[i].WorkerName</td>
+                    <td>@Model.dyeingOrders[i].Quantity</td>
+                    <td>@Model.dyeingOrders[i].OrderStatus</td>
+                    <td><button onclick="location.href='@Url.Action("RecieveDyeingOrder","Weaver",new{dyeingOrderID = Model.dyeingOrders[i].DyeingOrderID})'">Recieved</button></td>
+
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

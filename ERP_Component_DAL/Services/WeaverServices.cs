@@ -1010,7 +1010,7 @@ namespace ERP_Component_DAL.Services
                     connection.Open();
 
                     string query = @"SELECT aw.WorkOrderID, aw.AllocationCode, aw.WorkerID, w.WorkerName, aw.Quantity, aw.RatePerPeices, aw.CreatedAt, 
-                                    aw.RecievedQuantity, aw.WorkStatus, aw.AllocatedYarnID FROM AllocatedWork aw JOIN Workers w ON aw.WorkerID = w.WorkerID;";
+                                    aw.RecievedQuantity, aw.WorkStatus,aw.AllocatedWorkID, aw.AllocatedYarnID FROM AllocatedWork aw JOIN Workers w ON aw.WorkerID = w.WorkerID where aw.RecievedQuantity<aw.Quantity;";
 
                     using (SqlCommand cmd = new SqlCommand(query, connection))
                     {
@@ -1029,7 +1029,9 @@ namespace ERP_Component_DAL.Services
                                     CreatedAt = reader.GetDateTime(reader.GetOrdinal("CreatedAt")),
                                     RecievedQuantity = reader.GetInt32(reader.GetOrdinal("RecievedQuantity")),
                                     WorkStatus = reader.GetByte(reader.GetOrdinal("WorkStatus")),
-                                    AllocatedYarnID = reader.GetGuid(reader.GetOrdinal("AllocatedYarnID"))
+                                    AllocatedYarnID = reader.IsDBNull(reader.GetOrdinal("AllocatedYarnID")) ? (Guid?)null : reader.GetGuid(reader.GetOrdinal("AllocatedYarnID")),
+                                    AllocatedWorkID= reader.GetGuid(reader.GetOrdinal("AllocatedWorkID"))
+
                                 };
                                 weavingOrders.Add(allocatedWork);
                             }
@@ -1054,7 +1056,7 @@ namespace ERP_Component_DAL.Services
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
                     connection.Open();
-                    string query = @"SELECT do.DyeingOrderID, do.WorkerID, w.WorkerName, do.Quantity, do.OrderStatus, do.WorkOrderID FROM DyeingOrder do JOIN Workers w ON do.WorkerID = w.WorkerID;";
+                    string query = @"SELECT do.DyeingOrderID, do.WorkerID, w.WorkerName, do.Quantity, do.OrderStatus, do.WorkOrderID FROM DyeingOrder do JOIN Workers w ON do.WorkerID = w.WorkerID where do.OrderStatus = 1;";
 
                     using (SqlCommand cmd = new SqlCommand(query, connection))
                     {
@@ -1068,7 +1070,7 @@ namespace ERP_Component_DAL.Services
                                     WorkerID = reader.GetGuid(reader.GetOrdinal("WorkerID")),
                                     WorkerName = reader.GetString(reader.GetOrdinal("WorkerName")),
                                     Quantity = reader.GetInt32(reader.GetOrdinal("Quantity")),
-                                    OrderStatus = (WorkOrderStatuses)reader.GetInt32(reader.GetOrdinal("OrderStatus")),
+                                    OrderStatus = (WorkOrderStatuses)reader.GetByte(reader.GetOrdinal("OrderStatus")),
                                     WorkOrderID = reader.GetGuid(reader.GetOrdinal("WorkOrderID"))
                                 };
                                 dyeingOrders.Add(dyeingOrder);

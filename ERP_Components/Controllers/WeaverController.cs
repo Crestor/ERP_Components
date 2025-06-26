@@ -170,8 +170,10 @@ namespace ERP_Components.Controllers
 
         public IActionResult ViewCompletedWorkOrder()
         {
-            List<Weaver> weaver = weaverServices.ViewCompletedWorkOrder();
-            return View(weaver);
+            List<Weaver> CompletedWorkOrder = weaverServices.ViewWorkOrder(WorkOrderStatuses.COMPLETED);
+
+            //List<Weaver> weaver = weaverServices.ViewCompletedWorkOrder();
+            return View(CompletedWorkOrder);
         }
         public IActionResult MaterialRequisitionforWeaver(Guid WorkOrderId)
         {
@@ -233,7 +235,7 @@ namespace ERP_Components.Controllers
         public IActionResult WorkOrderCompleted(Guid workOrderID)
         {
             weaverServices.UpdateWorkOrderStatus(workOrderID, WorkOrderStatuses.COMPLETED);
-            return RedirectToAction();
+            return RedirectToAction("WorkOrder");
         }
 
         //ye jo bhi weaving orders hain vo jo weaver ko allocatekiye hain unko view karney ke liye hai
@@ -256,16 +258,16 @@ namespace ERP_Components.Controllers
         public IActionResult RecieveDyeingOrder(Guid dyeingOrderID)
         {
             weaverServices.UpdateDyeingOrder(dyeingOrderID);
-            return View();
+            return RedirectToAction("ViewDyeingOrders");
         }
 
         //Tushar yaha allocatedWorkID or recieved quantity bhej dena
         // ye allcate to weaver vaaley orders ko receive karney ke liye hai
         // ek baar AllocatedWork model check kar liyo bhaii
-        public IActionResult RecieveWeavingOrder(AllocatedWork allocatedWork)
+        public IActionResult RecieveWeavingOrder(Guid AllocatedWorkID , int RecievedQuantity)
         {
-            weaverServices.UpdateWeavingOrder(allocatedWork.AllocatedWorkID, allocatedWork.RecievedQuantity);
-            return View();
+            weaverServices.UpdateWeavingOrder(AllocatedWorkID,RecievedQuantity);
+            return RedirectToAction("ViewWeavingOrders");
         }
 
 
