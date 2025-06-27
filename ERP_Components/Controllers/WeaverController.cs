@@ -217,7 +217,7 @@ namespace ERP_Components.Controllers
         {
             // ye service dyer lo allocatekarney ke liye likhi hai
             weaverServices.AllocateToDyer(dyeingOrder);
-            return View();
+            return RedirectToAction("ViewPhases", new { WorkOrderId = dyeingOrder.WorkOrderID });
         }
         public IActionResult SendingForDying()
         {
