@@ -1,4 +1,407 @@
-﻿<!DOCTYPE html>
+﻿.header1 {
+    width: 100%;
+    color: #138496;
+    padding: 10px;
+    display: flex;
+    margin: 10px 10px 30px 10px;
+    text-align: center;
+    justify-content: center
+}
+
+#Quantity, #discountRate {
+    width: 50px;
+}
+
+#ItemName {
+    width: 170px;
+}
+
+#total, #taxableAmount {
+    width: 85px;
+}
+
+#UnitOFMeasure {
+    width: 58px;
+}
+
+label.required::after {
+    content: "*";
+    color: #138496;
+}
+
+h4 {
+    font-size: 18px !important;
+}
+
+.frm button {
+    background-color: #138496;
+    color: white;
+    width: 119px;
+    height: 30px;
+}
+
+.btn {
+    background-color: #138496;
+    color: white;
+    height: 30px;
+    padding-top: 1px;
+}
+
+    .btn:hover {
+    }
+
+, form-control {
+    width: 300px !important;
+}
+
+.container {
+    background-color: #ffffff;
+    width: 98%;
+    background-color: #ffffff;
+    border-radius: 10px;
+    margin: 0px 0px 30px 0px !important;
+    padding: 0px;
+}
+
+.table-container {
+    background-color: #ffffff;
+    width: 98%;
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0.1, 0.1, 0.1, 0.1);
+    padding-bottom: 50px;
+    margin: auto;
+    /*    margin-bottom: 30px;*/
+}
+
+.sd {
+    margin-left: 38px;
+    padding-bottom: 11px;
+}
+
+select:focus {
+    outline: none;
+    border: 2px solid #138496;
+    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.5);
+}
+
+table td input {
+    width: 70px;
+    BORDER: 1px solid #ccc;
+    COLOR: GRAY;
+}
+
+table td select {
+    width: 110px;
+    height: 26px;
+    BORDER: 1px solid #ccc;
+    COLOR: GRAY;
+}
+
+.form-section {
+    width: 94%;
+    margin-inline: 35px;
+    border-radius: 10px;
+    margin-bottom: 35px;
+    margin-top: 25px;
+    padding: 20px 20px 30px 20px;
+    border: 1.5px solid #138496;
+    position: relative;
+    box-shadow: 2px 2px 3px #138496;
+}
+
+    .form-section h3 {
+        margin-top: 0;
+        margin-bottom: 10px;
+        font-size: 16px;
+        color: #138496;
+        position: absolute;
+        top: -0.7em;
+        left: 10px;
+        background-color: #FFFFFF;
+        /*        background-color: #f9f9f9; */
+        padding: 0 5px;
+    }
+
+.table h3 {
+    margin-top: 0;
+    margin-bottom: 10px;
+    font-size: 16px;
+    color: #138496;
+    position: absolute;
+    top: -0.5em;
+    background-color: #f9f9f9;
+    padding: 0 5px;
+}
+
+h2 {
+    margin-top: 10px;
+    margin-bottom: 20px;
+    font-size: 16px;
+    color: #138496;
+    /*    background-color: #f9f9f9;
+*/
+    padding: 0 5px;
+}
+
+input:focus {
+    outline: none;
+    /*    border: 2px solid #023e8ac7;*/
+    border: 2px solid #138496;
+    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.5);
+}
+
+.form-row {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin: 15px 0px 0px 0px;
+}
+
+    .form-row label {
+        font-size: 14px;
+        font-weight: bolder;
+        width: 150px;
+        text-align: center;
+        color: #555555;
+        padding-right: 10px;
+    }
+
+    .form-row input {
+        font-size: 14px;
+        flex: 1;
+        padding: 4px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box; /* Ensures padding doesn't affect width */
+        margin-right: 10px;
+        color: grey;
+    }
+
+    .form-row textarea {
+        font-size: 14px;
+        flex: 1;
+        padding: 4px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box; /* Ensures padding doesn't affect width */
+        margin-right: 10px;
+    }
+
+    .form-row select {
+        font-size: 14px;
+        flex: 1;
+        height: 30px;
+        padding: 4px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box; /* Ensures padding doesn't affect width */
+        margin-right: 10px;
+        color: grey;
+    }
+
+.form-section p {
+    margin: 0px;
+    color: #555555;
+    font-size: 14px;
+    justify-self: center;
+}
+
+.form-row select {
+    width: 200px;
+}
+
+.radio-group {
+    display: flex;
+    align-items: center;
+}
+
+    .radio-group label {
+        text-align: left;
+    }
+
+    .radio-group input[type="radio"] {
+        margin: 0 5px;
+    }
+
+button {
+    background-color: #138496;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+
+table {
+    width: 100%;
+    background: white;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 2px 2px 3px #138496;
+}
+
+th, td {
+    padding: 6px;
+    font-size: 14px;
+    text-align: center;
+    border-bottom: 1px solid #ddd;
+}
+
+td {
+    color: #555555;
+}
+
+th {
+    background-color: #138496;
+    color: white;
+}
+
+.actions {
+    display: flex;
+    justify-content: center;
+}
+
+    .actions button {
+        border-radius: 5px;
+        background: #138496;
+        color: white;
+        border: none;
+        margin-right: 5px;
+        padding: 4px 6px;
+        font-size: 12px;
+    }
+
+.table {
+    width: 94%;
+    margin-inline: 35px;
+    border: 1.5px solid #138496;
+    border-radius: 10px;
+    position: relative;
+    overflow-x: auto;
+}
+
+
+
+body {
+    font-weight: 400 !important;
+}
+
+label {
+    font-size: 14px;
+    font-weight: 400 !important;
+}
+
+#tdsPopup {
+    margin-left: 10px;
+}
+
+#tdsPopup {
+    margin-top: 15px;
+    padding: 10px;
+    border: 1px solid #aaa;
+    display: none;
+    width: 200px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    border-radius: 10px
+}
+
+
+
+
+
+
+
+
+
+
+
+.quotation-info,
+.receiver-info,
+.totals,
+.bank-details {
+    margin: 5px 0;
+}
+
+.totals {
+    width: 50%;
+}
+/* Basic layout */
+.tds-tcs-setting-box {
+    border: 1px solid #ccc;
+    padding: 16px;
+    background-color: #f9f9f9;
+    margin-bottom: 20px;
+    font-family: Arial, sans-serif;
+}
+
+    .tds-tcs-setting-box h3 {
+        margin: 0 0 12px 0;
+        font-size: 16px;
+        font-weight: bold;
+    }
+
+.tds-tcs-options {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+/* Style label for spacing */
+.radio-label {
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+    cursor: pointer;
+    gap: 8px;
+}
+
+    /* Hide default radio button */
+    .radio-label input[type="radio"] {
+        appearance: none;
+        -webkit-appearance: none;
+        width: 18px !important;
+        height: 18px;
+        border: 2px solid #999;
+        border-radius: 17%;
+        position: relative;
+        cursor: pointer;
+        outline: none;
+    }
+
+        /* Show blue dot (tick style) when selected */
+        .radio-label input[type="radio"]:checked {
+            border-color: #1a73e8;
+            background-color: #1a73e8;
+        }
+
+        .radio-label input[type="radio"]::after {
+            content: '';
+            display: block;
+            width: 6px;
+            height: 6px;
+            margin: 4px;
+            border-radius: 50%;
+            background: white;
+            visibility: hidden;
+        }
+
+        .radio-label input[type="radio"]:checked::after {
+            visibility: visible;
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+/*<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -45,8 +448,8 @@
       background-color: white;
       padding: 20px;
       border-radius: 0 0 20px 20px;
-      margin-top: -5px; /* makes button-table join look natural */
-      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+      margin-top: -5px;*/ /* makes button-table join look natural */
+      /*box-shadow: 0 5px 15px rgba(0,0,0,0.1);
     }
 
     table {
@@ -112,4 +515,4 @@
 </script>
 
 </body>
-</html>
+</html>*/

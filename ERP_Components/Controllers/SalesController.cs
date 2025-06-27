@@ -101,7 +101,7 @@ namespace ERP_Components.Controllers
             }
 
 
-
+            
 
 
 
@@ -226,7 +226,7 @@ namespace ERP_Components.Controllers
         }
 
 
-        public IActionResult EditInvoice(Guid InvoiceID) //remaining 
+        public IActionResult EditInvoice(Guid InvoiceID)  
         {
             List<Invoice> li = new List<Invoice>();
             li.Add(salesServices.EditInvoice(InvoiceID));

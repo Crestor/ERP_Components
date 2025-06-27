@@ -378,7 +378,95 @@ namespace ERP_Component_DAL.Services
                 connection.Close();
             }
         }
+        public RetailItemModel CustomerBillAddressData()
+        {
+            try
+            {
+                RetailItemModel name = new();
+                string connectionstring = configuration.GetConnectionString("DefaultConnectionString");
+                connection = new SqlConnection(connectionstring);
+                SqlCommand cmd = new();
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.CommandText = $"select D.CenterName, D.CenterCode, A.Country, A.State, A.City, A.Area, A.Pincode, A.AddressLine1, A.AddressLine2, A.District, A.Street from DistributionCenter D join Address A on D.AddressId= A.AddressID where D.CenterId= '12BC8BE2-C59A-409B-9DBE-9869A2102C16'";
 
+                cmd.Connection = connection;
+                cmd.CommandTimeout = 300;
+                connection.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+
+                    name.CenterName = reader["CenterName"] != DBNull.Value ? (string)reader["CenterName"] : string.Empty;
+                    name.CenterCode = reader["CenterCode"] != DBNull.Value ? (string)reader["CenterCode"] : string.Empty;
+                    name.Country = reader["Country"] != DBNull.Value ? (string)reader["Country"] : string.Empty;
+                    name.State = reader["State"] != DBNull.Value ? (string)reader["State"] : string.Empty;
+                    name.City = reader["City"] != DBNull.Value ? (string)reader["City"] : string.Empty;
+                    name.Area = reader["Area"] != DBNull.Value ? (string)reader["Area"] : string.Empty;
+                    name.Pincode = reader["Pincode"] != DBNull.Value ? (string)reader["Pincode"] : string.Empty;
+                    name.AddressLine1 = reader["AddressLine1"] != DBNull.Value ? (string)reader["AddressLine1"] : string.Empty;
+                    name.AddressLine2 = reader["AddressLine2"] != DBNull.Value ? (string)reader["AddressLine2"] : string.Empty;
+                    name.District = reader["District"] != DBNull.Value ? (string)reader["District"] : string.Empty;
+                    name.Street = reader["Street"] != DBNull.Value ? (string)reader["Street"] : string.Empty;
+                }
+
+
+                return name;
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                connection.Close();
+            }
+        }
+
+        public List<RetailItemModel> GetRetailCustomerBillData(Guid RetailCustomerId)
+        {
+            try
+            {
+                List<RetailItemModel> sales = new();
+                string connectionstring = configuration.GetConnectionString("DefaultConnectionString");
+                connection = new SqlConnection(connectionstring);
+                SqlCommand cmd = new();
+                cmd.CommandType = System.Data.CommandType.Text;
+                //cmd.CommandText = $"select I.ItemName ,L.Quantity ,L.MRP from RetailBillLine L join  Items I on I.ItemId=L.ProductID where L.RetailBillID='{RetailBillID}'";
+                cmd.CommandText = $"select C.CustomerName, H.GrossTotal,H.NetTotal,H.GST,I.ItemName,R.Quantity ,R.MRP from RetailBillLine R join Items I on I.ItemId = R.ProductID Join RetailBillHeader H on R.RetailBillID = H.RetailBillID join RetailCustomers C on C.RetailCustomerID=H.RetailCustomerID where H.RetailCustomerID = '{RetailCustomerId}'";
+                cmd.Connection = connection;
+                connection.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    sales.Add(new RetailItemModel
+                    {
+                        CustomerName = reader["CustomerName"] != DBNull.Value ? (string)reader["CustomerName"] : string.Empty,
+                        ItemName = reader["ItemName"] != DBNull.Value ? (string)reader["ItemName"] : string.Empty,
+                        MRP = reader["MRP"] != DBNull.Value ? Convert.ToDecimal(reader["MRP"]) : 0m,
+                        Quantity = reader["Quantity"] != DBNull.Value ? Convert.ToInt32(reader["Quantity"]) : 0,
+                        GrossTotal = reader["GrossTotal"] != DBNull.Value ? Convert.ToDecimal(reader["GrossTotal"]) : 0m,
+                        NetTotal = reader["NetTotal"] != DBNull.Value ? Convert.ToDecimal(reader["NetTotal"]) : 0m,
+                        GST = reader["GST"] != DBNull.Value ? Convert.ToDecimal(reader["GST"]) : 0m,
+
+                        //date = reader["CreatedAT"] != DBNull.Value ? DateOnly.FromDateTime((DateTime)reader["CreatedAT"]) : default,
+                    });
+                }
+
+                return sales;
+
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+
+            }
+            finally
+            {
+                connection.Close();
+            }
+        }
 
 
 
