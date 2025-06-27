@@ -2,8 +2,10 @@
 {
     public class QuotationModel
     {
+        public List<RetailItemModel> IDetails { get; set; }
 
-
+        public decimal MRP { get; set; }
+       public Guid RetailBillID { get; set; }
         public Guid RetailCustomerId { get; set; }
         public List<QuotationModel> items { get; set; }
         public string Description { get; set; }
@@ -67,7 +69,7 @@
         public decimal TotalAmount { get; set; }
         //public decimal GrossTotal { get; set; }
 
-        public decimal grossTotal { get; set; }
+        //public decimal grossTotal { get; set; }
 
         public string DeliveryTerms { get; set; }
 
@@ -81,6 +83,7 @@
         public String Status { get; set; }
 
         public long ContactNumber { get; set; }
+        public string ContactNO { get; set; }
         public decimal finalAmount { get; set; }
         public decimal TotalDiscountPercent { get; set; }
 

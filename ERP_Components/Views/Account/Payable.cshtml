@@ -2,13 +2,12 @@
     ViewBag.Title = "Payable";
     Layout = "~/Views/Shared/_LayoutINV.cshtml";
 }
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 @* <h2 style="  text-shadow: 1px 5px 5px grey;color:#138496"> Payable</h2> *@
-<link rel="stylesheet" href="~/css/Product.css" />
+<link rel="stylesheet" href="~/css/Account.css" />
 
 
-<div class="table">
+<div>
     <table>
         <thead>
             <tr>
@@ -24,35 +23,9 @@
                 <td>1</td>
                 <td>Neeraj</td>
                 <td>1000000</td>
-                <td><div class="table-button"> <button onclick="location.href='@Url.Action("Make_Payment","Account")'">Make Payment</button></div></td>
+                <td><button>Settle</button></td>
             </tr>
 
         </tbody>
     </table>
 </div>
-<button id="btnnnn">yessssssss</button>
-<script>
-    const  btn = document.getElementById("btnnnn");
-    btn.addEventListener("click", function ()
-    {
-       const { value: formValues } = await Swal.fire({
-      title: "Multiple inputs",
-      html: `
-
-        <input id="swal-input1" class="swal2-input">
-
-        <input id="swal-input2" class="swal2-input">
-      `,
-      focusConfirm: false,
-      preConfirm: () => {
-        return [
-          document.getElementById("swal-input1").value,
-          document.getElementById("swal-input2").value
-        ];
-      }
-    });
-    if (formValues) {
-      Swal.fire(JSON.stringify(formValues));
-    }})
-
-</script>

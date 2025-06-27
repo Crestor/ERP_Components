@@ -44,10 +44,15 @@ namespace ERP_Components.Controllers
 			return View(model);
 
 		}
+       public JsonResult GetCustomerByContact(string ContactNO)
+		{
+			var x = retailsalesServices.GetCustomerNameForCompair(ContactNO);
+
+            return Json(x);
+		}
 
 
-
-		public IActionResult SetCustomerBill(QuotationModel quotation)
+        public IActionResult SetCustomerBill(QuotationModel quotation)
 		{
 		quotation.RetailCustomerId  =	retailsalesServices.AddRetailCustomer(quotation);
 			retailsalesServices.AddCustomerBill(quotation,quotation.ItemLists);
@@ -56,12 +61,27 @@ namespace ERP_Components.Controllers
 
 
 
-        public IActionResult ViewCustomerBills()
+		public IActionResult ViewCustomerBills()
+		{
+			var x = retailsalesServices.ViewCustomerBill();
+			return View(x);
+		}
+
+
+		public JsonResult ViewCustomerBillHistory(Guid RetailBillID)
+		{
+
+			QuotationModel retail = retailsalesServices.GetCustomerName(RetailBillID);
+			retail.IDetails = retailsalesServices.GetCustomerRetailData(RetailBillID);
+			return Json(retail);
+
+		}
+		public IActionResult ViewCustomerBillDocument()
 		{
 			return View();
 		}
 
-		public IActionResult CustomerInvoice()
+        public IActionResult CustomerInvoice()
 		{
 			return View();
 		}

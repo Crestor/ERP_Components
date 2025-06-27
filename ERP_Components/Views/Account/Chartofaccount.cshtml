@@ -1,11 +1,13 @@
-﻿@{
+﻿@using ERP_Component_DAL.Models
+
+@{
     ViewBag.Title = "Chart Of Account";
     Layout = "~/Views/Shared/_LayoutINV.cshtml";
 }
 
-
+@model Account
 <link rel="stylesheet" href="~/css/Product.css" />
-<form asp-action="addaccount" asp-controller="Account" method="post">
+<form asp-action="SetChartofAccount" asp-controller="Account" method="post">
     <div class="form-section" style="margin-bottom: 0px;
     border-bottom: 0px;
     box-shadow: 0px 0px 0px;">
@@ -14,7 +16,7 @@
                 <label class="required" for="accountcode"> Account Code : </label>
                 <input type="text" name="accountcode" required />
                 <label class="required" for="Accountname"> Account Name : </label>
-                <input type="text" name="Accountname" required />
+            <input type="text" name="AccountName" required />
               </div>
             <div class="form-row"style="width:50%">
                 <label class="required" for="groupname"> Group Name : </label>
@@ -57,19 +59,19 @@
         <h3>Additional Details</h3>
             <div class="form-row">
                     <label class="required" for="bank"> Bank : </label>
-                    <input type="text" name="bank" required />
+            <input type="text" name="BankName" required />
                     <label class="required" for="branch"> Branch : </label>
-                    <input type="text" name="branch" required />
+            <input type="text" name="BranchName" required />
                 </div>
                 <div class="form-row">
                     <label class="required" for="Accountholdername"> Account holder Name : </label>
-                    <input type="text" name="Accountholdername" required />
+            <input type="text" name="AccountHolderName" required />
                     <label class="required" for="accountnumber"> Account No : </label>
-                    <input type="text" name="accountnumber" required />
+            <input type="text" name="AccountNumber" required />
                 </div>
                 <div class="form-row">
                     <label class="required" for="ifsc"> IFSC Code : </label>
-                    <input type="text" name="ifsc" required />
+            <input type="text" name="IFSCCode" required />
                     <label class="required" for="balance"> Opening Balance : </label>
                     <input type="text" name="balance" required />
                 </div>

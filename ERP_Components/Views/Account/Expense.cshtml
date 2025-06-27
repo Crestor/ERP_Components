@@ -1,22 +1,22 @@
-﻿@* @model List<Expense> *@
-<link rel="stylesheet" href="~/css/Product.css" />
+﻿ @using ERP_Component_DAL.Models
 
 @{
     ViewBag.Title = "Expense ";
     Layout = "~/Views/Shared/_LayoutINV.cshtml";
 }
-@* <h1>Expense Entries </h1> *@
-<form asp-action="setExpense" asp-controller="Home" method="post">
-    <div class="form-section" style="    margin-top: 0px;
+<link rel="stylesheet" href="~/css/Product.css" />
+@model JournalEntry
+<form method="post" asp-action="SetExpenseEntry" asp-controller="Account">
+    <div class="form-section" style="margin-top: 0px;
     margin-bottom: 0px;
     border-bottom: 0px solid;
     box-shadow: 0px 0px 0px;">
         <h3>Basic Details</h3>
         <div class="form-row">
             <label class="required" for="entrydate"> Entry Date : </label>
-            <input type="date" name="entrydate" required />
+            <input type="date" name="TransactionDate" required />
             <label class="required" for="project"> Project : </label>
-            <input type="text" name="project" required />
+            <input type="text" name="project" />
         </div>
     </div>
     <div class="form-section" style="margin-top: 2px;
@@ -29,10 +29,10 @@
             <label class="required" for="particular"> Particular : </label>
             <input type="text" name="particular" required />
             <label for="debit"> Debited : </label>
-            <input type="text" name="debit" id="debit" value="" oninput="debited()" />
+            <input type="number" name="Amount" id="debit" value="" oninput="debited()" />
             <div class="form-row" style="width:50%">
                 <label for="credit"> Credit : </label>
-                <input type="text" name="credit" id="credit" oninput="credited()" />
+                <input type="number" name="Amount" id="credit" oninput="credited()" />
             </div>
         </div>
     </div>
@@ -42,38 +42,57 @@
         <h3>Additional Details</h3>
         <div class="form-row">
             <label class="required" for="reference"> Reference : </label>
-            <input type="text" name="reference" required />
+            <input type="text" name="Remarks" required />
             <label class="required" for="narration"> Narration : </label>
             <input type="text" name="narration" required />
         </div>
-        <div class="button">
-                <button type="submit">Submit</button>
+        <input type="hidden" name="TransactionType" id="TransactionType" />
+
+        <div class="button" style="padding-top: 10PX;">
+            <button type="submit">Submit</button>
         </div>
     </div>
     <br />
-    @* 
-    <p id="debited"> Debited Total: <input type="text" id="debitedTotal" readonly /></p>
-    <p id="credited"> Credited Total: <input type="text" id="creditedTotal" readonly /></p><br /> *@
+
 
 </form>
 
 <script>
-                const a = document.getElementById("debit");
-                const b = document.getElementById("credit");
-                const c = document.getElementById("debitedTotal");
-                const d = document.getElementById("creditedTotal");
-    function debited(){
+    let transactionType = ""; // To store "Debit" or "Credit"
 
-              c.value = a.value;
-                b.setAttribute('disabled','');
-                document.getElementById("debited").style.display = "block";
+    const debitInput = document.getElementById("debit");
+    const creditInput = document.getElementById("credit");
+    const transactionTypeInput = document.getElementById("TransactionType");
+
+    function debited() {
+        if (debitInput.value) {
+            transactionType = 1;
+            transactionTypeInput.value = transactionType;
+
+            creditInput.value = "";
+            creditInput.disabled = true;
+            debitInput.disabled = false;
+        } else {
+            transactionType = "";
+            transactionTypeInput.value = "";
+            creditInput.disabled = false;
+        }
+        // console.log("Transaction Type:", transactionType);
     }
-    function credited(){
-              d.value = b.value;
-                a.setAttribute('disabled','');
-                d.style.display = "block";
-            document.getElementById("credited").style.display = "block";
+
+    function credited() {
+        if (creditInput.value) {
+            transactionType = 0;
+            transactionTypeInput.value = transactionType;
+
+            debitInput.value = "";
+            debitInput.disabled = true;
+            creditInput.disabled = false;
+        } else {
+            transactionType = "";
+            transactionTypeInput.value = "";
+            debitInput.disabled = false;
+        }
+        // console.log("Transaction Type:", transactionType);
     }
-
-
 </script>
