@@ -1,0 +1,75 @@
+﻿@using ERP_Component_DAL.Models
+
+@model List<QuotationModel>
+
+@{
+    ViewBag.Title = "Start Production";
+    Layout = "~/Views/Shared/_LayoutINV.cshtml";
+}
+<link rel="stylesheet" href="~/css/Product.css" />
+
+<form method="post" asp-action="SetProductionOrder" asp-controller="Production">
+    <div class="form-section">
+        <h3>Production</h3>
+        <div class="form-row">
+            <label for="SalesSeries">Sales Series</label>
+            <input type="text" name="RequisitionSeries" id="RequisitionSeries" onchange="pass()" readonly />
+
+            <label for="ItemName">ItemName</label>
+            <select id="ItemId" class="form-control" name="ItemId">
+                <option selected disabled>Select Material</option>
+                @foreach (var product in Model)
+                {
+                    <option value="@product.ItemId">@product.ItemName</option>
+                }
+            </select>
+        </div>
+        </div>
+<div class="button">
+    <button type="submit" id="addItem" style="float: right;margin-right: 50px;margin-bottom: 18px; background-color:#138496;color: white;">Start Production</button>
+
+</div>
+</form>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
+    function pass() {
+        const orderInput = document.getElementById("RequisitionSeries");
+        const year = new Date().getFullYear();
+        let nextNumber = 1;
+
+        let lastOrder = localStorage.getItem("lastQuotationSeries");
+
+        if (lastOrder) {
+            let parts = lastOrder.split("-");
+            let lastYear = parseInt(parts[1]);
+            let lastNum = parseInt(parts[2]);
+
+            if (lastYear === year) {
+                nextNumber = lastNum + 1;
+            }
+        }
+
+        const newSeries = `SP-${year}-${String(nextNumber).padStart(4, "0")}`;
+        orderInput.value = newSeries;
+
+        localStorage.setItem("lastQuotationSeries", newSeries);
+    }
+
+    
+    document.addEventListener("DOMContentLoaded", function () {
+        pass();
+    });
+
+    function items() {
+        Swal.fire({
+            title: "Submitted Successfully",
+            icon: "success",
+            confirmButtonColor: "#138496",
+            draggable: true
+        });
+    }
+</script>
+

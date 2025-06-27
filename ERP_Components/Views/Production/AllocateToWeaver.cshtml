@@ -3,11 +3,11 @@
     ViewBag.Title = "Production Order";
     Layout = "~/Views/Shared/_LayoutINV.cshtml";
 }
-@model List<AddPurchaseRequisition>
+@model AddPurchaseRequisition
 
 
 @{
-    bool insufficientMaterial = Model.Any(m => m.requiredQuantity > m.availableQuantity);
+    bool insufficientMaterial = Model.listItesms.Any(m => m.requiredQuantity < m.availableQuantity);
 }
 
 
@@ -16,10 +16,10 @@
     <h3>Production Order Details</h3>
     <div class="form-row">
         <label for="Description">Description :</label>
-        <input type="text" id="Description" name="Description" value="@Model[0].Descripion" readonly />
+        <input type="text" id="Description" name="Description" value="@Model.Descripion" readonly />
         <label for="RequisitionSeries">Requisition Series:</label>
-        <input type="number" id="" name="requisitionSeries" value="@Model[0].requisitionSeries" readonly />
-        <input type="hidden" id="" name="RequisitionId" value="@Model[0].RequisitionId" readonly />
+        <input type="text" id="" name="requisitionSeries" value="@Model.requisitionSeries" readonly />
+        <input type="hidden" id="" name="RequisitionId" @* value="@Model[0].RequisitionId" *@ readonly />
     </div>
     <div class="form-row" style="width:50%">
         <label for="orderDate">Order Date:</label>
@@ -40,9 +40,9 @@
 
 
             <tbody>
-                @for (var i = 0; i < Model.Count; i++)
+                @for (var i = 0; i < Model.listItesms.Count; i++)
                 {
-                    var x = Model[i];
+                    var x = Model.listItesms[i];
 
                     <tr>
                         <td>@x.itemName</td>
@@ -55,12 +55,13 @@
         </table>
     </div>
     <div class="button">
-        @if (!insufficientMaterial)
+        @if (insufficientMaterial)
         {
 
-            <button type="submit" onclick="location.href='@Url.Action("AllocateToProductionFromStoreSeven", "Inventory", new { requisitionId = Model[0].RequisitionId }, null)'">Allocate</button>
+            <button type="submit" onclick="location.href='@Url.Action("AllocateToProductionFromStoreSeven", "Inventory", new { requisitionId = Model.RequisitionId }, null)'">Allocate</button>
 
         }
+        
 
     </div>
 </div>

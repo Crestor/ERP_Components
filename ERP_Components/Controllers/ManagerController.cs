@@ -361,12 +361,12 @@ namespace ERP_Components.Controllers
 
 
 
-        // fifteen days wise
+      
         public IActionResult SalesSummaryData(string filterType = "Daily", int? halfMonthNumber = null)
         {
             ViewBag.CurrentFilter = filterType;
 
-            // Automatically determine the current half if not provided
+         
             if (!halfMonthNumber.HasValue || halfMonthNumber < 1)
             {
                 int today = DateTime.Now.Day;

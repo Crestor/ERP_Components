@@ -37,7 +37,7 @@ namespace ERP_Components.Controllers
         }
         public IActionResult ViewProductionOrder()
         {
-               List<Production> product = productionServices.GetProductionOrders();
+            List<Production> product = productionServices.GetProductionOrders();
             return View(product);
         }
         public IActionResult ViewProductionOrderDetail(Guid ProductionOrderId)
@@ -47,7 +47,7 @@ namespace ERP_Components.Controllers
             return View(product);
         }
 
-       
+
 
         public IActionResult CreateMaterialRequisition()
         {
@@ -76,7 +76,7 @@ namespace ERP_Components.Controllers
                 HttpContext.Session.SetString("MaterialRequisition", "True");
                 HttpContext.Session.SetString("RequisitionID", O.RequisitionID.ToString());
                 var x = SalesServices.AddMRItems(O);
-                
+
 
             }
             else
@@ -125,7 +125,7 @@ namespace ERP_Components.Controllers
         //    return RedirectToAction("ViewProductionOrder");
         //}
 
-        public IActionResult UpdateProductionStage(Guid ProductionOrderId , Guid productId)
+        public IActionResult UpdateProductionStage(Guid ProductionOrderId, Guid productId)
         {
             Production product = productionServices.GetProductDetail(ProductionOrderId);
             product.materials = productionServices.GetProductionStages(ProductionOrderId, productId);
@@ -134,13 +134,13 @@ namespace ERP_Components.Controllers
 
         public JsonResult GoToNextStage(Guid productionOrderId, Guid productId)
         {
-           var UpdatedStages = productionServices.GoToNextStage(productionOrderId, productId);
+            var UpdatedStages = productionServices.GoToNextStage(productionOrderId, productId);
             return Json(UpdatedStages);
         }
 
         public IActionResult MarkProductionComplete()
         {
-            
+
             return RedirectToAction("ViewProductionOrder");
         }
 
@@ -156,21 +156,21 @@ namespace ERP_Components.Controllers
         //<------------------Material Requisition ------------------>
         public IActionResult MaterialRequisition(Guid salesForCastId, Guid productionOrderId)
         {
- 
+
             Production product = productionServices.GetProductDetail(productionOrderId);
             product.materials = productionServices.GetMaterialRequisitionItems(productionOrderId);
 
             return View(product);
-        
+
         }
 
-        
+
 
         [HttpPost]
         public IActionResult SaveRequisition(Production product)
         {
 
-           product.RequisitionID = productionServices.AddMaterialRequisitions(product);
+            product.RequisitionID = productionServices.AddMaterialRequisitions(product);
             HttpContext.Session.SetString("RequisitionID", product.RequisitionID.ToString());
 
 
@@ -193,16 +193,16 @@ namespace ERP_Components.Controllers
         public IActionResult BillofMaterial()
         {
             List<Production> materials = productionServices.GetMaterialDetailforbill();
-            List<Production> product= productionServices.GetProductDetailforbill();
+            List<Production> product = productionServices.GetProductDetailforbill();
             var model = new Production();
-           model.Product = product;
+            model.Product = product;
             model.materials = materials;
             return View(model);
         }
         public IActionResult SaveBillOfMaterial(Production product)
         {
             productionServices.SaveBilOlfMaterial(product);
-            return RedirectToAction("BillofMaterial" , "Production");
+            return RedirectToAction("BillofMaterial", "Production");
         }
         public IActionResult AddStages()
         {
@@ -215,7 +215,7 @@ namespace ERP_Components.Controllers
 
         public IActionResult ViewProductionStages()
         {
-          List<Items> item =  productionServices.ViewProductionItems();
+            List<Items> item = productionServices.ViewProductionItems();
             return View(item);
         }
 
@@ -241,16 +241,33 @@ namespace ERP_Components.Controllers
 
 
 
-      public IActionResult ViewMR()
+        public IActionResult ViewMR()
         {
             List<Production> materials = new List<Production>();
             materials = productionServices.viewMaterialRequisitions();
             return View(materials);
         }
-        public IActionResult AllocateToWeaver()
+        public IActionResult AllocateToWeaver(Guid RequisitionId)
         {
-            List<Production> productionOrders = new List<Production>();
-            return View(productionOrders);
+            AddPurchaseRequisition requisition = productionServices.GetRequisitionData(RequisitionId);
+            requisition.listItesms = productionServices.ViewProductionMaterial(RequisitionId);
+            return View(requisition);
         }
+
+
+
+        public IActionResult StartProduction()
+        {
+
+            List<QuotationModel> names = productionServices.ProductionItemsName();
+            return View(names);
+        }
+
+        public IActionResult SetProductionOrder(QuotationModel model)
+        {
+            productionServices.StartProduction(model);
+           return RedirectToAction("StartProduction");
+        }
+
     }
 }

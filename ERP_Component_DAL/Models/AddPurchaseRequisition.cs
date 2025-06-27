@@ -4,6 +4,7 @@
 
     {
         public Guid itemId { get; set; }
+        public Guid MaterialId { get; set; }
         public string itemName { get; set; }
         public string vendorName { get; set; }
 
