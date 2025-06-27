@@ -144,7 +144,7 @@
                 </select>
             </div>
             <div class="form-row" style="width:50%">
-                 <label for="Quantity">Quantity:</label>
+                <label for="Quantity">Quantity:</label>
                 <input type="number" id="PerPiecePrizedyer" name="Quantity" value="@Model.Quantity" required />
             </div>
 
@@ -163,64 +163,101 @@
 <div class="button">
     <button id="showpopupforWaever" type="button">Allocate To Weaver</button>
     <button id="showpopupforDeyer" type="button">Allocate for Deying</button>
-    <button onclick="location.href='@Url.Action("WorkOrderCompleted","Weaver",new{workOrderID = Model.WorkOrderId})'">Complete</button>
+    <button id="completedworkorder" onclick="location.href='@Url.Action("WorkOrderCompleted","Weaver",new{workOrderID = Model.WorkOrderId})'">Complete</button>
 </div>
 
 <script>
     function closePopup() {
-        document.getElementById("popupforWeaver").style.display = "none";
-        document.getElementById("popupforDeyer").style.display = "none";
-        document.getElementById("overlay").style.display = "none";
+    document.getElementById("popupforWeaver").style.display = "none";
+    document.getElementById("popupforDeyer").style.display = "none";
+    document.getElementById("overlay").style.display = "none";
     }
 
     const showpopup = document.getElementById("showpopupforWaever");
     showpopup.addEventListener("click", function () {
-        document.getElementById("popupforWeaver").style.display = "block";
-        document.getElementById("overlay").style.display = "block";
+    document.getElementById("popupforWeaver").style.display = "block";
+    document.getElementById("overlay").style.display = "block";
     });
 
     const showpopupforDeyer = document.getElementById("showpopupforDeyer");
     showpopupforDeyer.addEventListener("click", function () {
-        document.getElementById("popupforDeyer").style.display = "block";
-        document.getElementById("overlay").style.display = "block";
+    document.getElementById("popupforDeyer").style.display = "block";
+    document.getElementById("overlay").style.display = "block";
     });
 </script>
 
 <script>
-        document.addEventListener("DOMContentLoaded", function () {
-        const year = new Date().getFullYear();
-        let lastCode = localStorage.getItem("lastAllocationCode");
+    document.addEventListener("DOMContentLoaded", function () {
+    const year = new Date().getFullYear();
+    let lastCode = localStorage.getItem("lastAllocationCode");
 
-        let newNumber = 1;
+    let newNumber = 1;
 
-        if (lastCode) {
-            const parts = lastCode.split("-");
-            const lastYear = parseInt(parts[1]);
-            const lastNum = parseInt(parts[2]);
+    if (lastCode) {
+    const parts = lastCode.split("-");
+    const lastYear = parseInt(parts[1]);
+    const lastNum = parseInt(parts[2]);
 
-            if (lastYear === year) {
-                newNumber = lastNum + 1;
-            }
-        }
+    if (lastYear === year) {
+    newNumber = lastNum + 1;
+    }
+    }
 
-        const newCode = `AL-${year}-${String(newNumber).padStart(4, '0')}`;
+    const newCode = `AL-${year}-${String(newNumber).padStart(4, '0')}`;
 
-        const inputWeaver = document.getElementById("AllocationSeriesWeaver");
-        const inputDeyer = document.getElementById("AllocationSeriesDeyer");
+    const inputWeaver = document.getElementById("AllocationSeriesWeaver");
+    const inputDeyer = document.getElementById("AllocationSeriesDeyer");
 
-        if (inputWeaver) inputWeaver.value = newCode;
-        if (inputDeyer) inputDeyer.value = newCode;
+    if (inputWeaver) inputWeaver.value = newCode;
+    if (inputDeyer) inputDeyer.value = newCode;
 
-        localStorage.setItem("lastAllocationCode", newCode);
+    localStorage.setItem("lastAllocationCode", newCode);
     });
 
-      const totalQuantity = @Model.Quantity;
-   document.getElementById("AllocatedQuantity").addEventListener("input", function () {
-        if (parseInt(this.value) >= totalQuantity) {
-             document.getElementById("showinvalidinput").innerHTML = "<span style='color: red;'>Allocated quantity cannot exceed total quantity.</span>";
-            this.value = totalQuantity;
-        }
+    const totalQuantity = @Model.Quantity;
+    const allocatedQuantity= @Model.AllocatedQuantity;
+    document.getElementById("AllocatedQuantity").addEventListener("input", function () {
+    if (parseInt(this.value) >= totalQuantity-allocatedQuantity) {
+    document.getElementById("showinvalidinput").innerHTML = "<span style='color: red;'>Allocated quantity cannot exceed total quantity.</span>";
+    this.value = totalQuantity-allocatedQuantity;
+    }
+
+
+    if(totalQuantity <= allocatedQuantity){
+    document.getElementById("showpopupforWaever").style.display = "none"
+    document.getElementById("showpopupforDeyer").style.display = "block"
+    }
+
     });
 
+
+</script>
+<script>
+    @{
+        var phase2Status = Model.workOrderPhases.Count > 1 ? Model.workOrderPhases[1].status : "";
+        var phase1Status = Model.workOrderPhases.Count > 1 ? Model.workOrderPhases[0].status : "";
+    };
+
+    const status1 = '@phase1Status';
+    if (status1 === "COMPLETED") {
+        document.getElementById("showpopupforWaever").style.display = "none";
+        document.getElementById("showpopupforDeyer").style.display = "block";
+        document.getElementById("completedworkorder").style.display = "none";
+    } else {
+        document.getElementById("showpopupforWaever").style.display = "block";
+        document.getElementById("showpopupforDeyer").style.display = "none";
+        document.getElementById("completedworkorder").style.display = "none";
+    }
+     const status2 = '@phase2Status';
+    if (status2 === "COMPLETED") {
+   
+        document.getElementById("showpopupforWaever").style.display = "none";
+        document.getElementById("showpopupforDeyer").style.display = "none";
+        document.getElementById("completedworkorder").style.display = "block";
+    } else {
+        document.getElementById("showpopupforWaever").style.display = "block";
+        document.getElementById("showpopupforDeyer").style.display = "none";
+        document.getElementById("completedworkorder").style.display = "none";
+    }
 </script>
 

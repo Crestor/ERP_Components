@@ -41,7 +41,7 @@
                             <td>@x.ProductName</td>
                             <td>@x.Quantity</td>
                             <td>
-                                <button onclick="viewDetails('@x.WorkOrderId')">View</button>
+                            <button onclick="location.href='@Url.Action("StartWeaving","Weaver",new{WorkOrderId = x.WorkOrderId})'">View</button>
                             </td>
                         </tr>
                     }

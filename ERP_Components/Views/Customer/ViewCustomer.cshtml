@@ -5,7 +5,7 @@
 }
 
 
-<link rel="stylesheet" href="~/css/ProductTwo.css" />
+<link rel="stylesheet" href="~/css/Product.css" />
 @* <link rel="stylesheet" href="~/css/ListQuotation.css" /> *@
 
  @model List<AddCustomer>
@@ -16,7 +16,7 @@
 
 
     <div class="vendor-section" id="main" style="display: block;">
-        <table class="vendor-table">
+        <table>
             <thead>
                 <tr>
                     <th>S.No.</th>
@@ -45,8 +45,6 @@
                         <td>@v.PAN</td>
                         <td>@v.Balance</td>
                         <td><button onclick="location.href='@Url.Action("EditCustomer","Customer", new{customerId = v.CustomerId},null)'">Edit</button></td>
-                       
-
                     </tr>
                 }
             </tbody>
@@ -55,7 +53,7 @@
 
 
     <div class="vendor-section" id="address" style="display: none;">
-        <table class="vendor-table">
+        <table>
             <thead>
                 <tr>
                     <th>S.No.</th>
