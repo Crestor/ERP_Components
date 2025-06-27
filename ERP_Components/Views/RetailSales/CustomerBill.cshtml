@@ -7,6 +7,7 @@
 
 <link rel="stylesheet" href="~/css/ProductTwo.css" />
 <style>
+
     .container-main {
         display: flex;
         flex-direction: row;
@@ -14,23 +15,108 @@
     }
 
     #leftSection {
-        flex: 1;
-        padding: 20px;
+        width: 100%;
         transition: width 0.3s ease;
+        padding: 20px;
     }
 
     #rightSection {
         width: 0;
         overflow: hidden;
-        padding: 0;
-        transition: width 0.3s ease;
-        background-color: #f8f9fa;
-        display: none;
+        padding: 20px;
+        display: none; /* Hide by default */
         border-left: 1px solid #ccc;
+        background-color: #f8f9fa;
+        transition: width 0.3s ease;
     }
-</style>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
+
+        #rightSection table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        #rightSection th,
+        #rightSection td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        #rightSection th {
+            background-color: #e9ecef;
+        }
+
+    .flex-row {
+        display: flex;
+        gap: 20px; /* space between the two fields */
+        align-items: flex-end;
+        margin-bottom: 20px;
+    }
+
+    .form-group {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .autocomplete-container {
+        position: relative;
+        width: 100%;
+    }
+
+    #contact-suggestions {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 97%;
+        border: 1px solid #ccc;
+        background-color: white;
+        max-height: 150px;
+        overflow-y: auto;
+        display: none;
+        margin:0;
+        cursor:pointer;
+        padding:0px 5px;
+        z-index: 9999;
+        list-style: none;
+        box-shadow: 0px 4px 8px rgba(0,0,0,0.1);
+    }
+
+   /*  #contact-suggestions li{
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    } */
+
+
+
+
+
+   
+
+
+
+
+
+    .form-section{
+        width: 94%;
+        margin-inline: 35px;
+        border-radius: 10px;
+        margin-bottom: 35px;
+        /* margin-top: 25px; */
+        padding: 0px 20px;
+        border: 1.5px solid #138496;
+        position: relative;
+        box-shadow: 2px 2px 3px #138496;
+    }
+
+
+  
+
+</style>
+
+<<<<<<< Updated upstream
 <form method="post" asp-action="SetCustomerBill" asp-controller="RetailSales">
     <div class="form-section">
         <h3>Basic Details</h3>
@@ -39,96 +125,180 @@
             <input type="number" id="ContactNumber" name="ContactNumber" />
             <label>Customer Name:</label>
             <input type="text" id="customerName" name="customerName" />
+=======
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="container-main">
+    <div id="leftSection">
+        <form method="post" asp-action="SetCustomerBill" asp-controller="RetailSales">
+            <div class="form-section">
+                <h3>Basic Details</h3>
+                <div class="form-row flex-row">
+                   
+                    <div class="form-group autocomplete-container">
+                        <label style="margin-left: -15px;" for="ContactNumber">Contact Number:</label>
+                        <input type="text" id="ContactNumber" name="ContactNumber" autocomplete="off" />
+                        <ul id="contact-suggestions"></ul>
+                    </div>
+
+                    <div class="form-group">
+                        <label style="margin-left: -15px;" for="customerName">Customer Name:</label>
+                        <input type="text" id="customerName" name="customerName" />
+                    </div>
+
+                </div>
+
+
+            </div>
+
+            <div class="table">
+                <button type="button" style="float:right" class="btn" id="addNewRow">Add Row</button>
+                <table id="orderTable">
+                    <thead>
+                        <tr>
+                            <th>S.No</th>
+                            <th>Product Name</th>
+                            @* <th>UOM</th> *@
+                            <th>Unit Price</th>
+                            <th>Quantity</th>
+                            <th>Discount Rate (%)</th>
+                            @* <th>Discount Amount</th> *@
+                            @* <th>Taxable Amount</th> *@
+                            @* <th>CGST (%)</th> *@
+                            @* <th>SGST (%)</th> *@
+                            <th>Total</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableBody">
+                        <tr>
+                            <td>1</td>
+                            <td>
+                                <select class="ItemName">
+                                    <option selected disabled>Select Product</option>
+                                    @foreach (var product in Model.ItemNames)
+                                    {
+                                        <option value="@product.ItemId"
+                                                data-sellingprice="@product.SellingPrice"
+                                                data-unitofmeasure="@product.UnitOFMeasure">
+                                            @product.ItemName
+                                        </option>
+                                    }
+                                </select>
+                                <input type="hidden" class="ItemId" name="ItemLists[0].ItemId" value="" readonly />
+                            </td>
+                            @* <td><input type="text" class="UnitOFMeasure" name="ItemLists[0].UnitOFMeasure" readonly></td> *@
+                            <td><input type="number" class="SellingPrice" name="ItemLists[0].SellingPrice" oninput="calculateRow(this)"></td>
+                            <td><input type="number" class="Quantity" name="ItemLists[0].Quantity" oninput="calculateRow(this)"></td>
+                            <td><input type="number" class="discountRate" name="ItemLists[0].discountRate" oninput="calculateRow(this)"></td>
+                            @* <td><input type="number" class="discountAmount" name="ItemLists[0].discountAmount" readonly></td> *@
+                            @* <td><input type="number" class="taxableAmount" name="ItemLists[0].taxableAmount" readonly></td> *@
+                           @*  <td>
+                                <select class="cgst" name="ItemLists[0].cgst" onchange="calculateRow(this)">
+                                    <option value="0">0%</option>
+                                    <option value="5">5%</option>
+                                    <option value="9">9%</option>
+                                    <option value="12">12%</option>
+                                    <option value="18">18%</option>
+                                    <option value="28">28%</option>
+                                </select>
+                            </td> *@
+                           @*  <td>
+                                <select class="sgst" name="ItemLists[0].sgst" onchange="calculateRow(this)">
+                                    <option value="0">0%</option>
+                                    <option value="5">5%</option>
+                                    <option value="9">9%</option>
+                                    <option value="12">12%</option>
+                                    <option value="18">18%</option>
+                                    <option value="28">28%</option>
+                                </select>
+                            </td> *@
+                            <td><input type="text" class="total" name="TotalAmount" readonly></td>
+                        </tr>
+                    </tbody>
+                </table><br />
+            </div>
+
+            <div class="form-section">
+                <h3>Amount Details</h3>
+                <div class="form-row flex-row">
+                    <div class="form-group">
+                    <label>Total Amount: </label>
+                    <input type="number" id="grandTotal" name="TotalAmount" readonly />
+                    </div>
+                    <div class="form-group">
+                    <label>Discount Amount: </label>
+                    <input type="number" name="TotalDiscountAmount" id="totalDiscountAmount" readonly />
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                    <label>Taxable Amount: </label>
+                    <input type="number" id="totalDiscountPercent" readonly />
+                    </div>
+                <div class="form-group">
+                    <label>Gross Total: </label>
+                    <input type="text" name="grossTotal" id="grossTotal" readonly />
+                </div>
+                </div>
+            </div>
+
+            <div class="button">
+                <button type="submit">Submit</button>
+            </div>
+        </form>
+    </div>
+
+    <div id="rightSection">
+        <div style="position:relative;">
+            <button onclick="closeHistoryPanel()"
+                    style="font-weight: 700;position: absolute; right:-28px;top:0; font-size: 22px; border: none; background: none; color: #138486; cursor: pointer;">
+                ×
+            </button>
+
+            <h4 style="color: #138486; text-align:center;margin-top: 10px;">Purchase History</h4>
+            <h6 id="customerHistoryName" style="text-align:center;margin-top:20px"></h6>
+
+            <div id="historyContent" style="overflow-x:auto; margin-top: 20px;">
+                <table id="historyTable">
+                    <thead style="background-color: #138486; color: white;">
+                        <tr>
+                            <th>Sno.</th>
+                            <th>Product Name</th>
+                            <th>Quantity</th>
+                            <th>Amount</th>
+                            <th>Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Data injected here via JS -->
+                    </tbody>
+                </table>
+            </div>
+>>>>>>> Stashed changes
         </div>
     </div>
 
-    <div class="table">
-        <button type="button" style="float:right" class="btn" id="addNewRow">Add Row</button>
-        <table id="orderTable">
-            <thead>
-                <tr>
-                    <th>S.No</th>
-                    <th>Product Name</th>
-                    <th>UOM</th>
-                    <th>Unit Price</th>
-                    <th>Quantity</th>
-                    <th>Discount Rate (%)</th>
-                    <th>Discount Amount</th>
-                    <th>Taxable Amount</th>
-                    <th>CGST (%)</th>
-                    <th>SGST (%)</th>
-                    <th>Total</th>
-                </tr>
-            </thead>
-            <tbody id="tableBody">
-                <tr>
-                    <td>1</td>
-                    <td>
-                        <select class="ItemName">
-                            <option selected disabled>Select Product</option>
-                            @foreach (var product in Model.ItemNames)
-                            {
-                                <option value="@product.ItemId"
-                                        data-sellingprice="@product.SellingPrice"
-                                        data-unitofmeasure="@product.UnitOFMeasure">
-                                    @product.ItemName
-                                </option>
-                            }
-                        </select>
-                        <input type="hidden" class="ItemId" name="ItemLists[0].ItemId" value="" readonly />
-                    </td>
-                    <td><input type="text" class="UnitOFMeasure" name="ItemLists[0].UnitOFMeasure" readonly></td>
-                    <td><input type="number" class="SellingPrice" name="ItemLists[0].SellingPrice" oninput="calculateRow(this)"></td>
-                    <td><input type="number" class="Quantity" name="ItemLists[0].Quantity" oninput="calculateRow(this)"></td>
-                    <td><input type="number" class="discountRate" name="ItemLists[0].discountRate" oninput="calculateRow(this)"></td>
-                    <td><input type="number" class="discountAmount" name="ItemLists[0].discountAmount" readonly></td>
-                    <td><input type="number" class="taxableAmount" name="ItemLists[0].taxableAmount" readonly></td>
-                    <td>
-                        <select class="cgst" name="ItemLists[0].cgst" onchange="calculateRow(this)">
-                            <option value="0">0%</option>
-                            <option value="5">5%</option>
-                            <option value="9">9%</option>
-                            <option value="12">12%</option>
-                            <option value="18">18%</option>
-                            <option value="28">28%</option>
-                        </select>
-                    </td>
-                    <td>
-                        <select class="sgst" name="ItemLists[0].sgst" onchange="calculateRow(this)">
-                            <option value="0">0%</option>
-                            <option value="5">5%</option>
-                            <option value="9">9%</option>
-                            <option value="12">12%</option>
-                            <option value="18">18%</option>
-                            <option value="28">28%</option>
-                        </select>
-                    </td>
-                    <td><input type="text" class="total" name="TotalAmount" readonly></td>
-                </tr>
-            </tbody>
-        </table><br />
-    </div>
+</div>
 
-    <div class="form-section">
-        <h3>Amount Details</h3>
-        <div class="form-row">
-            <label>Total Amount: </label>
-            <input type="number" id="grandTotal" name="TotalAmount" readonly />
-            <label>Discount Amount: </label>
-            <input type="number" name="TotalDiscountAmount" id="totalDiscountAmount" readonly />
-        </div>
-        <div class="form-row">
-            <label>Taxable Amount: </label>
-            <input type="number" id="totalDiscountPercent" readonly />
-            <label>Gross Total: </label>
-            <input type="text" name="grossTotal" id="grossTotal" readonly />
-        </div>
-    </div>
 
-    <div class="button">
-        <button type="submit">Submit</button>
-    </div>
-</form>
+
+
+
+
+
+
+
+
 
 <script>
     document.addEventListener('DOMContentLoaded', () => {
@@ -226,272 +396,112 @@
         document.getElementById('grossTotal').value = grandTotal.toFixed(2);
     }
 </script>
+
+
+
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+
+<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
+
+
 <script>
     $(document).ready(function () {
-        let isFetching = false;
+        let typingTimer;
+        const $input = $('#ContactNumber');
+        const $suggestions = $('#contact-suggestions');
 
-        $("#ContactNumber").on("blur", function () {
-            if (isFetching) return; //  Stop if already fetching
+        $input.on('input', function () {
+            clearTimeout(typingTimer);
+            const query = $(this).val();
 
-            var contactNo = $(this).val();
-            if (contactNo && contactNo.length === 10) {
-                isFetching = true; //  Set flag to prevent re-entry
+            if (query.length >= 2) {
+                typingTimer = setTimeout(function () {
+                    $.ajax({
+                        url: '/RetailSales/SearchCustomers',
+                        type: 'GET',
+                        data: { term: query },
+                        success: function (data) {
+                            if (data.length > 0) {
+                                $suggestions.empty();
+                                data.forEach(item => {
+                                    $suggestions.append(`<li data-id="${item.value}" data-name="${item.name}">${item.label}</li>`);
+                                });
+                                $suggestions.show(); 
 
-                $.ajax({
-                    url: '/RetailSales/GetCustomerByContact',
-                    type: 'GET',
-                    data: { ContactNO: contactNo },
-                    success: function (data) {
-                        if (data && data.customerName) {
-                            $("#customerName").val(data.customerName);
-                        } else {
-                            alert("Customer not found.");
-                            $("#customerName").val('');
-                        }
-
-                        isFetching = false; //  Reset flag after success
-                    },
-                    error: function () {
-                        alert("Error fetching customer data.");
-                        isFetching = false; //  Reset flag on error
-                    }
-                });
-            }
-        });
-    });
-</script>
-
-
-@* <script>
-    $(document).ready(function () {
-        $("#ContactNumber").on("blur", function () {
-            var contactNo = $(this).val();
-            console.log("Typed number: " + contactNo); // ✅ Debug log
-
-            if (contactNo && contactNo.length === 10) {
-                $.ajax({
-                    url: '/RetailSales/GetCustomerByContact',
-                    type: 'GET',
-                    data: { ContactNO: contactNo },
-                    success: function (data) {
-                        console.log("Response: ", data); // ✅ Debug log
-
-                        if (data && data.CustomerName) {
-                            $("#customerName").val(data.CustomerName);
-                        } else {
-                            alert("Customer not found.");
-                            $("#customerName").val('');
-                        }
-                    },
-                    error: function () {
-                        alert("Error fetching customer data.");
-                    }
-                });
-            }
-        });
-    });
-</script>
- *@
-
-@* @using ERP_Component_DAL.Models;
-
-@{
-    ViewBag.Title = "Customer Bill";
-    Layout = "~/Views/Shared/_LayoutINV.cshtml";
-}
-
-<link rel="stylesheet" href="~/css/ProductTwo.css" />
-
-<form method="post" asp-action="SetCustomerBill" asp-controller="RetailSales">
-    <div class="form-section">
-        <h3>Basic Details</h3>
-        <div class="form-row">
-            <label>Customer Name:</label>
-            <input type="text" id="customerName" name="customerName" />
-            <label>Contact Name:</label>
-            <input type="Number" id="ContactNumber" name="ContactNumber" />
-        </div>
-    </div>
-
-    <div class="table">
-        <button type="button" style="float:right" class="btn" id="addNewRow">Add Row</button>
-        <table id="orderTable">
-            <thead>
-                <tr>
-                    <th>S.No</th>
-                    <th>Product Name</th>
-                    <th>UOM</th>
-                    <th>Unit Price</th>
-                    <th>Quantity</th>
-                    <th>Discount Rate (%)</th>
-                    <th>Discount Amount</th>
-                    <th>Taxable Amount</th>
-                    <th>CGST (%)</th>
-                    <th>SGST (%)</th>
-                    <th>Total</th>
-                </tr>
-            </thead>
-            <tbody id="tableBody">
-                <tr>
-                    <td>1</td>
-                    <td>
-                        <select class="ItemName">
-                            <option selected disabled>Select Product</option>
-                            @foreach (var product in Model.ItemNames)
-                            {
-                                <option value="@product.ItemId"
-                                        data-SellingPrice="@product.SellingPrice"
-                                        data-UnitOFMeasure="@product.UnitOFMeasure">
-                                    @product.ItemName
-                                </option>
+                                // const offset = $input.offset();
+                                // $suggestions.css({ top: offset.top + $input.outerHeight(), left: offset.left, width: $input.outerWidth() }).show();
+                            } else {
+                                $suggestions.hide();
                             }
-                        </select>
-                        <input type="hidden" class="ItemId" name="ItemLists[0].ItemId" value="" readonly />
-                    </td>
-                    <td><input type="text" class="UnitOFMeasure" name="ItemLists[0].UnitOFMeasure" readonly></td>
-                        <input type="number" class="SellingPrice" name="ItemLists[0].SellingPrice" oninput="calculateRow(this)">
-
-                    <td><input type="number" class="SellingPrice" name="ItemLists[0].SellingPrice" oninput="calculateRow(this)"></td>
-                    <td><input type="number" class="Quantity" name="ItemLists[0].Quantity" oninput="calculateRow(this)"></td>
-                    <td><input type="number" class="discountRate" name="ItemLists[0].discountRate" oninput="calculateRow(this)"></td>
-                    <td><input type="number" class="discountAmount" name="ItemLists[0].discountAmount" readonly></td>
-                    <td><input type="number" class="taxableAmount" name="ItemLists[0].taxableAmount" readonly></td>
-                    <td>
-                        <select class="cgst" name="ItemLists[0].cgst" onchange="calculateRow(this)">
-                            <option value="0">0%</option>
-                            <option value="5">5%</option>
-                            <option value="9">9%</option>
-                            <option value="12">12%</option>
-                            <option value="18">18%</option>
-                            <option value="28">28%</option>
-                        </select>
-                    </td>
-                    <td>
-                        <select class="sgst" name="ItemLists[0].sgst" onchange="calculateRow(this)">
-                            <option value="0">0%</option>
-                            <option value="5">5%</option>
-                            <option value="9">9%</option>
-                            <option value="12">12%</option>
-                            <option value="18">18%</option>
-                            <option value="28">28%</option>
-                        </select>
-                    </td>
-                    <td><input type="text" class="total" name="TotalAmount" readonly></td>
-                </tr>
-            </tbody>
-        </table><br />
-    </div>
-
-    <div class="form-section">
-        <h3>Amount Details</h3>
-        <div class="form-row">
-            <label>Total Amount: </label>
-            <input type="number" id="grandTotal" readonly />
-            <label>Discount Amount: </label>
-            <input type="number" name="TotalDiscountAmount" id="totalDiscountAmount" readonly />
-        </div>
-        <div class="form-row">
-            <label>Taxable Amount: </label>
-            <input type="number" id="totalDiscountPercent" readonly />
-            <label>Gross Total: </label>
-            <input type="text" name="grossTotal" id="grossTotal" readonly />
-        </div>
-    </div>
-
-    <div class="button">
-        <button type="submit">Submit</button>
-    </div>
-</form>
-
-<script>
-    document.addEventListener('DOMContentLoaded', () => {
-        // Bind item change event using delegation
-        document.querySelector('#tableBody').addEventListener('change', function (e) {
-            if (e.target.classList.contains('ItemName')) {
-                SetPriceFromDropdown(e.target);
+                        },
+                        error: function () {
+                            $suggestions.hide();
+                        }
+                    });
+                }, 300);
+            } else {
+                $suggestions.hide();
             }
         });
 
-        // Add row button
-        document.getElementById('addNewRow').addEventListener('click', addRow);
+        $(document).on('click', '#contact-suggestions li', function () {
+            const contact = $(this).text();
+            const name = $(this).data('name');
+            const id = $(this).data('id');
+
+            $('#ContactNumber').val(contact);
+            $('#customerName').val(name);
+            $('#contact-suggestions').hide();
+
+            // fetch purchase history
+            fetchAndShowHistory(id);
+        });
+
+        $(document).click(function (e) {
+            if (!$(e.target).closest('#ContactNumber, #contact-suggestions').length) {
+                $suggestions.hide();
+            }
+        });
     });
 
-    function SetPriceFromDropdown(dropdown) {
-        const selectedOption = dropdown.options[dropdown.selectedIndex];
+       function fetchAndShowHistory(customerId) {
+        $.ajax({
+            url: '/RetailSales/GetCustomerBillHistory',
+            type: 'GET',
+            data: { customerId },
+            success: function (data) {
+                let htmlRows = '';
+                data.forEach((item, index) => {
+                    htmlRows += `<tr>
+                        <td>${index + 1}</td>
+                        <td>${item.productName}</td>
+                        <td>${item.quantity}</td>
+                        <td>${item.grossTotal}</td>
+                        <td>${item.createdAt}</td>
+                    </tr>`;
+                });
 
-        const itemId = selectedOption.value;
-        const price = selectedOption.getAttribute("data-SellingPrice");
-        const uom = selectedOption.getAttribute("data-UnitOFMeasure");
+                $('#historyTable tbody').html(htmlRows);
+                  $('#rightSection').show().css('width', '50%');
+    $('#leftSection').css('width', '50%');
 
-        const row = dropdown.closest('tr');
-        row.querySelector('.SellingPrice').value = price;
-        row.querySelector('.UnitOFMeasure').value = uom;
-        row.querySelector('.ItemId').value = itemId;
 
-        calculateRow(row.querySelector('.SellingPrice'));
-    }
 
-    function addRow() {
-        const tableBody = document.getElementById('tableBody');
-        const rowCount = tableBody.rows.length;
-        const newRow = tableBody.rows[0].cloneNode(true);
-
-        newRow.querySelectorAll('input, select').forEach((input) => {
-            if (input.tagName === 'INPUT') input.value = '';
-            else if (input.tagName === 'SELECT') input.selectedIndex = 0;
-
-            if (input.name) {
-                const newName = input.name.replace(/\[\d+\]/, `[${rowCount}]`);
-                input.name = newName;
+                
+                $('#customerHistoryName').text($('#customerName').val());
             }
         });
-
-        newRow.cells[0].innerText = rowCount + 1;
-        tableBody.appendChild(newRow);
     }
 
-    function calculateRow(input) {
-        const row = input.closest('tr');
-
-        const qty = parseFloat(row.querySelector('.Quantity').value) || 0;
-        const price = parseFloat(row.querySelector('.SellingPrice').value) || 0;
-        const discountRate = parseFloat(row.querySelector('.discountRate').value) || 0;
-        const cgst = parseFloat(row.querySelector('.cgst').value) || 0;
-        const sgst = parseFloat(row.querySelector('.sgst').value) || 0;
-
-        const gross = qty * price;
-        const discountAmount = gross * (discountRate / 100);
-        const taxable = gross - discountAmount;
-        const total = taxable + (taxable * (cgst + sgst) / 100);
-
-        row.querySelector('.discountAmount').value = discountAmount.toFixed(2);
-        row.querySelector('.taxableAmount').value = taxable.toFixed(2);
-        row.querySelector('.total').value = total.toFixed(2);
-
-        calculateSummary();
+         function closeHistoryPanel() {
+        $('#rightSection').hide().css('width', '0');
+        $('#leftSection').css('width', '100%');
     }
 
-    function calculateSummary() {
-        const rows = document.querySelectorAll('#tableBody tr');
-        let totalDiscountAmount = 0, totalGross = 0, taxableAmount = 0, grandTotal = 0;
 
-        rows.forEach(row => {
-            const qty = parseFloat(row.querySelector('.Quantity').value) || 0;
-            const price = parseFloat(row.querySelector('.SellingPrice').value) || 0;
-            const discount = parseFloat(row.querySelector('.discountAmount').value) || 0;
-            const total = parseFloat(row.querySelector('.total').value) || 0;
 
-            totalGross += qty * price;
-            totalDiscountAmount += discount;
-            grandTotal += total;
-        });
-
-        taxableAmount = totalGross - totalDiscountAmount;
-
-        document.getElementById('grandTotal').value = totalGross.toFixed(2);
-        document.getElementById('totalDiscountAmount').value = totalDiscountAmount.toFixed(2);
-        document.getElementById('totalDiscountPercent').value = taxableAmount.toFixed(2);
-        document.getElementById('grossTotal').value = grandTotal.toFixed(2);
-    }
 </script>
- *@

@@ -44,6 +44,7 @@ namespace ERP_Components.Controllers
 			return View(model);
 
 		}
+<<<<<<< Updated upstream
 
 
         public IActionResult SetCustomerBill(QuotationModel quotation)
@@ -59,9 +60,41 @@ namespace ERP_Components.Controllers
        public JsonResult GetCustomerByContact(string ContactNO)
 		{
 			var x = retailsalesServices.GetCustomerNameForCompair(ContactNO);
+=======
+>>>>>>> Stashed changes
 
-            return Json(x);
-		}
+        [HttpGet]
+        public JsonResult SearchCustomers(string term)
+        {
+            var customers = retailsalesServices.SearchCustomersByContact(term);
+
+            var results = customers.Select(c => new
+            {
+                label = c.ContactNumber,
+                value = c.RetailId,    
+                name = c.CustomerName   
+            });
+
+            return Json(results);
+        }
+
+
+
+
+        //[HttpGet]
+        //public JsonResult SearchCustomers(string term)
+        //{
+        //    var matches = retailsalesServices.SearchCustomersByContact(term);
+        //    return Json(matches);
+        //}
+
+
+        public JsonResult GetCustomerBillHistory(Guid customerId)
+        {
+            MonthlyRetailSales retail = retailsalesServices.GetRetailCustomerName(customerId);
+            var history = retailsalesServices.GetCustomerRetailHistory(customerId); 
+            return Json(history);
+        }
 
 
 		public IActionResult ViewCustomerBills()
