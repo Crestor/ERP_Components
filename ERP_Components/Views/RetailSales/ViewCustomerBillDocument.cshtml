@@ -118,9 +118,7 @@
                     <td class="right">@x.MRP</td>
                 </tr>
 
-               @*  <tr><td>Saree</td><td class="center">2</td><td class="right">655.00</td></tr>
-                <tr><td>Shaul</td><td class="center">1</td><td class="right">440.00</td></tr>
-                <tr><td>Blazer</td><td class="center">1</td><td class="right">370.00</td></tr> *@
+            
                
              } 
         </tbody>
@@ -129,12 +127,10 @@
     <div class="summary">
         <hr>
         <table class="table">
-            <tr><td>Total Qty:</td><td class="right"><input value="CountQty()" /></td></tr>
+            <tr><td>Total Qty:</td><td class="right">4</td></tr>
             <tr><td>Sub Total:</td><td class="right"> ₹@Model.retailItem[0].GrossTotal</td></tr>
             <tr><td>GST @Model.retailItem[0].GST</td><td class="right"> </td></tr>
-            @* <tr><td>CGST 2.5%:</td><td class="right">36.63</td></tr>
-            <tr><td>SGST 2.5%:</td><td class="right">36.63</td></tr>
-            <tr><td>Round Off:</td><td class="right">-0.26</td></tr> *@
+          
             <tr><th>Grand Total:</th><th class="right">₹ @Model.retailItem[0].NetTotal.ToString("0.00")</th></tr>
         </table>
         <hr>
@@ -186,20 +182,15 @@
         document.body.innerHTML = originalContents;
         location.reload();
     });
-      let itemCount = 0;
-    function CountQty() {
-         const items = document.getElementById("qty");
-        itemCount +=items;
-       
-    }
 
-    //     let itemCount = 0; 
 
+    //   let itemCount = 0;
     // function CountQty() {
-    //   const item = document.getElementById("qty");
-    //   // const qty = parseInt(item.value, 10); 
-    //     itemCount += qty;
-    
+    //      const items = document.getElementById("qty");
+    //     itemCount +=items;
+       
     // }
+
+  
 
 </script>

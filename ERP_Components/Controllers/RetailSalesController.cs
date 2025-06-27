@@ -83,7 +83,6 @@ namespace ERP_Components.Controllers
         {
 			RetailItemModel retailItem = retailsalesServices.CustomerBillAddressData();
             retailItem.RetailCustomerId = Guid.Parse(HttpContext.Session.GetString("RetailCustomerId"));
-            //retailItem.RetailCustomerId = RetailCustomerId;
 			RetailCustomerId = retailItem.RetailCustomerId;
             retailItem.retailItem = retailsalesServices.GetRetailCustomerBillData(RetailCustomerId);
 
