@@ -195,24 +195,6 @@
             }
         }
 
-        const phase1Status = '@Model.workOrderPhases.Count > 0 ? Model.workOrderPhases[0].status : ""';
-    const phase2Status = '@Model.workOrderPhases.Count > 1 ? Model.workOrderPhases[1].status : ""';
-
-    if (phase1Status === "COMPLETED" && phase2Status === "COMPLETED") {
-        document.getElementById("showpopupforWaever").style.display = "none";
-        document.getElementById("showpopupforDeyer").style.display = "none";
-        document.getElementById("completedworkorder").style.display = "block";
-    }
-    else if (phase1Status === "COMPLETED") {
-        document.getElementById("showpopupforWaever").style.display = "none";
-        document.getElementById("showpopupforDeyer").style.display = "block";
-        document.getElementById("completedworkorder").style.display = "none";
-    } else {
-        document.getElementById("showpopupforWaever").style.display = "block";
-        document.getElementById("showpopupforDeyer").style.display = "none";
-        document.getElementById("completedworkorder").style.display = "none";
-    }
-
         // Handle allocated quantity validation
         document.getElementById("AllocatedQuantity").addEventListener("input", function () {
             if (parseInt(this.value) >= totalQuantity - allocatedQuantity) {
@@ -246,7 +228,23 @@
         localStorage.setItem("lastAllocationCode", newCode);
     });
 
-    
+    const phase1Status = '@Model.workOrderPhases.Count > 0 ? Model.workOrderPhases[0].status : ""';
+    const phase2Status = '@Model.workOrderPhases.Count > 1 ? Model.workOrderPhases[1].status : ""';
+
+    if (phase1Status === "COMPLETED" && phase2Status === "COMPLETED") {
+        document.getElementById("showpopupforWaever").style.display = "none";
+        document.getElementById("showpopupforDeyer").style.display = "none";
+        document.getElementById("completedworkorder").style.display = "block";
+    }
+    else if (phase1Status === "COMPLETED") {
+        document.getElementById("showpopupforWaever").style.display = "none";
+        document.getElementById("showpopupforDeyer").style.display = "block";
+        document.getElementById("completedworkorder").style.display = "none";
+    } else {
+        document.getElementById("showpopupforWaever").style.display = "block";
+        document.getElementById("showpopupforDeyer").style.display = "none";
+        document.getElementById("completedworkorder").style.display = "none";
+    }
 
     
 </script>
