@@ -430,10 +430,7 @@ p input{
 
 .Popuptable {
     background-color: white;
-    padding: 20px;
     border-radius: 8px;
-    left:50%;
-    top:20%;
     max-height: 80%;
     overflow-y: auto;
     z-index: 10000; /* ensure it's above */

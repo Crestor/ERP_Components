@@ -109,6 +109,11 @@ namespace ERP_Components.Controllers
             managerServices.UpdateVendorQuotationStatusAndRequisitionStatusToApproved (vendorId, requisitionId);
             return RedirectToAction("ApproveVendorQuotation");
         }
+        public JsonResult GetVendorItems(Guid vendorId)
+        {
+            // isme jo list leke ayega wo bhejna 
+            return Json(vendorId);
+        }
 
         public IActionResult Productsales()
         {
