@@ -395,24 +395,14 @@ namespace ERP_Component_DAL.Services
                 WHERE ContactNumber LIKE @term + '%'  
                 ORDER BY ContactNumber";
 
-                    using (SqlCommand cmd = new SqlCommand(query, connection))
-                    {
-                        cmd.Parameters.AddWithValue("@term", term);
-                        connection.Open();
+                cmd.Connection = connection;
+                connection.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
 
-                        using (SqlDataReader reader = cmd.ExecuteReader())
-                        {
-                            while (reader.Read())
-                            {
-                                sales.Add(new MonthlyRetailSales
-                                {
-                                    CustomerName = reader["CustomerName"] != DBNull.Value ? (string)reader["CustomerName"] : string.Empty,
-                                    RetailId = reader["RetailCustomerId"] != DBNull.Value ? (Guid)reader["RetailCustomerId"] : Guid.Empty,
-                                    ContactNumber = reader["ContactNumber"] != DBNull.Value ? (string)reader["ContactNumber"] : string.Empty
-                                });
-                            }
-                        }
-                    }
+                    name.CustomerName = reader["CustomerName"] != DBNull.Value ? (string)reader["CustomerName"] : string.Empty;
+
                 }
 
                 return sales;
