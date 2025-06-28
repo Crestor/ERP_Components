@@ -116,7 +116,7 @@ namespace ERP_Components.Controllers
 		//	retail.IDetails = retailsalesServices.GetCustomerRetailData(RetailBillID);
 		//	return Json(retail);
 
-		}
+		//}
 		public IActionResult ViewCustomerBillDocument(Guid RetailCustomerId)
         {
 			RetailItemModel retailItem = retailsalesServices.CustomerBillAddressData();

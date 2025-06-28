@@ -390,21 +390,28 @@ namespace ERP_Component_DAL.Services
                 using (SqlConnection connection = new SqlConnection(connectionstring))
                 {
                     string query = @"
-                SELECT TOP 10 RetailCustomerId, CustomerName, ContactNumber 
-                FROM RetailCustomers  
-                WHERE ContactNumber LIKE @term + '%'  
-                ORDER BY ContactNumber";
-
-                cmd.Connection = connection;
-                connection.Open();
-                SqlDataReader reader = cmd.ExecuteReader();
-                while (reader.Read())
-                {
-
-                    name.CustomerName = reader["CustomerName"] != DBNull.Value ? (string)reader["CustomerName"] : string.Empty;
-
+        SELECT TOP 10 RetailCustomerId, CustomerName, ContactNumber
+        FROM RetailCustomers
+        WHERE ContactNumber LIKE @term + '%'
+        ORDER BY ContactNumber";
+                    using (SqlCommand cmd = new SqlCommand(query, connection))
+                    {
+                        cmd.Parameters.AddWithValue("@term", term);
+                        connection.Open();
+                        using (SqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                sales.Add(new MonthlyRetailSales
+                                {
+                                    CustomerName = reader["CustomerName"] != DBNull.Value ? (string)reader["CustomerName"] : string.Empty,
+                                    RetailId = reader["RetailCustomerId"] != DBNull.Value ? (Guid)reader["RetailCustomerId"] : Guid.Empty,
+                                    ContactNumber = reader["ContactNumber"] != DBNull.Value ? (string)reader["ContactNumber"] : string.Empty
+                                });
+                            }
+                        }
+                    }
                 }
-
                 return sales;
             }
             catch (Exception ex)
@@ -412,17 +419,6 @@ namespace ERP_Component_DAL.Services
                 throw;
             }
         }
-
-
-
-
-
-
-
-
-
-
-
 
         public RetailItemModel CustomerBillAddressData()
         {
