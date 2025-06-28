@@ -332,7 +332,7 @@ namespace ERP_Component_DAL.Services
                 connection = new SqlConnection(connectionstring);
                 SqlCommand cmd = new SqlCommand();
                 cmd.CommandType = System.Data.CommandType.Text;
-                cmd.CommandText = $"Update VendorQuotations set QuotationStatus = 0 Where  RequisitionID = '{requisitionId}' ";
+                cmd.CommandText = $"Update VendorQuotations set QuotationStatus = 0 Where  PurchaseRequisitionID = '{requisitionId}' ";
 
                 cmd.Connection = connection;
                 connection.Open();
