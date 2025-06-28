@@ -187,11 +187,26 @@
 
         const weaverBtn = document.getElementById("showpopupforWaever");
         const deyerBtn = document.getElementById("showpopupforDeyer");
+        const completedBtn = document.getElementById("completedworkorder");
+        const phase1Status = "@Model.workOrderPhases[0].status";
+        const phase2Status = "@Model.workOrderPhases[1].status";
+
+        console.log(phase2Status)
+        console.log(phase1Status)
 
         if (weaverBtn && deyerBtn) {
-            if (totalQuantity === allocatedQuantity) {
+            if (phase2Status === "COMPLETED"){
+                weaverBtn.style.display = "none";
+                deyerBtn.style.display = "none";
+                completedBtn.style.display = "block";
+            }else if (phase1Status === "COMPLETED") {
                 weaverBtn.style.display = "none";
                 deyerBtn.style.display = "block";
+                completedBtn.style.display = "none";
+            } else {
+                weaverBtn.style.display = "block";
+                deyerBtn.style.display = "none";
+                completedBtn.style.display = "none";
             }
         }
 
@@ -228,23 +243,22 @@
         localStorage.setItem("lastAllocationCode", newCode);
     });
 
-    const phase1Status = '@Model.workOrderPhases.Count > 0 ? Model.workOrderPhases[0].status : ""';
-    const phase2Status = '@Model.workOrderPhases.Count > 1 ? Model.workOrderPhases[1].status : ""';
 
-    if (phase1Status === "COMPLETED" && phase2Status === "COMPLETED") {
-        document.getElementById("showpopupforWaever").style.display = "none";
-        document.getElementById("showpopupforDeyer").style.display = "none";
-        document.getElementById("completedworkorder").style.display = "block";
-    }
-    else if (phase1Status === "COMPLETED") {
-        document.getElementById("showpopupforWaever").style.display = "none";
-        document.getElementById("showpopupforDeyer").style.display = "block";
-        document.getElementById("completedworkorder").style.display = "none";
-    } else {
-        document.getElementById("showpopupforWaever").style.display = "block";
-        document.getElementById("showpopupforDeyer").style.display = "none";
-        document.getElementById("completedworkorder").style.display = "none";
-    }
+
+    // if (phase2Status === "COMPLETED") {
+    //     document.getElementById("showpopupforWaever").style.display = "none";
+    //     document.getElementById("showpopupforDeyer").style.display = "none";
+    //     document.getElementById("completedworkorder").style.display = "block";
+    // }
+    // else if (phase1Status === "COMPLETED") {
+    //     document.getElementById("showpopupforWaever").style.display = "none";
+    //     document.getElementById("showpopupforDeyer").style.display = "block";
+    //     document.getElementById("completedworkorder").style.display = "none";
+    // } else {
+    //     document.getElementById("showpopupforWaever").style.display = "block";
+    //     document.getElementById("showpopupforDeyer").style.display = "none";
+    //     document.getElementById("completedworkorder").style.display = "none";
+    // }
 
     
 </script>
