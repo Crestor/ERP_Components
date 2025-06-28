@@ -251,7 +251,14 @@ namespace ERP_Components.Controllers
         {
             AddPurchaseRequisition requisition = productionServices.GetRequisitionData(RequisitionId);
             requisition.listItesms = productionServices.ViewProductionMaterial(RequisitionId);
+            requisition.RequisitionId = RequisitionId;
             return View(requisition);
+        }
+
+        public IActionResult AllocateMaterialToWeaver(Guid RequisitionId)
+        {
+            productionServices.AllocateMaterialToWeaver(RequisitionId);
+            return RedirectToAction("ViewMR");
         }
 
 

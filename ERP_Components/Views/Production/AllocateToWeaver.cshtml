@@ -58,7 +58,7 @@
         @if (insufficientMaterial)
         {
 
-            <button type="submit" onclick="location.href='@Url.Action("AllocateToProductionFromStoreSeven", "Inventory", new { requisitionId = Model.RequisitionId }, null)'">Allocate</button>
+            <button type="submit" onclick="location.href='@Url.Action("AllocateMaterialToWeaver", "Production", new { requisitionId = Model.RequisitionId }, null)'">Allocate</button>
 
         }
         

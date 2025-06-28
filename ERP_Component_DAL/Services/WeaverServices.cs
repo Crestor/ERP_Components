@@ -373,16 +373,6 @@ namespace ERP_Component_DAL.Services
                 workOrders.workOrderPhases = new List<WorkOrderPhases>();
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
-                    //string query = $"WITH StatusCTE AS ( SELECT wo.WorkOrderID, CASE  WHEN ISNULL(SUM(aw.RecievedQuantity), 0) > wo.Quantity THEN 'IN_PROGRESS' " +
-                    //    $"WHEN ISNULL(SUM(aw.RecievedQuantity), 0) = wo.Quantity THEN 'COMPLETED' ELSE 'PENDING' END AS Status FROM WorkOrder wo " +
-                    //    $"LEFT JOIN AllocatedWork aw ON aw.WorkOrderID = wo.WorkOrderID WHERE wo.WorkOrderID = '{workOrders.WorkOrderId}' " +
-                    //    $"GROUP BY wo.WorkOrderID, wo.Quantity) " +
-                    //    $"SELECT wop.Phase, (wop.PhaseTime * wo.Quantity) AS PhaseTime, wop.PhaseWork, sc.Status FROM WorkOrder wo " +
-                    //    $"JOIN WorkOrderPhases wop ON wo.ProductID = wop.ProductID JOIN StatusCTE sc ON wo.WorkOrderID = sc.WorkOrderID " +
-                    //    $"WHERE wo.WorkOrderID = '{workOrders.WorkOrderId}';";
-
-
-
                     using (SqlCommand cmd = new SqlCommand("GetPhases", connection))
                     {
                         connection.Open();
@@ -680,7 +670,7 @@ namespace ERP_Component_DAL.Services
             {
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
-                    string query = @"SELECT p.ItemName AS ProductName,p.ItemId, m.ItemName AS RequiredMaterial, (pmm.Quantity * wo.Quantity) AS RequiredQuantity, i.InStock AS AvailableQuantity
+                    string query = @"SELECT p.ItemName AS ProductName,m.ItemId, m.ItemName AS RequiredMaterial, (pmm.Quantity * wo.Quantity) AS RequiredQuantity, i.InStock AS AvailableQuantity
                                     FROM WorkOrder wo JOIN Items p ON p.ItemId = wo.ProductID
                                     JOIN ProductMaterialMapping pmm ON wo.ProductID = pmm.ProductID
                                     JOIN Items m ON m.ItemId = pmm.MaterialID
@@ -1117,7 +1107,11 @@ namespace ERP_Component_DAL.Services
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
                     connection.Open();
-                    string query = @"UPDATE AllocatedWork SET RecievedQuantity = @RecievedQuantity WHERE AllocatedWorkID = @AllocatedWorkID";
+                    string query = @"UPDATE AllocatedWork SET RecievedQuantity = @RecievedQuantity WHERE AllocatedWorkID = @AllocatedWorkID;
+                                     UPDATE Inventory SET InStock = InStock + @RecievedQuantity WHERE ItemId = (SELECT wop.OutPutProductID FROM WorkOrderPhases wop 
+                                     JOIN WorkOrder wo ON wop.ProductID = wo.ProductID
+                                     JOIN AllocatedWork aw ON aw.WorkOrderID=wo.WorkOrderID
+                                     WHERE wop.Phase = 1 AND aw.AllocatedWorkID = @AllocatedWorkID)";
 
                     using (SqlCommand cmd = new SqlCommand(query, connection))
                     {

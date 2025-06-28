@@ -1255,7 +1255,10 @@ RequisitionStatus=1
                 connection = new SqlConnection(connectionstring);
                 SqlCommand cmd = new();
                 cmd.CommandType = System.Data.CommandType.Text;
-                cmd.CommandText = cmd.CommandText = $" SELECT m.ItemID AS MaterialID, m.ItemName AS Material, (pmm.Quantity * po.Quantity) AS RequiredQuantity, m.UnitOFMeasure, i.InStock AS AvailableQuantity FROM ProductionOrder po JOIN ProductMaterialMapping pmm ON po.ProductID = pmm.ProductID JOIN Items m ON pmm.MaterialID = m.ItemId JOIN Inventory i ON pmm.MaterialID = i.ItemId WHERE po.SalesForcastID = '{requisitionId}' AND i.InventoryCenter = 3";
+                cmd.CommandText = cmd.CommandText = $"SELECT ri.ItemID AS MaterialID, it.ItemName AS Material, it.UnitOFMeasure, ri.Quantity AS RequiredQuantity, i.InStock AS AvailableQuantity " +
+                                                    $"FROM RequisitionItems ri JOIN Items it ON ri.ItemID = it.ItemId " +
+                                                    $"JOIN Inventory i ON ri.ItemID = i.ItemId WHERE ri.RequisitionID = '{requisitionId}' " +
+                                                    $"AND i.CenterId = '43dda665-1d92-497a-9c0d-f8ac843089c3'";
 
                 cmd.Connection = connection;
 
@@ -1329,7 +1332,25 @@ RequisitionStatus=1
 
         }
 
-
-
+        public void AllocateMaterialToWeaver(Guid requisitionId)
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(_connectionString))
+                {
+                    using (SqlCommand cmd = new SqlCommand("AllocateToWeaverFromProduction", connection))
+                    {
+                        connection.Open();
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@RequisitionID", requisitionId);
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
     }
 }

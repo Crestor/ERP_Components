@@ -427,7 +427,11 @@ namespace ERP_Component_DAL.Services
                 connection = new SqlConnection(connectionstring);
                 SqlCommand cmd = new();
                 cmd.CommandType = System.Data.CommandType.Text;
-                cmd.CommandText = $"SELECT  it.ItemName, it.HSN, it.Specification,ps.StatusName, it.UnitOfMeasure,ri.RequisitionID, ri.Quantity FROM Items it  JOIN ProductionOrder po ON it.ItemId = po.ProductID LEFT JOIN ProductionStatuses ps ON po.ProductionStatus =ps.ProductionStatus LEFT JOIN RequisitionItems ri ON po.SalesForcastID = ri.RequisitionID Where po.SalesForcastID  = '{RequisitionID}'  GROUP BY it.ItemName, it.HSN, it.Specification,ps.StatusName, it.UnitOfMeasure,ri.RequisitionID, ri.Quantity";
+                cmd.CommandText = $"SELECT i.ItemName, i.HSN, i.UnitOFMeasure, i.Specification, wo.Quantity, wos.StatusName FROM WorkOrder wo " +
+                    $"JOIN RequisitionItems ri ON ri.RequisitionID = wo.SalesForecastID AND ri.ItemID = wo.ProductID " +
+                    $"JOIN Items i ON wo.ProductID = i.ItemId " +
+                    $"JOIN WorkOrderStatuses wos ON wo.WorkOrderStatus = wos.WorkOrderStatus " +
+                    $"WHERE wo.SalesForecastID = @RequisitionID";
                 cmd.Parameters.AddWithValue("@RequisitionID", RequisitionID);
                 cmd.Connection = connection;
 
@@ -439,7 +443,7 @@ namespace ERP_Component_DAL.Services
                     prod.Add(new AddPurchaseRequisition
                     {
 
-                        RequisitionId = reader["RequisitionID"] != DBNull.Value ? (Guid)reader["RequisitionID"] : Guid.Empty,
+                        RequisitionId = RequisitionID,
 
                         itemName = reader["ItemName"] != DBNull.Value ? (string)reader["ItemName"] : string.Empty,
 

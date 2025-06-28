@@ -2584,7 +2584,7 @@ RequisitionStatus=1
                 connection = new SqlConnection(ConnectionString);
                 SqlCommand cmd = new SqlCommand();
                 cmd.CommandType = System.Data.CommandType.Text;
-                cmd.CommandText = $" select ItemName,ItemId from Items where ItemType=1";
+                cmd.CommandText = $"SELECT it.ItemName, it.ItemId FROM Items it \r\nJOIN Inventory i ON i.ItemId = it.ItemId \r\nJOIN DistributionCenter dc ON i.CenterId = dc.CenterId\r\nJOIN CenterTypes ct ON dc.CenterType = ct.CenterType\r\nWHERE ItemType=1 AND TypeName = 'SALES_CENTER'";
 
                 cmd.Connection = connection;
 
