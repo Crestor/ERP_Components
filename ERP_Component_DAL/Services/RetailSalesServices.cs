@@ -358,7 +358,6 @@ namespace ERP_Component_DAL.Services
                 cmd.CommandText = $"Select CustomerName From RetailCustomers Where RetailCustomerID = '{customerId}'";
 
                 cmd.Connection = connection;
-                cmd.CommandTimeout = 300;
                 connection.Open();
                 SqlDataReader reader = cmd.ExecuteReader();
                 while (reader.Read())

@@ -107,6 +107,14 @@
             </tr>
         </thead>
         <tbody>
+            @{
+                int totalQty = 0;
+                for (var i = 0; i < Model.retailItem.Count; i++)
+                {
+                    totalQty += Model.retailItem[i].Quantity;
+                }
+            }
+
             @for (var i = 0; i < Model.retailItem.Count; i++)
             {
 
@@ -127,7 +135,9 @@
     <div class="summary">
         <hr>
         <table class="table">
-            <tr><td>Total Qty:</td><td class="right">4</td></tr>
+            @* <tr><td>Total Qty:</td><td class="right">4</td></tr> *@
+            <tr><td>Total Qty:</td><td class="right">@totalQty</td></tr>
+
             <tr><td>Sub Total:</td><td class="right"> ₹@Model.retailItem[0].GrossTotal</td></tr>
             <tr><td>GST @Model.retailItem[0].GST</td><td class="right"> </td></tr>
           
@@ -184,13 +194,7 @@
     });
 
 
-    //   let itemCount = 0;
-    // function CountQty() {
-    //      const items = document.getElementById("qty");
-    //     itemCount +=items;
-       
-    // }
-
+   
   
 
 </script>

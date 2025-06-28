@@ -29,10 +29,8 @@ namespace ERP_Components.Controllers
 			return View();
 		}
 
-
-
-
-		public IActionResult CustomerBill()
+		
+        public IActionResult CustomerBill()
 		{
 			List<QuotationModel> aq = retailsalesServices.AddBillItemName();
 			var model = new QuotationViewModel
@@ -118,8 +116,8 @@ namespace ERP_Components.Controllers
 		//	retail.IDetails = retailsalesServices.GetCustomerRetailData(RetailBillID);
 		//	return Json(retail);
 
-		//}
-		public IActionResult ViewCustomerBillDocument(Guid RetailCustomerId)//Guid RetailBillID
+		}
+		public IActionResult ViewCustomerBillDocument(Guid RetailCustomerId)
         {
 			RetailItemModel retailItem = retailsalesServices.CustomerBillAddressData();
             retailItem.RetailCustomerId = Guid.Parse(HttpContext.Session.GetString("RetailCustomerId"));
