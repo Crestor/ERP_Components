@@ -29,10 +29,8 @@ namespace ERP_Components.Controllers
 			return View();
 		}
 
-
-
-
-		public IActionResult CustomerBill()
+		
+        public IActionResult CustomerBill()
 		{
 			List<QuotationModel> aq = retailsalesServices.AddBillItemName();
 			var model = new QuotationViewModel
@@ -44,21 +42,64 @@ namespace ERP_Components.Controllers
 			return View(model);
 
 		}
-       public JsonResult GetCustomerByContact(string ContactNO)
-		{
-			var x = retailsalesServices.GetCustomerNameForCompair(ContactNO);
 
-            return Json(x);
-		}
+
+        [HttpGet]
+        public JsonResult SearchCustomers(string term)
+        {
+            var customers = retailsalesServices.SearchCustomersByContact(term);
+
+            var results = customers.Select(c => new
+            {
+                label = c.ContactNumber,
+                value = c.RetailId,    
+                name = c.CustomerName   
+            });
+
+            return Json(results);
+        }
+
+
+
+
+    
+
+        public JsonResult GetCustomerBillHistory(Guid customerId)
+        {
+            MonthlyRetailSales retail = retailsalesServices.GetCustomerName(customerId);
+            retail.Items = retailsalesServices.GetCustomerRetailHistory(customerId); 
+            return Json(retail);
+        }
 
 
         public IActionResult SetCustomerBill(QuotationModel quotation)
 		{
 		quotation.RetailCustomerId  =	retailsalesServices.AddRetailCustomer(quotation);
-			retailsalesServices.AddCustomerBill(quotation,quotation.ItemLists);
-			return RedirectToAction("CustomerBill");
+        HttpContext.Session.SetString("RetailCustomerId", quotation.RetailCustomerId.ToString());
+            retailsalesServices.AddCustomerBill(quotation,quotation.ItemLists);
+			return RedirectToAction("ViewCustomerBillDocument");
 		}
 
+
+		// 
+      
+
+
+
+        //[HttpGet]
+        //public JsonResult SearchCustomers(string term)
+        //{
+        //    var matches = retailsalesServices.SearchCustomersByContact(term);
+        //    return Json(matches);
+        //}
+
+
+        //public JsonResult GetCustomerBillHistory(Guid customerId)
+        //{
+        //    MonthlyRetailSales retail = retailsalesServices.GetRetailCustomerName(customerId);
+        //    var history = retailsalesServices.GetCustomerRetailHistory(customerId); 
+        //    return Json(history);
+        //}
 
 
 		public IActionResult ViewCustomerBills()
@@ -68,17 +109,22 @@ namespace ERP_Components.Controllers
 		}
 
 
-		public JsonResult ViewCustomerBillHistory(Guid RetailBillID)
-		{
+		//public JsonResult ViewCustomerBillHistory(Guid RetailBillID)
+		//{
 
-			QuotationModel retail = retailsalesServices.GetCustomerName(RetailBillID);
-			retail.IDetails = retailsalesServices.GetCustomerRetailData(RetailBillID);
-			return Json(retail);
+		//	QuotationModel retail = retailsalesServices.GetCustomerName(RetailBillID);
+		//	retail.IDetails = retailsalesServices.GetCustomerRetailData(RetailBillID);
+		//	return Json(retail);
 
-		}
-		public IActionResult ViewCustomerBillDocument()
-		{
-			return View();
+		//}
+		public IActionResult ViewCustomerBillDocument(Guid RetailCustomerId)
+        {
+			RetailItemModel retailItem = retailsalesServices.CustomerBillAddressData();
+            retailItem.RetailCustomerId = Guid.Parse(HttpContext.Session.GetString("RetailCustomerId"));
+			RetailCustomerId = retailItem.RetailCustomerId;
+            retailItem.retailItem = retailsalesServices.GetRetailCustomerBillData(RetailCustomerId);
+
+			return View(retailItem);
 		}
 
         public IActionResult CustomerInvoice()

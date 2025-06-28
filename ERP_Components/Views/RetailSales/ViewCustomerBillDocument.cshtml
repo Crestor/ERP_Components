@@ -1,9 +1,200 @@
-﻿@using ERP_Component_DAL.Models;
+﻿
+@using ERP_Component_DAL.Models;
 
 @{
-	ViewBag.Title = "View Customer Bill";
-	Layout = "~/Views/Shared/_LayoutINV.cshtml";
+    ViewBag.Title = "View Customer Bill";
+    Layout = "~/Views/Shared/_LayoutINV.cshtml";
 }
-<link rel="stylesheet" href="/css/Product.css" />
+
+@* <link rel="stylesheet" href="/css/Product.css" /> *@
+
+@model RetailItemModel
+
+<style>
+    body {
+    background: #fff;
+    }
+
+    .viewDoc {
+    padding: 20px;
+    max-width: 380px;
+    margin: auto;
+    border: 1px solid #000;
+    background: #fff;
+    }
+
+    h2, h4, p {
+    text-align: center;
+    margin: 0;
+    }
+
+    .info, .summary, .footer {
+    margin-top: 10px;
+    }
+
+    table { 
+    width: 100%; 
+    border-collapse: collapse;
+    margin-top: 10px; 
+    } 
+
+    td, th {
+    padding: 4px;
+    font-size: 14px;
+    }
+
+    .right {
+    text-align: right;
+    }
+
+    .center {
+    text-align: center;
+    }
+
+    hr {
+    border: 0; 
+    border-top: 1px dashed #000; 
+    }
+
+    .button {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    }
+
+    .button button {
+    padding: 6px 12px;
+    background-color: #138496;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    }
+
+    .button button:hover {
+    background-color: #117a8b;
+    }
+</style>
+
+<div class="viewDoc" id="details-container">
+    <h2>@Model?.CenterName</h2>
+    <p>@Model.Street, @Model.AddressLine1, @Model.District</p>  
+    <p>@Model.AddressLine2, @Model.City</p>
+    <p>Ph: 7455034126</p>
+    @* <p>GST: 05AAZFS9368L1ZZ</p> *@
+    <p>@Model?.Pincode</p>
+
+    <div class="info">
+        <hr>
+       <p>Name: @Model.retailItem[0].CustomerName</p>
+        @* <p>Date: 25/06/25</p> *@
+
+        <p>Date: @DateTime.Now.ToString("yy/mm/dd") </p>
+        @* Dine In: F3 *@
+        @* <p>Time: 17:09 , Bill No: 1309</p> *@
+        <p>Time: @DateTime.Now.ToString("HH/mm"),Bill No: 1309</p>
+        <hr>
+    </div>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Item</th>
+                <th class="center">Qty</th>
+                <th class="right">Price</th>
+            </tr>
+        </thead>
+        <tbody>
+            @{
+                int totalQty = 0;
+                for (var i = 0; i < Model.retailItem.Count; i++)
+                {
+                    totalQty += Model.retailItem[i].Quantity;
+                }
+            }
+
+            @for (var i = 0; i < Model.retailItem.Count; i++)
+            {
+
+                var x = Model.retailItem[i];
+                var index = i + 1; 
+                <tr>
+                    <td >@x.ItemName</td>
+                    <td class="center" id="qty">@x.Quantity</td>
+                    <td class="right">@x.MRP</td>
+                </tr>
+
+            
+               
+             } 
+        </tbody>
+    </table>
+
+    <div class="summary">
+        <hr>
+        <table class="table">
+            @* <tr><td>Total Qty:</td><td class="right">4</td></tr> *@
+            <tr><td>Total Qty:</td><td class="right">@totalQty</td></tr>
+
+            <tr><td>Sub Total:</td><td class="right"> ₹@Model.retailItem[0].GrossTotal</td></tr>
+            <tr><td>GST @Model.retailItem[0].GST</td><td class="right"> </td></tr>
+          
+            <tr><th>Grand Total:</th><th class="right">₹ @Model.retailItem[0].NetTotal.ToString("0.00")</th></tr>
+        </table>
+        <hr>
+    </div>
+
+    <div class="footer">
+        <p>Thanks For Visiting</p>
+        <h2>@Model?.CenterName</h2>
+    </div>
+</div>
+
+<div class="button">
+    <button id="download-button">Download PDF</button>
+    <button id="print-button">Print</button>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+    $("#download-button").click(async function () {
+        const { jsPDF } = window.jspdf;
+        const element = document.querySelector("#details-container");
+
+        const canvas = await html2canvas(element, {
+            scale: 3,
+            useCORS: true,
+            windowWidth: element.scrollWidth,
+            windowHeight: element.scrollHeight,
+        });
+
+        const imgData = canvas.toDataURL("image/png");
+        const pdf = new jsPDF("p", "mm", "a4");
+
+        const pdfWidth = pdf.internal.pageSize.getWidth();
+        const pdfHeight = pdf.internal.pageSize.getHeight();
+
+        pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, (canvas.height * pdfWidth) / canvas.width);
+        pdf.save("CustomerBill.pdf");
+    });
+
+    $("#print-button").click(function () {
+        const printContents = document.getElementById("details-container").innerHTML;
+        const originalContents = document.body.innerHTML;
+
+        document.body.innerHTML = printContents;
+        window.print();
+        document.body.innerHTML = originalContents;
+        location.reload();
+    });
 
 
+   
+  
+
+</script>
