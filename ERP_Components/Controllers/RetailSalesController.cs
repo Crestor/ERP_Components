@@ -44,24 +44,6 @@ namespace ERP_Components.Controllers
 			return View(model);
 
 		}
-<<<<<<< Updated upstream
-
-
-        public IActionResult SetCustomerBill(QuotationModel quotation)
-		{
-		quotation.RetailCustomerId  =	retailsalesServices.AddRetailCustomer(quotation);
-        HttpContext.Session.SetString("RetailCustomerId", quotation.RetailCustomerId.ToString());
-            retailsalesServices.AddCustomerBill(quotation,quotation.ItemLists);
-			return RedirectToAction("ViewCustomerBillDocument");
-		}
-
-
-		// 
-       public JsonResult GetCustomerByContact(string ContactNO)
-		{
-			var x = retailsalesServices.GetCustomerNameForCompair(ContactNO);
-=======
->>>>>>> Stashed changes
 
         [HttpGet]
         public JsonResult SearchCustomers(string term)
@@ -95,6 +77,33 @@ namespace ERP_Components.Controllers
             var history = retailsalesServices.GetCustomerRetailHistory(customerId); 
             return Json(history);
         }
+
+
+        public IActionResult SetCustomerBill(QuotationModel quotation)
+		{
+		quotation.RetailCustomerId  =	retailsalesServices.AddRetailCustomer(quotation);
+        HttpContext.Session.SetString("RetailCustomerId", quotation.RetailCustomerId.ToString());
+            retailsalesServices.AddCustomerBill(quotation,quotation.ItemLists);
+			return RedirectToAction("ViewCustomerBillDocument");
+		}
+
+
+
+
+      
+
+
+
+
+        //[HttpGet]
+        //public JsonResult SearchCustomers(string term)
+        //{
+        //    var matches = retailsalesServices.SearchCustomersByContact(term);
+        //    return Json(matches);
+        //}
+
+
+       
 
 
 		public IActionResult ViewCustomerBills()
