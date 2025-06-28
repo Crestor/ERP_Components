@@ -116,16 +116,8 @@
 
 </style>
 
-<<<<<<< Updated upstream
-<form method="post" asp-action="SetCustomerBill" asp-controller="RetailSales">
-    <div class="form-section">
-        <h3>Basic Details</h3>
-        <div class="form-row">
-            <label>Contact Number:</label>
-            <input type="number" id="ContactNumber" name="ContactNumber" />
-            <label>Customer Name:</label>
-            <input type="text" id="customerName" name="customerName" />
-=======
+
+
 
 
 
@@ -284,7 +276,6 @@
                     </tbody>
                 </table>
             </div>
->>>>>>> Stashed changes
         </div>
     </div>
 
@@ -470,7 +461,7 @@
 
        function fetchAndShowHistory(customerId) {
         $.ajax({
-            url: '/RetailSales/GetCustomerBillHistory',
+           url: '/RetailSales/GetCustomerBillHistory',
             type: 'GET',
             data: { customerId },
             success: function (data) {
