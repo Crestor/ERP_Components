@@ -114,7 +114,7 @@ namespace ERP_Components.Controllers
         public JsonResult GetVendorItems(Guid vendorQuotationID)
         {
             VendorQuotationItem items = managerServices.GetVendorQuotationItems(vendorQuotationID);
-            return Json(vendorQuotationID);
+            return Json(items);
         }
 
         public IActionResult Productsales()
