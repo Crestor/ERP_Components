@@ -1847,7 +1847,7 @@ namespace ERP_Component_DAL.Services
        
     FROM LotBatch lb
     LEFT JOIN Items i ON lb.ItemId = i.ItemId 
-    LEFT JOIN StockTransactions st ON lb.ItemId = st.ItemId Where st.TransactionType = 'stockOut'; 
+    LEFT JOIN StockTransactions st ON lb.ItemId = st.ItemId Where st.TransactionType = 2; 
    
 ";
                 cmd.Connection = connection;

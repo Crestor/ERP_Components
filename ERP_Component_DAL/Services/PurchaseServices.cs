@@ -901,7 +901,7 @@ namespace ERP_Component_DAL.Services
                 connection = new SqlConnection(connectionstring);
                 SqlCommand cmd = new();
                 cmd.CommandType = System.Data.CommandType.Text;
-                cmd.CommandText = $"Select ve.VendorID, ve.VendorName, vq.VendorQuotationID,vq.Amount,vq.PaymentTerms,vq.DeliveryTerms from Vendors ve Join VendorQuotations vq On ve.VendorID = vq.VendorID Left Join PurchaseRequisitions r On vq.PurchaseRequisitionID = r.PurchaseRequisitionID  where r.PurchaseRequisitionID = '{requisitionId}'";
+                cmd.CommandText = $"Select ve.VendorID, ve.VendorName, vq.VendorQuotationID,vq.Amount,vq.PaymentTerms,vq.DeliveryTerms from Vendors ve Join VendorQuotations vq On ve.VendorID = vq.VendorID WHERE vq.PurchaseRequisitionID = '{requisitionId}'";
 
 
                 cmd.Connection = connection;
@@ -948,8 +948,9 @@ namespace ERP_Component_DAL.Services
                 connection = new SqlConnection(connectionstring);
                 SqlCommand cmd = new();
                 cmd.CommandType = System.Data.CommandType.Text;
-                cmd.CommandText = $"SELECT it.ItemId, it.ItemName,it.specification, pri.UnitPrice, pri.Quantity, pri.TotalPrice FROM PurchaseRequisitionItems pri " +
-                                  $"JOIN Items it ON it.ItemId = pri.ItemID WHERE pri.PurchaseRequisitionID = '{requisitionId}'";
+                cmd.CommandText = $"SELECT it.ItemId, it.ItemName,it.specification, vqi.UnitPrice, vqi.Quantity, vqi.TotalPrice FROM VendorQuotationItems vqi " +
+                                  $"JOIN Items it ON it.ItemId = vqi.ItemID JOIN VendorQuotations vq ON vq.VendorQuotationID = vqi.VendorQuotationID " +
+                                  $"WHERE vq.PurchaseRequisitionID = '{requisitionId}' AND vq.QuotationStatus = 3";
                 cmd.Connection = connection;
 
 
