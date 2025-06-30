@@ -164,7 +164,7 @@ namespace ERP_Components.Controllers
                 workOrderPhases = workOrders.workOrderPhases,
                 AllocatedQuantity = workOrders.AllocatedQuantity,
                 dyeingQuantity = workOrders.dyeingQuantity,
-                Yarns = yarns
+                Yarns= yarns
             };
 
             return View(workOrder);
@@ -205,7 +205,7 @@ namespace ERP_Components.Controllers
         public IActionResult AllocateToWeaver(AllocatedWork allocatedWork)
         {
             weaverServices.AllocateToWeaver(allocatedWork);
-            return RedirectToAction("ViewPhases", new {WorkOrderId = allocatedWork.WorkOrderID});
+            return RedirectToAction("ViewPhases", new { WorkOrderId = allocatedWork.WorkOrderID });
         }
         public IActionResult AllocateToDeyer()
         {

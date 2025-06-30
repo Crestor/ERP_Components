@@ -46,19 +46,19 @@
     <h3>Start Weaving</h3>
     <div class="form-row">
         <label for="workOrderSeries">Work Order Series:</label>
-        <input type="text" id="workOrderSeries" name="workOrderSeries" value="@Model.WorkOrderSeries" required readonly />
+        <input type="text" id="workOrderSeries" value="@Model.WorkOrderSeries" readonly />
         <label for="productName">Product Name:</label>
-        <input type="text" id="productName" name="productName" value="@Model.ProductName" required readonly />
+        <input type="text" id="productName" value="@Model.ProductName" readonly />
     </div>
     <div class="form-row">
         <label for="quantity">Quantity:</label>
-        <input type="number" id="quantity" name="quantity" value="@Model.Quantity" required readonly />
+        <input type="number" id="quantity" value="@Model.Quantity" readonly />
         <label for="Specification">Specification:</label>
-        <input type="text" id="Specification" name="Specification" value="@Model.Specification" required readonly />
+        <input type="text" id="Specification" value="@Model.Specification" readonly />
     </div>
     <div class="form-row">
         <label for="AllocationQuantity">Allocated Quantity:</label>
-        <input type="text" id="AllocationQuantity" name="AllocationQuantity" value="@Model.AllocatedQuantity" required readonly />
+        <input type="text" id="AllocationQuantity" value="@Model.AllocatedQuantity" readonly />
         <label for="AllocatedDate">Allocated Date:</label>
         <input type="date" id="AllocatedDate" name="AllocatedDate" required />
     </div>
@@ -95,10 +95,10 @@
         <div class="form-section">
             <h3>Allocate Material To Weaver</h3>
             <div class="form-row">
-                <label for="AllocationSeries">Allocation Series:</label>
-                <input type="text" id="AllocationSeriesWeaver" name="AllocationSeries" readonly />
+                <label for="AllocationCode">Allocation Series:</label>
+                <input type="text" id="AllocationSeriesWeaver" name="AllocationCode" readonly />
                 <label for="weaverName">Weaver Name:</label>
-                <select id="weaverName" name="WeaverId" required>
+                <select id="weaverName" name="WorkerID" required>
                     <option value="">Select Weaver</option>
                     @foreach (var weaver in Model.Weavers)
                     {
@@ -107,15 +107,22 @@
                 </select>
             </div>
             <div class="form-row">
-                <label for="AllocationQuantity">Allocated Quantity:</label>
-                <input type="text" id="AllocatedQuantity" name="AllocatedQuantity" required />
+                <label for="AllocatedQuantityPopup">Allocated Quantity:</label>
+                <input type="text" id="AllocatedQuantityPopup" name="Quantity" required />
                 <div id="showinvalidinput"></div>
                 <label for="PerPiecePrize">Per Piece Prize:</label>
-                <input type="number" id="PerPiecePrizeweaver" name="PerPiecePrize" required />
+                <input type="number" id="PerPiecePrizeweaver" name="RatePerPeices" required />
             </div>
-
+            <div class="form-row mt-4" style="width:50%">
+                    <label for="allocatedYarn">Select Yarn:</label>
+                    <select name="AllocatedYarnID" id="allocatedYarn" required>
+                        @foreach (var yarn in Model.Yarns)
+                        {
+                            <option value="@yarn.YranID">@yarn.YarnName</option>
+                        }
+                    </select>
+            </div>
             <input type="hidden" name="WorkOrderId" value="@Model.WorkOrderId" />
-
             <div class="button">
                 <button type="submit">Allocate</button>
             </div>
@@ -144,9 +151,7 @@
                 <label for="Quantity">Quantity:</label>
                 <input type="number" id="PerPiecePrizedyer" name="Quantity" value="@Model.Quantity" required />
             </div>
-
             <input type="hidden" name="WorkOrderId" value="@Model.WorkOrderId" />
-
             <div class="button">
                 <button type="submit">Allocate</button>
             </div>
@@ -169,56 +174,60 @@
         document.getElementById("overlay").style.display = "none";
     }
 
-    const showpopup = document.getElementById("showpopupforWaever");
-    showpopup.addEventListener("click", function () {
-        document.getElementById("popupforWeaver").style.display = "block";
-        document.getElementById("overlay").style.display = "block";
-    });
-
-    const showpopupforDeyer = document.getElementById("showpopupforDeyer");
-    showpopupforDeyer.addEventListener("click", function () {
-        document.getElementById("popupforDeyer").style.display = "block";
-        document.getElementById("overlay").style.display = "block";
-    });
-
     document.addEventListener("DOMContentLoaded", function () {
         const totalQuantity = parseInt(@Model.Quantity);
         const allocatedQuantity = parseInt(@Model.AllocatedQuantity);
+        const phase1Status = "@(Model.workOrderPhases.Count > 0 ? Model.workOrderPhases[0].status : "")";
+        const phase2Status = "@(Model.workOrderPhases.Count > 1 ? Model.workOrderPhases[1].status : "")";
 
         const weaverBtn = document.getElementById("showpopupforWaever");
         const deyerBtn = document.getElementById("showpopupforDeyer");
         const completedBtn = document.getElementById("completedworkorder");
-        const phase1Status = "@Model.workOrderPhases[0].status";
-        const phase2Status = "@Model.workOrderPhases[1].status";
 
-        console.log(phase2Status)
-        console.log(phase1Status)
-
-        if (weaverBtn && deyerBtn) {
-            if (phase2Status === "COMPLETED"){
-                weaverBtn.style.display = "none";
-                deyerBtn.style.display = "none";
-                completedBtn.style.display = "block";
-            }else if (phase1Status === "COMPLETED") {
-                weaverBtn.style.display = "none";
-                deyerBtn.style.display = "block";
-                completedBtn.style.display = "none";
-            } else {
-                weaverBtn.style.display = "block";
-                deyerBtn.style.display = "none";
-                completedBtn.style.display = "none";
-            }
+        if (weaverBtn) {
+            weaverBtn.addEventListener("click", function () {
+                document.getElementById("popupforWeaver").style.display = "block";
+                document.getElementById("overlay").style.display = "block";
+            });
         }
 
-        // Handle allocated quantity validation
-        document.getElementById("AllocatedQuantity").addEventListener("input", function () {
-            if (parseInt(this.value) >= totalQuantity - allocatedQuantity) {
-                document.getElementById("showinvalidinput").innerHTML = "<span style='color: red;'>Allocated quantity cannot exceed total quantity.</span>";
-                this.value = totalQuantity - allocatedQuantity;
-            }
-        });
+        if (deyerBtn) {
+            deyerBtn.addEventListener("click", function () {
+                document.getElementById("popupforDeyer").style.display = "block";
+                document.getElementById("overlay").style.display = "block";
+            });
+        }
 
-        // Set allocation series
+        // Phase button visibility logic
+        if (phase2Status === "COMPLETED") {
+            weaverBtn.style.display = "none";
+            deyerBtn.style.display = "none";
+            completedBtn.style.display = "block";
+        } else if (phase1Status === "COMPLETED") {
+            weaverBtn.style.display = "none";
+            deyerBtn.style.display = "block";
+            completedBtn.style.display = "none";
+        } else {
+            weaverBtn.style.display = "block";
+            deyerBtn.style.display = "none";
+            completedBtn.style.display = "none";
+        }
+
+        // Allocated Quantity Validation
+        const inputQty = document.getElementById("AllocatedQuantityPopup");
+        if (inputQty) {
+            inputQty.addEventListener("input", function () {
+                if (parseInt(this.value) > (totalQuantity - allocatedQuantity)) {
+                    document.getElementById("showinvalidinput").innerHTML =
+                        "<span style='color: red;'>Allocated quantity cannot exceed total quantity.</span>";
+                    this.value = totalQuantity - allocatedQuantity;
+                } else {
+                    document.getElementById("showinvalidinput").innerHTML = "";
+                }
+            });
+        }
+
+        // Allocation Code
         let lastCode = localStorage.getItem("lastAllocationCode");
         const year = new Date().getFullYear();
         let newNumber = 1;
@@ -242,23 +251,4 @@
 
         localStorage.setItem("lastAllocationCode", newCode);
     });
-
-
-
-    // if (phase2Status === "COMPLETED") {
-    //     document.getElementById("showpopupforWaever").style.display = "none";
-    //     document.getElementById("showpopupforDeyer").style.display = "none";
-    //     document.getElementById("completedworkorder").style.display = "block";
-    // }
-    // else if (phase1Status === "COMPLETED") {
-    //     document.getElementById("showpopupforWaever").style.display = "none";
-    //     document.getElementById("showpopupforDeyer").style.display = "block";
-    //     document.getElementById("completedworkorder").style.display = "none";
-    // } else {
-    //     document.getElementById("showpopupforWaever").style.display = "block";
-    //     document.getElementById("showpopupforDeyer").style.display = "none";
-    //     document.getElementById("completedworkorder").style.display = "none";
-    // }
-
-    
 </script>
