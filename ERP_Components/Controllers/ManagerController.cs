@@ -103,10 +103,10 @@ namespace ERP_Components.Controllers
 
         }
 
-        public IActionResult ApproveVendor(Guid vendorId, Guid requisitionId)
+        public IActionResult ApproveVendor(Guid vendorQuotationID, Guid requisitionID)
         {
 
-            managerServices.UpdateVendorQuotationStatusAndRequisitionStatusToApproved (vendorId, requisitionId);
+            managerServices.UpdateVendorQuotationStatusAndRequisitionStatusToApproved (vendorQuotationID, requisitionID);
             return RedirectToAction("ApproveVendorQuotation");
         }
         [HttpPost]

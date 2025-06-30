@@ -179,15 +179,15 @@ namespace ERP_Component_DAL.Services
             }
         }
 
-        public bool UpdateVendorQuotationStatusAndRequisitionStatusToApproved(Guid vendorId, Guid requisitionId)
+        public bool UpdateVendorQuotationStatusAndRequisitionStatusToApproved(Guid vendorQuotationID, Guid requisitionID)
         {
             try
             {
-                string connectionstring = configuration.GetConnectionString("DefaultConnectionString");
-                connection = new SqlConnection(connectionstring);
+                connection = new SqlConnection(_connectionString);
                 SqlCommand cmd = new SqlCommand();
-                cmd.CommandType = System.Data.CommandType.Text;
-                cmd.CommandText = $"Update VendorQuotations set QuotationStatus = 3 Where VendorID = '{vendorId}' And PurchaseRequisitionID = '{requisitionId}'; Update PurchaseRequisitions set RequisitionStatus = 3 Where PurchaseRequisitionID = '{requisitionId}' ";
+                cmd.CommandType = CommandType.Text;
+                cmd.CommandText = $"Update VendorQuotations set QuotationStatus = 3 Where VendorQuotationID = '{vendorQuotationID}'; " +
+                                  $"Update PurchaseRequisitions set RequisitionStatus = 3 Where PurchaseRequisitionID = '{requisitionID}' ";
 
                 cmd.Connection = connection;
                 connection.Open();
