@@ -78,6 +78,7 @@ namespace ERP_Component_DAL.Models
         public List<Weaver> MaterialRequired { get; set; }
 
         public List<WorkOrderPhases>? workOrderPhases { get; set; }
+        public List<YarnInfo>? Yarns { get; set; }
 
         public class WorkOrderPhases
         {
@@ -89,5 +90,11 @@ namespace ERP_Component_DAL.Models
 
 
     }
+    public class YarnInfo { 
+        public Guid YranID { get; set; }
+        public string? YarnName { get; set; }
+        public string? Specification { get; set; }
+    }
+
  }
 
