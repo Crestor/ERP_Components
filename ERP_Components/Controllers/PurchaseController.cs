@@ -238,7 +238,7 @@ namespace ERP_Components.Controllers
             vendor.requisitionId = requisitionId;
             vendor.vendor = purchaseServices.GetVendorNames();
             vendor.lists = purchaseServices.GetRequisitionQuotationListData(requisitionId);
-          vendor.Items = purchaseServices.GetPurchasedOrdersItemsLists(requisitionId);
+            vendor.Items = purchaseServices.GetPurchaseRequisitionItems(requisitionId);
 
             return View(vendor);
         }

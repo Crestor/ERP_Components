@@ -1420,25 +1420,21 @@ namespace ERP_Component_DAL.Services
 
         public Guid AddVendorQuotation(Vendor vendor)
         {
+            Guid vendorQuotationID = Guid.NewGuid();
             try
             {
                 String ConnectionString = configuration.GetConnectionString("DefaultConnectionString");
                 connection = new SqlConnection(ConnectionString);
                 SqlCommand cmd = new SqlCommand();
-                cmd.CommandType = System.Data.CommandType.Text;
-
-                cmd.CommandText = $"INSERT INTO VendorQuotations(VendorID,Amount,DiscountRate, AdvancedRate, PaymentTerms, DeliveryTerms, PurchaseRequisitionID) " +
-                    $"OUTPUT INSERTED.VendorQuotationID VALUES('{vendor.vendorId}','{vendor.amount}','{vendor.discountRate}','{vendor.advanceRate}','{vendor.paymentTerms}'," +
+                cmd.CommandType = CommandType.Text;
+                
+                cmd.CommandText = $"INSERT INTO VendorQuotations(VendorQuotationID, VendorID,Amount,DiscountRate, AdvancedRate, PaymentTerms, DeliveryTerms, PurchaseRequisitionID) " +
+                    $" VALUES('{vendorQuotationID}', '{vendor.vendorId}','{vendor.amount}','{vendor.discountRate}','{vendor.advanceRate}','{vendor.paymentTerms}'," +
                     $"'{vendor.deliveryTerms}','{vendor.requisitionId}') ";
 
                 cmd.Connection = connection;
                 cmd.Connection.Open();
-                var result = cmd.ExecuteScalar();
-                if (result != null && result != DBNull.Value)
-                {
-                    string? g = result.ToString();
-                    return new Guid(g);
-                }
+                cmd.ExecuteScalar();
             }
             catch (Exception ex)
             {
@@ -1448,7 +1444,7 @@ namespace ERP_Component_DAL.Services
             {
                 connection.Close();
             }
-            return Guid.Empty;
+            return vendorQuotationID;
         }
 
         public void AddVendorQuotationItems(Vendor vendor, Guid vendorQuotationID)
@@ -1572,6 +1568,50 @@ namespace ERP_Component_DAL.Services
 
         }
 
+        public List<AddPurchaseRequisition> GetPurchaseRequisitionItems(Guid requisitionId)
+        {
+
+            try
+            {
+                List<AddPurchaseRequisition> prod = new();
+                string connectionstring = configuration.GetConnectionString("DefaultConnectionString");
+                connection = new SqlConnection(connectionstring);
+                SqlCommand cmd = new();
+                cmd.CommandType = CommandType.Text;
+                cmd.CommandText = $"SELECT it.ItemId, it.ItemName,it.specification, pri.UnitPrice, pri.Quantity, pri.TotalPrice FROM PurchaseRequisitionItems pri " +
+                                  $"JOIN Items it ON it.ItemId = pri.ItemID WHERE pri.PurchaseRequisitionID = '{requisitionId}'";
+                cmd.Connection = connection;
+                cmd.CommandTimeout = 300;
+                connection.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    prod.Add(new AddPurchaseRequisition
+                    {
+                        quantity = reader["Quantity"] != DBNull.Value ? Convert.ToDecimal(reader["Quantity"]) : 0,
+                        RequisitionId = requisitionId,
+                        itemId = reader["ItemId"] != DBNull.Value ? (Guid)reader["ItemId"] : Guid.Empty,
+                        itemName = reader["ItemName"] != DBNull.Value ? (string)reader["ItemName"] : string.Empty,
+                        TotalAmount = reader["TotalPrice"] != DBNull.Value ? Convert.ToDecimal(reader["TotalPrice"]) : 0m,
+                        unitPrice = reader["UnitPrice"] != DBNull.Value ? Convert.ToDecimal(reader["UnitPrice"]) : 0m,
+                        specification = reader["Specification"] != DBNull.Value ? (string)reader["Specification"] : string.Empty,
+                    });
+                }
+
+                return prod;
+
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+
+            }
+            finally
+            {
+                connection.Close();
+            }
+        }
     }
 
 }
