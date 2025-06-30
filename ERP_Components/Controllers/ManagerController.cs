@@ -113,7 +113,7 @@ namespace ERP_Components.Controllers
         //Tushar yaha vendorQuotationID bhej na; vendor.lists main hai vo
         public JsonResult GetVendorItems(Guid vendorQuotationID)
         {
-            VendorQuotationItem items = managerServices.GetVendorQuotationItems(vendorQuotationID);
+            List<VendorQuotationItem> items = managerServices.GetVendorQuotationItems(vendorQuotationID);
             return Json(items);
         }
 

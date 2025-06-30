@@ -1858,9 +1858,9 @@ namespace ERP_Component_DAL.Services
             return result;
         }
 
-        public VendorQuotationItem GetVendorQuotationItems(Guid vendorQuotationID)
+        public List<VendorQuotationItem> GetVendorQuotationItems(Guid vendorQuotationID)
         {
-            VendorQuotationItem vendorQuotationResult = new VendorQuotationItem();
+            List<VendorQuotationItem> vendorQuotationItems = new List<VendorQuotationItem>();
 
             try
             {
@@ -1888,7 +1888,7 @@ namespace ERP_Component_DAL.Services
                                     UnitPrice = reader.GetDecimal(reader.GetOrdinal("UnitPrice")),
                                     TotalPrice = reader.GetDecimal(reader.GetOrdinal("TotalPrice"))
                                 };
-                                vendorQuotationResult.VendorQuotationItems.Add(item);
+                                vendorQuotationItems.Add(item);
                             }
                         }
                     }
@@ -1899,7 +1899,7 @@ namespace ERP_Component_DAL.Services
                 throw;
             }
 
-            return vendorQuotationResult;
+            return vendorQuotationItems;
         }
     }
 }
