@@ -8,7 +8,7 @@ namespace ERP_Component_DAL.Models
 {
    public class MakePayment
     {
-
+        public decimal TotalAmountPaid { get; set; }
         public decimal paymentAmount { get; set; }
        public decimal AdvanceAmount { get; set; }
         public decimal AmountPaid { get; set; }

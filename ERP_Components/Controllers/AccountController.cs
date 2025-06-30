@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using ERP_Component_DAL.Models;
 using System.Reflection;
+using static ERP_Component_DAL.Models.QuotationViewModel;
 
 namespace ERP_Components.Controllers
 {
@@ -31,23 +32,59 @@ namespace ERP_Components.Controllers
         {
             return View();
         }
-     
 
-        public IActionResult MakePayment()
+
+        //public IActionResult MakePayment()
+        //{
+
+        //   List<MakePayment>List = accountServices.GetVendorNameList();
+        //    var model = new MakePayment
+        //    {
+        //        VendorNameList = List,
+        //    };
+
+
+        //    return View(model);
+        //}
+        public IActionResult MakePayment(Guid VendorID)
         {
-            
-           List<MakePayment>List = accountServices.GetVendorNameList();
+            if (VendorID != Guid.Empty)
+            {
+                List<MakePayment> List = accountServices.GetVendorNameList(VendorID);
+
+
+                var models = new MakePayment
+                {
+                    VendorNameList = List,
+                };
+
+                ViewBag.VendorID = VendorID;
+                ViewBag.VendorName = List[0].VendorName;
+
+                return View(models);
+            }
+           
+            List<MakePayment> vendorList = accountServices.GetVendorNameList(Guid.Empty);
             var model = new MakePayment
             {
-                VendorNameList = List,
+                VendorNameList = vendorList,
             };
-         
-            
+
             return View(model);
         }
+        //public JsonResult AmountOfMakePayment(Guid VendorID, MakePayment makepayment)
+        //{
+        //    makepayment.VendorID = Guid.Parse(HttpContext.Session.GetString("VendorID"));
+           
+
+        //    MakePayment pendingPayment = accountServices.GetVendorPendingAmount(VendorID);
+        //    return Json(pendingPayment);
+        //}
+
         public JsonResult AmountOfMakePayment(Guid vendorId)
         {
-            MakePayment model =accountServices.GetVendorPendingAmount(vendorId);
+            MakePayment model = accountServices.GetVendorPendingAmount(vendorId);
+
             return Json(model);
         }
         public JsonResult AmountSummary(Guid vendorId)
@@ -84,14 +121,29 @@ namespace ERP_Components.Controllers
 
         //ReceivePayment
 
-        public IActionResult ReceivePayment()
+        public IActionResult ReceivePayment( Guid CustomerID)
         {
-            List<ReceivePayment> ListOfCustomer = accountServices.GetListOfCustomer();
-            var model = new ReceivePayment
+            if (CustomerID != Guid.Empty)
             {
-                CustomerNameList = ListOfCustomer,
-            };
-            return View(model);
+                List<ReceivePayment> List = accountServices.GetListOfCustomer(CustomerID);
+                var model = new ReceivePayment
+                {
+                    CustomerNameList = List,
+                };
+                ViewBag.CustomerID = CustomerID;
+                ViewBag.CustomerName = List[0].CustomerName;
+
+                return View(model);
+            }
+          
+                List<ReceivePayment> ListOfCustomer = accountServices.GetListOfCustomer(CustomerID);
+                var models = new ReceivePayment
+                {
+                    CustomerNameList = ListOfCustomer,
+                };
+                return View(models);
+            
+
         }
         public JsonResult OutstandingPaymentBalance(Guid CustomerID)
         {
@@ -147,22 +199,25 @@ namespace ERP_Components.Controllers
 
         public IActionResult Payable()
         {
-            return View();
+            List<MakePayment> MakePaymentAccount = accountServices.MakePaymentAccountHistory();
+            return View(MakePaymentAccount);
         }
 
         public IActionResult Receivable()
         {
-            return View();
+            List<ReceivePayment>receivableAccount = accountServices.receivableAccountHistory();
+
+            return View(receivableAccount);
         }
-        //ChartofAccount
-        public IActionResult ChartofAccount()
+        //ChartOfAccount
+        public IActionResult ChartOfAccount()
         {
             return View();
         }
-        public IActionResult SetChartofAccount( Account Account)
+        public IActionResult SetChartOfAccount( Account Account)
         {
-            accountServices.SetChartofAccount(Account);
-            return RedirectToAction("ChartofAccount");
+            accountServices.SetChartOfAccount(Account);
+            return RedirectToAction("ChartOfAccount");
         }
 
         public IActionResult addaccount(Expense e)

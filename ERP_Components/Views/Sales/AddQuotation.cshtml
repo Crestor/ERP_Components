@@ -18,6 +18,8 @@
                 <input type="text" id="QuotationSeries" name="QuotationSeries" onchange="pass()"><br>
         <label>Customer Name:</label>
             <select id="CustomerID" name="CustomerID" style="width: 40px;" onchange="pass()">
+                <option selected disabled>select</option>
+
                 @foreach(var customer in Model.Customers)
                 {
                     <option value="@customer.CustomerID">@customer.CustomerName</option>

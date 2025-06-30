@@ -120,9 +120,9 @@ namespace ERP_Component_DAL.Services
 
                 cmd.CommandText = @"INSERT INTO QuotationProduct 
                                     ([QuotationID],[Quantity],[SellingPrice], [TaxableAmount],[discountRate],
-                                    [DiscountAmount],[CGST],[SGST],[IGST],[TotalAmount], [ProductID]) 
+                                    [DiscountAmount],[CGST],[SGST],[IGST],[TotalAmount],[ProductID]) 
                                     VALUES (@QuotationID,@Quantity,@SellingPrice,@TaxableAmount,@discountRate,
-                                    @DiscountAmount,@CGST,@SGST,@IGST,@TotalAmount, @ProductID)";
+                                    @DiscountAmount,@CGST,@SGST,@IGST,@TotalAmount,@ProductID)";
 
                 cmd.Parameters.AddWithValue("@QuotationID", Aq.QuotationID);
                 cmd.Parameters.AddWithValue("@Quantity", Aq.Quantity);
@@ -288,21 +288,13 @@ namespace ERP_Component_DAL.Services
                 Guid TermConditionID = (Guid)cmd.ExecuteScalar();
                 connection.Close();
 
-                SqlCommand cmd2 = new SqlCommand(@"
-    UPDATE CustomerQuotation 
-    SET 
-        QuotationSeries = @QuotationSeries, 
-        CustomerID = @CustomerID, 
-        GrossTotal = @GrossTotal,
-        TermConditionID = @TermConditionID
-    WHERE QuotationID = @QuotationID", connection);
+                SqlCommand cmd2 = new SqlCommand(@"UPDATE CustomerQuotation  SET QuotationSeries = @QuotationSeries, CustomerID = @CustomerID, GrossTotal = @GrossTotal, TermConditionID = @TermConditionID WHERE QuotationID = @QuotationID", connection);
 
                 cmd2.Parameters.AddWithValue("@QuotationSeries", Aq.QuotationSeries ?? (object)DBNull.Value);
                 cmd2.Parameters.AddWithValue("@CustomerID", Aq.CustomerID);
                 cmd2.Parameters.AddWithValue("@GrossTotal", Aq.GrossTotal);
                 cmd2.Parameters.AddWithValue("@QuotationID", Aq.QuotationID);
-                cmd2.Parameters.AddWithValue("@TermConditionID", TermConditionID); // Use inserted ID
-
+                cmd2.Parameters.AddWithValue("@TermConditionID", TermConditionID); 
                 connection.Open();
                 cmd2.ExecuteNonQuery();
                 connection.Close();

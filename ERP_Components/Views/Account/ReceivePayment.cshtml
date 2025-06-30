@@ -7,7 +7,7 @@
 <link rel="stylesheet" href="~/css/Product.css" />
 @model ReceivePayment
 <style>
- 
+
 </style>
 <div class="form-section">
     <h3>Receive Details</h3>
@@ -19,9 +19,15 @@
         <label for="customerName">Customer Name</label>
         <select name="CustomerID" id="CustomerID" onchange="getOutstandingPaymentBalance(); show();">
             <option selected disabled>select</option>
+            @if(ViewBag.CustomerID != null)
+            {
+                <option selected value="@ViewBag.CustomerID">@ViewBag.CustomerName</option>
+
+            }else{
             @foreach (var customer in Model.CustomerNameList)
             {
                 <option value="@customer.CustomerID">@customer.CustomerName</option>
+            }
             }
         </select>
 
@@ -50,19 +56,22 @@
                 <tr><td>Total Amount</td><td></td><td></td></tr>
             </tbody>
         </table>
-    </div>
 
-    <div style="margin: 25px;">
-        <p>
-            You have outstanding receive payment of ₹
-            <span id="balance"></span>,
-            Are you here to settle this?
-        </p>
+
+
+        <div class="alert alert-warning mt-3 " style="margin-bottom: 7px;">
+        <i class="fas fa-exclamation-circle"></i>
+
+        You have outstanding receive payment of ₹ <span id="balance"></span>. Settle bill?
         <input type="radio" name="settleOption" value="yes" onclick="AmountSummaryOfCustomer(); paymentsettle();" /> Yes
         <input type="radio" name="settleOption" value="no" onclick="advancepayment();" /> No
     </div>
+    </div>
 
-    <div id="bill" style="display:none;">
+
+  
+
+    <div id="bill" style="display:none;" class="form-section">
         <div style="display:flex; justify-content:space-between; margin-left:25px;">
             <div class="label">
                 <label for="paymentReleased">Payment Released</label>
@@ -96,22 +105,16 @@
 
 
 
-<div id="Advancepayment" style="display:none;margin-left:25px;">
-    <label id="pendingpayment">Do you want to add advance amount to this customer?</label>
+    <div id="Advancepayment" style="display:none;width:94%;padding: 1%;margin: auto;" class="alert alert-warning mt-3">
+
+    <label id="pendingpayment" class="required fas fa-exclamation-circle">Do you want to add advance amount to this customer?</label>
     <input type="radio" name="advanceOption" value="yes" onclick="CustomerPaymentDetails();paymentbill()" /> Yes
     <input type="radio" name="advanceOption" value="no" /> No
 </div>
 
-<div id="paymenttable" style="display:none; width:95%; margin-left:25px;">
+<div id="paymenttable" style="display:none; width:95%; margin-left:25px;" class="form-section">
     <div style="display:flex; justify-content:space-between; margin-bottom:25px;">
-        @* <div class="label">
-            <label>Mode of Payment</label>
-            <input type="text" id="paymentMode" name="paymentMode" required />
-        </div>
-        <div class="label">
-            <label>Payment Date</label>
-            <input type="date" id="paymentDate" name="paymentDate" required />
-        </div> *@
+       
         <div class="label">
             <label>Payment Reference</label>
             <input type="text" id="paymentRef" name="paymentRef" required />
@@ -120,9 +123,7 @@
             <label>Payment Amount</label>
             <input type="number" id="advancePayment" name="AdvancePayment" required />
         </div>
-      @*   <div style="display:flex; align-items:center; justify-content:center;">
-            <button  id="submitBtn" style="background-color:#138496;color:white;">Submit</button>
-        </div> *@
+     
     </div>
 
     <h2>Payment Details</h2>
@@ -147,6 +148,37 @@
 
 
  <script>
+        function paymentrelease() {
+        $('#debitedTotal').val($('#paymentReleased').val());
+    }
+
+    function show() {
+        $('#outstanding').show();
+    }
+
+    function paymentsettle() {
+        $('#bill').show();
+    }
+
+    function paymentbill() {
+        $('#paymenttable').show();
+    }
+
+    function advancepayment() {
+        $('#Advancepayment').show();
+        $('#bill').hide();
+    }
+
+    $(document).ready(function () {
+
+        var CustomerName = '@ViewBag.CustomerName';
+    if(CustomerName != null){
+       getOutstandingPaymentBalance(); 
+       show();
+    }
+
+    });
+
     let currentBalance = 0;
 
     function getOutstandingPaymentBalance() {
@@ -169,188 +201,7 @@
         }
     }
 
-    // function AmountSummaryOfCustomer() {
-    //     const CustomerID = $('#CustomerID').val();
-    //     const QuotationID = $('#QuotationID').val();
-
-    //     if (!CustomerID) return;
-
-    //     $.ajax({
-    //         url: '/Account/AmountSummaryOfCustomer',
-    //         type: 'GET',
-    //         data: { CustomerID },
-    //         success: function (response) {
-    //             const tableBody = $('#dataTable tbody');
-    //             tableBody.empty();
-
-    //             const items = response.listItems || response || [];
-    //             if (!items.length) {
-    //                 tableBody.append("<tr><td colspan='5'>No data found</td></tr>");
-    //                 return;
-    //             }
-
-    //             items.forEach((item, index) => {
-    //                 const row = $(`
-    //                     <tr>
-    //                 <tr data-quotationID="${item.quotationID}">
-    //                         <td>${index + 1}</td>
-    //                         <td>${item.invoiceNumber}</td>
-    //                         <td class="gross">${parseFloat(item.grossTotal).toFixed(2)}</td>
-    //                         <td class="status">
-    //                             <button class="status-btn"
-    //                                     data-gross="${parseFloat(item.grossTotal)}"
-    //                                     data-invoice="${item.invoiceNumber}"
-    //                                     data-quotationid="${item.quotationID}
-    //                                     ">
-    //                                 Pay
-    //                             </button>
-    //                         </td>
-    //                     </tr>
-    //                 `);
-    //                 tableBody.append(row);
-    //             });
-
-    //                $('.status-btn').off('click').on('click', function () {
-    //     const gross = parseFloat($(this).data('gross'));
-    //     const paymentInput = parseFloat($('#paymentReleased').val()) || 0;
-    //     const CustomerID = $('#CustomerID').val();
-    //     const quotationID = $(this).data('QuotationID');
-
-    //     // const quotationID = $('#QuotationID').val(); 
-
-    //     if (paymentInput <= 0) {
-    //         alert("Please enter a valid payment amount.");
-    //         return;
-    //     }
-
-       
-    //     const newGrossTotal = gross - paymentInput; 
-    //     const newBalance = currentBalance - paymentInput;
-
-    //     $(this).closest('tr').find('.gross').text(newGrossTotal.toFixed(2));
-
-    //     $.ajax({
-    //         url: '/Account/UpdateInvoiceWithNewBalanceReceivePayment',
-    //         type: 'POST',
-    //         data: {
-    //             OldGrossTotal: gross,
-    //             NewGrossTotal: newGrossTotal,
-    //             Balance: newBalance,
-    //             QuotationID: quotationID,
-    //             CustomerID: CustomerID
-    //         },
-    //         success: function () {
-    //             alert("Payment updated successfully.");
-    //             $('#balance').val(newBalance.toFixed(2));
-    //             currentBalance = newBalance;
-    //         },
-    //         error: function () {
-    //             alert('Error posting updated values.');
-    //         }
-    //     });
-    // });
-
-    //         },
-    //         error: function () {
-    //             alert('Error retrieving invoice data.');
-    //         }
-    //     });
-    // }
-
-    // last final code 
-
-    //     function AmountSummaryOfCustomer() {
-    //     const CustomerID = $('#CustomerID').val();
-
-    //     if (!CustomerID) return;
-
-    //     $.ajax({
-    //         url: '/Account/AmountSummaryOfCustomer',
-    //         type: 'GET',
-    //         data: { CustomerID },
-    //         success: function (response) {
-    //             const tableBody = $('#dataTable tbody');
-    //             tableBody.empty();
-
-    //             const items = response.listItems || response || [];
-    //             if (!items.length) {
-    //                 tableBody.append("<tr><td colspan='5'>No data found</td></tr>");
-    //                 return;
-    //             }
-
-    //             items.forEach((item, index) => {
-    //                 const row = $(`
-    //                     <tr data-quotationid="${item.quotationID}">
-    //                         <td>${index + 1}</td>
-    //                         <td>${item.invoiceNumber}</td>
-    //                         <td class="gross">${parseFloat(item.grossTotal).toFixed(2)}</td>
-    //                         <td class="status">
-    //                             <button class="status-btn"
-    //                                     data-gross="${parseFloat(item.grossTotal)}"
-    //                                     data-invoice="${item.invoiceNumber}"
-    //                                     data-quotationid="${item.quotationID}">
-    //                                 Pay
-    //                             </button>
-    //                         </td>
-    //                     </tr>
-    //                 `);
-    //                 tableBody.append(row);
-    //             });
-
-    //             // Attach click event to buttons
-    //             $('.status-btn').off('click').on('click', function () {
-    //                 const gross = parseFloat($(this).data('gross'));
-    //                 const paymentInput = parseFloat($('#paymentReleased').val()) || 0;
-    //                 const CustomerID = $('#CustomerID').val();
-    //                 const quotationID = $(this).data('quotationid'); // Use lowercase key
-
-    //                 if (paymentInput <= 0) {
-    //                     alert("Please enter a valid payment amount.");
-    //                     return;
-    //                 }
-
-    //                 const newGrossTotal = gross - paymentInput;
-    //                 const newBalance = currentBalance - paymentInput;
-
-    //                 // Update UI gross total
-    //                 $(this).closest('tr').find('.gross').text(newGrossTotal.toFixed(2));
-
-    //                 // Debug print
-    //                 console.log("Sending to controller:", {
-    //                     OldGrossTotal: gross,
-    //                     NewGrossTotal: newGrossTotal,
-    //                     Balance: newBalance,
-    //                     QuotationID: quotationID,
-    //                     CustomerID: CustomerID
-    //                 });
-
-    //                 $.ajax({
-    //                     url: '/Account/UpdateInvoiceWithNewBalanceReceivePayment',
-    //                     type: 'POST',
-    //                     data: {
-    //                         OldGrossTotal: gross,
-    //                         NewGrossTotal: newGrossTotal,
-    //                         Balance: newBalance,
-    //                         QuotationID: quotationID,
-    //                         CustomerID: CustomerID
-    //                     },
-    //                     success: function () {
-    //                         alert("Payment updated successfully.");
-    //                         $('#balance').val(newBalance.toFixed(2));
-    //                         currentBalance = newBalance;
-    //                     },
-    //                     error: function () {
-    //                         alert('Error posting updated values.');
-    //                     }
-    //                 });
-    //             });
-    //         },
-    //         error: function () {
-    //             alert('Error retrieving invoice data.');
-    //         }
-    //     });
-    // }
-
+    
 
 
     function AmountSummaryOfCustomer() {
@@ -463,97 +314,6 @@
     }
 
 
-
-    // ----
-
-
-
-    //    function CustomerPaymentDetails() {
-    //     const CustomerID = $('#CustomerID').val();
-    //     const InvoiceID = $('#InvoiceID').val();
-
-    //     if (!CustomerID) return;
-
-    //     $.ajax({
-    //         url: '/Account/GetCustomerPaymentDetails',
-    //         type: 'GET',
-    //         data: { CustomerID },
-    //         success: function (response) {
-    //             const tableBody = $('#paymenttable tbody');
-    //             tableBody.empty();
-
-    //             const items = response.listItems || response || [];
-
-    //             if (!items.length) {
-    //                 tableBody.append("<tr><td colspan='6'>No data found</td></tr>");
-    //                 return;
-    //             }
-
-    //               items.forEach((item, index) => {
-    //     const row = $(`
-    //                 <tr data-invoiceid="${item.invoiceID}">
-    //                 <td>${index + 1}</td>
-    //                 <td>${item.invoiceNumber}</td>
-    //                 <td>${parseFloat(item.totalAmount || 0).toFixed(2)}</td>
-    //                 <td ${parseFloat(item.advanceAmount).toFixed(2)}</td>
-
-    //                 <td class="status">
-    //            <button class="status-btn"
-    //                data-advancemount="${parseFloat(item.advanceAmount)}"
-    //                    data-invoiceid="${item.invoiceID}">
-    //                    Pay
-    //              </button>
-    //            </td>
-    //          </tr>
-    //     `);
-
-    //     tableBody.append(row);
-    // });
-
-               
-    //             $('.status-btn').off('click').on('click', function () {
-    //                 const paymentInput = parseFloat($('#advancePayment').val()) || 0;
-    //                 const CustomerID = $('#CustomerID').val();
-    //                 const invoiceID = $(this).data('invoiceid');
-
-    //                 if (paymentInput <= 0) {
-    //                     alert("Please enter a valid payment amount.");
-    //                     return;
-    //                 }
-
-    //                 const button = $(this);
-    //                 const row = button.closest('tr');
-
-    //                 $.ajax({
-    //                     url: '/Account/SubmitAdvanceAmountDetails',
-    //                     type: 'POST',
-    //                     data: {
-    //                         AdvanceAmount: paymentInput,
-    //                         InvoiceID: invoiceID,
-    //                         CustomerID: CustomerID
-    //                     },
-    //                     success: function () {
-    //                         alert("Payment updated successfully.");
-
-                         
-    //                         row.find('.advanceAmount').text(paymentInput.toFixed(2));
-
-                            
-    //                         button.text('Paid').prop('disabled', true);
-    //                     },
-    //                     error: function () {
-    //                         alert('Error posting updated values.');
-    //                     }
-    //                 });
-    //             });
-    //         },
-    //         error: function () {
-    //             alert('Error retrieving invoice data.');
-    //         }
-    //     });
-    // }
-
-
         function CustomerPaymentDetails() {
         const CustomerID = $('#CustomerID').val();
         const InvoiceID = $('#InvoiceID').val();
@@ -650,304 +410,5 @@
 
 
 
-    function paymentrelease() {
-        $('#debitedTotal').val($('#paymentReleased').val());
-    }
-
-    function show() {
-        $('#outstanding').show();
-    }
-
-    function paymentsettle() {
-        $('#bill').show();
-    }
-
-    function paymentbill() {
-        $('#paymenttable').show();
-    }
-
-    function advancepayment() {
-        $('#Advancepayment').show();
-        $('#bill').hide();
-    }
-</script> 
-
-
-
-
-
-
-@*
-
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
- <script>
-    let currentBalance = 0;
-    let remainingPaymentInput = 0;
-    let usedInvoices = new Set();
-
-    function getOutstandingPaymentBalance() {
-        const CustomerID = $('#CustomerID').val();
-        if (CustomerID) {
-            $.ajax({
-                url: '/Account/OutstandingPaymentBalance',
-                type: 'GET',
-                data: { CustomerID },
-                success: function (data) {
-                    $('#balance').val(data.balance);
-                    currentBalance = parseFloat(data.balance);
-                },
-                error: function () {
-                    alert('Error retrieving pending amount.');
-                }
-            });
-        }
-    }
-
-    function AmountSummaryOfCustomer() {
-        const CustomerID = $('#CustomerID').val();
-        const QuotationID = $('#QuotationID').val();
-
-        if (!CustomerID) return;
-
-        $.ajax({
-            url: '/Account/AmountSummaryOfCustomer',
-            type: 'GET',
-            data: { CustomerID },
-            success: function (response) {
-                const tableBody = $('#dataTable tbody');
-                tableBody.empty();
-
-                const items = response.listItems || response || [];
-                if (!items.length) {
-                    tableBody.append("<tr><td colspan='4'>No data found</td></tr>");
-                    return;
-                }
-
-                items.forEach((item, index) => {
-                    const gross = parseFloat(item.grossTotal);
-                    const invoiceNumber = item.invoiceNumber;
-
-                    const row = $(`
-                        <tr>
-                            <td>${index + 1}</td>
-                            <td>${invoiceNumber}</td>
-                            <td class="gross">${gross.toFixed(2)}</td>
-                            <td class="status">
-                                <button class="status-btn"
-                                    data-gross="${gross}"
-                                    data-invoice="${invoiceNumber}"
-                                    data-quotationid="${QuotationID}">
-                                    Pay
-                                </button>
-                            </td>
-                        </tr>
-                    `);
-                    tableBody.append(row);
-                });
-
-                usedInvoices.clear();
-                remainingPaymentInput = parseFloat($('#paymentReleased').val()) || 0;
-                $('#debitedTotal').val(remainingPaymentInput.toFixed(2));
-            },
-            error: function () {
-                alert('Error retrieving invoice data.');
-            }
-        });
-    }
-
-    $(document).on('click', '.status-btn', function () {
-        const button = $(this);
-        const gross = parseFloat(button.data('gross'));
-        const invoiceNumber = button.data('invoice');
-        const quotationID = button.data('quotationid');
-        const CustomerID = $('#CustomerID').val();
-
-        if (usedInvoices.has(invoiceNumber) || remainingPaymentInput <= 0) return;
-
-        const paymentNow = Math.min(gross, remainingPaymentInput);
-        remainingPaymentInput -= paymentNow;
-        const newGross = gross - paymentNow;
-        const newBalance = currentBalance - paymentNow;
-
-        button.closest('tr').find('.gross').text(newGross.toFixed(2));
-        $('#balance').val(newBalance.toFixed(2));
-        $('#paymentReleased').val(remainingPaymentInput.toFixed(2));
-        $('#debitedTotal').val(remainingPaymentInput.toFixed(2));
-
-        usedInvoices.add(invoiceNumber);
-        button.text(paymentNow === gross ? "Full Paid" : `Partial Paid: ₹${paymentNow}`).prop('disabled', true);
-        currentBalance = newBalance;
-
-        $.ajax({
-            url: '/Account/UpdateInvoiceWithNewBalanceReceivePayment',
-            type: 'POST',
-            data: {
-                OldGrossTotal: gross,
-                NewGrossTotal: newGross,
-                Balance: newBalance,
-                QuotationID: quotationID,
-                CustomerID: CustomerID
-            },
-            success: function () {
-                console.log("Payment updated successfully.");
-            },
-            error: function () {
-                alert('Error posting updated values.');
-            }
-        });
-    });
-
-    // Advance Payment Section
-    let remainingAdvanceInput = 0;
-    let usedAdvanceInvoices = new Set();
-
-    function CustomerPaymentDetails() {
-        const CustomerID = $('#CustomerID').val();
-
-        if (!CustomerID) return;
-
-        $.ajax({
-            url: '/Account/GetCustomerPaymentDetails',
-            type: 'GET',
-            data: { CustomerID },
-            success: function (response) {
-                const tableBody = $('#paymenttable tbody');
-                tableBody.empty();
-
-                const items = response.listItems || response || [];
-                if (!items.length) {
-                    tableBody.append("<tr><td colspan='6'>No data found</td></tr>");
-                    return;
-                }
-
-                items.forEach((item, index) => {
-                    const advanceAmount = parseFloat(item.AdvanceAmount);
-                    const row = $(`
-                        <tr data-invoiceid="${item.invoiceID}">
-                            <td>${index + 1}</td>
-                            <td>${item.invoiceNumber}</td>
-                            <td>${parseFloat(item.totalAmount || 0).toFixed(2)}</td>
-                            <td class="advance">${advanceAmount.toFixed(2)}</td>
-                            <td class="status">
-                                <button class="advance-btn"
-                                    data-invoiceid="${item.invoiceID}"
-                                    data-advance="${advanceAmount}">
-                                    Pay
-                                </button>
-                            </td>
-                        </tr>
-                    `);
-                    tableBody.append(row);
-                });
-
-                usedAdvanceInvoices.clear();
-                remainingAdvanceInput = parseFloat($('#advancePayment').val()) || 0;
-                $('#debitedAdvanceTotal').val(remainingAdvanceInput.toFixed(2));
-            },
-            error: function () {
-                alert('Error retrieving invoice data.');
-            }
-        });
-    }
-
-    $(document).on('click', '.advance-btn', function () {
-        const button = $(this);
-        const invoiceID = button.data('invoiceid');
-        const advanceAmount = parseFloat(button.data('advance'));
-        const CustomerID = $('#CustomerID').val();
-
-        if (usedAdvanceInvoices.has(invoiceID) || remainingAdvanceInput <= 0) return;
-
-        const paymentNow = Math.min(advanceAmount, remainingAdvanceInput);
-        remainingAdvanceInput -= paymentNow;
-
-        $('#advancePayment').val(remainingAdvanceInput.toFixed(2));
-        $('#debitedAdvanceTotal').val(remainingAdvanceInput.toFixed(2));
-
-        usedAdvanceInvoices.add(invoiceID);
-        button.closest('tr').find('.advance').text(paymentNow.toFixed(2));
-        button.text(paymentNow === advanceAmount ? "Full Paid" : `Partial Paid: ₹${paymentNow}`).prop('disabled', true);
-
-        $.ajax({
-            url: '/Account/SubmitAdvanceAmountDetails',
-            type: 'POST',
-            data: {
-                AdvanceAmount: paymentNow,
-                InvoiceID: invoiceID,
-                CustomerID: CustomerID
-            },
-            success: function () {
-                console.log("Advance payment updated.");
-            },
-            error: function () {
-                alert('Error posting updated values.');
-            }
-        });
-    });
-
-    // Input triggers
-    $('#paymentReleased').on('input', function () {
-        remainingPaymentInput = parseFloat($(this).val()) || 0;
-        $('#debitedTotal').val(remainingPaymentInput.toFixed(2));
-        usedInvoices.clear();
-    });
-
-    $('#advancePayment').on('input', function () {
-        remainingAdvanceInput = parseFloat($(this).val()) || 0;
-        $('#debitedAdvanceTotal').val(remainingAdvanceInput.toFixed(2));
-        usedAdvanceInvoices.clear();
-    });
-
-    // UI display functions
-    function show() { $('#outstanding').show(); }
-    function paymentsettle() { $('#bill').show(); }
-    function paymentbill() { $('#paymenttable').show(); }
-    function advancepayment() {
-        $('#Advancepayment').show();
-        $('#bill').hide();
-    }
-</script> *@
-
-
-
-
-
-@* 
-<script>
-    $(document).ready(function () {
-        $("#submitBtn").click(function () {
-            var formData = {
-                CustomerID: $('#CustomerID').val(),
-                advancepayment :$('#advancePayment').val(),
-
-               
-            };
-
-            $.ajax({
-                type: 'POST',
-                url: '/Purchase/SubmitAdvanceAmountDetails',
-                data: formData,
-                    success: function (response) {
-        console.log("Success:", response);
-</script> *@
-@* items.forEach((item, index) => {
-    const row = $(`
-<tr>
-    <td>${index + 1}</td>
-    <td>${item.invoiceNumber}</td>
-    <td>${parseFloat(item.totalAmount || 0).toFixed(2)}</td>
-    <td class="advanceAmount">${parseFloat(item.AdvanceAmount).toFixed(2)}</td>
-    <td class="status">
-        <button class="status-btn"
-                data-advanceAmount="${parseFloat(item.AdvanceAmount)}"
-                data-invoiceid="${item.invoiceID}">
-            Pay
-        </button>
-    </td>
-</tr>
-    `);
-
-    tableBody.append(row);
-});
- *@
  
+</script> 

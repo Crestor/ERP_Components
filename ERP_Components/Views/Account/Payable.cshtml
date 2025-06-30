@@ -1,31 +1,51 @@
-﻿@{
+﻿@using ERP_Component_DAL.Models
+
+@{
     ViewBag.Title = "Payable";
     Layout = "~/Views/Shared/_LayoutINV.cshtml";
 }
 
-@* <h2 style="  text-shadow: 1px 5px 5px grey;color:#138496"> Payable</h2> *@
-<link rel="stylesheet" href="~/css/Account.css" />
+<link rel="stylesheet" href="~/css/Product.css" />
+@model List<MakePayment>
 
-
-<div>
-    <table>
+<div class="table">
+    <table >
         <thead>
             <tr>
-                <th>Sr.</th>
+                <th>S.No</th>
                 <th>Vender Name</th>
-                <th>Amount</th>
+                <th>Amount Paid</th>
                 <th>Action</th>
             </tr>
         </thead>
         <tbody>
 
-            <tr>
-                <td>1</td>
-                <td>Neeraj</td>
-                <td>1000000</td>
-                <td><button>Settle</button></td>
-            </tr>
 
+
+            @for (var i = 0; i < Model.Count; i++)
+            {
+                var x = Model[i];
+                var index = i + 1;
+
+                <tr>
+
+
+
+                    <td>@index</td>
+                    <td>@x.VendorName</td>
+                    <td>@x.TotalAmountPaid</td>
+                    <td>
+
+                        <button onclick="location.href='@Url.Action("MakePayment", "Account",new{VendorID = x.VendorID})'">Add</button>
+                   
+                    </td>
+
+
+
+
+
+                </tr>
+            }
         </tbody>
     </table>
 </div>

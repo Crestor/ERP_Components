@@ -264,48 +264,93 @@ namespace ERP_Component_DAL.Services
 
         }
 
-        public List<MakePayment> GetVendorNameList()
+        //public List<MakePayment> GetVendorNameList()
+        //{
+        //    try
+        //    {
+        //        List<MakePayment> CL = new();
+        //        String ConnectionString = configuration.GetConnectionString("DefaultConnectionString");
+        //        connection = new SqlConnection(ConnectionString);
+        //        SqlCommand cmd = new SqlCommand();
+        //        cmd.CommandType = System.Data.CommandType.Text;
+        //        cmd.CommandText = "select VendorID,VendorName from Vendors";
+
+
+        //        cmd.Connection = connection;
+
+
+        //        connection.Open();
+        //        SqlDataReader reader = cmd.ExecuteReader();
+        //        while (reader.Read())
+        //        {
+        //            CL.Add(new MakePayment()
+        //            {
+
+        //              VendorID = reader["VendorID"] != DBNull.Value ? (Guid)reader["VendorID"] : Guid.Empty,
+        //                VendorName = reader["VendorName"] != DBNull.Value ? (string)reader["VendorName"] : string.Empty
+
+        //            });
+        //        }
+
+        //        return CL;
+
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        throw ex;
+        //    }
+        //    finally
+        //    {
+        //        connection.Close();
+        //    }
+
+
+        //}
+        public List<MakePayment> GetVendorNameList(Guid VendorID)
         {
             try
             {
-                List<MakePayment> CL = new();
-                String ConnectionString = configuration.GetConnectionString("DefaultConnectionString");
-                connection = new SqlConnection(ConnectionString);
-                SqlCommand cmd = new SqlCommand();
-                cmd.CommandType = System.Data.CommandType.Text;
-                cmd.CommandText = "select VendorID,VendorName from Vendors";
-
-
-                cmd.Connection = connection;
-
-
-                connection.Open();
-                SqlDataReader reader = cmd.ExecuteReader();
-                while (reader.Read())
+                List<MakePayment> vendorList = new();
+                string connectionString = configuration.GetConnectionString("DefaultConnectionString");
+                using (SqlConnection connection = new SqlConnection(connectionString))
                 {
-                    CL.Add(new MakePayment()
-                    {
-                      
-                      VendorID = reader["VendorID"] != DBNull.Value ? (Guid)reader["VendorID"] : Guid.Empty,
-                        VendorName = reader["VendorName"] != DBNull.Value ? (string)reader["VendorName"] : string.Empty
+                    SqlCommand cmd = new SqlCommand();
+                    cmd.CommandType = CommandType.Text;
 
-                    });
+                    if (VendorID == Guid.Empty)
+                    {
+                        cmd.CommandText = "SELECT VendorID, VendorName FROM Vendors";
+                    }
+                    else
+                    {
+                        cmd.CommandText = "SELECT VendorID, VendorName FROM Vendors WHERE VendorID = @VendorID";
+                        cmd.Parameters.AddWithValue("@VendorID", VendorID);
+                    }
+
+                    cmd.Connection = connection;
+                    connection.Open();
+
+                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            vendorList.Add(new MakePayment()
+                            {
+                                VendorID = reader["VendorID"] != DBNull.Value ? (Guid)reader["VendorID"] : Guid.Empty,
+                                VendorName = reader["VendorName"] != DBNull.Value ? (string)reader["VendorName"] : string.Empty
+                            });
+                        }
+                    }
                 }
 
-                return CL;
-
+                return vendorList;
             }
             catch (Exception ex)
             {
-                throw ex;
+                throw; 
             }
-            finally
-            {
-                connection.Close();
-            }
-
-
         }
+
 
         public MakePayment GetVendorPendingAmount( Guid VendorID)
         {
@@ -575,7 +620,7 @@ namespace ERP_Component_DAL.Services
                 SqlCommand cmd = new();
                 cmd.CommandType = System.Data.CommandType.Text;
                 //cmd.CommandText = $"select Balance From Customers where CustomerID='{CustomerID}'";
-                cmd.CommandText = $"select sum(C.GrossTotal) as Balance from customerQuotation C join Invoice I on C.QuotationID=I.QuotationID  where I.CustomerID='{CustomerID}'";
+                cmd.CommandText = $"select sum(C.GrossTotal) as Balance from customerQuotation C join Invoice I on C.QuotationID=I.QuotationID  where C.CustomerID='{CustomerID}'";
                 cmd.Connection = connection;
 
                 cmd.CommandTimeout = 300;
@@ -609,7 +654,7 @@ namespace ERP_Component_DAL.Services
 
 
         //
-        public List<ReceivePayment> GetListOfCustomer()
+        public List<ReceivePayment> GetListOfCustomer(Guid CustomerID)
         {
             try
             {
@@ -618,8 +663,16 @@ namespace ERP_Component_DAL.Services
                 connection = new SqlConnection(ConnectionString);
                 SqlCommand cmd = new SqlCommand();
                 cmd.CommandType = System.Data.CommandType.Text;
-                cmd.CommandText = "select CustomerID,CustomerName from Customers";
+                if (CustomerID == Guid.Empty)
+                {
+                    cmd.CommandText = "select CustomerID,CustomerName from Customers";
+                }
+                else
+                {
+                    cmd.CommandText = "select CustomerID,CustomerName from Customers where CustomerID = @CustomerID";
+                    cmd.Parameters.AddWithValue("@CustomerID", CustomerID);
 
+                }
 
                 cmd.Connection = connection;
 
@@ -660,7 +713,8 @@ namespace ERP_Component_DAL.Services
                 connection = new SqlConnection(ConnectionString);
                 SqlCommand cmd = new SqlCommand();
                 cmd.CommandType = System.Data.CommandType.Text;
-                cmd.CommandText = $"select I.AdvanceAmount, I.InvoiceID,P.TaxableAmount ,I.InvoiceNumber from QuotationProduct P Join Invoice I on P.QuotationID=I.QuotationID where I.CustomerID='{CustomerID}'";
+                //cmd.CommandText = $"select I.AdvanceAmount, I.InvoiceID,P.TaxableAmount ,I.InvoiceNumber from QuotationProduct P Join Invoice I on P.QuotationID=I.QuotationID where I.CustomerID='{CustomerID}'";
+                cmd.CommandText = $"select I.AdvanceAmount, I.InvoiceID,P.GrossTotal ,I.InvoiceNumber from CustomerQuotation P Join Invoice I on P.QuotationID = I.QuotationID where P.CustomerID = '{CustomerID}'";
 
 
                 cmd.Connection = connection;
@@ -675,7 +729,7 @@ namespace ERP_Component_DAL.Services
 
                         InvoiceID = reader["InvoiceID"] != DBNull.Value ? (Guid)reader["InvoiceID"] : Guid.Empty,
                         InvoiceNumber = reader["InvoiceNumber"] != DBNull.Value ? (string)reader["InvoiceNumber"] : string.Empty,
-                        TotalAmount = reader["TaxableAmount"] != DBNull.Value ? Convert.ToDecimal(reader["TaxableAmount"]) : 0m,
+                        TotalAmount = reader["GrossTotal"] != DBNull.Value ? Convert.ToDecimal(reader["GrossTotal"]) : 0m,
                         AdvanceAmount = reader["AdvanceAmount"] != DBNull.Value ? Convert.ToDecimal(reader["AdvanceAmount"]) : 0m,
 
                     });
@@ -781,7 +835,7 @@ namespace ERP_Component_DAL.Services
                 SqlCommand cmd = new SqlCommand();
                 cmd.CommandType = System.Data.CommandType.Text;
                 //cmd.CommandText = $"select Q.GrossTotal,Q.QuotationID ,I.InvoiceNumber from Customers c join CustomerQuotation Q on c.CustomerID=Q.CustomerID join Invoice I on Q.QuotationID=I.QuotationID where Q.CustomerID ='{CustomerID}'";
-                cmd.CommandText = $"select Q.GrossTotal,Q.QuotationID ,I.InvoiceNumber ,I.InvoiceID from customerQuotation Q join Invoice I on  Q.QuotationID=I.QuotationID where I.CustomerID = '{CustomerID}'";
+                cmd.CommandText = $"select Q.GrossTotal,Q.QuotationID ,I.InvoiceNumber ,I.InvoiceID from customerQuotation Q join Invoice I on  Q.QuotationID=I.QuotationID where Q.CustomerID = '{CustomerID}'";
                 cmd.Parameters.AddWithValue("@CustomerID", CustomerID);
 
                 cmd.Connection = connection;
@@ -888,7 +942,7 @@ namespace ERP_Component_DAL.Services
         }
 
 
-        public bool SetChartofAccount(Account Account)
+        public bool SetChartOfAccount(Account Account)
         {
 
             try
@@ -917,5 +971,89 @@ namespace ERP_Component_DAL.Services
             }
 
         }
+
+        public List<ReceivePayment> receivableAccountHistory()
+        {
+            try
+            {
+                List<ReceivePayment> CL = new();
+                String ConnectionString = configuration.GetConnectionString("DefaultConnectionString");
+                connection = new SqlConnection(ConnectionString);
+                SqlCommand cmd = new SqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+                //cmd.CommandText = $"select C.CustomerID, C.CustomerName,Sum(I.AdvanceAmount) AS TotalAdvanceAmount from Invoice I join Customers C on C.CustomerID=C.CustomerID Group By C.CustomerName C.CustomerID";
+                cmd.CommandText = $"select Q.CustomerID, C.CustomerName,Sum(I.AdvanceAmount) AS TotalAdvanceAmount from Invoice I join CustomerQuotation Q on Q.QuotationID=I.QuotationID join Customers C on C.CustomerID=Q.CustomerID Group By C.CustomerName, Q.CustomerID";
+                cmd.Connection = connection;
+
+
+                connection.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    CL.Add(new ReceivePayment()
+                    {
+                        CustomerName = reader["CustomerName"] != DBNull.Value ? (string)reader["CustomerName"] : string.Empty,
+                        CustomerID = reader["CustomerID"] != DBNull.Value ? (Guid)reader["CustomerID"] : Guid.Empty,
+                        AdvanceAmount = reader["TotalAdvanceAmount"] != DBNull.Value ? Convert.ToDecimal(reader["TotalAdvanceAmount"]) : 0m,
+                      
+                    });
+                }
+
+                return CL;
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                connection.Close();
+            }
+
+
+        }
+        public List<MakePayment> MakePaymentAccountHistory()
+        {
+            try
+            {
+                List<MakePayment> CL = new();
+                String ConnectionString = configuration.GetConnectionString("DefaultConnectionString");
+                connection = new SqlConnection(ConnectionString);
+                SqlCommand cmd = new SqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.CommandText = $"select V.VendorID,V.VendorName,sum(P.AmountPaid) As TotalAmountPaid from PurchaseOrders P join Vendors V on V.VendorID=P.VendorID Group By V.VendorName, V.VendorID  ";
+
+                cmd.Connection = connection;
+
+
+                connection.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    CL.Add(new MakePayment()
+                    {
+                        VendorName = reader["VendorName"] != DBNull.Value ? (string)reader["VendorName"] : string.Empty,
+                        VendorID = reader["VendorID"] != DBNull.Value ? (Guid)reader["VendorID"] : Guid.Empty,
+                        TotalAmountPaid = reader["TotalAmountPaid"] != DBNull.Value ? Convert.ToDecimal(reader["TotalAmountPaid"]) : 0m,
+
+                    });
+                }
+
+                return CL;
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                connection.Close();
+            }
+
+
+        }
+
     }
 }

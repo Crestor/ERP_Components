@@ -10,20 +10,20 @@
 <link rel="stylesheet" href="~/css/Product.css" />
 <style>
     #outstanding, #paymenttable {
-        display: none;
+    display: none;
     }
 
     .status button {
-        border: none;
-        padding: 6px 10px;
-        border-radius: 5px;
-        cursor: pointer;
+    border: none;
+    padding: 6px 10px;
+    border-radius: 5px;
+    cursor: pointer;
     }
 
-        .status button:disabled {
-            background-color: #ccc;
-            cursor: not-allowed;
-        }
+    .status button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+    }
 </style>
 <div class="form-section">
     <h3>Payment Details</h3>
@@ -35,9 +35,18 @@
         <label for="VenderName">Vendor Name</label>
         <select name="VendorID" id="VendorID" onchange="getPendingAmount(); showOutstanding();">
             <option selected disabled>select</option>
-            @foreach (var vendor in Model.VendorNameList)
+
+            @if (ViewBag.VendorID != null)
+            {
+                <option selected value="@ViewBag.VendorID">@ViewBag.VendorName</option>
+                
+            }else 
+            
+            {
+                foreach (var vendor in Model.VendorNameList)
             {
                 <option value="@vendor.VendorID">@vendor.VendorName</option>
+            }
             }
         </select>
         <label for="project">Project:</label>
@@ -60,19 +69,25 @@
                 <tr><td>Total Amount</td><td></td><td></td></tr>
             </tbody>
         </table>
+
+
+
+
+
+        <div class="alert alert-warning mt-3 " style="margin-bottom: 7px;">
+            <i class="fas fa-exclamation-circle"></i>
+            You have pending bill of ₹  <span id="pendingAmount"></span>. Settle bill?
+            <input  type="radio" name="taxtype" value="yes" onchange="getAmountSummary(); paymentsettle();">Yes
+            @* <label >Yes</label> *@
+        
+        
+            <input  type="radio" name="taxtype" value="no" onchange="advancepayment();">No
+            @* <label >No</label> *@
     </div>
-    <div style="margin-bottom:25px;margin-left:25px">
-        <p>
-            You have pending bill of ₹
-            <span>
-                <input type="number" id="pendingAmount" name="pendingAmount" style="width:110px;" readonly />
-                , Do you want to settle that bill?
-            </span>
-        </p>
-        <input type="radio" name="taxtype" value="yes" onchange="getAmountSummary(); paymentsettle();" /> Yes
-        <input type="radio" name="taxtype" value="no" onchange="advancepayment();" /> No
-    </div>
-    <div id="bill" style="display:none; margin:25px;">
+
+  </div>
+
+    <div id="bill" style="display:none; margin:25px;" class="form-section">
         <div style="display:flex; justify-content:space-between; margin-left:25px;">
             <div class="label" style="height:50px;">
                 <label for="payment">Payment Released</label>
@@ -106,12 +121,15 @@
         </div>
     </div>
 </div>
-<div id="Advancepayment" style="display:none;">
-    <label id="pendingpayment" class="required" for="advance">Do you want to make advance payment?</label>
+
+
+<div id="Advancepayment" style="display:none;width:94%;padding: 1%;margin: auto;" class="alert alert-warning mt-3">
+        <label id="pendingpayment" class="required fas fa-exclamation-circle" for="advance">Do you want to make advance payment?</label>
     <input type="radio" name="advancePay" value="yes" onchange="getPaymentDetailsList(); paymentbill() ;" /> Yes
     <input type="radio" name="advancePay" value="no" /> No
 </div>
-<div id="paymenttable">
+
+<div id="paymenttable" class="form-section">
     <div style="display:flex; justify-content:space-between">
         <div class="label" style="height:50px;">
             <label for="payment">Payment Released</label>
@@ -148,6 +166,17 @@
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
+
+    $(document).ready(function () {
+
+        var vendorName = '@ViewBag.VendorName';
+    if(vendorName != null){
+        getPendingAmount();
+        showOutstanding();
+    }
+    
+    });
+
     function showOutstanding() {
         document.getElementById("outstanding").style.display = "block";
     }
@@ -173,7 +202,7 @@
                 type: 'GET',
                 data: { vendorId: vendorId },
                 success: function (data) {
-                    $('#pendingAmount').val(data.pendingAmount);
+                    $('#pendingAmount').text(data.pendingAmount);
                 },
                 error: function () {
                     alert('Error retrieving pending amount.');
@@ -292,7 +321,8 @@
     button.prop('disabled', true);
     button.text(finalPaidAmount === remaining
         ? "Full Paid"
-        : `Partial Paid: ₹${finalPaidAmount}`);
+        :"Partial Paid");
+
 
     // Update the corresponding Due Amount cell dynamically
     const row = button.closest('tr');
@@ -359,7 +389,8 @@
                     if (isPaid) {
                         buttonText = "Full Paid";
                     } else if (amountPaid > 0) {
-                        buttonText = `Partial Paid: ₹${amountPaid.toFixed(2)}`;
+                           buttonText = "Partial Paid";
+
                     }
 
                     const tr = $(`<tr>
@@ -436,7 +467,7 @@
         button.prop('disabled', true);
         button.text(paidNow === remainingAdvance
             ? "Full Paid"
-            : `Partial Paid: ₹${newAmountPaid.toFixed(2)}`);
+            :"Partial Paid");
 
         $.ajax({
             url: '/Account/UpdateAdvancePayment',
@@ -461,203 +492,5 @@
         $('#VendorID').change(getPaymentDetailsList);
     });
 </script>
-
-
-
- @* 
-<script>
-    function getPaymentDetailsList() {
-        const vendorId = $('#VendorID').val();
-
-        $.ajax({
-            url: '/Account/AdvancedPaymentDetailsList',
-            type: 'GET',
-            data: { vendorId: vendorId },
-            success: function (response) {
-                const tableBody = $('#dataTable tbody');
-                tableBody.empty();
-
-                const items = response.listItems || response || [];
-
-                if (!items.length) {
-                    tableBody.append("<tr><td colspan='5'>No data found</td></tr>");
-                    return;
-                }
-
-                items.forEach((item, index) => {
-                    const netTotal = parseFloat(item.netTotal);
-                    const amountPaid = parseFloat(item.amountPaid);
-                    const advanceAmount = parseFloat(item.advanceAmount);
-                    const purchaseOrderID = item.purchaseOrderID;
-
-                    const isPaid = amountPaid >= netTotal;
-
-                    const tr = $(`
-                        <tr>
-                            <td>${index + 1}</td>
-                            <td>${netTotal.toFixed(2)}</td>
-                            <td>${advanceAmount.toFixed(2)}</td>
-                            <td class="amountPaid">${amountPaid.toFixed(2)}</td>
-                            <td class="status">
-                                <button class="advance-status-btn"
-                                        data-poid="${purchaseOrderID}"
-                                        data-advance="${advanceAmount}"
-                                        ${isPaid ? 'disabled' : ''}>
-                                    ${isPaid ? 'Paid' : 'Pay'}
-                                </button>
-                            </td>
-                        </tr>
-                    `);
-
-                    tableBody.append(tr);
-                });
-            },
-            error: function () {
-                alert('Failed to load summary data.');
-            }
-        });
-    }
-
-    $(document).ready(function () {
-        $('#VendorID').change(getPaymentDetailsList);
-
-        $(document).on('click', '.advance-status-btn', function () {
-            const paymentAmount = parseFloat($('#payment2').val());
-            const advanceAmount = parseFloat($(this).data('advance'));
-
-            if (isNaN(paymentAmount) || paymentAmount <= 0) {
-                alert("Enter a valid payment amount.");
-                return;
-            }
-
-           
-
-            const button = $(this);
-            const purchaseOrderID = button.data('poid');
-            const row = button.closest('tr');
-
-            $.ajax({
-                url: '/Account/UpdateAdvancePayment',
-                type: 'POST',
-                data: {
-                    PurchaseOrderID: purchaseOrderID,
-                    AdvanceAmount: paymentAmount
-                },
-                success: function (response) {
-                    if (response.success) {
-                        row.find('.amountPaid').text(response.newAmountPaid.toFixed(2));
-                        $('#payment2').val('');
-                        alert('Payment updated successfully');
-
-                        // If fully paid, disable button and update label
-                        const netTotal = parseFloat(row.find('td').eq(2).text());
-                        if (response.newAmountPaid >= netTotal) {
-                            button.prop('disabled', true).text('Paid');
-                        }
-                    } else {
-                        alert('Update failed');
-                    }
-                },
-                error: function () {
-                    alert('Error while updating payment.');
-                }
-            });
-        });
-    });
-</script> *@
-
- 
-
-<script>
-    // function getPaymentDetailsList() {
-    //     const vendorId = $('#VendorID').val();
-
-    //     $.ajax({
-    //         url: '/Account/AdvancedPaymentDetailsList',
-    //         type: 'GET',
-    //         data: { vendorId: vendorId },
-    //         success: function (response) {
-    //             const tableBody = $('#dataTable tbody');
-    //             tableBody.empty();
-
-    //             const items = response.listItems || response || [];
-
-    //             if (!items.length) {
-    //                 tableBody.append("<tr><td colspan='5'>No data found</td></tr>");
-    //                 return;
-    //             }
-
-    //             items.forEach((item, index) => {
-
-    //                 const netTotal = parseFloat(item.netTotal);
-    //                 const amountPaid = parseFloat(item.amountPaid);
-    //                 const advanceAmount = parseFloat(item.advanceAmount);
-
-    //                  const purchaseOrderID = item.purchaseOrderID; Add this to your AJAX response on server side
-
-    // const tr = $(`
-    //     <tr>
-    //         <td>${index + 1}</td>
-    //         <td>${netTotal}</td>
-    //         <td>${advanceAmount}</td>
-    //         <td class="amountPaid">${amountPaid}</td>
-    //         <td class="status">
-    //         <button class="advance-status-btn" data-poid="${purchaseOrderID}">Pay</button>
-    //             </td>
-    //     </tr>
-    // `);
-
-
-    //                 tableBody.append(tr);
-    //             });
-    //         },
-    //         error: function () {
-    //             alert('Failed to load summary data.');
-    //         }
-    //     });
-    // }
-
-    //  $(document).on('click', '.advance-status-btn', function () {
-    //      const paymentAmount = parseFloat($('#payment2').val());
-    //      if (isNaN(paymentAmount) || paymentAmount <= 0) {
-    //          alert("Enter a valid payment amount.");
-    //          return;
-    //      }
-
-    //      const button = $(this);
-    //      const purchaseOrderID = button.data('poid');
-    //      const row = button.closest('tr');
-
-    //      $.ajax({
-    //          url: '/Account/UpdateAdvancePayment',
-    //          type: 'POST',
-    //          data: JSON.stringify({
-    //     PurchaseOrderID: purchaseOrderID,
-    //     AdvanceAmount: paymentAmount
-    // }),
-    //          success: function (response) {
-    //              if (response.success) {
-    //                  row.find('.amountPaid').text(response.newAmountPaid);
-    //                  $('#payment2').val('');
-    //                  alert('Payment updated successfully');
-    //            } else {
-    //                  alert('Update failed');
-    //              }
-    //          },
-    //          error: function () {
-    //              alert('Error while updating payment.');
-    //          }
-    //      });
-    //  });
-
-</script>
-
-
-
-
-
-
-
-
 
 
