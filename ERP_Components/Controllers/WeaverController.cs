@@ -150,6 +150,8 @@ namespace ERP_Components.Controllers
 
             List<Weaver> weaver = weaverServices.GetWeavers();
             List<Weaver> Dyer = weaverServices.GetDyer();
+            List<YarnInfo> yarns = weaverServices.GetYarnDetails();
+            
             var workOrder = new Weaver
             {
                 WorkOrderId = WorkOrderId,

@@ -1131,6 +1131,47 @@ namespace ERP_Component_DAL.Services
                 throw;
             }
         }
+
+        public List<YarnInfo> GetYarnDetails()
+        {
+            List<YarnInfo> yarns = new List<YarnInfo>();
+
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    connection.Open();
+                    string query = "SELECT it.ItemName AS YarnName, it.ItemId AS YarnID, it.Specification FROM Inventory i " +
+                                   "JOIN DistributionCenter dc ON dc.CenterId = i.CenterId " +
+                                   "JOIN Items it ON it.ItemId = i.ItemId " +
+                                   "JOIN CenterTypes ct ON dc.CenterType = ct.CenterType " +
+                                   "WHERE ct.TypeName = 'WEAVER' AND it.ItemType = 2";
+
+                    using (SqlCommand cmd = new SqlCommand(query, connection))
+                    {
+                        using (SqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                YarnInfo yarn = new YarnInfo
+                                {
+                                    YranID = reader.GetGuid(reader.GetOrdinal("YarnID")),
+                                    YarnName = reader.GetString(reader.GetOrdinal("YarnName")),
+                                    Specification = reader.IsDBNull(reader.GetOrdinal("Specification")) ? null : reader.GetString(reader.GetOrdinal("Specification"))
+                                };
+                                yarns.Add(yarn);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            { 
+                throw;
+            }
+
+            return yarns;
+        }
     }
 }
 
