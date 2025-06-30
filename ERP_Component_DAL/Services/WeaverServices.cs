@@ -1077,18 +1077,23 @@ namespace ERP_Component_DAL.Services
             return dyeingOrders;
         }
 
-        public void UpdateDyeingOrder(Guid dyeingOrderID)
+        public void UpdateDyeingOrder(Guid dyeingOrderID, int quantity)
         {
             try
             {
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
                     connection.Open();
-                    string query = @"UPDATE DyeingOrder SET OrderStatus = 3 WHERE DyeingOrderID = @DyeingOrderID";
+                    string query = @"UPDATE DyeingOrder SET OrderStatus = 3 WHERE DyeingOrderID = @DyeingOrderID
+                                    UPDATE Inventory SET InStock = InStock + @Quantity WHERE ItemId = (SELECT wop.OutPutProductID FROM WorkOrderPhases wop 
+                                    JOIN WorkOrder wo ON wop.ProductID = wo.ProductID
+                                    JOIN DyeingOrder do ON do.WorkOrderID=wo.WorkOrderID
+                                    WHERE wop.Phase = 2 AND do.DyeingOrderID = @DyeingOrderID)";
 
                     using (SqlCommand cmd = new SqlCommand(query, connection))
                     {
                         cmd.Parameters.AddWithValue("@DyeingOrderID", dyeingOrderID);
+                        cmd.Parameters.AddWithValue("@Quantity", quantity);
                         cmd.ExecuteNonQuery();
                     }
                 }

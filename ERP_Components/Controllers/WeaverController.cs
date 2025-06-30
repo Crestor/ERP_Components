@@ -255,9 +255,9 @@ namespace ERP_Components.Controllers
         }
 
         // Tushar ye dyeing orders ko recive karne ka hai bss dyienng order id bhej diyo
-        public IActionResult RecieveDyeingOrder(Guid dyeingOrderID)
+        public IActionResult RecieveDyeingOrder(Guid dyeingOrderID, int quantity)
         {
-            weaverServices.UpdateDyeingOrder(dyeingOrderID);
+            weaverServices.UpdateDyeingOrder(dyeingOrderID, quantity);
             return RedirectToAction("ViewDyeingOrders");
         }
 
