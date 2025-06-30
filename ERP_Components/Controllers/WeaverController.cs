@@ -202,10 +202,10 @@ namespace ERP_Components.Controllers
             return RedirectToAction("WorkOrder");
            
         }
-        public IActionResult AllocateToWeaver(Weaver weaver)
+        public IActionResult AllocateToWeaver(AllocatedWork allocatedWork)
         {
-            weaverServices.AllocateToWeaver(weaver);
-            return RedirectToAction("ViewPhases", new {WorkOrderId = weaver.WorkOrderId});
+            weaverServices.AllocateToWeaver(allocatedWork);
+            return RedirectToAction("ViewPhases", new {WorkOrderId = allocatedWork.WorkOrderID});
         }
         public IActionResult AllocateToDeyer()
         {
