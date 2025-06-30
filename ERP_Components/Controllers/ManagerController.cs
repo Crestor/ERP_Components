@@ -110,10 +110,11 @@ namespace ERP_Components.Controllers
             return RedirectToAction("ApproveVendorQuotation");
         }
         [HttpPost]
-        public JsonResult GetVendorItems(Guid vendorId)
+        //Tushar yaha vendorQuotationID bhej na; vendor.lists main hai vo
+        public JsonResult GetVendorItems(Guid vendorQuotationID)
         {
-            // isme jo list leke ayega wo bhejna 
-            return Json(vendorId);
+            VendorQuotationItem items = managerServices.GetVendorQuotationItems(vendorQuotationID);
+            return Json(vendorQuotationID);
         }
 
         public IActionResult Productsales()

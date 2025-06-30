@@ -19,10 +19,12 @@ namespace ERP_Component_DAL.Services
     {
         private readonly IConfiguration configuration;
         SqlConnection connection;
+        private string _connectionString;
 
         public ManagerServices(IConfiguration config)
         {
             this.configuration = config;
+            _connectionString = config.GetConnectionString("DefaultConnectionString");
         }
 
 
@@ -79,7 +81,7 @@ namespace ERP_Component_DAL.Services
                 connection = new SqlConnection(connectionstring);
                 SqlCommand cmd = new();
                 cmd.CommandType = System.Data.CommandType.Text;
-                cmd.CommandText = $" SELECT ve.VendorID, ve.VendorName,vq.DiscountAmount, vq.Amount, vq.PaymentTerms, vq.DeliveryTerms,vq.AdvancedAmount,vq.FinalAmount,vq.DiscountRate  FROM VendorQuotations vq JOIN Vendors ve ON vq.VendorID = Ve.VendorID  Where vq.PurchaseRequisitionID = '{RequisitionID}' ORDER BY vq.FinalAmount";
+                cmd.CommandText = $" SELECT ve.VendorID, vq.VendorQuotationID ,ve.VendorName,vq.DiscountAmount, vq.Amount, vq.PaymentTerms, vq.DeliveryTerms,vq.AdvancedAmount,vq.FinalAmount,vq.DiscountRate  FROM VendorQuotations vq JOIN Vendors ve ON vq.VendorID = Ve.VendorID  Where vq.PurchaseRequisitionID = '{RequisitionID}' ORDER BY vq.FinalAmount";
                 cmd.Parameters.AddWithValue("@RequisitionID", RequisitionID);
                 cmd.Connection = connection;
 
@@ -93,7 +95,7 @@ namespace ERP_Component_DAL.Services
 
                         requisitionId = RequisitionID,
                         vendorId = reader["VendorID"] != DBNull.Value ? (Guid)reader["VendorID"] : Guid.Empty,
-
+                        vendorQuotationId = reader["VendorQuotationID"] != DBNull.Value ? (Guid)reader["VendorQuotationID"] : Guid.Empty,
                         vendorName = reader["VendorName"] != DBNull.Value ? (string)reader["VendorName"] : string.Empty,
                         paymentTerms = reader["PaymentTerms"] != DBNull.Value ? (string)reader["PaymentTerms"] : string.Empty,
 
@@ -1856,9 +1858,49 @@ namespace ERP_Component_DAL.Services
             return result;
         }
 
+        public VendorQuotationItem GetVendorQuotationItems(Guid vendorQuotationID)
+        {
+            VendorQuotationItem vendorQuotationResult = new VendorQuotationItem();
 
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(_connectionString))
+                {
+                    connection.Open();
+                    string query = "SELECT vqi.ItemID, it.ItemName, vqi.Quantity, it.UnitOFMeasure, vqi.UnitPrice, vqi.TotalPrice FROM VendorQuotationItems vqi " +
+                                   "JOIN Items it ON vqi.ItemID = it.ItemId " +
+                                   "WHERE VendorQuotationID = @VendorQuotationID";
 
+                    using (SqlCommand cmd = new SqlCommand(query, connection))
+                    {
+                        cmd.Parameters.AddWithValue("@VendorQuotationID", vendorQuotationID);
 
+                        using (SqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                VendorQuotationItem item = new VendorQuotationItem
+                                {
+                                    ItemID = reader.GetGuid(reader.GetOrdinal("ItemID")),
+                                    ItemName = reader.GetString(reader.GetOrdinal("ItemName")),
+                                    UOM = reader.GetString(reader.GetOrdinal("UnitOFMeasure")),
+                                    Quantity = reader.GetInt32(reader.GetOrdinal("Quantity")),
+                                    UnitPrice = reader.GetDecimal(reader.GetOrdinal("UnitPrice")),
+                                    TotalPrice = reader.GetDecimal(reader.GetOrdinal("TotalPrice"))
+                                };
+                                vendorQuotationResult.VendorQuotationItems.Add(item);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+
+            return vendorQuotationResult;
+        }
     }
 }
 
