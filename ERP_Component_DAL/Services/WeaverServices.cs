@@ -856,7 +856,7 @@ namespace ERP_Component_DAL.Services
                 throw;
             }
         }
-        public bool AllocateToWeaver(Weaver model)
+        public bool AllocateToWeaver(AllocatedWork allocatedWork)
         {
             try
             {
@@ -864,22 +864,21 @@ namespace ERP_Component_DAL.Services
                 {
                     connection.Open();
 
-                    string query = @"
-                INSERT INTO AllocatedWork (WorkOrderID, AllocationCode, WorkerID, Quantity, RatePerPeices)
-                VALUES (@WorkOrderID, @AllocationCode, @WorkerID, @Quantity, @RatePerPieces)";
+                    string query = @"INSERT INTO AllocatedWork (WorkOrderID, AllocationCode, WorkerID, Quantity, RatePerPeices, AllocatedYarnID)
+                                     VALUES (@WorkOrderID, @AllocationCode, @WorkerID, @Quantity, @RatePerPieces, @AllocatedYarnID)";
 
                     using (SqlCommand cmd = new SqlCommand(query, connection))
                     {
-                        cmd.Parameters.AddWithValue("@WorkOrderID", model.WorkOrderId);
-                        cmd.Parameters.AddWithValue("@AllocationCode", model.AllocationSeries ?? "");
-                        cmd.Parameters.AddWithValue("@WorkerID", model.WeaverId);
-                        cmd.Parameters.AddWithValue("@Quantity", model.AllocatedQuantity);
-                        cmd.Parameters.AddWithValue("@RatePerPieces", model.PerPiecePrize);
+                        cmd.Parameters.AddWithValue("@WorkOrderID", allocatedWork.WorkOrderID);
+                        cmd.Parameters.AddWithValue("@AllocationCode", allocatedWork.AllocationCode ?? (object)DBNull.Value); 
+                        cmd.Parameters.AddWithValue("@WorkerID", allocatedWork.WorkerID);
+                        cmd.Parameters.AddWithValue("@Quantity", allocatedWork.Quantity);
+                        cmd.Parameters.AddWithValue("@RatePerPieces", allocatedWork.RatePerPeices); 
+                        cmd.Parameters.AddWithValue("@AllocatedYarnID", allocatedWork.AllocatedYarnID ?? (object)DBNull.Value); 
 
-                        cmd.ExecuteScalar();
+                        int rowsAffected = cmd.ExecuteNonQuery();
+                        return rowsAffected > 0;
                     }
-
-                    return true;
                 }
             }
             catch (Exception ex)
