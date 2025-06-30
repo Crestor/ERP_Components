@@ -163,7 +163,8 @@ namespace ERP_Components.Controllers
                 Dyer = Dyer,
                 workOrderPhases = workOrders.workOrderPhases,
                 AllocatedQuantity = workOrders.AllocatedQuantity,
-                dyeingQuantity = workOrders.dyeingQuantity
+                dyeingQuantity = workOrders.dyeingQuantity,
+                Yarns = yarns
             };
 
             return View(workOrder);
