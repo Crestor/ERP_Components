@@ -27,6 +27,9 @@
                     <p class="card-text">Delivery Terms: <span>@v.deliveryTerms <small>Days</small></span></p>
                     <p class="card-text">Credit Period: <span>@v.creditPeriod <small>Days</small></span></p>
                 </div>
+                <div class="button justify-content-center p-3">
+                  <button onclick="location.href='@Url.Action("ApproveVendor","Manager",new{vendorQuotationID = v.vendorQuotationId,requisitionID= v.requisitionId})'">Approve</button>
+                </div>
             </div>
         </div>
     }
@@ -34,20 +37,22 @@
 
 <div class="overlay" id="popup">
     <div class="Popuptable">
-        <div class="d-flex justify-content-between px-2">
-            <button class="px-2 rounded-top rounded-bottom-0">Details</button>
-            <i class="fas fa-times" onclick="$('#popup').hide()" style="cursor:pointer;"></i>
+        <div class="">
+                <div class="d-flex px-2 justify-content-between">
+                    <button class="px-2 rounded-top rounded-bottom-0">Details</button>
+                    <i class="fas fa-times" onclick="$('#popup').hide()" style="cursor:pointer;"></i>
+                </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>S.No</th>
+                        <th>Item Name</th>
+                        <th>Unit Price</th>
+                    </tr>
+                </thead>
+                <tbody id="geeks"></tbody>
+            </table>
         </div>
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>S.No</th>
-                    <th>Item Name</th>
-                    <th>Unit Price</th>
-                </tr>
-            </thead>
-            <tbody id="geeks"></tbody>
-        </table>
     </div>
 </div>
 

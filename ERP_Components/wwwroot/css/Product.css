@@ -432,7 +432,7 @@ p input{
     border-radius: 8px;
     max-height: max-content;
     margin-top:50px;
-    width:400px;
+    width:600px;
     overflow-y: auto;
     z-index: 10000; /* ensure it's above */
     box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
