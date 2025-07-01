@@ -8,210 +8,42 @@
 
 <link rel="stylesheet" href="~/css/Product.css">
 
- @model List<Product> 
-
-@* @model List<AddPurchaseRequisition> *@
-
-
- 
-    @* <h4>Add Stock</h4> *@
-@* </div> *@
-
-@* <div class="tab-buttons"> *@
-@*     <button class="tab-button" onclick="showSection('product')"> *@
-@*         Add Product Category *@
-@*     </button> *@
-@*     <button class="tab-button" onclick="showSection('material')"> *@
-@*         Add Material Category *@
-@*     </button> *@
-@* </div> *@
-
-@* 
-    <form method="post" asp-action="SetStock" asp-controller="Inventory" onsubmit="return savedDetail()">
-
-        <div class="form-section">
-            <h3>Add Stock</h3>
-
-           <div class="form-row" style="width:50%;">
-
-            <label class="required" for="sku">Reason for Item Entry:</label>
-            <input type="text" name="stockDate" value="By Purchase" readonly />
-          </div>
-            <div class="form-row">
-               
-            <label class="required" for="sku">Product Code:</label>
-            <input type="text" name="stockDate" required />
-                <label class="required" for="productName">Product Name:</label>
-  
-                <select name="itemId">
-                    <option selected disabled>Select Item</option>
-                    @foreach (var scheme in Model)
-                    {
-                        @foreach (var item in scheme.items)
-                        {
-                            <option value="@item.itemId">@item.itemName</option>
-                        }
-                    }
-                </select>
-            
-          
-                <input type="hidden" name="type" value="stockIn" required />
-            </div>
-            <div class="form-row">
- 
-                <label for="descr">Invoice Date:</label>
-            <input type="date" name="quantity" value="@DateTime.Now.ToString("yyyy-MM-dd")" >
-                <label for="price">Invoice No:</label>
-                <input type="text" name="costPrice" />
-            </div>
-            <div class="form-row">
-                
-                  <label for="descr">Quantity Purchased:</label>
-                <input type="number" name="quantity">
-                   <label for="price">Unit Price:</label>
-                  <input type="text" name="UnitPrice" />
-            
-            </div>
-            <div class="form-row">
-
-            <label class="required" for="sku">Expiry Date:</label>
-            <input type="date" name="expiry" required />
-            <label for="cost">Warehouse Location:</label>
-            <select name="warehouseId">
-                <option selected disabled>Select</option>
-                @foreach (var scheme in Model)
-                {
-                    @foreach (var warehouse in scheme.warehouse)
-                    {
-                        <option value="@warehouse.warehouseId">@warehouse.warehouseName</option>
-                    }
-                }
-            </select>
-                <input type="hidden" name="reason" value="product" />
-            
-            </div>
-
-            <div class="button">
-                <button type="reset">Reset</button>
-                <button type="submit">Submit</button>
-            </div>
-        </div>
-
-
-
-        
-
-
-    </form> 
-
-
-
-<div id="material" class="container" style="display:none">
-    <form method="post" asp-action="SetStock" asp-controller="Inventory" onsubmit="return savedDetail()">
-
-        <div style="display:flex; justify-content:center; align-items:center;margin:auto">
-            <h3>Add Material Stock</h3>
-        </div>
-        <div class="form-section">
-            <h3>Add Stock</h3>
-            <div class="form-row">
-
-                <label class="required" for="productName">Item Name:</label>
-                <select name="itemId" id="name">
-                    <option selected disabled>Select Item</option>
-                 
-                </select>
-
-                <label class="required" for="sku">Purchase Date:</label>
-                <input type="date" name="stockDate" required />
-                <input type="hidden" name="type" value="stockIn" required />
-            </div>
-            <div class="form-row">
-
-                <label class="required" for="invoice">Invoice Number:</label>
-                <input type="text" name="invoice" />
-                <label class="required" for="batch">Lot Number:</label>
-                <input type="text" name="batchSeries">
-                <input type="hidden" value="lot" name="itemType">
-            </div>
-            <div class="form-row">
-
-                <label for="descr">Quantity Purchased:</label>
-                <input type="number" name="quantity">
-                <label for="price">Unit Price:</label>
-                <input type="text" name="costPrice" />
-            </div>
-            <div class="form-row">
-
-                <label class="required" for="sku">Invoice Date:</label>
-                <input type="date" name="manufacture" required />
-                <label class="required" for="sku">Expiry Date:</label>
-                <input type="date" name="expiry" required />
-                <input type ="hidden" name="reason" value="material"/>
-            </div>
-            <div class="form-row">
-                <label for="price">Total Price:</label>
-                <input type="text" name="totalPrice" />
-                <label for="cost">Warehouse Location:</label>
-                <select name="warehouseId">
-                    <option selected disabled>Select</option>
-                    @foreach (var scheme in Model)
-                    {
-                        @foreach (var warehouse in scheme.warehouse)
-                        {
-                            <option value="@warehouse.warehouseId">@warehouse.warehouseName</option>
-                        }
-                    }
-                </select>
-            </div>
-
-
-        </div>
-
-
-
-
-
-
-        <div class="button-container">
-            <button type="submit">Submit</button>
-            <button type="reset">Reset</button>
-        </div>
-    </form>
-</div>
- *@
+ @model List<StockTransaction>
+ <h2 class="mt-2 fs-3">Stock In</h2>
 <div class="table">
     <table>
         <thead>
             <tr>
                 <th>S.No.</th>
                 <th>Date</th>
-                <th>Req. Series</th>
+                <th>Items</th>
+                <th>Quantity</th>
                 <th>Description</th>
-                <th>Action</th>
             </tr>
         </thead>
 
 
 
-        <tbody id="geeks">
-            <tr>
-                <td>1</td>
-                <td>2-2-2025</td>
-                <td>ABC_2025/1</td>
-                <td>Description</td>
-                <td><button onclick="location.href='@Url.Action("ViewPrStock","Inventory")'" type="button">View Stock</button></td>
-            </tr>
+        <tbody>
+            @for (var i = 0; i < Model.Count; i++)
+            {
+                <tr>
+                    <td>@(i + 1)</td>
+                    <td>@Model[i].TransactionDate.ToString("dd/MM/yyyy")</td>
+                    <td>@Model[i].ItemName</td>
+                    <td>@Model[i].Quantity</td>
+                    <td>@Model[i].Reason</td>
+                </tr>
+            }
         </tbody>
 
     </table>
 </div>
-<script>
+@* <script>
 
      function showSection(sectionId) {
         document.querySelectorAll('.container').forEach(el => el.style.display = 'none');
         document.getElementById(sectionId).style.display = 'block';
-        // clearCheckboxes();
          getName();
     }
 </script>
@@ -257,4 +89,4 @@
       timer: 1500
     });
     }
-</script>
+</script> *@

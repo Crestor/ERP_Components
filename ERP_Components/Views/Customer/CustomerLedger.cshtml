@@ -2,6 +2,7 @@
 
 
 <link rel="stylesheet" href="~/css/ProductTwo.css" />
+<link rel="stylesheet" href="~/css/Product.css" />
 @{
     ViewBag.Title = "Customer Ledger";
     Layout = "~/Views/Shared/_LayoutINV.cshtml";
@@ -12,39 +13,35 @@
  
 
 <div class="container">
-    <div class="form-section" style=" margin-top:0px; padding-bottom:50px">
+    <div class="form-section" >
         <h3>Quotation</h3>
     <form id="ledgerForm">
         <div class="form-data" style="display:grid">
-            <div class="form-row">
+              <div class="form-row w-50">
                 <label for="customerName">Customer Name:</label>
 
                 <select class="form-control" id="userName"  name="UserName" required>
                     <option disabled selected> Select Vendor</option>
-                    @for (var i = 0; i < Model.Count; i++)
-                    {
-                        <option value="@Model[i].CustomerId">@Model[i].CustomerName</option>
-                    }
+                        @for (var i = 0; i < Model.Count; i++)
+                        {
+                            <option value="@Model[i].CustomerId">@Model[i].CustomerName</option>
+                        }
                 </select>
-
             </div>
-
-            <div class="form-row">
+                    <div class="form-row">
                 <label for="StartDate">Start Date:</label>
-                <input type="date" id="startDate" style="padding:10px" name="StartDate">
-            </div>
+                <input type="date" id="startDate" name="StartDate">
 
-            <div class="form-row">
                 <label for="EndDate">End Date:</label>
-                <input type="date" id="endDate" style="padding:10px" name="EndDate">
+                <input type="date" id="endDate"  name="EndDate">
             </div>
         </div>
 
 
-        <div class="button-container" style="float: right;padding: 13px;">
-            <button type="submit">Search</button>
+        <div class="button mt-3">
             <button type="reset">Reset</button>
-            <button type="button" id="exportbutton">Export to Excel</button>
+            <button type="submit">Search</button>
+            @* <button type="button" id="exportbutton">Export to Excel</button> *@
         </div>
     </form>
     </div>
