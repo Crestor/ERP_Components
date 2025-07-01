@@ -71,7 +71,7 @@
 					
 					<td>
 						<div class="table-button">
-							<button class="view-history" data-id="@x.RetailBillID">View History</button>
+							<button class="view-history" data-id="@x.CustomerID">View History</button>
 						</div>
 					</td>
 				
@@ -119,16 +119,16 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
     $(document).on("click", ".view-history", function () {
-        var RetailBillID = $(this).data("id");
+        var CustomerID = $(this).data("id");
 
 
         $("#leftSection").css("flex", "0 0 50%");
         $("#rightSection").css({ "width": "58%","margin-right": "28px;", "display": "block" });
      
         $.ajax({
-            url: '/RetailSales/ViewCustomerBillHistory',
+            url: '/RetailSales/GetCustomerBillHistory',
             type: 'GET',
-            data: { RetailBillID: RetailBillID },
+            data: { CustomerID: CustomerID },
                success: function (data) {
         if (!data) {
             alert("No data returned.");

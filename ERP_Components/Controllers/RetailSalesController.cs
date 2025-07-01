@@ -135,15 +135,15 @@ namespace ERP_Components.Controllers
 		}
 
 
-		//public JsonResult ViewCustomerBillHistory(Guid RetailBillID)
-		//{
+        //public JsonResult ViewCustomerBillHistory(Guid RetailBillID)
+        //{
 
-		//	QuotationModel retail = retailsalesServices.GetCustomerName(RetailBillID);
-		//	retail.IDetails = retailsalesServices.GetCustomerRetailData(RetailBillID);
-		//	return Json(retail);
+        //    QuotationModel retail = retailsalesServices.GetCustomerName(RetailBillID);
+        //    retail.IDetails = retailsalesServices.GetCustomerRetailData(RetailBillID);
+        //    return Json(retail);
 
-		//}
-		public IActionResult ViewCustomerBillDocument(Guid RetailCustomerId)
+        //}
+        public IActionResult ViewCustomerBillDocument(Guid RetailCustomerId)
         {
 			RetailItemModel retailItem = retailsalesServices.CustomerBillAddressData();
             retailItem.RetailCustomerId = Guid.Parse(HttpContext.Session.GetString("RetailCustomerId"));

@@ -1760,7 +1760,7 @@ namespace ERP_Component_DAL.Services
                 connection = new SqlConnection(connectionstring);
                 SqlCommand cmd = new();
                 cmd.CommandType = System.Data.CommandType.Text;
-                cmd.CommandText = $"SELECT COUNT(*) AS PendingRequisitions FROM Requisitions WHERE RequisitionStatus = 2";
+                cmd.CommandText = $"SELECT COUNT(*) AS PendingRequisitions FROM PurchaseRequisitions WHERE RequisitionStatus = 2";
 
                 cmd.Connection = connection;
                 cmd.CommandTimeout = 300;
