@@ -1183,7 +1183,7 @@ RequisitionStatus=1
                 connection = new SqlConnection(ConnectionString);
                 SqlCommand cmd = new SqlCommand();
                 cmd.CommandType = System.Data.CommandType.Text;
-                cmd.CommandText = $"select ItemName,ItemId from Items  Where ItemType = 1  ";
+                cmd.CommandText = $"SELECT i.ItemName, i.ItemId FROM Items i JOIN ProductMaterialMapping pom ON pom.ProductID=i.ItemId WHERE i.ItemType = 2";
 
                 cmd.Connection = connection;
 
@@ -1225,7 +1225,7 @@ RequisitionStatus=1
 
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
-                    string query = $"INSERT INTO ProductionOrder([ProductID],[ProductionStatus])  VALUES('{production.ItemId}',1)";
+                    string query = $"INSERT INTO ProductionOrder([ProductID],[ProductionStatus], [Quantity])  VALUES('{production.ItemId}',1, '{production.Quantity}')";
 
 
                     using (SqlCommand cmd = new SqlCommand(query, connection))
