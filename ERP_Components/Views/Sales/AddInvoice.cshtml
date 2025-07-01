@@ -97,15 +97,15 @@
         </div>
 
             <div class="form-section" style="display:flex;justify-content:space-around">                
-                    <p><strong>Total Amount:</strong><br /><span id="totalPriceBeforeDiscount"></span></p>
+                    <p><strong>Total Amount:</strong><br /><span class="totalPriceBeforeDiscount"></span></p>
 
-                <p><strong> Total Discount (%):</strong> <br /><span id="totalDiscountPercent" ></span></p>
+                <p><strong> Total Discount (%):</strong> <br /><span class="totalDiscountPercent" ></span></p>
                    
-                <p><strong>Total Discount Amount:</strong><br /><span id="totalDiscountAmount" ></span></p>
+                <p><strong>Total Discount Amount:</strong><br /><span class="totalDiscountAmount" ></span></p>
 
 
                     <p><strong>Gross Total:</strong><br /><span>@Model[0].GrossTotal</span> </p>
-                    <p><strong>Total Taxable Amount:</strong><br /><span id="totalTaxableAmount" ></span></p> 
+                    <p><strong>Total Taxable Amount:</strong><br /><span class="totalTaxableAmount" ></span></p> 
 
             
                     <input type="hidden" name="QuotationID" value="@Model[0].QuotationID" />
@@ -119,15 +119,15 @@
  <div id="secondSection">
 
            <div class="form-section" style="display:flex;justify-content:space-around">                
-                    <p><strong>Total Amount:</strong><br /><span id="totalPriceBeforeDiscount"></span></p>
+                    <p><strong>Total Amount:</strong><br /><span class="totalPriceBeforeDiscount"></span></p>
 
-                <p><strong> Total Discount (%):</strong> <br /><span id="totalDiscountPercent" ></span></p>
+                <p><strong> Total Discount (%):</strong> <br /><span class="totalDiscountPercent" ></span></p>
                    
-                <p><strong>Total Discount Amount:</strong><br /><span id="totalDiscountAmount" ></span></p>
+                <p><strong>Total Discount Amount:</strong><br /><span class="totalDiscountAmount" ></span></p>
 
 
-                    <p><strong>Gross Total:</strong><br /><input name="GrossTotal" id="grossTotal" type="number" value="@Model[0].GrossTotal" >< </p>
-                    <p><strong>Total Taxable Amount:</strong><br /><span id="totalTaxableAmount" ></span></p> 
+                    <p><strong>Gross Total:</strong><br /><input name="GrossTotal" id="grossTotal" type="number" value="@Model[0].GrossTotal" style="border:none" > </p>
+                    <p><strong>Total Taxable Amount:</strong><br /><span class="totalTaxableAmount" ></span></p> 
 
             
                     <input type="hidden" name="QuotationID" value="@Model[0].QuotationID" />
@@ -391,7 +391,7 @@
     });
     }
 </script>
- 
+ @* 
 <script>
     window.onload = function () {
         let totalPriceBeforeDiscount = 0;
@@ -421,7 +421,7 @@
         document.getElementById("totalDiscountPercent").textContent = totalDiscountPercent.toFixed(2) + " %";
         document.getElementById("totalTaxableAmount").textContent = totalTaxableAmount.toFixed(2);
     };
-</script>
+</script> *@
 
 <script>
     $(document).ready(function () {
@@ -524,4 +524,40 @@ $('#tcsSubmit').on('click', function () {
         $('#tcsModal').modal('hide'); // if you are using a modal
     }
 });
+</script>
+<script>
+    window.onload = function () {
+        let totalPriceBeforeDiscount = 0;
+        let totalDiscountAmount = 0;
+        let totalTaxableAmount = 0;
+
+        const rows = document.querySelectorAll("#orderTable tbody tr");
+
+        rows.forEach(row => {
+            const sellingPrice = parseFloat(row.querySelector(".selling-price")?.textContent || 0);
+            const quantity = parseFloat(row.querySelector(".quantity")?.textContent || 0);
+            const discountAmount = parseFloat(row.querySelector(".discount-amount")?.textContent || 0);
+            const taxableAmount = parseFloat(row.querySelector(".taxable-amount")?.textContent || 0);
+
+            totalPriceBeforeDiscount += sellingPrice * quantity;
+            totalDiscountAmount += discountAmount;
+            totalTaxableAmount += taxableAmount;
+        });
+
+        const totalDiscountPercent = totalPriceBeforeDiscount === 0
+            ? 0
+            : (totalDiscountAmount / totalPriceBeforeDiscount) * 100;
+
+        // Helper function to update all elements by class
+        function updateTextByClass(className, value) {
+            document.querySelectorAll(`.${className}`).forEach(el => {
+                el.textContent = value;
+            });
+        }
+
+        updateTextByClass("totalPriceBeforeDiscount", totalPriceBeforeDiscount.toFixed(2));
+        updateTextByClass("totalDiscountAmount", totalDiscountAmount.toFixed(2));
+        updateTextByClass("totalDiscountPercent", totalDiscountPercent.toFixed(2) + " %");
+        updateTextByClass("totalTaxableAmount", totalTaxableAmount.toFixed(2));
+    };
 </script>

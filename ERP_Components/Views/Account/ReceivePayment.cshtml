@@ -74,7 +74,7 @@
     <div id="bill" style="display:none;" class="form-section">
         <div style="display:flex; justify-content:space-between; margin-left:25px;">
             <div class="label">
-                <label for="paymentReleased">Payment Released</label>
+                <label for="paymentReleased">Payment Receive</label>
                 <input type="text" id="paymentReleased" name="paymentReleased" oninput="paymentrelease()" required />
             </div>
             <div>
@@ -256,7 +256,29 @@
                         alert("Please enter a valid payment amount.");
                         return;
                     }
+                         function FullPaid() {
+        Swal.fire({
+            title: "Amount submitted successfully",
+            text: "",
+            icon: "success",
+            confirmButtonText: "OK",
+            showCancelButton: false,
+            showDenyButton: false,
+            confirmButtonColor: "#138496"
+        });
+    }
 
+        function  PartialPaid(){
+             Swal.fire({
+                title: "Partial Amount submitted successfully",
+                text: "",
+                icon: "success",
+                confirmButtonText: "OK",
+            showCancelButton: false,
+            showDenyButton: false,
+                confirmButtonColor: "#138496",
+            });
+        }
                     let amountToPay = 0;
                     let newGrossTotal = 0;
                     let statusLabel = "";
@@ -268,12 +290,14 @@
                         sendOldGrossTotal = originalGross;
                         newGrossTotal = 0;
                         statusLabel = "Paid";
+                        FullPaid();
                     } else {
                         // Partial payment
                         amountToPay = paymentInput;
-                        sendOldGrossTotal = amountToPay; // Fix: send payment input as OldGrossTotal
+                        sendOldGrossTotal = amountToPay; 
                         newGrossTotal = originalGross - amountToPay;
                         statusLabel = "Partial Paid";
+                        PartialPaid();
                     }
 
                     // Update UI
@@ -299,7 +323,7 @@
                             CustomerID: CustomerID
                         },
                         success: function () {
-                            alert("Payment updated successfully.");
+                            
                         },
                         error: function () {
                             alert('Error posting updated values.');
@@ -314,7 +338,124 @@
     }
 
 
-        function CustomerPaymentDetails() {
+    //     function CustomerPaymentDetails() {
+    //     const CustomerID = $('#CustomerID').val();
+    //     const InvoiceID = $('#InvoiceID').val();
+
+    //     if (!CustomerID) return;
+
+    //     $.ajax({
+    //         url: '/Account/GetCustomerPaymentDetails',
+    //         type: 'GET',
+    //         data: { CustomerID },
+    //         success: function (response) {
+    //             const tableBody = $('#paymenttable tbody');
+    //             tableBody.empty();
+
+    //             const items = response.listItems || response || [];
+
+    //             if (!items.length) {
+    //                 tableBody.append("<tr><td colspan='6'>No data found</td></tr>");
+    //                 return;
+    //             }
+
+    //             items.forEach((item, index) => {
+    //                 const totalAmount = parseFloat(item.totalAmount || 0);
+    //                 const advanceAmount = parseFloat(item.advanceAmount || 0);
+    //                 const isPaid = advanceAmount >= totalAmount;
+
+    //                 const row = $(`
+    //                     <tr data-invoiceid="${item.invoiceID}">
+    //                         <td>${index + 1}</td>
+    //                         <td>${item.invoiceNumber}</td>
+    //                         <td>${totalAmount.toFixed(2)}</td>
+    //                         <td class="advanceAmount">${advanceAmount.toFixed(2)}</td>
+    //                         <td class="status">
+    //                             <button class="status-btn"
+    //                                 data-advanceamount="${advanceAmount}"
+    //                                 data-invoiceid="${item.invoiceID}"
+    //                                 ${isPaid ? 'disabled' : ''}>
+    //                                 ${isPaid ? 'Paid' : 'Pay'}
+    //                             </button>
+    //                         </td>
+    //                     </tr>
+    //                 `);
+
+    //                 tableBody.append(row);
+    //             });
+
+    //             $('.status-btn').off('click').on('click', function () {
+    //                 const paymentInput = parseFloat($('#advancePayment').val()) || 0;
+    //                 const CustomerID = $('#CustomerID').val();
+    //                 const invoiceID = $(this).data('invoiceid');
+
+    //                 //Payment input must be greater than 0
+    //                 if (paymentInput <= 0) {
+    //                     alert("Advance payment amount must be greater than 0.");
+    //                     return;
+    //                 }
+
+    //                 const button = $(this);
+    //                 const row = button.closest('tr');
+
+    //                 $.ajax({
+    //                     url: '/Account/SubmitAdvanceAmountDetails',
+    //                     type: 'POST',
+    //                     data: {
+    //                         AdvanceAmount: paymentInput,
+    //                         InvoiceID: invoiceID,
+    //                         CustomerID: CustomerID
+    //                     },
+    //                     success: function () {
+    //                         alert("Payment updated successfully.");
+
+    //                         // Update the AdvanceAmount cell
+    //                         row.find('.advanceAmount').text(paymentInput.toFixed(2));
+
+    //                         //  Disable the button and mark as Paid
+    //                         button.text('Paid').prop('disabled', true);
+
+    //                         //  Clear the advancePayment input box
+    //                         $('#advancePayment').val('0');
+    //                     },
+    //                     error: function () {
+    //                         alert('Error posting updated values.');
+    //                     }
+    //                 });
+    //             });
+    //         },
+    //         error: function () {
+    //             alert('Error retrieving invoice data.');
+    //         }
+    //     });
+    // }
+        function FullPaid() {
+        Swal.fire({
+            title: "Amount submitted successfully",
+            text: "",
+            icon: "success",
+            confirmButtonText: "OK",
+            showCancelButton: false,
+            showDenyButton: false,
+            confirmButtonColor: "#138496",
+            draggable: true
+        });
+    }
+
+    function PartialPaid() {
+        Swal.fire({
+            title: "Partial Amount submitted successfully",
+            text: "",
+            icon: "success",
+            confirmButtonText: "OK",
+            showCancelButton: false,
+            showDenyButton: false,
+            confirmButtonColor: "#138496",
+            draggable: true
+        });
+    }
+
+    function CustomerPaymentDetails() {
         const CustomerID = $('#CustomerID').val();
         const InvoiceID = $('#InvoiceID').val();
 
@@ -365,7 +506,6 @@
                     const CustomerID = $('#CustomerID').val();
                     const invoiceID = $(this).data('invoiceid');
 
-                    //Payment input must be greater than 0
                     if (paymentInput <= 0) {
                         alert("Advance payment amount must be greater than 0.");
                         return;
@@ -383,15 +523,27 @@
                             CustomerID: CustomerID
                         },
                         success: function () {
-                            alert("Payment updated successfully.");
+                            // Get current advance amount from table
+                            const currentAdvance = parseFloat(row.find('.advanceAmount').text()) || 0;
 
-                            // Update the AdvanceAmount cell
-                            row.find('.advanceAmount').text(paymentInput.toFixed(2));
+                            // Calculate new total advance
+                            const newAdvance = currentAdvance + paymentInput;
 
-                            //  Disable the button and mark as Paid
-                            button.text('Paid').prop('disabled', true);
+                            // Update advance amount in the table cell
+                            row.find('.advanceAmount').text(newAdvance.toFixed(2));
 
-                            //  Clear the advancePayment input box
+                            // Get total amount for comparison
+                            const totalAmount = parseFloat(row.find('td:nth-child(3)').text()) || 0;
+
+                            // If new advance covers or exceeds total, disable button and mark as Paid
+                            if (newAdvance >= totalAmount) {
+                                button.text('Paid').prop('disabled', true);
+                                FullPaid();
+                            } else {
+                                PartialPaid();
+                            }
+
+                            // Clear the advance payment input
                             $('#advancePayment').val('0');
                         },
                         error: function () {

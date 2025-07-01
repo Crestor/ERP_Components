@@ -149,7 +149,9 @@
             </div>
             <div class="form-row" style="width:50%">
                 <label for="Quantity">Quantity:</label>
-                <input type="number" id="PerPiecePrizedyer" name="Quantity" value="@Model.Quantity" required />
+                <input type="number" id="PerPiecePrizedyer" name="Quantity" required />
+                <div id="showinvalidinputforDyer"></div>
+
             </div>
             <input type="hidden" name="WorkOrderId" value="@Model.WorkOrderId" />
             <div class="button">
@@ -183,6 +185,7 @@
         const weaverBtn = document.getElementById("showpopupforWaever");
         const deyerBtn = document.getElementById("showpopupforDeyer");
         const completedBtn = document.getElementById("completedworkorder");
+        const allocatedforDying = parseInt(@Model.dyeingQuantity);
 
         if (weaverBtn) {
             weaverBtn.addEventListener("click", function () {
@@ -223,6 +226,18 @@
                     this.value = totalQuantity - allocatedQuantity;
                 } else {
                     document.getElementById("showinvalidinput").innerHTML = "";
+                }
+            });
+        }
+        const inputdyr = document.getElementById("PerPiecePrizedyer");
+        if (inputdyr) {
+            inputdyr.addEventListener("input", function () {
+                if (parseInt(this.value) > totalQuantity-allocatedforDying) {
+                    document.getElementById("showinvalidinputforDyer").innerHTML =
+                        "<span style='color: red;'>Allocated quantity cannot exceed total quantity.</span>";
+                    this.value = totalQuantity-allocatedforDying;
+                } else {
+                    document.getElementById("showinvalidinputforDyer").innerHTML = "";
                 }
             });
         }

@@ -122,7 +122,7 @@ namespace ERP_Components.Controllers
         //ReceivePayment
 
         public IActionResult ReceivePayment( Guid CustomerID)
-        {
+         {
             if (CustomerID != Guid.Empty)
             {
                 List<ReceivePayment> List = accountServices.GetListOfCustomer(CustomerID);

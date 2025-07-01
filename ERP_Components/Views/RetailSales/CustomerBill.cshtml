@@ -221,14 +221,16 @@
                             <td>1</td>
                             <td>
                                 <select class="ItemName" onchange="showActualBill()">
+
                                     <option selected disabled>Select Product</option>
                                     @foreach (var product in Model.Products)
                                     {
                                         <option value="@product.ItemId"
                                                 data-sellingprice="@product.SellingPrice"
-                                                >
+                                                data-discountrate="@product.discountRate">
                                             @product.ItemName
                                         </option>
+
                                     }
                                 </select>
                                 <input type="hidden" class="ItemId" name="ItemLists[0].ItemId" value="" readonly />
@@ -247,9 +249,10 @@
                 <h3>Amount Details</h3>
                 <div class="form-row">
                     <div class="form-group">
-                        <label style="margin-left: -25px;">Total Amount: </label>
-                    <input type="number" id="grandTotal" name="TotalAmount" readonly />
+                        <label style="margin-left: -25px;">Gross Total: </label>
+                        <input type="text" name="grossTotal" id="grossTotal" readonly />
                     </div>
+                    
                     <div class="form-group">
                     <label>Discount Amount: </label>
                     <input type="number" name="TotalDiscountAmount" id="totalDiscountAmount" readonly />
@@ -261,9 +264,9 @@
                     <input type="number" id="totalDiscountPercent" readonly />
                 </div>
                     <div class="form-group">
-                        <label style="margin-left: -25px;">Gross Total: </label>
-                    <input type="text" name="grossTotal" id="grossTotal" readonly />
-            </div>
+                        <label style="margin-left: -25px;">Final Amount: </label>
+                        <input type="number" id="grandTotal" name="TotalAmount" readonly />
+                    </div>
                 </div>
             </div>
 
@@ -277,6 +280,8 @@
     <div id="rightSection">
       
         <button id="toggleRightPanel" onclick="togglePanelView()">View History</button>
+        <button id="toggleRightPanel" onclick="togglePanelView()" style="display: none;">View Bill</button>
+
 
 
         <div id="historyContent">
@@ -308,7 +313,7 @@
             </div>
         </div>
 
-        <div id="details-container" style="font-family: monospace; width: 270px; margin: 0 auto; background: white; padding: 10px; border: 1px dashed #000; box-shadow: none;">
+        <div id="details-container" style="font-family: monospace; width: 400px; margin: 0 auto; background: white; padding: 10px; border: 1px dashed #000; box-shadow: none;">
             <div class="viewDoc" style="box-shadow: none; background: none;">
                 <h3 style="text-align:center; margin: 5px 0;">@Model?.CenterName</h3>
                 <p style="text-align:center; margin:0;">@Model.Street, @Model.AddressLine1</p>
@@ -325,7 +330,7 @@
 
                 <hr style="border-top: 1px dashed #000;" />
 
-                <!-- Clean Table -->
+             
                 <table style="width:100%; font-size: 12px; table-layout: fixed; border-collapse: collapse; background: none; color: black; border: none; box-shadow: none;">
                     <thead>
                         <tr>
@@ -336,14 +341,7 @@
                         </tr>
                     </thead>
                     <tbody id="billItemsBody">
-                        <!-- Example row, replace with JS loop dynamically -->
-                        @* <tr>
-                            <td style="text-align:left; border: none; background: none; color: black;">Soap</td>
-                            <td style="text-align:center; ; border: none; background: none; color: black;">2</td>
-                            <td style="text-align:right;  border: none; background: none; color: black;">₹25</td>
-                            <td style="text-align:right;  border: none; background: none; color: black;">₹50</td>
-                        </tr> *@
-                        <!-- More rows here via JS -->
+                     
                     </tbody>
                 </table>
 
@@ -352,9 +350,10 @@
                
                 <p>Sub Total: <span id="billSubTotal">₹0.00</span></p>
                 <p>You Saved: <span id="billTotalDiscount">₹0.00</span></p>
-                <p>CGST: <span id="billCGST">₹0.00</span></p>
-                <p>SGST: <span id="billSGST">₹0.00</span></p>
+                <p>CGST:6% <span id="billCGST">₹0.00</span></p>
+                <p>SGST:6% <span id="billSGST">₹0.00</span></p>
                 <p><strong>Grand Total: <span id="billGrandTotal">₹0.00</span></strong></p>
+             
 
                 <hr style="border-top: 1px dashed #000;" />
 
@@ -391,23 +390,27 @@
         document.getElementById('addNewRow').addEventListener('click', addRow);
     });
 
-        function SetPriceFromDropdown(dropdown) {
+            function SetPriceFromDropdown(dropdown) {
         const selectedOption = dropdown.options[dropdown.selectedIndex];
         const itemId = selectedOption.value;
         const price = selectedOption.getAttribute("data-sellingprice");
+        const discount = selectedOption.getAttribute("data-discountrate");
 
         const row = dropdown.closest('tr');
         if (row) {
             const priceInput = row.querySelector('.SellingPrice');
             const itemIdInput = row.querySelector('.ItemId');
+            const discountInput = row.querySelector('.discountRate');
 
-            if (priceInput && itemIdInput) {
+            if (priceInput && itemIdInput && discountInput) {
                 priceInput.value = price;
                 itemIdInput.value = itemId;
+                discountInput.value = discount;
                 calculateRow(priceInput);
             }
         }
     }
+
 
 
         function addRow() {
@@ -454,6 +457,8 @@
         }
     }
 
+ 
+
         function calculateSummary() {
         const rows = document.querySelectorAll('#tableBody tr');
         let totalDiscountAmount = 0, totalGross = 0, taxableAmount = 0, grandTotal = 0;
@@ -471,20 +476,27 @@
             taxableAmount += taxable;
         });
 
-        grandTotal = taxableAmount;
+        const cgstRate = 0.06;
+        const sgstRate = 0.06;
+        const cgstAmount = taxableAmount * cgstRate;
+        const sgstAmount = taxableAmount * sgstRate;
+        
+        grandTotal = taxableAmount + cgstAmount + sgstAmount;
 
-        document.getElementById('grandTotal').value = totalGross.toFixed(2);
+      
         document.getElementById('totalDiscountAmount').value = totalDiscountAmount.toFixed(2);
         document.getElementById('totalDiscountPercent').value = taxableAmount.toFixed(2);
-        document.getElementById('grossTotal').value = grandTotal.toFixed(2);
+        document.getElementById('grandTotal').value = grandTotal.toFixed(2);
+        document.getElementById('grossTotal').value = totalGross.toFixed(2);
+        
 
+    
         $('#billSubTotal').text(`₹${taxableAmount.toFixed(2)}`);
-        $('#billGrandTotal').text(`₹${grandTotal.toFixed(2)}`);
-        $('#billCGST').text(''); 
-        $('#billSGST').text('');  
         $('#billTotalDiscount').text(`₹${totalDiscountAmount.toFixed(2)}`);
+        $('#billCGST').text(`₹${cgstAmount.toFixed(2)}`);
+        $('#billSGST').text(`₹${sgstAmount.toFixed(2)}`);
+        $('#billGrandTotal').text(`₹${grandTotal.toFixed(2)}`);
     }
-
 
 
 </script>
@@ -643,15 +655,16 @@
     }
 
 
-           
 
 
 
-        function updateActualBill() {
+
+           function updateActualBill() {
         const rows = document.querySelectorAll('#tableBody tr');
         let html = '';
         let totalQty = 0;
         let subTotal = 0;
+        let totalDiscount = 0;
 
         rows.forEach(row => {
             const product = row.querySelector('.ItemName option:checked')?.textContent || '-';
@@ -674,14 +687,22 @@
 
                 totalQty += qty;
                 subTotal += netTotal;
+                totalDiscount += discount;
             }
         });
+
+        const cgst = subTotal * 0.06;
+        const sgst = subTotal * 0.06;
+        const grandTotal = subTotal + cgst + sgst;
 
         $('#billItemsBody').html(html);
         $('#billCustomerName').text($('#customerName').val());
         $('#billTotalQty').text(totalQty);
         $('#billSubTotal').text(`₹${subTotal.toFixed(2)}`);
-        $('#billGrandTotal').text(`₹${subTotal.toFixed(2)}`);
+        $('#billTotalDiscount').text(`₹${totalDiscount.toFixed(2)}`);
+        $('#billCGST').text(`₹${cgst.toFixed(2)}`);
+        $('#billSGST').text(`₹${sgst.toFixed(2)}`);
+        $('#billGrandTotal').text(`₹${grandTotal.toFixed(2)}`);
     }
 
 
@@ -775,14 +796,12 @@
             data: JSON.stringify(quotationModel),
             success: function (response) {
                 if (response.success) {
-                    // Show the bill preview
+                    
                     showActualBill();
 
-                    // Wait a bit to make sure the DOM updates, then print
                     setTimeout(function () {
                         window.print();
 
-                        // Optional: reload after printing
                         setTimeout(function () {
                             location.reload();
                         }, 1000);

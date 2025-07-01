@@ -797,7 +797,7 @@ namespace ERP_Component_DAL.Services
                 cmd.CommandType = System.Data.CommandType.Text;
 
 
-                cmd.CommandText = $"update Invoice Set AdvanceAmount= @AdvanceAmount WHERE InvoiceID = @InvoiceID";
+                cmd.CommandText = $"update Invoice Set AdvanceAmount= AdvanceAmount + @AdvanceAmount WHERE InvoiceID = @InvoiceID";
 
                 cmd.Parameters.AddWithValue("@AdvanceAmount", mp.AdvanceAmount);
                 cmd.Parameters.AddWithValue("@InvoiceID", mp.InvoiceID);

@@ -52,8 +52,7 @@ namespace ERP_Components.Controllers
 		{
               RetailItemModel Retail  = retailsalesServices.CustomerBillAddressData();
 			Retail.Products = retailsalesServices.AddBillItemName();
-           
-			
+  
 			return View(Retail);
 
 		}

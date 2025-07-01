@@ -9,6 +9,7 @@
 
 
 <form method="post" asp-action="" asp-controller="">
+     
     <div class="form-section">
         <h3>Basic Details</h3>
      <div class="form-row">
@@ -37,11 +38,11 @@
 
 
 
-    <div class="form-section" style="padding:20px 20px 50px 20px">
+  <div class="form-section" style="padding:20px 20px 50px 20px">
         <h3>Item Details</h3>
 
     <div class="table" style="width:98%; margin:auto">
-    <div id="orderDetailsForm">
+      <div id="orderDetailsForm">
         <table id="orderTable">
             <thead>
                 <tr>
@@ -125,16 +126,20 @@
     </div>
                         <input type="text" id="ItemId" name="ItemId" hidden />
 
-    </div>
+   @*  </div>
 
     </div>
 
-  </form>
-        <button type="submit" id="addItem" class="button" style="background-color:#138496;color: white; display:flex;float:right;margin-top:-10px;margin-right:50px">
+  </form> *@
+         </div>
+        <button type="button" id="addItem" class="button" style="background-color:#138496;color: white; display:flex;float:right;margin-top:10px;margin-right:10px">
 
             Add item
         </button>
 
+    </div>
+
+  </form>
 
 <div style="text-align: center; margin-top: 15px; display:flex;justify-content:end; margin-right: 29px;padding-bottom: 8px;">
 
@@ -293,11 +298,7 @@
 
         calculateSummary();
     }
-    // --new
    
-
-
-    // old
     function calculateSummary() {
         const discountAmountFields = document.querySelectorAll('[name="discountAmount"]');
         const totalFields = document.querySelectorAll('[name="TotalAmount"]');

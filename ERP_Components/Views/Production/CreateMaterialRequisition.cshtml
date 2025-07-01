@@ -57,9 +57,11 @@
         @* <input type="hidden" name="date" id="hiddendate" value="" /> *@
             <input type="hidden" id="RequisitionType" value="1" name="RequisitionType" />
         <input type="hidden" id="hiddenRequisitionSeries" name="RequisitionSeries" />
-        <button type="submit" class="button" onclick="SForecast()">
-            submit
-        </button>
+        <div class="button">
+            <button type="submit" class="button" onclick="SForecast()">
+                submit
+            </button>
+        </div>
     </form>
 
 </div>
@@ -70,7 +72,7 @@
 
     function SForecast(){
            Swal.fire({
-         title: "Drag me!",
+         title: "Create MR Successful",
          icon: "success"
        });
        }
