@@ -92,7 +92,7 @@
         public decimal GrossTotal { get; set; }
         public decimal TotalAmountAfterDiscount { get; set; }
 
-
+        public RetailItemModel Store {get; set; }
         public List<QuotationModel> ItemLists { get; set; }
     }
 }

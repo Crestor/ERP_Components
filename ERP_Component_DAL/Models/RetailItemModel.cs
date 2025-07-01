@@ -28,5 +28,7 @@ namespace ERP_Component_DAL.Models
         public string CenterName { get; set; }
 
         public List<RetailItemModel> retailItem { get; set; }
+
+        public List<QuotationModel> Products { get; set; }
     }
 }

@@ -5,6 +5,8 @@
     Layout = "~/Views/Shared/_LayoutINV.cshtml";
 }
 
+@model RetailItemModel
+
 <link rel="stylesheet" href="~/css/ProductTwo.css" />
 <style>
 
@@ -24,7 +26,7 @@
         width: 0;
         overflow: hidden;
         padding: 20px;
-        display: none; /* Hide by default */
+        display: none; 
         border-left: 1px solid #ccc;
         background-color: #f8f9fa;
         transition: width 0.3s ease;
@@ -47,15 +49,37 @@
             background-color: #e9ecef;
         }
 
+    #contact-suggestions li {
+        padding: 5px 10px;
+        cursor: pointer;
+    }
+
+        #contact-suggestions li:hover {
+            background-color: #eee;
+        }
+
+
+  
+
+        #contact-suggestions li {
+            padding: 5px 10px;
+            cursor: pointer;
+        }
+
+            #contact-suggestions li:hover {
+                background-color: #eee;
+            }
+
+
     .flex-row {
         display: flex;
-        gap: 20px; /* space between the two fields */
+        gap: 20px; 
         align-items: flex-end;
         margin-bottom: 20px;
     }
 
     .form-group {
-        flex: 1;
+        flex: 1; 
         display: flex;
         flex-direction: column;
     }
@@ -69,42 +93,24 @@
         position: absolute;
         top: 100%;
         left: 0;
-        width: 97%;
+        width: 100%;
+        list-style: none;
+        padding: 0px 5px;
+        margin: 0;
         border: 1px solid #ccc;
         background-color: white;
         max-height: 150px;
         overflow-y: auto;
         display: none;
-        margin:0;
-        cursor:pointer;
-        padding:0px 5px;
         z-index: 9999;
-        list-style: none;
         box-shadow: 0px 4px 8px rgba(0,0,0,0.1);
     }
 
-   /*  #contact-suggestions li{
-        list-style: none;
-        padding: 0;
-        margin: 0;
-    } */
-
-
-
-
-
-   
-
-
-
-
-
-    .form-section{
+    .form-section {
         width: 94%;
         margin-inline: 35px;
         border-radius: 10px;
         margin-bottom: 35px;
-        /* margin-top: 25px; */
         padding: 0px 20px;
         border: 1.5px solid #138496;
         position: relative;
@@ -112,11 +118,58 @@
     }
 
 
-  
+
+    .viewDoc {
+        padding: 20px;
+        max-width: 380px;
+        margin: auto;
+        border: 1px solid #000;
+        background: #fff;
+    }
+
+    h2, h4, p {
+        text-align: center;
+        margin: 0;
+    }
+
+    .info, .summary, .footer {
+        margin-top: 10px;
+    }
+
+    table-tab {
+        width: 100%;
+        margin:auto;
+        border-collapse: collapse;
+        /* margin-top: 10px; */
+    }
+
+    td, th {
+        padding: 4px;
+        font-size: 14px;
+    }
+
+    .right {
+        text-align: right;
+    }
+
+    .center {
+        text-align: center;
+    }
+
+    hr {
+        border: 0;
+        border-top: 1px dashed #000;
+    }
+
+    label{
+        margin-left: -15px;
+    }
+
+    p{
+        font-size: 12px;
+    }
 
 </style>
-
-
 
 
 
@@ -136,18 +189,15 @@
             <div class="form-section">
                 <h3>Basic Details</h3>
                 <div class="form-row flex-row">
-                   
                     <div class="form-group autocomplete-container">
-                        <label style="margin-left: -15px;" for="ContactNumber">Contact Number:</label>
+                        <label for="ContactNumber">Contact Number:</label>
                         <input type="text" id="ContactNumber" name="ContactNumber" autocomplete="off" />
                         <ul id="contact-suggestions"></ul>
                     </div>
-
                     <div class="form-group">
-                        <label style="margin-left: -15px;" for="customerName">Customer Name:</label>
+                        <label for="customerName">Customer Name:</label>
                         <input type="text" id="customerName" name="customerName" />
                     </div>
-
                 </div>
 
 
@@ -160,14 +210,9 @@
                         <tr>
                             <th>S.No</th>
                             <th>Product Name</th>
-                            @* <th>UOM</th> *@
                             <th>Unit Price</th>
                             <th>Quantity</th>
                             <th>Discount Rate (%)</th>
-                            @* <th>Discount Amount</th> *@
-                            @* <th>Taxable Amount</th> *@
-                            @* <th>CGST (%)</th> *@
-                            @* <th>SGST (%)</th> *@
                             <th>Total</th>
                         </tr>
                     </thead>
@@ -175,45 +220,23 @@
                         <tr>
                             <td>1</td>
                             <td>
-                                <select class="ItemName">
+                                <select class="ItemName" onchange="showActualBill()">
                                     <option selected disabled>Select Product</option>
-                                    @foreach (var product in Model.ItemNames)
+                                    @foreach (var product in Model.Products)
                                     {
                                         <option value="@product.ItemId"
                                                 data-sellingprice="@product.SellingPrice"
-                                                data-unitofmeasure="@product.UnitOFMeasure">
+                                                >
                                             @product.ItemName
                                         </option>
                                     }
                                 </select>
                                 <input type="hidden" class="ItemId" name="ItemLists[0].ItemId" value="" readonly />
                             </td>
-                            @* <td><input type="text" class="UnitOFMeasure" name="ItemLists[0].UnitOFMeasure" readonly></td> *@
-                            <td><input type="number" class="SellingPrice" name="ItemLists[0].SellingPrice" oninput="calculateRow(this)"></td>
+                          <td><input type="number" class="SellingPrice" name="ItemLists[0].SellingPrice" oninput="calculateRow(this)"></td>
                             <td><input type="number" class="Quantity" name="ItemLists[0].Quantity" oninput="calculateRow(this)"></td>
                             <td><input type="number" class="discountRate" name="ItemLists[0].discountRate" oninput="calculateRow(this)"></td>
-                            @* <td><input type="number" class="discountAmount" name="ItemLists[0].discountAmount" readonly></td> *@
-                            @* <td><input type="number" class="taxableAmount" name="ItemLists[0].taxableAmount" readonly></td> *@
-                           @*  <td>
-                                <select class="cgst" name="ItemLists[0].cgst" onchange="calculateRow(this)">
-                                    <option value="0">0%</option>
-                                    <option value="5">5%</option>
-                                    <option value="9">9%</option>
-                                    <option value="12">12%</option>
-                                    <option value="18">18%</option>
-                                    <option value="28">28%</option>
-                                </select>
-                            </td> *@
-                           @*  <td>
-                                <select class="sgst" name="ItemLists[0].sgst" onchange="calculateRow(this)">
-                                    <option value="0">0%</option>
-                                    <option value="5">5%</option>
-                                    <option value="9">9%</option>
-                                    <option value="12">12%</option>
-                                    <option value="18">18%</option>
-                                    <option value="28">28%</option>
-                                </select>
-                            </td> *@
+                       
                             <td><input type="text" class="total" name="TotalAmount" readonly></td>
                         </tr>
                     </tbody>
@@ -222,9 +245,9 @@
 
             <div class="form-section">
                 <h3>Amount Details</h3>
-                <div class="form-row flex-row">
+                <div class="form-row">
                     <div class="form-group">
-                    <label>Total Amount: </label>
+                        <label style="margin-left: -25px;">Total Amount: </label>
                     <input type="number" id="grandTotal" name="TotalAmount" readonly />
                     </div>
                     <div class="form-group">
@@ -236,50 +259,116 @@
                     <div class="form-group">
                     <label>Taxable Amount: </label>
                     <input type="number" id="totalDiscountPercent" readonly />
-                    </div>
-                <div class="form-group">
-                    <label>Gross Total: </label>
-                    <input type="text" name="grossTotal" id="grossTotal" readonly />
                 </div>
+                    <div class="form-group">
+                        <label style="margin-left: -25px;">Gross Total: </label>
+                    <input type="text" name="grossTotal" id="grossTotal" readonly />
+            </div>
                 </div>
             </div>
 
             <div class="button">
-                <button type="submit">Submit</button>
+                <button type="button" id="submitAndPrintBtn" class="btn btn-primary">Print</button>
+
             </div>
         </form>
     </div>
 
     <div id="rightSection">
-        <div style="position:relative;">
-            <button onclick="closeHistoryPanel()"
-                    style="font-weight: 700;position: absolute; right:-28px;top:0; font-size: 22px; border: none; background: none; color: #138486; cursor: pointer;">
-                ×
-            </button>
+      
+        <button id="toggleRightPanel" onclick="togglePanelView()">View History</button>
 
-            <h4 style="color: #138486; text-align:center;margin-top: 10px;">Purchase History</h4>
-            <h6 id="customerHistoryName" style="text-align:center;margin-top:20px"></h6>
 
-            <div id="historyContent" style="overflow-x:auto; margin-top: 20px;">
-                <table id="historyTable">
-                    <thead style="background-color: #138486; color: white;">
-                        <tr>
-                            <th>Sno.</th>
-                            <th>Product Name</th>
-                            <th>Quantity</th>
-                            <th>Amount</th>
-                            <th>Date</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <!-- Data injected here via JS -->
-                    </tbody>
-                </table>
+        <div id="historyContent">
+            <div style="position:relative;">
+                <button onclick="closeHistoryPanel()"
+                        style="font-weight: 700;position: absolute; right:-28px;top:0; font-size: 22px; border: none; background: none; color: #138486; cursor: pointer;">
+                    ×
+                </button>
+
+                <h4 style="color: #138486; text-align:center;margin-top: 10px;">Purchase History</h4>
+                <h6 id="customerHistoryName" style="text-align:center;margin-top:20px"></h6>
+
+                <div id="historyContent" style="overflow-x:auto; margin-top: 20px;">
+                    <table id="historyTableContainer">
+                        <thead style="background-color: #138486; color: white;">
+                            <tr>
+                                <th>Sno.</th>
+                                <th>Product Name</th>
+                                <th>Quantity</th>
+                                <th>Amount</th>
+                                <th>Date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Data injected here via JS -->
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
-    </div>
 
+        <div id="details-container" style="font-family: monospace; width: 270px; margin: 0 auto; background: white; padding: 10px; border: 1px dashed #000; box-shadow: none;">
+            <div class="viewDoc" style="box-shadow: none; background: none;">
+                <h3 style="text-align:center; margin: 5px 0;">@Model?.CenterName</h3>
+                <p style="text-align:center; margin:0;">@Model.Street, @Model.AddressLine1</p>
+                <p style="text-align:center; margin:0;">@Model.AddressLine2, @Model.City</p>
+                <p style="text-align:center; margin:0;">Ph: 7455034126</p>
+                <p style="text-align:center; margin:0;">GST: 05AAZFS9368L1ZZ</p>
+                <p style="text-align:center; margin:0 0 5px;">Postal Code: @Model?.Pincode</p>
+
+                <hr style="border-top: 1px dashed #000;" />
+
+                <p>Name: <span id="billCustomerName">-</span></p>
+                <p>Date: <span id="billDate">@DateTime.Now.ToString("dd/MM/yyyy")</span></p>
+                <p>Time: <span id="billTime">@DateTime.Now.ToString("HH:mm")</span> | Bill No: <span id="billNo">1309</span></p>
+
+                <hr style="border-top: 1px dashed #000;" />
+
+                <!-- Clean Table -->
+                <table style="width:100%; font-size: 12px; table-layout: fixed; border-collapse: collapse; background: none; color: black; border: none; box-shadow: none;">
+                    <thead>
+                        <tr>
+                            <th style="text-align:left; padding: 4px 0; font-weight: normal; background: none; border: none; color: black;">Item</th>
+                            <th style="text-align:center; padding: 4px 0; font-weight: normal; background: none; border: none; color: black;">Qty</th>
+                            <th style="text-align:right; padding: 4px 0; font-weight: normal; background: none; border: none; color: black;">Price</th>
+                            <th style="text-align:right; padding: 4px 0; font-weight: normal; background: none; border: none; color: black;">Total</th>
+                        </tr>
+                    </thead>
+                    <tbody id="billItemsBody">
+                        <!-- Example row, replace with JS loop dynamically -->
+                        @* <tr>
+                            <td style="text-align:left; border: none; background: none; color: black;">Soap</td>
+                            <td style="text-align:center; ; border: none; background: none; color: black;">2</td>
+                            <td style="text-align:right;  border: none; background: none; color: black;">₹25</td>
+                            <td style="text-align:right;  border: none; background: none; color: black;">₹50</td>
+                        </tr> *@
+                        <!-- More rows here via JS -->
+                    </tbody>
+                </table>
+
+                <hr style="border-top: 1px dashed #000;" />
+
+               
+                <p>Sub Total: <span id="billSubTotal">₹0.00</span></p>
+                <p>You Saved: <span id="billTotalDiscount">₹0.00</span></p>
+                <p>CGST: <span id="billCGST">₹0.00</span></p>
+                <p>SGST: <span id="billSGST">₹0.00</span></p>
+                <p><strong>Grand Total: <span id="billGrandTotal">₹0.00</span></strong></p>
+
+                <hr style="border-top: 1px dashed #000;" />
+
+                <p style="text-align:center;">Thanks for Visiting</p>
+                <h4 style="text-align:center;">@Model?.CenterName</h4>
+            </div>
+        </div>
+
+
+    </div>
 </div>
+
+
+
 
 
 
@@ -302,30 +391,26 @@
         document.getElementById('addNewRow').addEventListener('click', addRow);
     });
 
-    function SetPriceFromDropdown(dropdown) {
+        function SetPriceFromDropdown(dropdown) {
         const selectedOption = dropdown.options[dropdown.selectedIndex];
-
         const itemId = selectedOption.value;
         const price = selectedOption.getAttribute("data-sellingprice");
-        const uom = selectedOption.getAttribute("data-unitofmeasure");
 
         const row = dropdown.closest('tr');
         if (row) {
             const priceInput = row.querySelector('.SellingPrice');
-            const uomInput = row.querySelector('.UnitOFMeasure');
             const itemIdInput = row.querySelector('.ItemId');
 
-            if (priceInput && uomInput && itemIdInput) {
+            if (priceInput && itemIdInput) {
                 priceInput.value = price;
-                uomInput.value = uom;
                 itemIdInput.value = itemId;
-
                 calculateRow(priceInput);
             }
         }
     }
 
-    function addRow() {
+
+        function addRow() {
         const tableBody = document.getElementById('tableBody');
         const rowCount = tableBody.rows.length;
         const newRow = tableBody.rows[0].cloneNode(true);
@@ -343,49 +428,65 @@
         tableBody.appendChild(newRow);
     }
 
-    function calculateRow(input) {
+
+              function calculateRow(input) {
         const row = input.closest('tr');
 
         const qty = parseFloat(row.querySelector('.Quantity').value) || 0;
         const price = parseFloat(row.querySelector('.SellingPrice').value) || 0;
         const discountRate = parseFloat(row.querySelector('.discountRate').value) || 0;
-        const cgst = parseFloat(row.querySelector('.cgst').value) || 0;
-        const sgst = parseFloat(row.querySelector('.sgst').value) || 0;
 
         const gross = qty * price;
         const discountAmount = gross * (discountRate / 100);
         const taxable = gross - discountAmount;
-        const total = taxable + (taxable * (cgst + sgst) / 100);
+        const total = taxable;
 
-        row.querySelector('.discountAmount').value = discountAmount.toFixed(2);
-        row.querySelector('.taxableAmount').value = taxable.toFixed(2);
         row.querySelector('.total').value = total.toFixed(2);
 
         calculateSummary();
+
+        if (qty > 0 && price > 0) {
+            if (isHistoryVisible) {
+                showActualBill(); 
+            } else {
+                updateActualBill(); 
+            }
+        }
     }
 
-    function calculateSummary() {
+        function calculateSummary() {
         const rows = document.querySelectorAll('#tableBody tr');
         let totalDiscountAmount = 0, totalGross = 0, taxableAmount = 0, grandTotal = 0;
 
         rows.forEach(row => {
             const qty = parseFloat(row.querySelector('.Quantity').value) || 0;
             const price = parseFloat(row.querySelector('.SellingPrice').value) || 0;
-            const discount = parseFloat(row.querySelector('.discountAmount').value) || 0;
-            const total = parseFloat(row.querySelector('.total').value) || 0;
+            const discountRate = parseFloat(row.querySelector('.discountRate').value) || 0;
+            const gross = qty * price;
+            const discountAmount = gross * (discountRate / 100);
+            const taxable = gross - discountAmount;
 
-            totalGross += qty * price;
-            totalDiscountAmount += discount;
-            grandTotal += total;
+            totalGross += gross;
+            totalDiscountAmount += discountAmount;
+            taxableAmount += taxable;
         });
 
-        taxableAmount = totalGross - totalDiscountAmount;
+        grandTotal = taxableAmount;
 
         document.getElementById('grandTotal').value = totalGross.toFixed(2);
         document.getElementById('totalDiscountAmount').value = totalDiscountAmount.toFixed(2);
         document.getElementById('totalDiscountPercent').value = taxableAmount.toFixed(2);
         document.getElementById('grossTotal').value = grandTotal.toFixed(2);
+
+        $('#billSubTotal').text(`₹${taxableAmount.toFixed(2)}`);
+        $('#billGrandTotal').text(`₹${grandTotal.toFixed(2)}`);
+        $('#billCGST').text(''); 
+        $('#billSGST').text('');  
+        $('#billTotalDiscount').text(`₹${totalDiscountAmount.toFixed(2)}`);
     }
+
+
+
 </script>
 
 
@@ -400,6 +501,7 @@
 
 
 <script>
+      
     $(document).ready(function () {
         let typingTimer;
         const $input = $('#ContactNumber');
@@ -421,15 +523,13 @@
                                 data.forEach(item => {
                                     $suggestions.append(`<li data-id="${item.value}" data-name="${item.name}">${item.label}</li>`);
                                 });
-                                $suggestions.show(); 
-
-                                // const offset = $input.offset();
-                                // $suggestions.css({ top: offset.top + $input.outerHeight(), left: offset.left, width: $input.outerWidth() }).show();
+                                $suggestions.show();
                             } else {
                                 $suggestions.hide();
                             }
                         },
                         error: function () {
+                            console.error("Failed to fetch customer list");
                             $suggestions.hide();
                         }
                     });
@@ -439,6 +539,14 @@
             }
         });
 
+        
+        $(document).click(function (e) {
+            if (!$(e.target).closest('#ContactNumber, #contact-suggestions').length) {
+                $suggestions.hide();
+            }
+        });
+
+        
         $(document).on('click', '#contact-suggestions li', function () {
             const contact = $(this).text();
             const name = $(this).data('name');
@@ -446,53 +554,270 @@
 
             $('#ContactNumber').val(contact);
             $('#customerName').val(name);
-            $('#contact-suggestions').hide();
+            $suggestions.hide();
 
-            // fetch purchase history
-            fetchAndShowHistory(id);
-        });
+            const hasBillData = $('#tableBody tr .Quantity').toArray().some(el => parseFloat(el.value) > 0);
 
-        $(document).click(function (e) {
-            if (!$(e.target).closest('#ContactNumber, #contact-suggestions').length) {
-                $suggestions.hide();
+            if (hasBillData) {
+                showActualBill();
+            } else {
+                fetchAndShowHistory(id);
             }
         });
     });
 
-       function fetchAndShowHistory(customerId) {
+
+
+
+        function fetchAndShowHistory(customerId) {
         $.ajax({
-           url: '/RetailSales/GetCustomerBillHistory',
+            url: '/RetailSales/GetCustomerBillHistory',
             type: 'GET',
             data: { customerId },
             success: function (data) {
-                let htmlRows = '';
-                data.forEach((item, index) => {
-                    htmlRows += `<tr>
-                        <td>${index + 1}</td>
-                        <td>${item.productName}</td>
-                        <td>${item.quantity}</td>
-                        <td>${item.grossTotal}</td>
-                        <td>${item.createdAt}</td>
-                    </tr>`;
-                });
+                if (!data) {
+                    alert("No data returned.");
+                    return;
+                }
 
-                $('#historyTable tbody').html(htmlRows);
-                  $('#rightSection').show().css('width', '50%');
-    $('#leftSection').css('width', '50%');
+                console.log("Response data:", data); 
 
+                $("#rightSection h6").text(data.customerName);
 
+                var html = '<table class="table table-bordered table-striped">' +
+                    '<thead style="background-color: #138486; color: white;">' +
+                    '<tr><th>Sno</th><th>Product Name</th><th>Quantity</th><th>Amount</th><th>Date</th></tr>' +
+                    '</thead><tbody>';
 
-                
+                if (data.items && data.items.length > 0) {
+                    for (var i = 0; i < data.items.length; i++) {
+                        var item = data.items[i];
+                        html += '<tr>' +
+                            '<td>' + (i + 1) + '</td>' +
+                            '<td>' + item.productName + '</td>' +
+                            '<td>' + item.quantity + '</td>' +
+                            '<td>' + parseFloat(item.grossTotal || 0).toFixed(2) + '</td>' +
+                            '<td>' + new Date(item.createdAt).toLocaleDateString() + '</td>' +
+                            '</tr>';
+                    }
+                } else {
+                    html += '<tr><td colspan="5" class="text-center">No history found.</td></tr>';
+                }
+
+                html += '</tbody></table>';
+
+                $('#historyTableContainer').html(html); 
+
+                $('#rightSection').show().css('width', '50%');
+                $('#leftSection').css('width', '50%');
                 $('#customerHistoryName').text($('#customerName').val());
+            },
+            error: function () {
+                console.error("AJAX error while fetching customer history");
+                $('#historyTableContainer').html('<tr><td colspan="5">Error loading data.</td></tr>');
             }
         });
     }
 
-         function closeHistoryPanel() {
+
+    function closeHistoryPanel() {
         $('#rightSection').hide().css('width', '0');
         $('#leftSection').css('width', '100%');
     }
 
+</script>
+
+<script>
+        function showActualBill() {
+                  
+        isHistoryVisible = false;
+
+        $('#rightPanelTitle').text('Live Bill');
+        $('#historyContent').hide();
+        $('#details-container').show();
+        $('#rightSection').show().css('width', '50%');
+        $('#leftSection').css('width', '50%');
+        $('#toggleRightPanel').text('View History');
+
+        updateActualBill();
+    }
 
 
+           
+
+
+
+        function updateActualBill() {
+        const rows = document.querySelectorAll('#tableBody tr');
+        let html = '';
+        let totalQty = 0;
+        let subTotal = 0;
+
+        rows.forEach(row => {
+            const product = row.querySelector('.ItemName option:checked')?.textContent || '-';
+            const qty = parseFloat(row.querySelector('.Quantity').value) || 0;
+            const price = parseFloat(row.querySelector('.SellingPrice').value) || 0;
+            const discountRate = parseFloat(row.querySelector('.discountRate').value) || 0;
+
+            if (qty > 0 && price > 0 && product !== 'Select Product') {
+                const gross = qty * price;
+                const discount = gross * (discountRate / 100);
+                const netTotal = gross - discount;
+
+                html += `<tr>
+                            <td>${product}</td>
+                            <td class="center">${qty}</td>
+                            <td class="right">${price.toFixed(2)}</td>
+                            <td class="right">${discountRate.toFixed(2)}%</td>
+                            <td class="right">${netTotal.toFixed(2)}</td>
+                        </tr>`;
+
+                totalQty += qty;
+                subTotal += netTotal;
+            }
+        });
+
+        $('#billItemsBody').html(html);
+        $('#billCustomerName').text($('#customerName').val());
+        $('#billTotalQty').text(totalQty);
+        $('#billSubTotal').text(`₹${subTotal.toFixed(2)}`);
+        $('#billGrandTotal').text(`₹${subTotal.toFixed(2)}`);
+    }
+
+
+</script>
+
+<script>
+        let isHistoryVisible = false; 
+    let historyLoaded = false;    
+
+    function togglePanelView() {
+        if (isHistoryVisible) {
+            
+            showActualBill();
+            $('#toggleRightPanel').text('View History');
+        } else {
+           
+            $('#details-container').hide();
+            $('#historyContent').show();
+            $('#toggleRightPanel').text('View Bill');
+            $('#rightPanelTitle').text('Purchase History');
+            isHistoryVisible = true;
+        }
+    }
+
+  
+
+        function fetchAndShowHistory(customerId) {
+        $.ajax({
+            url: '/RetailSales/GetCustomerBillHistory',
+            type: 'GET',
+            data: { customerId },
+            success: function (data) {
+                if (!data) {
+                    alert("No data returned.");
+                    return;
+                }
+
+                console.log("Response data:", data);
+
+                $("#customerHistoryName").text($('#customerName').val());
+
+                let html = '<table class="table table-bordered table-striped">' +
+                    '<thead style="background-color: #138486; color: white;">' +
+                    '<tr><th>Sno</th><th>Product Name</th><th>Quantity</th><th>Amount</th><th>Date</th></tr>' +
+                    '</thead><tbody>';
+
+                if (data.items && data.items.length > 0) {
+                    for (let i = 0; i < data.items.length; i++) {
+                        let item = data.items[i];
+                        html += `<tr>
+                                    <td>${i + 1}</td>
+                                    <td>${item.productName}</td>
+                                    <td>${item.quantity}</td>
+                                    <td>${parseFloat(item.grossTotal || 0).toFixed(2)}</td>
+                                    <td>${new Date(item.createdAt).toLocaleDateString()}</td>
+                                 </tr>`;
+                    }
+                } else {
+                    html += '<tr><td colspan="5" class="text-center">No history found.</td></tr>';
+                }
+
+                html += '</tbody></table>';
+                $('#historyTableContainer').html(html);
+
+               
+                $('#rightSection').show().css('width', '50%');
+                $('#leftSection').css('width', '50%');
+                $('#details-container').hide();
+                $('#historyContent').show();
+                $('#rightPanelTitle').text('Purchase History');
+                $('#toggleRightPanel').text('View Bill');
+                isHistoryVisible = true;
+                historyLoaded = true;
+            },
+            error: function () {
+                console.error("AJAX error while fetching customer history");
+                $('#historyTableContainer').html('<tr><td colspan="5">Error loading data.</td></tr>');
+            }
+        });
+    }
+</script>
+
+<script>
+    $('#submitAndPrintBtn').on('click', function () {
+        const quotationModel = collectFormData(); // We'll define this function
+
+        $.ajax({
+            url: '/RetailSales/SetCustomerBill',
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify(quotationModel),
+            success: function (response) {
+                if (response.success) {
+                    // Show the bill preview
+                    showActualBill();
+
+                    // Wait a bit to make sure the DOM updates, then print
+                    setTimeout(function () {
+                        window.print();
+
+                        // Optional: reload after printing
+                        setTimeout(function () {
+                            location.reload();
+                        }, 1000);
+                    }, 500);
+                } else {
+                    alert("Failed to save bill.");
+                }
+            },
+            error: function () {
+                alert("Something went wrong while saving the bill.");
+            }
+        });
+    });
+
+    function collectFormData() {
+        const itemRows = $('#tableBody tr');
+        const itemLists = [];
+
+        itemRows.each(function (index, row) {
+            const $row = $(row);
+            itemLists.push({
+                ItemId: $row.find('.ItemId').val(),
+                SellingPrice: parseFloat($row.find('.SellingPrice').val()) || 0,
+                Quantity: parseFloat($row.find('.Quantity').val()) || 0,
+                discountRate: parseFloat($row.find('.discountRate').val()) || 0,
+            });
+        });
+
+        return {
+            ContactNumber: $('#ContactNumber').val(),
+            customerName: $('#customerName').val(),
+            TotalAmount: parseFloat($('#grandTotal').val()) || 0,
+            TotalDiscountAmount: parseFloat($('#totalDiscountAmount').val()) || 0,
+            grossTotal: parseFloat($('#grossTotal').val()) || 0,
+            ItemLists: itemLists
+        };
+    }
 </script>

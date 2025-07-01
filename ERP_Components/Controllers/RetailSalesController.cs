@@ -29,17 +29,32 @@ namespace ERP_Components.Controllers
 			return View();
 		}
 
+
+
 		
-        public IActionResult CustomerBill()
+		//public IActionResult CustomerBill()
+		//{
+		//	List<QuotationModel> aq = retailsalesServices.AddBillItemName();
+               
+  //          var model = new QuotationViewModel
+		//	{
+		//		ItemNames = aq,
+               
+
+		//	};
+		//	return View(model);
+
+		//}
+
+
+
+		public IActionResult CustomerBill()
 		{
-			List<QuotationModel> aq = retailsalesServices.AddBillItemName();
-			var model = new QuotationViewModel
-			{
-				ItemNames = aq,
-
-
-			};
-			return View(model);
+              RetailItemModel Retail  = retailsalesServices.CustomerBillAddressData();
+			Retail.Products = retailsalesServices.AddBillItemName();
+           
+			
+			return View(Retail);
 
 		}
 
@@ -67,22 +82,34 @@ namespace ERP_Components.Controllers
         public JsonResult GetCustomerBillHistory(Guid customerId)
         {
             MonthlyRetailSales retail = retailsalesServices.GetCustomerName(customerId);
-            retail.Items = retailsalesServices.GetCustomerRetailHistory(customerId); 
-            return Json(retail);
+            retail.Items = retailsalesServices.GetCustomerRetailHistory(customerId);
+            return Json(retail); 
+
         }
 
 
-        public IActionResult SetCustomerBill(QuotationModel quotation)
-		{
-		quotation.RetailCustomerId  =	retailsalesServices.AddRetailCustomer(quotation);
-        HttpContext.Session.SetString("RetailCustomerId", quotation.RetailCustomerId.ToString());
-            retailsalesServices.AddCustomerBill(quotation,quotation.ItemLists);
-			return RedirectToAction("ViewCustomerBillDocument");
-		}
+        //      public IActionResult SetCustomerBill(QuotationModel quotation)
+        //{
+        //quotation.RetailCustomerId  =	retailsalesServices.AddRetailCustomer(quotation);
+        //      HttpContext.Session.SetString("RetailCustomerId", quotation.RetailCustomerId.ToString());
+        //          retailsalesServices.AddCustomerBill(quotation,quotation.ItemLists);
+        //	return RedirectToAction("ViewCustomerBillDocument");
+        //}
 
 
-		// 
-      
+        [HttpPost]
+        public JsonResult SetCustomerBill([FromBody] QuotationModel quotation)
+        {
+            quotation.RetailCustomerId = retailsalesServices.AddRetailCustomer(quotation);
+            HttpContext.Session.SetString("RetailCustomerId", quotation.RetailCustomerId.ToString());
+
+            retailsalesServices.AddCustomerBill(quotation, quotation.ItemLists);
+
+            return Json(new { success = true });
+
+        }
+
+
 
 
 
@@ -102,7 +129,7 @@ namespace ERP_Components.Controllers
         //}
 
 
-		public IActionResult ViewCustomerBills()
+        public IActionResult ViewCustomerBills()
 		{
 			var x = retailsalesServices.ViewCustomerBill();
 			return View(x);

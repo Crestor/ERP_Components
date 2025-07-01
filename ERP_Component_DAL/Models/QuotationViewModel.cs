@@ -22,6 +22,9 @@
 
         public List<Customer>? Customers { get; set; }
 
+        public RetailItemModel Retail { get; set; }
+        public List<RetailItemModel> RetailItem { get; set; }
+
         public class Customer
         {
             public Guid CustomerID { get; set; }
