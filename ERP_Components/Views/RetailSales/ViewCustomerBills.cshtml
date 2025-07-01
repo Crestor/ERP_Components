@@ -119,7 +119,7 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
     $(document).on("click", ".view-history", function () {
-        var CustomerID = $(this).data("id");
+        var customerId = $(this).data("id");
 
 
         $("#leftSection").css("flex", "0 0 50%");
@@ -128,7 +128,7 @@
         $.ajax({
             url: '/RetailSales/GetCustomerBillHistory',
             type: 'GET',
-            data: { CustomerID: CustomerID },
+            data: { customerId: customerId },
                success: function (data) {
         if (!data) {
             alert("No data returned.");

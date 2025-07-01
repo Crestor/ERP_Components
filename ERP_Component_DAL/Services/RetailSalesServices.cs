@@ -268,7 +268,7 @@ namespace ERP_Component_DAL.Services
                 connection = new SqlConnection(ConnectionString);
                 SqlCommand cmd = new SqlCommand();
                 cmd.CommandType = System.Data.CommandType.Text;
-                cmd.CommandText = $"Select H.RetailBillID, C.CustomerName,C.ContactNumber,H.GrossTotal,H.NetTotal from  RetailBillHeader H join RetailCustomers C on H.RetailCustomerID=C.RetailCustomerID";
+                cmd.CommandText = $"Select H.RetailBillID,C.RetailCustomerID, C.CustomerName,C.ContactNumber,H.GrossTotal,H.NetTotal from  RetailBillHeader H join RetailCustomers C on H.RetailCustomerID=C.RetailCustomerID";
 
                 cmd.Connection = connection;
 
@@ -286,6 +286,7 @@ namespace ERP_Component_DAL.Services
                         ContactNO = reader["ContactNumber"] != DBNull.Value ? (string)reader["ContactNumber"] : string.Empty,
 
                         RetailBillID = reader["RetailBillID"] != DBNull.Value ? (Guid)reader["RetailBillID"] : Guid.Empty,
+                        CustomerID = reader["RetailCustomerID"] != DBNull.Value ? (Guid)reader["RetailCustomerID"] : Guid.Empty,
                         //UnitOFMeasure = reader["UnitOFMeasure"] != DBNull.Value ? (string)reader["UnitOFMeasure"] : string.Empty,
                     });
                 }
