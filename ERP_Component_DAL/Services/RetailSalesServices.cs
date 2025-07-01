@@ -34,7 +34,7 @@ namespace ERP_Component_DAL.Services
                 connection = new SqlConnection(ConnectionString);
                 SqlCommand cmd = new SqlCommand();
                 cmd.CommandType = System.Data.CommandType.Text;
-                cmd.CommandText = $"select I.ItemName,I.ItemId, P.MRP from Items I Join ProductPrice P on I.ItemId=P.ProductID Where I.ItemType = 1  ";
+                cmd.CommandText = $"select I.ItemName,I.ItemId,I.GSTRate/2 AS Gst, P.MRP, P.DiscountRate from Items I Join ProductPrice P on I.ItemId=P.ProductID Where I.ItemType = 1  ";
 
                 cmd.Connection = connection;
 
@@ -49,7 +49,9 @@ namespace ERP_Component_DAL.Services
                         ItemName = reader["ItemName"] != DBNull.Value ? (string)reader["ItemName"] : string.Empty,
                         SellingPrice = reader["MRP"] != DBNull.Value ? (decimal)reader["MRP"] : 0m,
                         ItemId = reader["ItemId"] != DBNull.Value ? (Guid)reader["ItemId"] : Guid.Empty,
-                     
+                        discountRate   =  reader["DiscountRate"] != DBNull.Value ? Convert.ToInt32(reader["DiscountRate"]) : 0,
+                        CGST  =  reader["GSt"]!= DBNull.Value ? Convert.ToInt32(reader["Gst"]):0,
+
                     });
                 }
 
