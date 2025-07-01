@@ -1180,17 +1180,17 @@ namespace ERP_Component_DAL.Services
                 Guid ItemId = (Guid)cmd.ExecuteScalar();
                 connection.Close();
 
-                SqlCommand cmd1 = new SqlCommand();
-                cmd1.CommandType = System.Data.CommandType.Text;
-                cmd1.CommandText = $"Insert into LotBatch ([ItemId],[ArrivalDate],[Quantity],[ExpiryDate],[CostPrice],[MRP],[SellingPrice],[Type]) values(@ItemId,'{DateTime.Now.ToShortDateString()}','{item.quantity}','{item.expiry}','{item.costPrice}','{item.sellingPrice}','{item.mrp}','{item.type}')";
+                //SqlCommand cmd1 = new SqlCommand();
+                //cmd1.CommandType = System.Data.CommandType.Text;
+                ////cmd1.CommandText = $"Insert into LotBatch ([ItemId],[ArrivalDate],[Quantity],[ExpiryDate],[CostPrice],[MRP],[SellingPrice],[Type]) values(@ItemId,'{DateTime.Now.ToShortDateString()}','{item.quantity}','{item.expiry}','{item.costPrice}','{item.sellingPrice}','{item.mrp}','{item.type}')";
 
-                cmd1.Connection = connection;
-                cmd1.Parameters.AddWithValue("@ItemId", ItemId);
-                //Guid lotId = (Guid)cmd1.ExecuteScalar();
+                //cmd1.Connection = connection;
+                //cmd1.Parameters.AddWithValue("@ItemId", ItemId);
+                ////Guid lotId = (Guid)cmd1.ExecuteScalar();
 
-                connection.Open();
-                cmd1.ExecuteScalar();
-                connection.Close();
+                //connection.Open();
+                //cmd1.ExecuteScalar();
+                //connection.Close();
 
 
 
