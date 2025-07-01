@@ -366,18 +366,8 @@ namespace ERP_Components.Controllers
 
         public IActionResult AddStock()
         {
-            var product = new List<Product>
-        {
-        new Product
-        {
-
-            items = inventoryServices.GetProductNamesFromItems() ?? new List<Items>(),
-            warehouse = inventoryServices.getWarehouseName() ?? new List<Warehouse>()
-
-        }
-    };
-            return View(product);
-          
+            List<StockTransaction> stockTransactions = inventoryServices.GetStockTransactions(TransactionType.IN_STOCK);
+            return View(stockTransactions);          
         }
 
         public IActionResult ViewInventoryData()

@@ -17,11 +17,14 @@ namespace ERP_Component_DAL.Services
 
         private readonly IConfiguration configuration;
         SqlConnection connection;
+        private string _connectionString;
 
 
         public InventoryServices(IConfiguration config)
         {
             this.configuration = config;
+            _connectionString = config.GetConnectionString("DefaultConnectionString");
+
         }
 
 
@@ -2928,7 +2931,50 @@ namespace ERP_Component_DAL.Services
             }
         }
 
+        public List<StockTransaction> GetStockTransactions(TransactionType transactionType)
+        {
+            List<StockTransaction> stockTransactions = new List<StockTransaction>();
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(_connectionString))
+                {
+                    connection.Open();
+                    string query = @"SELECT st.TransactionID, i.ItemName, st.Quantity , ddc.CenterName AS DestinationDCName, st.Reason, st.TransactionDate FROM StockTransactions st 
+                                    JOIN Items i ON st.ItemId = i.ItemId
+                                    JOIN DistributionCenter ddc ON st.DestinationDC = ddc.CenterId
+                                    WHERE st.TransactionType = 1";
 
+                    using (SqlCommand cmd = new SqlCommand(query, connection))
+                    {
+                        cmd.Parameters.AddWithValue("@TransactionType", (byte)transactionType);
+
+                        using (SqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                StockTransaction transaction = new StockTransaction
+                                {
+                                    TransactionID = reader.GetGuid(reader.GetOrdinal("TransactionID")),
+                                    ItemName = reader.GetString(reader.GetOrdinal("ItemName")),
+                                    Quantity = reader.GetInt32(reader.GetOrdinal("Quantity")),
+                                    TransactionDate = reader.GetDateTime(reader.GetOrdinal("TransactionDate")),
+                                    DestinationDC = reader.IsDBNull(reader.GetOrdinal("DestinationDCName")) ? string.Empty : reader.GetString(reader.GetOrdinal("DestinationDCName")),
+                                    Reason = reader.IsDBNull(reader.GetOrdinal("Reason")) ? null : reader.GetString(reader.GetOrdinal("Reason")),
+                                    Type = transactionType
+                                };
+                                stockTransactions.Add(transaction);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+
+            return stockTransactions;
+        }
     }
 
 }
