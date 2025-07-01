@@ -157,25 +157,7 @@
         </div>
 
 
-        @* <div class="VDQ" >
-            <h2>Shipped To Details</h2>
-
-            <strong>Company Name:</strong> @Model.ListView[1].CompanyName<br>
-            <strong>State:</strong> @Model.ListView[1].State<br>
-            <strong>Pin Code:</strong> @Model.ListView[1].Pincode<br>
-            <strong>District:</strong> @Model.ListView[1].District<br>
-            <strong>Contact Number:</strong>@Model.ListView[1].ContactNumber<br>
-            <strong>GSTIN:</strong> @Model.ListView[1].GSTIN<br>
-        </div>
-
-        <div class="transport">
-            <h2>Transport Details</h2>
-            <strong>Transporter Name:</strong> @Model.ListView[2].TransporterName<br>
-            <strong>Vehicle Type:</strong> @Model.ListView[2].VehicleType<br>
-            <strong>Distance (KM):</strong> @Model.ListView[2].Distance<br>
-            <strong>Vehicle Number:</strong> @Model.ListView[2].VehicleNumber<br>
-        
-        </div> *@
+   
         <div class="shipping-transport-wrapper">
             <div class="VDQ">
                 <h2>Shipped To Details</h2>
@@ -206,9 +188,13 @@
     </div>
 </div>
 
-<div class="button" style="margin-left: 38%;margin-bottom: 10px;">
-    <button class="button" id="download-button">Download PDF</button>
-    <button class="button" id="print-button">Print</button>
+<div style="PADDING-LEFT: 46%;">
+    
+    <button id="download-button" style="background-color: #138496;color: white;">
+        Download PDF
+    </button>
+
+    <button id="print-button" style="background-color: #138496;color: white;">Print</button>
 </div>
 
 <script>

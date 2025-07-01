@@ -310,6 +310,26 @@
         if (usedOrders.has(purchaseOrderID) || remainingPaymentInput <= 0) {
             return;
         }
+          // Define the alert function
+        function FullPaid() {
+            Swal.fire({
+                title: "Amount submitted successfully",
+                text: "",
+                icon: "success",
+                confirmButtonColor: "#138496",
+                draggable: true
+            });
+        }
+        function  PartialPaid(){
+             Swal.fire({
+                title: "Partial Amount submitted successfully",
+                text: "",
+                icon: "success",
+                confirmButtonColor: "#138496",
+                draggable: true
+            });
+        }
+
 
            const finalPaidAmount = Math.min(remaining, remainingPaymentInput);
     remainingPaymentInput -= finalPaidAmount;
@@ -322,7 +342,11 @@
     button.text(finalPaidAmount === remaining
         ? "Full Paid"
         :"Partial Paid");
-
+        if (finalPaidAmount === remaining) {
+            FullPaid();
+        }else{
+            PartialPaid();
+        }
 
     // Update the corresponding Due Amount cell dynamically
     const row = button.closest('tr');
@@ -353,6 +377,7 @@
         });
     });
 </script>
+
 
 
 
@@ -388,9 +413,11 @@
                     let buttonText = "Pay";
                     if (isPaid) {
                         buttonText = "Full Paid";
+                        
+
                     } else if (amountPaid > 0) {
                            buttonText = "Partial Paid";
-
+                          
                     }
 
                     const tr = $(`<tr>
@@ -451,6 +478,24 @@
         if (usedAdvanceOrders.has(purchaseOrderID) || remainingAdvanceInput <= 0 || remainingAdvance <= 0) {
             return;
         }
+          function FullPaid() {
+            Swal.fire({
+                title: "Amount submitted successfully",
+                text: "",
+                icon: "success",
+                confirmButtonColor: "#138496",
+                draggable: true
+            });
+        }
+        function  PartialPaid(){
+             Swal.fire({
+                title: "Partial Amount submitted successfully",
+                text: "",
+                icon: "success",
+                confirmButtonColor: "#138496",
+                draggable: true
+            });
+        }
 
         const paidNow = Math.min(remainingAdvance, remainingAdvanceInput);
         remainingAdvanceInput -= paidNow;
@@ -468,6 +513,13 @@
         button.text(paidNow === remainingAdvance
             ? "Full Paid"
             :"Partial Paid");
+
+             if (paidNow === remainingAdvance) {
+            FullPaid();
+        }else{
+            PartialPaid();
+        }
+
 
         $.ajax({
             url: '/Account/UpdateAdvancePayment',
