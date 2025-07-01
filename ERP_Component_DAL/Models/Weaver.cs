@@ -48,7 +48,7 @@ namespace ERP_Component_DAL.Models
 
         public string? ProductName { get; set; }
 
-        public string? ProductId { get; set; }
+        public Guid ProductId { get; set; }
 
         public string? Description { get; set; }
 

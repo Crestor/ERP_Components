@@ -322,7 +322,7 @@ namespace ERP_Component_DAL.Services
             {
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
-                    string query = $"SELECT wo.WorkOrderSeries,wo.Quantity,wo.WorkOrderStatus,i.ItemName,i.Specification,iv.InStock, " +
+                    string query = $"SELECT wo.WorkOrderSeries,wo.Quantity,wo.WorkOrderStatus,i.ItemName, i.ItemID,i.Specification,iv.InStock, " +
                         $"(SELECT SUM(Quantity) FROM AllocatedWork WHERE WorkOrderID = '{WorkOrederId}') AS AllocatedQuantity, " +
                         $"(SELECT SUM(Quantity) FROM DyeingOrder WHERE WorkOrderID = '{WorkOrederId}') AS DyeingQuantity from WorkOrder wo " +
                         $"join Items i on wo.ProductID = i.ItemId join Inventory iv on iv.ItemId = i.ItemId " +
@@ -350,7 +350,7 @@ namespace ERP_Component_DAL.Services
                                     Specification = reader["Specification"] != DBNull.Value ? reader["Specification"].ToString() : string.Empty,
                                     AllocatedQuantity = reader["AllocatedQuantity"] != DBNull.Value ? Convert.ToInt32(reader["AllocatedQuantity"]) : 0,
                                     dyeingQuantity = reader["DyeingQuantity"] != DBNull.Value ? Convert.ToInt32(reader["DyeingQuantity"]): 0,
-
+                                    ProductId = reader.GetGuid(reader.GetOrdinal("ItemID"))
                                 };
                             }
                         }
@@ -865,7 +865,8 @@ namespace ERP_Component_DAL.Services
                     connection.Open();
 
                     string query = @"INSERT INTO AllocatedWork (WorkOrderID, AllocationCode, WorkerID, Quantity, RatePerPeices, AllocatedYarnID)
-                                     VALUES (@WorkOrderID, @AllocationCode, @WorkerID, @Quantity, @RatePerPieces, @AllocatedYarnID)";
+                                     VALUES (@WorkOrderID, @AllocationCode, @WorkerID, @Quantity, @RatePerPieces, @AllocatedYarnID);
+                                      UPDATE Inventory SET InStock = InStock - @Quantity WHERE ItemID = @AllocatedYarnID AND CenterId = 'ee874827-af6d-4f9f-8bde-066ad03bfb86'";
 
                     using (SqlCommand cmd = new SqlCommand(query, connection))
                     {
@@ -1131,7 +1132,7 @@ namespace ERP_Component_DAL.Services
             }
         }
 
-        public List<YarnInfo> GetYarnDetails()
+        public List<YarnInfo> GetYarnDetails(Guid ProductID)
         {
             List<YarnInfo> yarns = new List<YarnInfo>();
 
@@ -1140,11 +1141,9 @@ namespace ERP_Component_DAL.Services
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
                     connection.Open();
-                    string query = "SELECT it.ItemName AS YarnName, it.ItemId AS YarnID, it.Specification FROM Inventory i " +
-                                   "JOIN DistributionCenter dc ON dc.CenterId = i.CenterId " +
-                                   "JOIN Items it ON it.ItemId = i.ItemId " +
-                                   "JOIN CenterTypes ct ON dc.CenterType = ct.CenterType " +
-                                   "WHERE ct.TypeName = 'WEAVER' AND it.ItemType = 2";
+                    string query = @"SELECT it.ItemName AS YarnName, it.ItemId AS YarnID, it.Specification FROM Weaving_BOM wb " +
+                                    "JOIN Items it ON wb.MaterialID = it.ItemId " +
+                                    $"WHERE wb.ProductID = '{ProductID}' ";
 
                     using (SqlCommand cmd = new SqlCommand(query, connection))
                     {
