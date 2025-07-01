@@ -96,7 +96,8 @@ namespace ERP_Components.Controllers
         public IActionResult AllocateToWarehouse(Guid WorkOrderId)
         {
             weaverServices.AllocateToWarehouse(WorkOrderId);
-            return RedirectToAction("WorkOrder");
+
+            return RedirectToAction("ViewCompletedWorkOrder");
         }
 
         public IActionResult StartWeaving(Guid WorkOrderId)
