@@ -13,10 +13,10 @@
 <div class="container">
     <form asp-action="RegisterCustomer" asp-controller="Customer" enctype="multipart/form-data">
 
-        <h2><span class="section-toggle" onclick="showSection(this, 'BasicDetails')">Basic Details</span></h2>
-        <h2><span class="section-toggle" onclick="showSection(this, 'Billingdetails')">Billing Details</span></h2>
-        <h2><span class="section-toggle" onclick="showSection(this, 'shipingdetails')">Shipping Details</span></h2>
-       <h2> <span class="section-toggle" onclick="showSection(this, 'openingbalance')">Opening Balance</span></h2>
+        <h2 class="toggleh2"><span class="section-toggle" onclick="showSection(this, 'BasicDetails')">Basic Details  <i class="fas fa-angle-down"></i></span></h2>
+        <h2 class="toggleh2"><span class="section-toggle" onclick="showSection(this, 'Billingdetails')">Billing Details  <i class="fas fa-angle-down"></i></span></h2>
+        <h2 class="toggleh2"><span class="section-toggle" onclick="showSection(this, 'shipingdetails')">Shipping Details  <i class="fas fa-angle-down"></i></span></h2>
+        <h2 class="toggleh2"> <span class="section-toggle" onclick="showSection(this, 'openingbalance')">Opening Balance  <i class="fas fa-angle-down"></i></span></h2>
 
         <div id="BasicDetails" class="form-section">
             <h3>Basic Details</h3>
@@ -404,9 +404,18 @@
         });
 
         // Show all headers again
-        document.querySelectorAll('.section-toggle').forEach(span => {
-            span.style.display = 'inline';
-        });
+         document.querySelectorAll('.section-toggle').forEach(span => {
+        span.style.display = 'flex';
+        span.style.borderRadius = '7px';
+        span.style.border = '1.5px solid #138496';
+        span.style.padding = '3px 10px';
+        span.style.justifyContent = 'space-between';
+        span.style.boxShadow = '2px 2px 2px #138496';
+        span.style.width = '94%';
+        span.style.alignItems = 'center';
+        span.style.marginInline = '35px';
+    });
+
 
         // Hide the clicked header
         clickedText.style.display = 'none';

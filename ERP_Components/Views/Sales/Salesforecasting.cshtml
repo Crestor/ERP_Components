@@ -34,41 +34,41 @@
     <button class="button" type="submit" id="addItem" style="float: right;margin-right: 50px;margin-bottom: 18px; background-color:#138496;color: white;">Add</button>
 
 </div>
+<div id="showtable" style="display:none">
+        <div class="table">
+            <table>
+                <thead>
+                    <tr>
+                        <th>S.No</th>
+                        <th>Item Name</th>
+                        @* <th>Sales Series</th> *@
+                        @* <th>Description</th> *@
+                        <th>Quantity</th>
 
-<div class="table">
-    <table>
-        <thead>
-            <tr>
-                <th>S.No</th>
-                <th>Item Name</th>
-                @* <th>Sales Series</th> *@
-                @* <th>Description</th> *@
-                <th>Quantity</th>
+                    </tr>
+                </thead>
+                <tbody id="TableBody">
+                </tbody>
+            </table>
+        </div>
 
-            </tr>
-        </thead>
-        <tbody id="TableBody">
-        </tbody>
-    </table>
+        <form method="post" asp-action="FinalSalesforecasting" asp-controller="Sales">
+            <input type="hidden" name="Description" id="hiddenDescription" value="" />
+            @* <input type="hidden" name="date" id="hiddendate" value="" /> *@
+                <input type="hidden" id="RequisitionType" value="1" name="RequisitionType" />
+            <input type="hidden" id="hiddenRequisitionSeries" name="RequisitionSeries" />
+            <button type="submit" class="button" onclick="SForecast()" style="margin-top: 13px;float: inline-end;margin-right: 26px ;background-color:#138496;color: white;">
+                submit
+            </button>
+        </form>
 </div>
-
-<form method="post" asp-action="FinalSalesforecasting" asp-controller="Sales">
-    <input type="hidden" name="Description" id="hiddenDescription" value="" />
-    @* <input type="hidden" name="date" id="hiddendate" value="" /> *@
-        <input type="hidden" id="RequisitionType" value="1" name="RequisitionType" />
-    <input type="hidden" id="hiddenRequisitionSeries" name="RequisitionSeries" />
-    <button type="submit" class="button" onclick="SForecast()" style="margin-top: 13px;float: inline-end;margin-right: 26px ;background-color:#138496;color: white;">
-        submit
-    </button>
-</form>
 
 
 
 
 
 <script>
-
-    function SForecast(){
+        function SForecast(){
            Swal.fire({
          title: "Forecast Created",
          icon: "success"
@@ -90,6 +90,9 @@
 
            $(document).ready(function () {
         $("#addItem").click(function () {
+
+          document.getElementById("showtable").style.display = "block";
+
             var productData = {
                 RequisitionID: $("#RequisitionID").val(),
                 ItemId:$('#ItemId').val(),
@@ -183,4 +186,5 @@
       
       });
     }
+
 </script>

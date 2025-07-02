@@ -141,12 +141,9 @@
 
   </form>
 
-<div style="text-align: center; margin-top: 15px; display:flex;justify-content:end; margin-right: 29px;padding-bottom: 8px;">
-
-</div>
 
 
-<div class="form-section" style="padding:20px 20px 50px 20px">
+<div class="form-section" id="Addeditemtable" style="padding:20px 20px 50px 20px;display:none">
     <h3>Added Items</h3>
     <div class="table" style="width:98%; margin:auto">
         <table >   
@@ -317,6 +314,7 @@
 <script>
            $(document).ready(function () {
         $("#addItem").click(function () {
+
             var productData = {
                 QuotationID: $("#QuotationID").val(),
                 ItemId:$('#ItemId').val(),
@@ -340,6 +338,7 @@
                 url: "/Sales/SetQuotationProducts",
                 data: productData,
                 success: function (response) {
+                    document.getElementById("Addeditemtable").style.display = "block";
                     console.log("Success:", response);
                     items();
                     // alert("Item added successfully!");

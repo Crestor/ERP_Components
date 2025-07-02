@@ -80,8 +80,12 @@
 					cancelButtonColor: "#d33",
 					confirmButtonText: "Yes, Send it!"
 				}).then((result) =>  {
+					if(result.isConfirmed){
+						if(RequisitionId){
 							const url = `/Warehouse/SentToProduction?RequisitionID=${RequisitionId}`;
 							window.location.href = url;
+						}
+					}
 						});
 					
 			});

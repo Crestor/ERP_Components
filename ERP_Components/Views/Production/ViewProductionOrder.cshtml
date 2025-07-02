@@ -66,7 +66,7 @@
                     <th>Product Name</th>
                     <th>Quantity</th>
                     <th>Order Date</th>
-                    <th>Action</th>
+                    @* <th>Action</th> *@
                 </tr>
             </thead>
             <tbody>
@@ -79,12 +79,12 @@
                         <td>@x.productName</td>
                         <td>@x.quantity</td>
                         <td>@x.createdAt.ToShortDateString()</td>
-                        <td>
+                   @*      <td>
                             <div class="table-button">
                                 <button class="btn btn-primary dispatch-btn" data-productionid="@x.productionOrderId" data-productid="@x.productId">Dispatch   </button>
                             </div>
 
-                       </td>
+                       </td> *@
                     </tr>
                 }
             </tbody>

@@ -66,7 +66,7 @@
 
 
 
-<div id="viewModal" style="display:none; position:fixed; top:10%; margin-left:45px;
+<div id="viewModal" style="display:none; position:fixed; top:15%;justify-self:anchor-center;
      background:#fff; padding:20px; box-shadow:0 0 10px rgba(0,0,0,0.5); border-radius:10px; z-index:999; width:75%%;">
 
 	<div id="modalContent" >
@@ -75,11 +75,7 @@
 				<tr>
 					<th>S.No</th>
 					<th>Item Name</th>
-					<th>Category</th>
 					<th>Specification</th>
-					<th>UOM</th>
-					<th>Item Type</th>
-					<th>HSN</th>
 					<th>Quantity</th>
 					<th>Unit Price</th>
 					<th>Total Amount</th>
@@ -105,7 +101,7 @@
 		function viewDetails(requisitionId) {
 
 		document.getElementById('viewModal').style.display = 'block';
-		document.getElementById('overlay').style.display = 'block';
+		document.getElementById('overlay').style.display = 'flex';
 
 
 		let tableBody = document.getElementById("TableBody");
@@ -129,12 +125,8 @@
 					tr.innerHTML = `
 						<td>${seq}</td>
 						<td>${item.itemName}</td>
-						<td>${item.categoryName}</td>
 						<td>${item.specification}</td>
-						<td>${item.unitofmeasure}</td>
-						<td>${item.itemType}</td>
-						<td>${item.hsn}</td>
-						<td>${item.quantity}</td>
+						<td>${item.quantity}<small><small><small>${item.unitofmeasure}</small></small></small></td>
 						<td>${item.unitPrice}</td>
 						<td>${item.totalAmount}</td>
 					`;
