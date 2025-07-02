@@ -545,7 +545,7 @@ namespace ERP_Component_DAL.Services
                 SqlCommand cmd = new SqlCommand();
                 cmd.CommandType = System.Data.CommandType.Text;
 
-                cmd.CommandText = "INSERT INTO RequisitionItems ([ItemID],[Quantity],[RequisitionID]) VALUES (@ItemID,@Quantity,@RequisitionID)";
+                cmd.CommandText = "INSERT INTO RequisitionItems([ItemID],[Quantity],[RequisitionID]) VALUES (@ItemID,@Quantity,@RequisitionID)";
 
                 cmd.Parameters.AddWithValue("@ItemID", Aq.ItemId);
                 cmd.Parameters.AddWithValue("@RequisitionID", Aq.RequisitionID);

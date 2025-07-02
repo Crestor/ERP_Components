@@ -29,10 +29,39 @@ namespace ERP_Components.Controllers
             return View();
         }
 
-        public IActionResult Setting()
+
+
+        public IActionResult Setting(Guid login, User user)
         {
-            return View();
+            login = Guid.Parse(HttpContext.Session.GetString("LoginID"));
+            user.loginId = login;
+            user = userServices.GetUserName(login);
+            return View(user);
         }
+
+
+        public IActionResult SetUsername(User user)
+        {
+            userServices.UpdateUsername(user);
+            return RedirectToAction("Logout");
+        }
+
+
+        public IActionResult SetPassword(User user)
+        {
+
+                if (user.oldPassword == user.currentPassword)
+                {
+                    userServices.UpdatePassword(user);
+            }
+            
+            return RedirectToAction("Logout");
+        }
+
+       
+
+
+
         public IActionResult Support()
         {
             return View();
@@ -66,6 +95,7 @@ namespace ERP_Components.Controllers
         private void SetSession(User user, string role)
         {
             HttpContext.Session.SetString("UserId", Convert.ToString(user.userId));
+            HttpContext.Session.SetString("LoginID", Convert.ToString(user.loginId));
             HttpContext.Session.SetString("UserName", user.userName);
             HttpContext.Session.SetString("Role", role);
         }

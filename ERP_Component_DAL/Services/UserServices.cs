@@ -1,13 +1,13 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Microsoft.Extensions.Configuration;
-
 using ERP_Component_DAL.Models;
 using Microsoft.Data.SqlClient;
+using Microsoft.Extensions.Configuration;
 
 namespace ERP_Component_DAL.Services
 {
@@ -70,7 +70,7 @@ namespace ERP_Component_DAL.Services
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
 
-                    string query = @"select UserName,Password,RoleId from LoginCredentials where UserName = @username And Password = @password ";
+                    string query = @"select LoginID, UserName,Password,RoleId from LoginCredentials where UserName = @username And Password = @password ";
 
                     using (SqlCommand cmd = new SqlCommand(query, connection))
                     {
@@ -85,6 +85,7 @@ namespace ERP_Component_DAL.Services
                             {
                                 user = new User
                                 {
+                                    loginId = reader["LoginID"]!=DBNull.Value?(Guid)reader["LoginID"]:Guid.Empty,
                                     userName = reader["UserName"] != DBNull.Value ? (string)reader["UserName"] : string.Empty,
                                     password = reader["Password"] != DBNull.Value ? (string)reader["Password"] : string.Empty,
                                     role = reader["RoleId"] != DBNull.Value ? Convert.ToInt32(reader["RoleId"]) : 0
@@ -101,5 +102,113 @@ namespace ERP_Component_DAL.Services
                 throw;
             }
         }
+
+        public User GetUserName(Guid login)
+        {
+            try
+            {
+                User user = new();
+
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+
+                    string query = $"select UserName,Password, LoginID from LoginCredentials where LoginID = '{login}' ";
+
+                    using (SqlCommand cmd = new SqlCommand(query, connection))
+                    {
+
+                     
+                        connection.Open();
+
+                        using (SqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            if (reader.Read())
+                            {
+                                user = new User
+                                {
+                                    
+                                    oldUserName = reader["UserName"] != DBNull.Value ? (string)reader["UserName"] : string.Empty,
+                                    oldPassword = reader["Password"] != DBNull.Value ? (string)reader["Password"] : string.Empty,
+                                    loginId = reader["LoginID"] != DBNull.Value?(Guid)reader["LoginID"]:Guid.Empty,
+                                    
+                                };
+
+                            }
+                        }
+                    }
+                }
+                return user;
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+
+        }
+
+
+        public bool UpdateUsername(User user)
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    string query = @"
+                UPDATE LoginCredentials
+                SET UserName = @UserName
+                    
+                WHERE LoginID = @LoginID";
+
+                    using (SqlCommand cmd = new SqlCommand(query, connection))
+                    {
+                        cmd.Parameters.AddWithValue("@UserName", user.userName);
+                        cmd.Parameters.AddWithValue("@LoginID", user.loginId);
+
+                        connection.Open();
+                        int rowsAffected = cmd.ExecuteNonQuery();
+
+                        return rowsAffected > 0;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                
+                return false;
+            }
+        }
+
+        public bool UpdatePassword(User user)
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    string query = @"
+                UPDATE LoginCredentials
+                SET Password = @Password
+                    
+                WHERE LoginID = @LoginID";
+
+                    using (SqlCommand cmd = new SqlCommand(query, connection))
+                    {
+                        cmd.Parameters.AddWithValue("@Password", user.password);
+                        cmd.Parameters.AddWithValue("@LoginID", user.loginId);
+
+                        connection.Open();
+                        int rowsAffected = cmd.ExecuteNonQuery();
+
+                        return rowsAffected > 0;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+
+                return false;
+            }
+        }
+
+
     }
 }
