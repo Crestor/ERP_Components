@@ -243,7 +243,7 @@ namespace ERP_Component_DAL.Services
                 cmd.CommandType = System.Data.CommandType.Text;
                 cmd.CommandText = $"SELECT r.RequisitionID, r.RequisitionSeries, r.[Description], r.CreatedAt, rt.TypeName FROM Requisitions r " +
                                     $"JOIN RequisitionTypes rt ON r.RequisitionType = rt.RequisitionType " +
-                                    $"WHERE r.RequisitionType IN (1,4) Order By CreatedAt desc";
+                                    $"WHERE r.RequisitionType IN (1,4) AND r.RequisitionStatus = 1 Order By CreatedAt desc";
                 cmd.Connection = connection;
 
 
@@ -288,7 +288,7 @@ namespace ERP_Component_DAL.Services
                 connection = new SqlConnection(connectionstring);
                 SqlCommand cmd = new();
                 cmd.CommandType = System.Data.CommandType.Text;
-                cmd.CommandText = $"SELECT r.RequisitionID, r.Description, r.RequisitionSeries, r.CreatedAt FROM Requisitions r JOIN ProductionOrder po ON po.SalesForcastID = r.RequisitionID WHERE r.RequisitionType = 1 AND r.RequisitionStatus = 4 GROUP BY r.RequisitionID, r.Description, r.RequisitionSeries,r.CreatedAt HAVING COUNT(*) = SUM(CASE WHEN po.ProductionStatus = 4 THEN 1 ELSE 0 END)";
+                cmd.CommandText = $"SELECT r.RequisitionID, r.Description, r.RequisitionSeries, r.CreatedAt FROM Requisitions r JOIN ProductionOrder po ON po.SalesForcastID = r.RequisitionID WHERE r.RequisitionType IN (1,4) AND r.RequisitionStatus = 4 GROUP BY r.RequisitionID, r.Description, r.RequisitionSeries,r.CreatedAt HAVING COUNT(*) = SUM(CASE WHEN po.ProductionStatus = 4 THEN 1 ELSE 0 END)";
                 cmd.Connection = connection;
 
 
@@ -331,7 +331,7 @@ namespace ERP_Component_DAL.Services
                 connection = new SqlConnection(connectionstring);
                 SqlCommand cmd = new();
                 cmd.CommandType = System.Data.CommandType.Text;
-                cmd.CommandText = $"Select RequisitionID, RequisitionSeries,Description,CreatedAt From Requisitions  Where RequisitionStatus = 4 and requisitiontype = 1";
+                cmd.CommandText = $"Select RequisitionID, RequisitionSeries,Description,CreatedAt From Requisitions  Where RequisitionStatus = 4 and requisitiontype IN (1,4)";
                 cmd.Connection = connection;
 
 
