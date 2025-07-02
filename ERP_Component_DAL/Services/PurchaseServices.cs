@@ -1452,11 +1452,11 @@ namespace ERP_Component_DAL.Services
             DataTable dataTable = new DataTable();
             dataTable.Columns.Add("VendorQuatoationID", typeof(Guid));
             dataTable.Columns.Add("ItemId", typeof(Guid));
-            dataTable.Columns.Add("UnitPrice", typeof(decimal));
             dataTable.Columns.Add("Quantity", typeof(decimal));
+            dataTable.Columns.Add("UnitPrice", typeof(decimal));
             
 
-            vendor.Items.ForEach(item => dataTable.Rows.Add(vendorQuotationID, item.itemId, item.unitPrice, item.quantity));
+            vendor.Items.ForEach(item => dataTable.Rows.Add(vendorQuotationID, item.itemId, item.quantity, item.unitPrice));
             using (connection = new SqlConnection(_connectionString))
             {
                 connection.Open();

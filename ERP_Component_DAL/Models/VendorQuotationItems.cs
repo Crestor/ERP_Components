@@ -18,7 +18,7 @@ namespace ERP_Component_DAL.Models
         public string? ItemName { get; set; }
         public string? UOM { get; set; }
         public decimal UnitPrice { get; set; }
-        public int Quantity { get; set; }
+        public decimal Quantity { get; set; }
         public decimal TotalPrice { get; set; }
 
     }

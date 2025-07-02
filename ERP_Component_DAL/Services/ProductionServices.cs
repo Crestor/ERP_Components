@@ -233,7 +233,7 @@ namespace ERP_Component_DAL.Services
                 connection = new SqlConnection(connectionstring);
                 SqlCommand cmd = new();
                 cmd.CommandType = System.Data.CommandType.Text;
-                cmd.CommandText = $"select it.ItemName,iv.InStock,iv.StockAlert,iv.LastUpdated,it.UnitOFMeasure,it.Specification from Inventory iv Join Items it On iv.ItemId = it.ItemId where InventoryCenter = 3\r\n";
+                cmd.CommandText = $"select it.ItemName,iv.InStock,iv.StockAlert,iv.LastUpdated,it.UnitOFMeasure,it.Specification from Inventory iv Join Items it On iv.ItemId = it.ItemId where CenterId = '43dda665-1d92-497a-9c0d-f8ac843089c3'\r\n";
 
                 cmd.Connection = connection;
 

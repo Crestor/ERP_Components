@@ -1922,7 +1922,7 @@ namespace ERP_Component_DAL.Services
                                     ItemID = reader.GetGuid(reader.GetOrdinal("ItemID")),
                                     ItemName = reader.GetString(reader.GetOrdinal("ItemName")),
                                     UOM = reader.GetString(reader.GetOrdinal("UnitOFMeasure")),
-                                    Quantity = reader.GetInt32(reader.GetOrdinal("Quantity")),
+                                    Quantity = reader.GetDecimal(reader.GetOrdinal("Quantity")),
                                     UnitPrice = reader.GetDecimal(reader.GetOrdinal("UnitPrice")),
                                     TotalPrice = reader.GetDecimal(reader.GetOrdinal("TotalPrice"))
                                 };
