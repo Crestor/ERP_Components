@@ -653,5 +653,37 @@ namespace ERP_Component_DAL.Services
             }
         }
 
+        public bool updateSFDetails(QuotationModel Aq)
+        {
+            try
+            {
+                String ConnectionString = configuration.GetConnectionString("DefaultConnectionString");
+                connection = new SqlConnection(ConnectionString);
+
+                var query = $"UPDATE Requisitions SET Description = @Description, RequisitionSeries = @RequisitionSeries, RequisitionStatus=1, RequisitionType=4 WHERE RequisitionID = @RequisitionID";
+
+                SqlCommand cmd2 = new SqlCommand(query, connection);
+
+                cmd2.Parameters.AddWithValue("@RequisitionSeries", Aq.RequisitionSeries ?? (object)DBNull.Value);
+                cmd2.Parameters.AddWithValue("@Description", Aq.Description);
+                cmd2.Parameters.AddWithValue("@RequisitionID", Aq.RequisitionID);
+                //cmd2.Parameters.AddWithValue("@RequisitionType", Aq.RequisitionType);
+                connection.Open();
+                cmd2.ExecuteNonQuery();
+                connection.Close();
+
+                return true;
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                connection.Close();
+            }
+        }
+
     }
 }

@@ -50,6 +50,7 @@
         public decimal taxableValue { get; set; }
         public DateTime Date { get; set; }
         public DateTime CreatedAt { get; set; }
+        public string RequisitionType { get; set; }
 
 
         public List<AddPurchaseRequisition> listItesms { get; set; }

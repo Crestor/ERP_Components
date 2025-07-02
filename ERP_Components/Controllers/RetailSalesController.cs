@@ -174,6 +174,14 @@ namespace ERP_Components.Controllers
             return Json(model);
         }
 
+        public IActionResult FinalSalesforecasting(QuotationModel O)
+        {
+            O.RequisitionID = Guid.Parse(HttpContext.Session.GetString("RequisitionID"));
+
+            retailsalesServices.updateSFDetails(O);  //reamining1
+            return RedirectToAction("RetailSalesforecasting");
+        }
+
 
 
 

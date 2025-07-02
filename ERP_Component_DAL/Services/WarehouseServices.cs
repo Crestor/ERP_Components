@@ -241,7 +241,9 @@ namespace ERP_Component_DAL.Services
                 connection = new SqlConnection(connectionstring);
                 SqlCommand cmd = new();
                 cmd.CommandType = System.Data.CommandType.Text;
-                cmd.CommandText = $"Select RequisitionID, RequisitionSeries,Description,CreatedAt From Requisitions  Where RequisitionStatus = 1 AND RequisitionType = 1 Order By CreatedAt desc";
+                cmd.CommandText = $"SELECT r.RequisitionID, r.RequisitionSeries, r.[Description], r.CreatedAt, rt.TypeName FROM Requisitions r " +
+                                    $"JOIN RequisitionTypes rt ON r.RequisitionType = rt.RequisitionType " +
+                                    $"WHERE r.RequisitionType IN (1,4) Order By CreatedAt desc";
                 cmd.Connection = connection;
 
 
@@ -256,7 +258,7 @@ namespace ERP_Component_DAL.Services
                         Descripion = reader["Description"] != DBNull.Value ? (string)reader["Description"] : string.Empty,
                         requisitionSeries = reader["RequisitionSeries"] != DBNull.Value ? (string)reader["RequisitionSeries"] : string.Empty,
                         Date = reader["CreatedAt"] != DBNull.Value ? ((DateTime)reader["CreatedAt"]).Date : default(DateTime),
-
+                        RequisitionType = reader.GetString(reader.GetOrdinal("TypeName")),
                     });
                 }
 
