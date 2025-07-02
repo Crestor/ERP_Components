@@ -118,7 +118,64 @@ namespace ERP_Components.Controllers
 
 
 
+        // Sales Forcast
 
 
-	}
+        public IActionResult RetailSalesforecasting()
+        {
+            HttpContext.Session.SetString("SalesforecastingADD", "False");
+
+
+
+            List<QuotationModel> aq = retailsalesServices.AddSFItemName();
+
+            var model = new QuotationViewModel
+            {
+                ItemNames = aq,
+
+
+            };
+
+            return View(model);
+        }
+        [HttpPost]
+        public JsonResult SetSalesforecasting(QuotationModel O)
+        {
+            var QuotationCreated = HttpContext.Session.GetString("SalesforecastingADD");
+            if (QuotationCreated == "False")
+            {
+                O.RequisitionID = retailsalesServices.AddSFDetails(O);// get QuotationID 
+                HttpContext.Session.SetString("SalesforecastingADD", "True");
+                HttpContext.Session.SetString("RequisitionID", O.RequisitionID.ToString());
+                var x = retailsalesServices.AddSFItems(O);
+
+            }
+            else
+            {
+                O.RequisitionID = Guid.Parse(HttpContext.Session.GetString("RequisitionID"));
+
+                var x = retailsalesServices.AddSFItems(O);
+
+
+
+            }
+
+            List<QuotationModel> ol = retailsalesServices.OrderTable(O.RequisitionID);
+
+
+            var model = new QuotationViewModel
+            {
+                OrderTable = ol,
+
+            };
+
+
+
+            return Json(model);
+        }
+
+
+
+
+    }
 }

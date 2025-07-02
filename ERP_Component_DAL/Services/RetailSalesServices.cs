@@ -503,5 +503,155 @@ namespace ERP_Component_DAL.Services
 
 
 
+        public Guid AddSFDetails(QuotationModel Aq)
+        {
+            try
+            {
+                String ConnectionString = configuration.GetConnectionString("DefaultConnectionString");
+                connection = new SqlConnection(ConnectionString);
+
+
+                SqlCommand cmd1 = new SqlCommand();
+                cmd1.CommandType = System.Data.CommandType.Text;
+
+                cmd1.CommandText = "INSERT INTO Requisitions ([Description],[RequisitionSeries],[RequisitionType]) OUTPUT INSERTED.RequisitionID VALUES (@Description, @RequisitionSeries,4)";
+                cmd1.Parameters.AddWithValue("@Description", Aq.Description ?? (object)DBNull.Value);
+                cmd1.Parameters.AddWithValue("@RequisitionSeries", Aq.RequisitionSeries ?? (object)DBNull.Value);
+                //cmd1.Parameters.AddWithValue("@RequisitionType", Aq.RequisitionType);
+
+
+                cmd1.Connection = connection;
+                connection.Open();
+                Guid RequisitionID = (Guid)cmd1.ExecuteScalar();
+
+                return RequisitionID;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                connection.Close();
+            }
+
+        }
+        public bool AddSFItems(QuotationModel Aq)
+        {
+            try
+            {
+                String ConnectionString = configuration.GetConnectionString("DefaultConnectionString");
+                connection = new SqlConnection(ConnectionString);
+                SqlCommand cmd = new SqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+
+                cmd.CommandText = "INSERT INTO RequisitionItems ([ItemID],[Quantity],[RequisitionID]) VALUES (@ItemID,@Quantity,@RequisitionID)";
+
+                cmd.Parameters.AddWithValue("@ItemID", Aq.ItemId);
+                cmd.Parameters.AddWithValue("@RequisitionID", Aq.RequisitionID);
+             
+                cmd.Parameters.AddWithValue("@Quantity", Aq.Quantity);
+
+                cmd.Connection = connection;
+                connection.Open();
+                cmd.ExecuteScalar();
+                connection.Close();
+
+
+
+                return true;
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                connection.Close();
+            }
+        }
+
+        public List<QuotationModel> OrderTable(Guid RequisitionID)
+        {
+            try
+            {
+                List<QuotationModel> OL = new();
+                String ConnectionString = configuration.GetConnectionString("DefaultConnectionString");
+                connection = new SqlConnection(ConnectionString);
+                SqlCommand cmd = new();
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.CommandText = $"select I.ItemName,R.Quantity from Items I  join RequisitionItems R  ON R.ItemId=I.ItemId where RequisitionID= '{RequisitionID}'";
+                //cmd.Parameters.AddWithValue("@RequisitionID", RequisitionID);
+
+                cmd.Connection = connection;
+                connection.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    OL.Add(new QuotationModel()
+                    {
+                        ItemName = reader["ItemName"] != DBNull.Value ? (string)reader["ItemName"] : string.Empty,
+                        Quantity = reader["Quantity"] != DBNull.Value ? (int)reader["Quantity"] : 0,
+
+
+                    });
+                }
+
+                return OL;
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                connection.Close();
+            }
+
+
+        }
+
+
+        public List<QuotationModel> AddSFItemName()
+        {
+            try
+            {
+                List<QuotationModel> sun = new();
+                String ConnectionString = configuration.GetConnectionString("DefaultConnectionString");
+                connection = new SqlConnection(ConnectionString);
+                SqlCommand cmd = new SqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.CommandText = $"SELECT it.ItemName, it.ItemId FROM Items it JOIN Inventory i ON i.ItemId = it.ItemId JOIN DistributionCenter dc ON i.CenterId = dc.CenterId JOIN CenterTypes ct ON dc.CenterType = ct.CenterType WHERE ItemType=1 AND TypeName = 'SALES_CENTER'";
+
+                cmd.Connection = connection;
+
+                cmd.CommandTimeout = 300;
+                connection.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    sun.Add(new QuotationModel()
+                    {
+
+                        ItemName = reader["ItemName"] != DBNull.Value ? (string)reader["ItemName"] : string.Empty,
+                        ItemId = reader["ItemId"] != DBNull.Value ? (Guid)reader["ItemId"] : Guid.Empty,
+                    });
+                }
+
+                return sun;
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                connection.Close();
+            }
+        }
+
     }
 }
