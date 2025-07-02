@@ -89,7 +89,7 @@
     <div id="rightSection" style="margin-right:10px">
         <div style="position:relative;">
             <button onclick="closeHistoryPanel()"
-                    style="font-weight: 700;position: absolute; right:-28px;top:0; font-size: 22px; border: none; background: none; color: #138486; cursor: pointer;">
+                    style="font-weight: 700;position: absolute;top:0;right: 5px; font-size: 22px; border: none; background: none; color: red; cursor: pointer;">
                 ×
             </button>
 
@@ -98,7 +98,7 @@
 
             <div id="historyContent" style="margin-right: 30px;">
                 <table>
-                    @* <table class="table table-bordered table-striped"> *@
+                   
                     <thead style="background-color: #138486; color: white;">
                         <tr>
                             <th>Sno.</th>
@@ -143,22 +143,20 @@
             '<tr><th>Sno</th><th>Product Name</th><th>Quantity</th><th>Amount</th><th>Date</th></tr>' +
             '</thead><tbody>';
 
-       if (data.iDetails && data.iDetails.length > 0) {
-                for (var i = 0; i < data.iDetails.length; i++) {
-                    var item = data.iDetails[i];
-                    html += '<tr>' +
-                        '<td>' + (i + 1) + '</td>' +
-                        '<td>' + item.itemName + '</td>' +
-                        '<td>' + item.quantity + '</td>' +
-                        // '<td>' + parseFloat(item.MRP || 0).toFixed(2) + '</td>' +
-                        '<td>' + parseFloat(item.mrp || 0).toFixed(2) + '</td>' +
-
-                        '<td>' + new Date(item.date).toLocaleDateString() + '</td>' +
-                        '</tr>';
+       if (data.items && data.items.length > 0) {
+                    for (var i = 0; i < data.items.length; i++) {
+                        var item = data.items[i];
+                        html += '<tr>' +
+                            '<td>' + (i + 1) + '</td>' +
+                            '<td>' + item.productName + '</td>' +
+                            '<td>' + item.quantity + '</td>' +
+                            '<td>' + parseFloat(item.grossTotal || 0).toFixed(2) + '</td>' +
+                            '<td>' + new Date(item.createdAt).toLocaleDateString() + '</td>' +
+                            '</tr>';
+                    }
+                } else {
+                    html += '<tr><td colspan="5" class="text-center">No history found.</td></tr>';
                 }
-        } else {
-            html += '<tr><td colspan="5" class="text-center">No history found.</td></tr>';
-        }
 
         html += '</tbody></table>';
         $("#historyContent").html(html);

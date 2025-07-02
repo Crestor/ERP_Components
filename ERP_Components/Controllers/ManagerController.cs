@@ -32,11 +32,13 @@ namespace ERP_Components.Controllers
 
         public IActionResult ManagerDashboard()
         {
-            DashBoard model = managerServices.GetManagerDashboardData();
-            model.ComparisonSalesPurchase = managerServices.ManagerSalesAndPurchaseComparison();
-            model.OrderSummary = managerServices.SummaryOrderData();
+            //DashBoard model = managerServices.GetManagerDashboardData();
+            //model.ComparisonSalesPurchase = managerServices.ManagerSalesAndPurchaseComparison();
+            //model.OrderSummary = managerServices.SummaryOrderData();
 
-            return View(model);
+          DashBoard dashboard =  managerServices.CalculateTotalSales();
+
+            return View(dashboard);
         }
 
         public IActionResult PurchaseDashboard()
@@ -78,15 +80,7 @@ namespace ERP_Components.Controllers
 
 
 
-        //public IActionResult Dashboard()
-        //{
-        //    DashBoard model = managerServices.GetManagerDashboardData();
-        //    model.ComparisonSalesPurchase = managerServices.ManagerSalesAndPurchaseComparison();
-        //    model.OrderSummary = managerServices.SummaryOrderData();
-
-        //    return View(model);
-        //}
-
+     
         public IActionResult ApproveVendorQuotation()
         {
             List<AddPurchaseRequisition> add = managerServices.RequisitionsForQuotation();
@@ -110,7 +104,7 @@ namespace ERP_Components.Controllers
             return RedirectToAction("ApproveVendorQuotation");
         }
         [HttpPost]
-        //Tushar yaha vendorQuotationID bhej na; vendor.lists main hai vo
+      
         public JsonResult GetVendorItems(Guid vendorQuotationID)
         {
             List<VendorQuotationItem> items = managerServices.GetVendorQuotationItems(vendorQuotationID);

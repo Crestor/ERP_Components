@@ -1010,6 +1010,44 @@ namespace ERP_Component_DAL.Services
 
 
         }
+
+
+        public DashBoard CalculateTotalSales()
+        {
+            try
+            {
+              DashBoard dashboard  = new();
+                string connectionString = configuration.GetConnectionString("DefaultConnectionString");
+                connection = new SqlConnection(connectionString);
+                SqlCommand cmd = new();
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.CommandText = $"SELECT  ISNULL((SELECT SUM(NetTotal) FROM RetailBillHeader), 0) +  ISNULL((SELECT SUM(GrossTotal)  FROM CustomerQuotation cq  JOIN Invoice iv ON cq.QuotationID = iv.QuotationID), 0)  AS TotalSales, ISNULL((SELECT COUNT(*) FROM RetailBillHeader), 0) + ISNULL((SELECT COUNT(*)  FROM CustomerQuotation cq  JOIN Invoice iv ON cq.QuotationID = iv.QuotationID), 0) AS TotalOrders;";
+                cmd.Connection = connection;
+
+                cmd.CommandTimeout = 300;
+                connection.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                  dashboard.TotalAmount =  reader["TotalSales"] != DBNull.Value ? (decimal)reader["TotalSales"] : 0m;
+                   dashboard.TotalOrder =  reader["TotalOrders"]!= DBNull.Value ? Convert.ToInt32(reader["TotalOrders"]) : 0;
+                }
+
+                return dashboard;
+            }
+            catch(Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                connection.Close();
+            }
+        }
+
+
+
+
         /*public List<DashBoard> ManagerSalesAndPurchaseComparison()
         {
             try

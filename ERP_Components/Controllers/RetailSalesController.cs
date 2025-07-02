@@ -30,24 +30,6 @@ namespace ERP_Components.Controllers
 		}
 
 
-
-		
-		//public IActionResult CustomerBill()
-		//{
-		//	List<QuotationModel> aq = retailsalesServices.AddBillItemName();
-               
-  //          var model = new QuotationViewModel
-		//	{
-		//		ItemNames = aq,
-               
-
-		//	};
-		//	return View(model);
-
-		//}
-
-
-
 		public IActionResult CustomerBill()
 		{
               RetailItemModel Retail  = retailsalesServices.CustomerBillAddressData();
@@ -87,13 +69,7 @@ namespace ERP_Components.Controllers
         }
 
 
-        //      public IActionResult SetCustomerBill(QuotationModel quotation)
-        //{
-        //quotation.RetailCustomerId  =	retailsalesServices.AddRetailCustomer(quotation);
-        //      HttpContext.Session.SetString("RetailCustomerId", quotation.RetailCustomerId.ToString());
-        //          retailsalesServices.AddCustomerBill(quotation,quotation.ItemLists);
-        //	return RedirectToAction("ViewCustomerBillDocument");
-        //}
+      
 
 
         [HttpPost]
@@ -112,20 +88,7 @@ namespace ERP_Components.Controllers
 
 
 
-        //[HttpGet]
-        //public JsonResult SearchCustomers(string term)
-        //{
-        //    var matches = retailsalesServices.SearchCustomersByContact(term);
-        //    return Json(matches);
-        //}
-
-
-        //public JsonResult GetCustomerBillHistory(Guid customerId)
-        //{
-        //    MonthlyRetailSales retail = retailsalesServices.GetRetailCustomerName(customerId);
-        //    var history = retailsalesServices.GetCustomerRetailHistory(customerId); 
-        //    return Json(history);
-        //}
+   
 
 
         public IActionResult ViewCustomerBills()
@@ -135,14 +98,7 @@ namespace ERP_Components.Controllers
 		}
 
 
-        //public JsonResult ViewCustomerBillHistory(Guid RetailBillID)
-        //{
-
-        //    QuotationModel retail = retailsalesServices.GetCustomerName(RetailBillID);
-        //    retail.IDetails = retailsalesServices.GetCustomerRetailData(RetailBillID);
-        //    return Json(retail);
-
-        //}
+      
         public IActionResult ViewCustomerBillDocument(Guid RetailCustomerId)
         {
 			RetailItemModel retailItem = retailsalesServices.CustomerBillAddressData();
