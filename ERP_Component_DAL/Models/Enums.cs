@@ -14,4 +14,8 @@ namespace ERP_Component_DAL.Models
     {
        PENDING = 1, UNDER_PROGRESS = 2,	RECEIVED = 3, SENT_FOR_MR = 4, COMPLETED = 5
     }
+    public enum PurchaseOrderStatus
+    {
+        PENDING = 1, ITEMS_RECEIVED = 2, ADVANCED_PAID = 3, CONVERTED_TO_BILL = 4
+    }
 }

@@ -1063,7 +1063,7 @@ namespace ERP_Component_DAL.Services
             }
         }
 
-        public List<AddPurchaseRequisition> PurchaseOrderItemsList(Guid vendorId, Guid purchaseOrderId)
+        public List<AddPurchaseRequisition> PurchaseOrderItemsList(Guid vendorId, Guid purchaseOrderId, PurchaseOrderStatus orderStatus)
         {
             try
             {
@@ -1075,7 +1075,7 @@ namespace ERP_Component_DAL.Services
                 cmd.CommandText = $" SELECT  it.ItemName,it.UnitOfMeasure, it.HSN, pu.Quantity, pu.UnitPrice, pu.DiscountRate, pu.CGST,pu.SGST, pu.IGST, pu.TotalPrice, pu.TaxableAmount," +
                                   $" (pu.TaxableAmount * pu.IGST / 100.0) AS IGSTAmount, (pu.TaxableAmount * pu.CGST / 100.0) AS CGSTAmount, (pu.TaxableAmount * pu.SGST / 100.0) AS SGSTAmount" +
                                   $" FROM Items it JOIN  PurchaseItems pu ON it.ItemId = pu.ItemID Left Join PurchaseOrders po On pu.PurchaseOrderID = po.PurchaseOrderID Where po.VendorId = '{vendorId}'" +
-                                  $" AND po.PurchaseOrderID = '{purchaseOrderId}' AND po.OrderStatus = 4 ";
+                                  $" AND po.PurchaseOrderID = '{purchaseOrderId}' AND po.OrderStatus = {(byte)orderStatus} ";
                 cmd.Connection = connection;
 
 
