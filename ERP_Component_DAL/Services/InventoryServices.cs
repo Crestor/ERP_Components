@@ -2529,7 +2529,7 @@ namespace ERP_Component_DAL.Services
                 cmd.CommandType = System.Data.CommandType.Text;
                 cmd.CommandText = $" SELECT r.Description,r.RequisitionID, r.RequisitionSeries, it.ItemName, ri.Quantity AS RequiredQuantity, i.InStock AS AvailableQuantity " +
                     $"FROM RequisitionItems ri JOIN Inventory i ON ri.ItemID = i.ItemId JOIN Items it ON ri.ItemID = it.ItemId JOIN Requisitions r ON ri.RequisitionID = r.RequisitionID " +
-                    $"WHERE ri.RequisitionID = @RequisitionID AND i.InventoryCenter = 4 GROUP BY r.Description,r.RequisitionID, r.RequisitionSeries, it.ItemName, ri.Quantity, i.InStock";
+                    $"WHERE ri.RequisitionID = @RequisitionID AND i.CenterId = '839f3550-d40c-4b27-a639-a24b5afb219c' GROUP BY r.Description,r.RequisitionID, r.RequisitionSeries, it.ItemName, ri.Quantity, i.InStock";
                 cmd.Parameters.AddWithValue("@RequisitionID", RequisitionID);
                 cmd.Connection = connection;
 

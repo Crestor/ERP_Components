@@ -288,7 +288,11 @@ namespace ERP_Component_DAL.Services
                 connection = new SqlConnection(connectionstring);
                 SqlCommand cmd = new();
                 cmd.CommandType = System.Data.CommandType.Text;
-                cmd.CommandText = $"SELECT r.RequisitionID, r.Description, r.RequisitionSeries, r.CreatedAt FROM Requisitions r JOIN ProductionOrder po ON po.SalesForcastID = r.RequisitionID WHERE r.RequisitionType IN (1,4) AND r.RequisitionStatus = 4 GROUP BY r.RequisitionID, r.Description, r.RequisitionSeries,r.CreatedAt HAVING COUNT(*) = SUM(CASE WHEN po.ProductionStatus = 4 THEN 1 ELSE 0 END)";
+                cmd.CommandText = $"SELECT r.RequisitionID, r.Description, r.RequisitionSeries, r.CreatedAt " +
+                    $"FROM Requisitions r JOIN WorkOrder wo ON wo.SalesForecastID = r.RequisitionID " +
+                    $"WHERE r.RequisitionType IN (1,4) AND r.RequisitionStatus = 4 " +
+                    $"GROUP BY r.RequisitionID, r.Description, r.RequisitionSeries,r.CreatedAt " +
+                    $"HAVING COUNT(wo.WorkOrderID) = SUM(CASE WHEN wo.WorkOrderStatus = 3 THEN 1 ELSE 0 END)";
                 cmd.Connection = connection;
 
 
