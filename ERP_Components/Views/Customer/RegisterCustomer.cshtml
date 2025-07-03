@@ -432,15 +432,68 @@
     }
 
     // Automatically show "Basic Details" on page load
-    window.onload = function () {
+     window.onload = async function () {
+        await populateStates(); 
+
         const basicToggle = document.querySelector('[onclick*="BasicDetails"]');
         if (basicToggle) {
             showSection(basicToggle, 'BasicDetails');
         }
+
+        document.getElementById("state").addEventListener("change", updateDistricts);
+        document.getElementById("district").addEventListener("change", updateCities);
     };
 </script>
 
 
+<script>
+    function autoCopyBillingToShipping() {
+        // Get billing fields
+        const billingName = document.querySelector("input[name='CustomerName']");
+        const billingContact = document.querySelector("input[name='ContactNo']");
+        const billingDistrict = document.getElementById("district");
+        const billingState = document.getElementById("state");
+        const billingCity = document.querySelector("input[name='City']");
+        const billingPin = document.querySelector("input[name='PinCode']");
+        const billingAddress = document.querySelector("input[name='Address']");
+
+        // Get shipping fields
+        const shipName = document.querySelector("#shipingdetails input[name='CustomerName']");
+        const shipContact = document.querySelector("#shipingdetails input[name='ContactNo']");
+        const shipDistrict = document.querySelector("#shipingdetails input[name='District']");
+        const shipState = document.querySelector("#shipingdetails input[name='State']");
+        const shipCity = document.querySelector("#shipingdetails input[name='City']");
+        const shipPin = document.querySelector("#shipingdetails input[name='PinCode']");
+        const shipStreet = document.querySelector("#shipingdetails input[name='Street']");
+
+        // Sync fields
+        shipName.value = billingName.value;
+        shipContact.value = billingContact.value;
+        shipDistrict.value = billingDistrict.value;
+        shipState.value = billingState.value;
+        shipCity.value = billingCity.value;
+        shipPin.value = billingPin.value;
+        shipStreet.value = billingAddress.value;
+    }
+
+    // Attach event listeners (auto copy on change or blur)
+    window.addEventListener('DOMContentLoaded', () => {
+        const billingFields = [
+            "CustomerName", "ContactNo", "Address", "PinCode", "City"
+        ];
+
+        billingFields.forEach(fieldName => {
+            const input = document.querySelector(`input[name='${fieldName}']`);
+            if (input) {
+                input.addEventListener("blur", autoCopyBillingToShipping);
+            }
+        });
+
+        // Also update on dropdown change
+        document.getElementById("state").addEventListener("change", autoCopyBillingToShipping);
+        document.getElementById("district").addEventListener("change", autoCopyBillingToShipping);
+    });
+</script>
 
 
 
