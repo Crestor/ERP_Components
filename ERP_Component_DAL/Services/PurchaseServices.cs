@@ -203,12 +203,14 @@ namespace ERP_Component_DAL.Services
                 SqlCommand cmd = new SqlCommand();
                 cmd.CommandType = CommandType.Text;
 
-                cmd.CommandText = $"INSERT INTO PurchaseOrders(PurchaseOrderID,VendorID,PurchaseRequisitionId,Description,TaxableAmount, OrderStatus) VALUES (@PurchaseOrderID, @VendorID, @RequisitionID,'{vendor.description}','{vendor.amount}', 1)";
+                cmd.CommandText = $"INSERT INTO PurchaseOrders(PurchaseOrderID,VendorID,PurchaseRequisitionId,Description,TaxableAmount, OrderStatus, AdvancePercent) " +
+                    $"VALUES (@PurchaseOrderID, @VendorID, @RequisitionID,'{vendor.description}','{vendor.amount}', 1, @AdvancedRate)";
 
 
                 cmd.Parameters.AddWithValue("@PurchaseOrderID", purchaseOrderID);
                 cmd.Parameters.AddWithValue("@VendorID", vendor.vendorId);
                 cmd.Parameters.AddWithValue("@RequisitionID", vendor.requisitionId);
+                cmd.Parameters.AddWithValue("@AdvancedRate", vendor.advanceRate);
 
                 cmd.Connection = connection;
                 connection.Open();
@@ -901,7 +903,7 @@ namespace ERP_Component_DAL.Services
                 connection = new SqlConnection(connectionstring);
                 SqlCommand cmd = new();
                 cmd.CommandType = System.Data.CommandType.Text;
-                cmd.CommandText = $"Select ve.VendorID, ve.VendorName, vq.VendorQuotationID,vq.Amount,vq.PaymentTerms,vq.DeliveryTerms from Vendors ve Join VendorQuotations vq On ve.VendorID = vq.VendorID WHERE vq.PurchaseRequisitionID = '{requisitionId}'";
+                cmd.CommandText = $"Select ve.VendorID, ve.VendorName, vq.VendorQuotationID,vq.Amount,vq.PaymentTerms,vq.DeliveryTerms, vq.AdvancedRate  from Vendors ve Join VendorQuotations vq On ve.VendorID = vq.VendorID WHERE vq.PurchaseRequisitionID = '{requisitionId}'";
 
 
                 cmd.Connection = connection;
@@ -916,7 +918,7 @@ namespace ERP_Component_DAL.Services
                     vendor.amount = reader["Amount"] != DBNull.Value ? Convert.ToDecimal(reader["Amount"]) : 0m;
                     vendor.vendorName = reader["VendorName"] != DBNull.Value ? (string)reader["VendorName"] : string.Empty;
                     vendor.deliveryTerms = reader["DeliveryTerms"] != DBNull.Value ? (string)reader["DeliveryTerms"] : string.Empty;
-
+                    vendor.advanceRate = reader.GetDecimal("AdvancedRate");
                     vendor.paymentTerms = reader["PaymentTerms"] != DBNull.Value ? (string)reader["PaymentTerms"] : string.Empty;
 
 

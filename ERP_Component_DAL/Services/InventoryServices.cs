@@ -2939,10 +2939,11 @@ namespace ERP_Component_DAL.Services
                 using (SqlConnection connection = new SqlConnection(_connectionString))
                 {
                     connection.Open();
-                    string query = @"SELECT st.TransactionID, i.ItemName, st.Quantity , ddc.CenterName AS DestinationDCName, st.Reason, st.TransactionDate FROM StockTransactions st 
+                    string query = @"SELECT st.TransactionID, i.ItemName, st.Quantity , ddc.CenterName AS DestinationDCName, sdc.CenterName AS SourceDCName, st.Reason, st.TransactionDate FROM StockTransactions st 
                                     JOIN Items i ON st.ItemId = i.ItemId
                                     JOIN DistributionCenter ddc ON st.DestinationDC = ddc.CenterId
-                                    WHERE st.TransactionType = 1";
+                                    JOIN DistributionCenter sdc ON st.SourceDC = sdc.CenterId
+                                    WHERE st.TransactionType = @TransactionType";
 
                     using (SqlCommand cmd = new SqlCommand(query, connection))
                     {
@@ -2960,6 +2961,7 @@ namespace ERP_Component_DAL.Services
                                     TransactionDate = reader.GetDateTime(reader.GetOrdinal("TransactionDate")),
                                     DestinationDC = reader.IsDBNull(reader.GetOrdinal("DestinationDCName")) ? string.Empty : reader.GetString(reader.GetOrdinal("DestinationDCName")),
                                     Reason = reader.IsDBNull(reader.GetOrdinal("Reason")) ? null : reader.GetString(reader.GetOrdinal("Reason")),
+                                    SourceDC = reader.IsDBNull(reader.GetOrdinal("SourceDCName")) ? string.Empty : reader.GetString(reader.GetOrdinal("SourceDCName")),
                                     Type = transactionType
                                 };
                                 stockTransactions.Add(transaction);
