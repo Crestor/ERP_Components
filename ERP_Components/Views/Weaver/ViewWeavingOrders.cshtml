@@ -38,7 +38,9 @@
 
 <!-- Popup Overlay -->
 <div id="overlay" class="overlay" style="display:none;">
-    <div class="Popuptable d-flex justify-content-center" style="justify-self:center">
+    <div class="Popuptable" style="justify-self:center">
+        <p id="closepopup" >X</p>
+
         <form asp-action="RecieveWeavingOrder" asp-controller="Weaver" class="form-section">
             <h3>Recieved Details</h3>
             <div class="form-row">
@@ -74,7 +76,7 @@
     }
 
     
-            document.getElementById("overlay").addEventListener("click",function(){
+            document.getElementById("closepopup").addEventListener("click",function(){
         document.getElementById("overlay").style.display = 'none';
 
             })

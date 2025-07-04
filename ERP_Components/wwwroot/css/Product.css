@@ -401,6 +401,12 @@ p input{
     font-size:large;
     margin:0px !important;
 }
+.card button{
+    margin:0px;
+    justify-content:center;
+}
+
+
 .card-body p span {
     float: right;
     font-weight: 400;
@@ -485,3 +491,29 @@ p input{
     .section-toggle .form-section .form-row{
         margin:0px 0px 10px 0px;
     }
+#closepopup {
+    float: right;
+    padding-inline: 20px;
+    margin: 0px;
+    font-weight:700;
+    cursor:pointer;
+}
+.Popuptable .form-section {
+    width: 88%;
+}
+.background-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 150px;
+    font-weight: bolder;
+    color:#e8f9fc;
+    pointer-events: none;
+    user-select: none;
+    white-space: nowrap;
+    z-index: 0;
+}
+.card-text{
+    margin:5px !important;
+}

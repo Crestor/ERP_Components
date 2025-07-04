@@ -252,6 +252,7 @@
 				type: 'POST',
 				data: vendorData,
 				success: function (response) {
+
 					if (response.length > 0) {
 						response.forEach(function (item, index) {
 							if (index >= 3) return;
@@ -278,6 +279,15 @@
 					} else {
 						alert('No quotation data returned.');
 					}
+					  Swal.fire({
+							title: "Added",
+							text: "Vendor Quotation Added",
+							icon: "success",
+							showCancelButton: false,
+							showDenyButton: false,
+							showConfirmButton: true,
+							confirmButtonText: "OK"
+						  });
 				},
 				error: function (xhr, status, error) {
 					alert('Error submitting quotation: ' + error);
@@ -346,19 +356,6 @@
 			 draggable: true
 	   });
 	} );
-	const added = document.getElementById("addItems");
-
-	added.addEventListener("click", function () {
-	  Swal.fire({
-		title: "Added",
-		text: "Vendor Quotation Added",
-		icon: "success",
-		showCancelButton: false,
-		showDenyButton: false,
-		showConfirmButton: true,
-		confirmButtonText: "OK"
-	  });
-	});
 
 
 </script>

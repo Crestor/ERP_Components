@@ -3,6 +3,8 @@
     public class AddPurchaseRequisition
 
     {
+        public string? ProductCode { get; set; }
+
         public Guid itemId { get; set; }
         public Guid MaterialId { get; set; }
         public string itemName { get; set; }
