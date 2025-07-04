@@ -146,10 +146,14 @@
         <div>
 
 
-            <p>Payment to be made: <input type="text" readonly /></p>
+           @*  <p>Payment to be made: <input type="text" readonly /></p>
             <p>Amount of payment: <input type="text" readonly /></p>
             <p>Journal Amount: <input type="text" readonly /></p>
-            <p>Amount in hand:  <input type="text" id="debitedAdvanceTotal" readonly /></p>
+            <p>Amount in hand:  <input type="text" id="debitedAdvanceTotal" readonly /></p> *@
+            <p> Payment to be made: ₹ <span id="paymentToBeMade">0.00</span></p>
+            <p> Amount of payment: ₹ <span id="amountOfPayment">0.00</span></p>
+            <p> Journal Amount: ₹ <span id="journalAmount">0.00</span></p>
+            <p> Amount In Hand: ₹ <span id="debitedAdvanceTotal">0.00</span></p>
 
 
         </div>
@@ -443,7 +447,7 @@
                     const amountPaid = parseFloat(item.amountPaid);
                     const advanceAmount = parseFloat(item.advanceAmount);
                     const purchaseOrderID = item.purchaseOrderID;
-
+                    const accountID = item.accountID;
                     const isPaid = amountPaid >= advanceAmount;
                     let buttonText = "Pay";
                     if (isPaid) {
@@ -463,6 +467,7 @@
                         <td class="status">
                             <button class="advance-status-btn"
                                     data-poid="${purchaseOrderID}"
+                                    data-acid="${accountID}"
                                     data-net="${netTotal}"
                                     data-advance="${advanceAmount}"
                                     data-paid="${amountPaid}"
@@ -508,6 +513,7 @@
         const purchaseOrderID = button.data('poid');
         const advanceAmount = parseFloat(button.data('advance'));
         const alreadyPaid = parseFloat(button.data('paid'));
+        const accountID = button.data('acid');
 
         const remainingAdvance = advanceAmount - alreadyPaid;
         if (usedAdvanceOrders.has(purchaseOrderID) || remainingAdvanceInput <= 0 || remainingAdvance <= 0) {
@@ -561,6 +567,7 @@
             type: 'POST',
             data: {
                 PurchaseOrderID: purchaseOrderID,
+                AccountID: accountID,
                 AdvanceAmount: paidNow
             },
             success: function (response) {

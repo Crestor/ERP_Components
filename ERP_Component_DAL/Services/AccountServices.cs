@@ -534,9 +534,8 @@ namespace ERP_Component_DAL.Services
                 connection = new SqlConnection(ConnectionString);
                 SqlCommand cmd = new SqlCommand();
                 cmd.CommandType = System.Data.CommandType.Text;
-                //cmd.CommandText = $"SELECT OrderDate,Description,NetTotal FROM PurchaseOrders WHERE VendorID = '{VendorID}'";
-                cmd.CommandText = $"SELECT (po.NetTotal * (po.AdvancePercent / 100.0)) AS AdvanceAmount,po.PurchaseOrderID, po.AmountPaid, po.NetTotal FROM PurchaseOrders po WHERE po.VendorID = '{VendorID}'";
-
+                //cmd.CommandText = $"SELECT (po.NetTotal * (po.AdvancePercent / 100.0)) AS AdvanceAmount,po.PurchaseOrderID, po.AmountPaid, po.NetTotal FROM PurchaseOrders po WHERE po.VendorID = '{VendorID}'";
+                cmd.CommandText = $"SELECT (po.NetTotal * (po.AdvancePercent / 100.0)) AS AdvanceAmount,po.PurchaseOrderID, po.AmountPaid, po.NetTotal, v.AccountID FROM PurchaseOrders po JOIN Vendors v ON po.VendorId = v.VendorID WHERE po.VendorID = '{VendorID}'";
                 cmd.Connection = connection;
 
 
@@ -547,7 +546,7 @@ namespace ERP_Component_DAL.Services
                     CL.Add(new MakePayment()
                     {
                         PurchaseOrderID = reader["PurchaseOrderID"] != DBNull.Value ? (Guid)reader["PurchaseOrderID"] : Guid.Empty,
-
+                        AccountID = reader["AccountID"] != DBNull.Value ? (Guid)reader["AccountID"] : Guid.Empty,
                         //OrderDate = reader["OrderDate"] != DBNull.Value ? DateOnly.FromDateTime((DateTime)reader["OrderDate"]) : DateOnly.MinValue,
                         NetTotal = reader["NetTotal"] != DBNull.Value ? Convert.ToDecimal(reader["NetTotal"]) : 0m,
                         AmountPaid = reader["AmountPaid"] != DBNull.Value ? Convert.ToDecimal(reader["AmountPaid"]) : 0m,
