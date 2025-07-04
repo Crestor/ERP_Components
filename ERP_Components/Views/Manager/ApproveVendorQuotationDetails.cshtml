@@ -1,6 +1,6 @@
 ﻿@using ERP_Component_DAL.Models
 @{
-    ViewBag.Title = "Vendor Quotation";
+    ViewBag.Title = "Vendor Comparison";
     Layout = "~/Views/Shared/_LayoutINV.cshtml";
 }
 @model Vendor
@@ -10,12 +10,45 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 <!-- Vendor Cards -->
+
+<div class="table">
+<table>
+    <thead>
+        <tr>
+            <th>S.No</th>
+            <th>Item Name</th>
+            <th>Quantity</th>
+        </tr>
+    </thead>
+    <tbody id="geeks">
+
+        @for(var i = 0; i<Model.Product.Count; i++)
+            {
+                var x = Model.Product[i];
+                var index = i + 1;
+                <tr>
+                    <td>@index</td>
+                    <td>@index</td>
+                    <td>@index</td>
+                </tr>
+            }
+
+        </tbody>
+</table>
+
+</div>
+
+
+
+
 <div class="row row-cols-1 row-cols-md-3 g-4 p-5">
     @for (int i = 0; i < Model.lists.Count; i++)
     {
         var v = Model.lists[i];
         <div class="col">
+            
             <div class="card vendor-card" onclick="GetVenderItemData('@v.vendorQuotationId')" style="width: 18rem; cursor: pointer;">
+                <p style="font-weight:700">L@(i + 1)</p>
                 <i class="fa fa-user w-100 d-flex justify-content-center align-items-center flex-column mt-1" style="height:75px;font-size:35px">
                     <p>@v.vendorName</p>
                 </i>

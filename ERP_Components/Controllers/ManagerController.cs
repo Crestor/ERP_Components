@@ -90,6 +90,8 @@ namespace ERP_Components.Controllers
         public IActionResult ApproveVendorQuotationDetails(Guid requisitionId)
         {
             var vendor = new Vendor();
+           vendor.Product = managerServices.GetRequisitionItems(requisitionId);
+
             vendor.Items = managerServices.GetRequisitionItemsListData (requisitionId);
             vendor.lists = managerServices.GetRequisitionQuotationListData(requisitionId);
             managerServices.UpdateVendorQuotationStatusToRejected(requisitionId);
@@ -103,13 +105,7 @@ namespace ERP_Components.Controllers
             managerServices.UpdateVendorQuotationStatusAndRequisitionStatusToApproved (vendorQuotationID, requisitionID);
             return RedirectToAction("ApproveVendorQuotation");
         }
-        [HttpPost]
-      
-        public JsonResult GetVendorItems(Guid vendorQuotationID)
-        {
-            List<VendorQuotationItem> items = managerServices.GetVendorQuotationItems(vendorQuotationID);
-            return Json(items);
-        }
+       
 
         public IActionResult Productsales()
         {

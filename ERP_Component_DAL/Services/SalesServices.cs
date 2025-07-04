@@ -36,7 +36,7 @@ namespace ERP_Component_DAL.Services
                 connection = new SqlConnection(ConnectionString);
                 SqlCommand cmd = new SqlCommand();
                 cmd.CommandType = System.Data.CommandType.Text;
-                cmd.CommandText = @"SELECT i.ItemName, i.ItemId, i.HSN, i.UnitOFMeasure, pp.SellingPrice 
+                cmd.CommandText = @"SELECT i.ItemName, i.ItemId,i.Specification,i.ItemCode, i.HSN, i.UnitOFMeasure, pp.SellingPrice 
                     FROM Items i JOIN ProductPrice pp ON pp.ProductID = i.ItemId 
                     WHERE i.ItemType = 1 ORDER BY i.ItemName";
 
@@ -51,7 +51,9 @@ namespace ERP_Component_DAL.Services
                     {
 
                         ItemName = reader["ItemName"] != DBNull.Value ? (string)reader["ItemName"] : string.Empty,
+                        ItemCode = reader["ItemCode"] != DBNull.Value ? (string)reader["ItemCode"] : string.Empty,
                         SellingPrice = reader["SellingPrice"] != DBNull.Value ? (decimal)reader["SellingPrice"] : 0m,
+                        Description = reader["Specification"] != DBNull.Value ? (string)reader["Specification"]:string.Empty,
                         ItemId = reader["ItemId"] != DBNull.Value ? (Guid)reader["ItemId"] : Guid.Empty,
                         HSN = reader["HSN"] != DBNull.Value ? (string)reader["HSN"] : string.Empty,
                         UnitOFMeasure = reader["UnitOFMeasure"] != DBNull.Value ? (string)reader["UnitOFMeasure"] : string.Empty,
@@ -119,7 +121,7 @@ namespace ERP_Component_DAL.Services
                 cmd.CommandType = System.Data.CommandType.Text;
 
                 cmd.CommandText = @"INSERT INTO QuotationProduct 
-                                    ([QuotationID],[Quantity],[SellingPrice], [TaxableAmount],[discountRate],
+                                    ([QuotationID],[Quantity],[SellingPrice],[TaxableAmount],[discountRate],
                                     [DiscountAmount],[CGST],[SGST],[IGST],[TotalAmount],[ProductID]) 
                                     VALUES (@QuotationID,@Quantity,@SellingPrice,@TaxableAmount,@discountRate,
                                     @DiscountAmount,@CGST,@SGST,@IGST,@TotalAmount,@ProductID)";
@@ -358,7 +360,7 @@ namespace ERP_Component_DAL.Services
                 connection = new SqlConnection(ConnectionString);
                 SqlCommand cmd = new SqlCommand();
                 cmd.CommandType = System.Data.CommandType.Text;
-                cmd.CommandText = $"select i.ItemName,i.HSN,qp.Quantity,i.UnitOFMeasure,qp.SellingPrice,qp.TaxableAmount,qp.discountRate,qp.DiscountAmount,qp.CGST,qp.SGST,qp.IGST,qp.TotalAmount from QuotationProduct qp JOIN Items i ON i.ItemId = qp.ProductID where qp.QuotationID=@QuotationID";
+                cmd.CommandText = $"select i.ItemName,i.HSN,qp.Quantity,i.ItemCode,i.Specification,i.UnitOFMeasure,qp.SellingPrice,qp.TaxableAmount,qp.discountRate,qp.DiscountAmount,qp.CGST,qp.SGST,qp.IGST,qp.TotalAmount from QuotationProduct qp JOIN Items i ON i.ItemId = qp.ProductID where qp.QuotationID=@QuotationID";
                 cmd.Parameters.AddWithValue("@QuotationID", QuotationID);
 
                 cmd.Connection = connection;
@@ -372,6 +374,8 @@ namespace ERP_Component_DAL.Services
                     {
                         //QuotationID = reader["QuotationID"] != DBNull.Value ? (int)reader["QuotationID"] : 0,
                         ItemName = reader["ItemName"] != DBNull.Value ? (string)reader["ItemName"] : string.Empty,
+                        ItemCode = reader["ItemCode"] != DBNull.Value ? (string)reader["ItemCode"] : string.Empty,
+                        Description = reader["Specification"]!= DBNull.Value ? (string)reader["Specification"]:string.Empty,
                         HSN = reader["HSN"] != DBNull.Value ? (string)reader["HSN"] : string.Empty,
                         Quantity = reader["Quantity"] != DBNull.Value ? (int)reader["Quantity"] : 0,
                         UnitOFMeasure = reader["UnitOFMeasure"] != DBNull.Value ? (string)reader["UnitOFMeasure"] : string.Empty,

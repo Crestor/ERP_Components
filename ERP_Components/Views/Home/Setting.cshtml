@@ -17,7 +17,7 @@
     <input type="radio" value="pass" name="user" onclick="showuser(1)" />
 
     <div id="usernameSection" style="display:none;">
-        <form method="post" asp-action="SetUsername" asp-controller="Home">
+        <form method="post" asp-action="SetUsername" asp-controller="Home" onsubmit="savedDetail()">
         <div class="form-row" style="width:50%">
             <label for="currentUsername">Current Username:</label>
             <input type="text" id="currentUsername" name="oldUserName" value="@Model.oldUserName" placeholder="Username">
@@ -37,7 +37,7 @@
     </div>
 
     <div id="passwordSection" style="display:none;width:100%;">
-        <form method="post" asp-action="SetPassword" asp-controller="Home">
+        <form method="post" asp-action="SetPassword" asp-controller="Home" onsubmit="savedDetail()">
         <div class="form-row" style="width:50%">
             <label for="currentPassword">Current Password:</label>
             <input type="password" id="currentPassword" name="currentPassword" placeholder="Password">
@@ -69,5 +69,18 @@
             document.getElementById("usernameSection").style.display = "none";
             document.getElementById("passwordSection").style.display = "grid";
         }
+    }
+</script>
+
+
+<script>
+      function savedDetail(){
+                Swal.fire({
+      position: "center",
+      icon: "success",
+      title: "Your Details Changed successfully",
+      showConfirmButton: false,
+      timer: 1500
+    });
     }
 </script>

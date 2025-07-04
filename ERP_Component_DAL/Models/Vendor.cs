@@ -42,5 +42,7 @@
 
         public List<AddPurchaseRequisition> Items { get; set; }
 
+        public List<VendorQuotationItem> Product { get; set; }
+
     }
 }

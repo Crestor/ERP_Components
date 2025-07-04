@@ -1939,6 +1939,91 @@ namespace ERP_Component_DAL.Services
 
             return vendorQuotationItems;
         }
+
+        public List<VendorQuotationItem> GetRequisitionItems(Guid RequisitionID)
+        {
+            try
+            {
+                List<VendorQuotationItem> sales = new();
+                string connectionstring = configuration.GetConnectionString("DefaultConnectionString");
+                connection = new SqlConnection(connectionstring);
+                SqlCommand cmd = new();
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.CommandText = $"SELECT ri.ItemID, it.ItemName, ri.Quantity, it.UnitOFMeasure FROM RequisitionItems ri JOIN Items it ON ri.ItemID = it.ItemId Where ri.RequisitionID = '{RequisitionID}'";
+                cmd.Connection = connection;
+                connection.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    sales.Add(new VendorQuotationItem
+                    {
+                        ItemID = reader["ItemID"] != DBNull.Value ? (Guid)reader["ItemID"] : Guid.Empty,
+                        ItemName = reader["ItemName"] != DBNull.Value ? (string)reader["ItemName"] : string.Empty,
+                        UOM = reader["UnitOFMeasure"] != DBNull.Value ? (string)reader["UnitOFMeasure"] : string.Empty,
+                        
+                        Quantity = reader["Quantity"] != DBNull.Value ? Convert.ToDecimal(reader["Quantity"]) : 0m,
+                        
+                    });
+                }
+
+                return sales;
+
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+
+            }
+            finally
+            {
+                connection.Close();
+            }
+        }
+
+        //public List<VendorQuotationItem> GetRequisitionItems(Guid RequisitionID)
+        //{
+        //    List<VendorQuotationItem> vendorQuotationItems = new List<VendorQuotationItem>();
+
+        //    try
+        //    {
+        //        using (SqlConnection connection = new SqlConnection(_connectionString))
+        //        {
+        //            connection.Open();
+        //            string query = "SELECT ri.ItemID, it.ItemName, ri.Quantity, it.UnitOFMeasure FROM RequisitionItems ri JOIN Items it ON ri.ItemID = it.ItemId Where ri.RequisitionID = @RequisitionID";
+
+        //            using (SqlCommand cmd = new SqlCommand(query, connection))
+        //            {
+        //                cmd.Parameters.AddWithValue("@RequisitionID", RequisitionID);
+
+        //                using (SqlDataReader reader = cmd.ExecuteReader())
+        //                {
+        //                    while (reader.Read())
+        //                    {
+        //                        VendorQuotationItem item = new VendorQuotationItem
+        //                        {
+        //                            ItemID = reader.GetGuid(reader.GetOrdinal("ItemID")),
+        //                            ItemName = reader.GetString(reader.GetOrdinal("ItemName")),
+        //                            UOM = reader.GetString(reader.GetOrdinal("UnitOFMeasure")),
+        //                            Quantity = reader.GetDecimal(reader.GetOrdinal("Quantity")),
+        //                            //UnitPrice = reader.GetDecimal(reader.GetOrdinal("UnitPrice")),
+        //                            //TotalPrice = reader.GetDecimal(reader.GetOrdinal("TotalPrice"))
+        //                        };
+        //                        vendorQuotationItems.Add(item);
+        //                    }
+        //                }
+        //            }
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        throw;
+        //    }
+
+        //    return vendorQuotationItems;
+        //}
     }
+
 }
+
 

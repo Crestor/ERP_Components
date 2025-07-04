@@ -51,6 +51,9 @@
                     <th>HSN</th>
                     <th>Qty</th>
                     <th>UOM</th>
+                    <th>Product Code</th>
+                    <th>Description</th>
+                    <th>Product Code</th>
                     <th>Unit Price</th>
                     <th>Disc (%)</th>
                     <th>Discount Amount</th>
@@ -69,7 +72,7 @@
                             <option selected disabled>Select Product</option>
                             @foreach (var product in Model.ItemNames)
                             {
-                             <option value="@product.ItemId" data-price="@product.SellingPrice" data-HSN="@product.HSN" data-UOM="@product.UnitOFMeasure" data-ItemId="@product.ItemId">@product.ItemName</option>
+                                        <option value="@product.ItemId" data-price="@product.SellingPrice" data-HSN="@product.HSN" data-Code="@product.ItemCode" data-UOM="@product.UnitOFMeasure" data-Desc="@product.Description" data-ItemId="@product.ItemId">@product.ItemName</option>
 
                             }
                         </select>
@@ -78,31 +81,37 @@
                     <td><input type="text" id="HSN" name="HSN"></td>
                     <td><input type="number" id="Quantity" name="Quantity" oninput="calculateRow(this)"></td>
                     <td><input type="text" id="UnitOFMeasure" name="UnitOFMeasure"></td>
+                    <td><input type="text"  id="ItemCode" name="ItemCode" /></td>
+                    <td><input type="text" id="Description" name="Description"></td>
+                    <td><input type="text" id="ProductCode" name="ProductCode"></td>
                     <td><input type="number" id="SellingPrice" name="SellingPrice" oninput="calculateRow(this)"></td>
                     <td><input type="number" id="discountRate" name="discountRate" oninput="calculateRow(this)"></td>
                     <td><input type="number" id="discountAmount" name="discountAmount" readonly></td>
                     <td><input type="number" id="taxableAmount" name="taxableAmount" readonly></td>
-                    <td>
-                            <select id="cgst" name="cgst" style="width: 40px;" onchange="syncGST()">
+                            <td>
+                                <input type="number" id="cgst" name="cgst" value="2.5" readonly  />
+                           @*  <select id="cgst" name="cgst" style="width: 40px;" onchange="syncGST()">
                             <option value="0">0%</option>
-                            @* <option value="2.5">2.5%</option> *@
+                            <option value="2.5">2.5%</option>
                             <option value="5">5%</option>
                             <option value="9">9%</option>
                             <option value="12">12%</option>
                             <option value="18">18%</option>
                             <option value="28">28%</option>
-                        </select>
+                        </select> *@
                     </td>
-                    <td>
-                            <select id="sgst" name="sgst" style="width: 40px;" onchange="calculateRow(this)">
+                            <td>
+                                <input type="number" id="sgst" name="sgst" value="2.5" readonly />
+
+                            @* <select id="sgst" name="sgst" style="width: 40px;" onchange="calculateRow(this)">
                             <option value="0">0%</option>
-                            @* <option value="2.5">2.5%</option> *@
+                            <option value="2.5">2.5%</option>
                             <option value="5">5%</option>
                             <option value="9">9%</option>
                             <option value="12">12%</option>
                             <option value="18">18%</option>
                             <option value="28">28%</option>
-                        </select>
+                        </select> *@
                     </td>
                         <td>
                             <select id="igst" name="igst" style="width: 40px;" onchange="calculateRow(this)">
@@ -152,8 +161,11 @@
                   <th>S.No</th>  
                    <th>Item</th>   
                    <th>HSN</th>   
+                  
                    <th>Qty</th>   
                    <th>UOM</th>   
+                   <th>Product Code</th>
+                   <th>Description</th>   
                    <th>Unit Price</th>  
                    <th>Discount(%)</th>  
                    <th>Discount Amount</th>   
@@ -261,14 +273,19 @@
         const SellingPrice = selectedOption.getAttribute("data-price");
 		const HSN = selectedOption.getAttribute("data-HSN");
 		const UnitOFMeasure = selectedOption.getAttribute("data-UOM");
-
+		const Description = selectedOption.getAttribute("data-Desc");
+        const ItemCode = selectedOption.getAttribute("data-Code");
         const row = dropdown.closest('tr');
         const SellingPriceInput = row.querySelector('[name="SellingPrice"]');
 		const HSNInput = row.querySelector('[name="HSN"]');
 		const UnitOFMeasureInput = row.querySelector('[name="UnitOFMeasure"]');
+        const ItemCodeInput = row.querySelector('[name="ItemCode"]')
+		const DescriptionInput = row.querySelector('[name="Description"]');
         SellingPriceInput.value = SellingPrice;
         HSNInput.value = HSN;
 		UnitOFMeasureInput.value = UnitOFMeasure;
+         DescriptionInput.value = Description;
+         ItemCodeInput.value = ItemCode;
 
         calculateRow(SellingPriceInput);
     }
@@ -320,6 +337,8 @@
                 ItemId:$('#ItemId').val(),
                 ItemName: $("#ItemName").val(),
                 HSN: $("#HSN").val(),
+                ItemCode : $("#ItemCode").val(),
+                Description: $("#Description").val(),
                 Quantity: parseInt($("#Quantity").val()),
                 UnitOFMeasure: $("#UnitOFMeasure").val(),
                 SellingPrice: parseFloat($("#SellingPrice").val()),
@@ -354,6 +373,8 @@
                             <td>${item.hsn}</td>
                           <td>${item.quantity}</td>
                                <td>${item.unitOFMeasure}</td>
+                               <td>${item.itemCode}</td>
+                               <td>${item.description}</td>
                             <td>${item.sellingPrice}</td>
                           <td>${item.discountRate}</td>
                             <td>${item.discountAmount}</td>
@@ -374,6 +395,8 @@
 					$("#ItemName").val("");
 					$("#HSN").val("");
 					$("#Quantity").val("");
+					$("#Description").val("");
+                    #("#ItemCode").val("");
 					$("#UnitOFMeasure").val("");
 					$("#SellingPrice").val("");
 					$("#discountRate").val("");
