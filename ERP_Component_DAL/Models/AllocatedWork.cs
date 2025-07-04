@@ -16,6 +16,7 @@ namespace ERP_Component_DAL.Models
         public int Quantity { get; set; }
         public decimal RatePerPeices { get; set; }
         public DateTime CreatedAt { get; set; }
+        public DateTime RecievedDate { get; set; }
         public int RecievedQuantity { get; set; }
         public byte WorkStatus { get; set; }
         public Guid? AllocatedYarnID { get; set; }

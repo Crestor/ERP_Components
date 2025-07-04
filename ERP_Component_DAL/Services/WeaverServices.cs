@@ -1104,7 +1104,7 @@ namespace ERP_Component_DAL.Services
             }
         }
 
-        public void UpdateWeavingOrder(Guid allocatedWorkID, int recievedQuantity)
+        public void UpdateWeavingOrder(AllocatedWork allocated)
         {
 
             try
@@ -1120,8 +1120,8 @@ namespace ERP_Component_DAL.Services
 
                     using (SqlCommand cmd = new SqlCommand(query, connection))
                     {
-                        cmd.Parameters.AddWithValue("@RecievedQuantity", recievedQuantity);
-                        cmd.Parameters.AddWithValue("@AllocatedWorkID", allocatedWorkID);
+                        cmd.Parameters.AddWithValue("@RecievedQuantity", allocated.RecievedQuantity);
+                        //cmd.Parameters.AddWithValue("@AllocatedWorkID", allocatedWorkID);
                         cmd.ExecuteNonQuery();
                     }
                 }

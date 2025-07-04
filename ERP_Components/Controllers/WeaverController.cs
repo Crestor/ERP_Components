@@ -268,9 +268,9 @@ namespace ERP_Components.Controllers
         //Tushar yaha allocatedWorkID or recieved quantity bhej dena
         // ye allcate to weaver vaaley orders ko receive karney ke liye hai
         // ek baar AllocatedWork model check kar liyo bhaii
-        public IActionResult RecieveWeavingOrder(Guid AllocatedWorkID , int RecievedQuantity)
+        public IActionResult RecieveWeavingOrder(AllocatedWork allocate)
         {
-            weaverServices.UpdateWeavingOrder(AllocatedWorkID,RecievedQuantity);
+            weaverServices.UpdateWeavingOrder(allocate);
             return RedirectToAction("ViewWeavingOrders");
         }
 

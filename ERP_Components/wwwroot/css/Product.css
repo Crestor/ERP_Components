@@ -443,3 +443,45 @@ p input{
     text-decoration: none;
     font-weight: 600;
 }
+.section-toggle {
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 20px;
+    margin: 15px 0;
+    background: #e3f2fd;
+    color: #138496;
+    border: 1.5px solid #138496;
+    border-radius: 8px;
+    box-shadow: 2px 2px 4px #13849650;
+    font-size: 16px;
+    font-weight: bold;
+    transition: background 0.3s ease;
+    width: 94%;
+    margin-inline: 35px;
+}
+
+    .section-toggle:hover {
+        background: #d0ecff;
+    }
+
+    .section-toggle i {
+        transition: transform 0.3s ease;
+    }
+    .section-toggle.active{
+        background-color:#138496;
+        color:white;
+    }
+    .section-toggle.active i {
+        transform: rotate(180deg);
+    }
+
+.section-toggle .form-section {
+    display: none;
+    margin:0px;
+    animation: fadeIn 0.3s ease;
+}
+    .section-toggle .form-section .form-row{
+        margin:0px 0px 10px 0px;
+    }

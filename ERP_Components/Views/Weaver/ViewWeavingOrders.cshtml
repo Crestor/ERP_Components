@@ -18,16 +18,79 @@
             </tr>
         </thead>
         <tbody>
-            @for(int i =0;i<Model.allocatedWorks.Count;i++)
+            @for (int i = 0; i < Model.allocatedWorks.Count; i++)
             {
                 <tr>
                     <td>@(i + 1)</td>
                     <td>@Model.allocatedWorks[i].AllocationCode</td>
                     <td>@Model.allocatedWorks[i].WorkerName</td>
                     <td>@Model.allocatedWorks[i].Quantity</td>
-                    <td><button onclick="location.href='@Url.Action("RecieveWeavingOrder","Weaver",new{AllocatedWorkID = Model.allocatedWorks[i].AllocatedWorkID,RecievedQuantity = Model.allocatedWorks[i].Quantity})'">Recieved</button></td>
+                    <td>
+                        <button type="button" onclick="showpopupforRecievedQuantity('@Model.allocatedWorks[i].AllocatedWorkID',@Model.allocatedWorks[i].Quantity)">
+                            Received
+                        </button>
+                    </td>
                 </tr>
             }
         </tbody>
     </table>
 </div>
+
+<!-- Popup Overlay -->
+<div id="overlay" class="overlay" style="display:none;">
+    <div class="Popuptable d-flex justify-content-center" style="justify-self:center">
+        <form asp-action="RecieveWeavingOrder" asp-controller="Weaver" class="form-section">
+            <h3>Recieved Details</h3>
+            <div class="form-row">
+                <label for="Quantity">Received Quantity</label>
+                <input type="number" id="recievedquantity" name="Quantity" required />
+            </div>
+            <div id="showinvalidinput"></div>
+
+            <div class="form-row">
+                <label for="RecievedDate">Received Date</label>
+                <input type="date" name="RecievedDate" required />
+            </div>
+            <input type="hidden" id="workID" name="AllocatedWorkID" />
+            <div class="button">
+             <button type="submit">Submit</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+
+    var TotalQuantity;
+
+    function showpopupforRecievedQuantity(WorkOrderID,Quantity) {
+           
+        TotalQuantity = Quantity;
+
+
+        document.getElementById("workID").value = WorkOrderID;
+
+        document.getElementById("overlay").style.display = 'block';
+    }
+
+    
+            document.getElementById("overlay").addEventListener("click",function(){
+        document.getElementById("overlay").style.display = 'none';
+
+            })
+
+
+
+    const inputQty = document.getElementById("recievedquantity");
+        if (inputQty) {
+            inputQty.addEventListener("input", function () {
+                if (parseInt(this.value) > (TotalQuantity)) {
+                    document.getElementById("showinvalidinput").innerHTML =
+                        "<span style='color: red;'>Allocated quantity cannot exceed total quantity.</span>";
+                    this.value = TotalQuantity;
+                } else {
+                    document.getElementById("showinvalidinput").innerHTML = "";
+                }
+            });
+        }
+</script>
