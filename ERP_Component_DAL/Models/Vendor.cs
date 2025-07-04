@@ -8,6 +8,7 @@
         public Guid purchaseOrderId { get; set; }
         public string? vendorName { get; set; }
 
+        public int? Quantity { get; set; }
         public decimal amount { get; set; }
         public decimal discountRate { get; set; }
         public decimal advanceRate { get; set; }

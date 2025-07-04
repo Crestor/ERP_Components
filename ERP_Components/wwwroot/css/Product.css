@@ -438,3 +438,8 @@ p input{
     z-index: 10000; /* ensure it's above */
     box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
 }
+.report a {
+    color: #138496;
+    text-decoration: none;
+    font-weight: 600;
+}

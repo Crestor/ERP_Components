@@ -1,5 +1,4 @@
-﻿@* @model List<StockAdjustment> *@
-
+﻿@using ERP_Component_DAL.Models
 @{
     ViewBag.Title = "Stock Adjustments";
     Layout = "~/Views/Shared/_LayoutINV.cshtml";
@@ -7,18 +6,13 @@
     }
 
     <link href="~/css/Product.css" rel="stylesheet" />
-
+@model List<StockTransaction>
 
 <div class="table">
     
-    @* @if (TempData["Message"] != null) *@
-    @* { *@
-    @*     <div class="message">@TempData["Message"]</div> *@
-    @* } *@
     <table>
         <thead>
             <tr>
-                <th>Item ID</th>
                 <th>Item Name</th>
                 <th>Previous Quantity</th>
                 <th>Adjusted Quantity</th>
@@ -28,33 +22,17 @@
             </tr>
         </thead>
         <tbody>
-            <tr>
-                <td>1001</td>
-                <td>Wireless Mouse</td>
-                <td>50</td>
-                <td>-5</td>
-                <td>45</td>
-                <td>Damaged</td>
-                <td>2025-05-29</td>
-            </tr>
-            <tr>
-                <td>1002</td>
-                <td>Mechanical Keyboard</td>
-                <td>30</td>
-                <td>+10</td>
-                <td>40</td>
-                <td>Restock</td>
-                <td>2025-05-30</td>
-            </tr>
-            <tr>    
-                <td>1003</td>
-                <td>Gaming Headset</td>
-                <td>20</td>
-                <td>-2</td>
-                <td>18</td>
-                <td>Lost Item</td>
-                <td>2025-05-31</td>
-             </tr>
+          @for(int i = 0; i<Model.Count;i++)
+            {
+                <tr>
+                    <td>@Model[i].ItemName</td>
+                    <td>@Model[i].</td>
+                    <td>@Model[i].</td>
+                    <td>@Model[i].</td>
+                    <td>@Model[i].</td>
+                    <td>@Model[i].TransactionDate.ToString("yyyy-MM-dd")</td>
+                </tr>
+            }
         </tbody>
     </table>
 </div>
