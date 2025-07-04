@@ -12,8 +12,8 @@
 <div class="form-section">
     <h3>Receive Details</h3>
     <div class="form-row" style="width:50%">
-        <label for="date">Date</label>
-        <input type="date" id="date" name="date" required />
+       @*  <label for="date">Date</label>
+        <input type="date" id="date" name="date" required /> *@
     </div>
     <div class="form-row">
         <label for="customerName">Customer Name</label>
@@ -31,15 +31,15 @@
             }
         </select>
 
-        <label for="project">Project :</label>
-        <input type="text" id="project" name="project" required />
+        @* <label for="project">Project :</label>
+        <input type="text" id="project" name="project" required /> *@
     </div>
 </div>
-
 <div id="outstanding" style="width:100%; display:none;">
+
     <h2>Outstanding Summary</h2>
     <div class="table">
-        <table>
+       <table>
             <thead>
                 <tr>
                     <th>Particular</th>
@@ -48,24 +48,24 @@
                 </tr>
             </thead>
             <tbody>
-                <tr><td>Amount Paid in advance:</td><td>1000</td><td>0</td></tr>
-                <tr><td>Outstanding Invoice Amount:</td><td>0</td><td>1000</td></tr>
-                <tr><td>Debit Note Amount:</td><td>0</td><td>1000</td></tr>
-                <tr><td>Credit Note Amount:</td><td>0</td><td>1000</td></tr>
-                <tr><td>Unsettled Additional charges</td><td>0</td><td>1000</td></tr>
+                <tr><td>Amount Paid in advance:</td><td>0</td><td></td></tr>
+                <tr><td>Outstanding Invoice Amount:</td><td>0</td><td>0</td></tr>
+                <tr><td>Debit Note Amount:</td><td>0</td><td>0</td></tr>
+                <tr><td>Credit Note Amount:</td><td>0</td><td>0</td></tr>
+                <tr><td>Unsettled Additional charges</td><td>0</td><td>0</td></tr>
                 <tr><td>Total Amount</td><td></td><td></td></tr>
             </tbody>
-        </table>
+        </table> 
 
 
 
-        <div class="alert alert-warning mt-3 " style="margin-bottom: 7px;">
+    </div> 
+     <div id="oBlanceContent" class="alert alert-warning mt-3 " style="margin-bottom: 7px;">
         <i class="fas fa-exclamation-circle"></i>
 
         You have outstanding receive payment of ₹ <span id="balance"></span>. Settle bill?
         <input type="radio" name="settleOption" value="yes" onclick="AmountSummaryOfCustomer(); paymentsettle();" /> Yes
         <input type="radio" name="settleOption" value="no" onclick="advancepayment();" /> No
-    </div>
     </div>
 
 
@@ -75,13 +75,25 @@
         <div style="display:flex; justify-content:space-between; margin-left:25px;">
             <div class="label">
                 <label for="paymentReleased">Payment Receive</label>
-                <input type="text" id="paymentReleased" name="paymentReleased" oninput="paymentrelease()" required />
+                <input type="number" id="paymentReleased" name="paymentReleased" oninput="paymentrelease()" required />
             </div>
             <div>
-                <p> Payment to be made: <input type="text" readonly /></p>
+               @*  <p> Payment to be made: <input type="text" readonly /></p>
                 <p> Amount of payment: <input type="text" readonly /></p>
                 <p> Journal Amount: <input type="text" readonly /></p>
-                <p> Amount in hand: <input type="text" id="debitedTotal" readonly /></p>
+        
+                <p> Amount In Hand: <input type="text" id="debitedTotal" readonly /></p> *@
+
+               
+                    <p> Payment to be made: ₹ <span id="paymentToBeMade">0.00</span></p>
+                    <p> Amount of payment: ₹ <span id="amountOfPayment">0.00</span></p>
+                    <p> Journal Amount: ₹ <span id="journalAmount">0.00</span></p>
+                    <p> Amount In Hand: ₹ <span id="debitedTotal">0.00</span></p>
+        
+
+       
+
+                
             </div>
         </div>
 
@@ -105,7 +117,7 @@
 
 
 
-    <div id="Advancepayment" style="display:none;width:94%;padding: 1%;margin: auto;" class="alert alert-warning mt-3">
+<div id="Advancepayment" style="display:none;width:100%;padding: 1%;margin: auto;background-color:#e8f9fc;" class="alert alert-warning mt-3">
 
     <label id="pendingpayment" class="required fas fa-exclamation-circle">Do you want to add advance amount to this customer?</label>
     <input type="radio" name="advanceOption" value="yes" onclick="CustomerPaymentDetails();paymentbill()" /> Yes
@@ -148,31 +160,46 @@
 
 
  <script>
-        function paymentrelease() {
-        $('#debitedTotal').val($('#paymentReleased').val());
+       function ScrollToElementById(id) {
+        const targetElement = document.getElementById(id);
+        if (targetElement) {
+            targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
     }
+    //     function paymentrelease() {
+    //     $('#debitedTotal').val($('#paymentReleased').val());
+    // }
+        function paymentrelease() {
+        const paymentReleased = $('#paymentReleased').val();
+        $('#debitedTotal').text(paymentReleased || '0.00');
+    }
+
 
     function show() {
         $('#outstanding').show();
+        ScrollToElementById("oBlanceContent");
     }
 
     function paymentsettle() {
         $('#bill').show();
+        ScrollToElementById("bill");
     }
 
     function paymentbill() {
         $('#paymenttable').show();
+             ScrollToElementById("paymenttable");
     }
 
     function advancepayment() {
         $('#Advancepayment').show();
         $('#bill').hide();
+             ScrollToElementById("Advancepayment");
     }
 
     $(document).ready(function () {
 
         var CustomerName = '@ViewBag.CustomerName';
-    if(CustomerName != null){
+    if(CustomerName != null && CustomerName!=""){
        getOutstandingPaymentBalance(); 
        show();
     }
@@ -189,8 +216,8 @@
                 type: 'GET',
                 data: { CustomerID },
                 success: function (data) {
-                    // $('#balance').val(data.balance); //this will when the value on in input 
-                   $('#balance').text(data.balance); // .text used when u wanna show it as text 
+                    // $('#balance').val(data.balance); //this will when the value on in input tags
+                   $('#balance').text(data.balance); // .text used when u wanna show it as text like p and so on
 
                     currentBalance = parseFloat(data.balance);
                 },
@@ -200,11 +227,8 @@
             });
         }
     }
-
-    
-
-
-    function AmountSummaryOfCustomer() {
+    // ------------/
+        function AmountSummaryOfCustomer() {
         const CustomerID = $('#CustomerID').val();
         if (!CustomerID) return;
 
@@ -217,14 +241,21 @@
                 tableBody.empty();
 
                 const items = response.listItems || response || [];
+
                 if (!items.length) {
                     tableBody.append("<tr><td colspan='5'>No data found</td></tr>");
+                    $('#amountOfPayment').text('0.00');
+                    $('#paymentToBeMade').text('0.00');
+                    $('#journalAmount').text('0.00');
                     return;
                 }
+
+                let totalGrossAmount = 0;
 
                 items.forEach((item, index) => {
                     const grossTotal = parseFloat(item.grossTotal);
                     const isDisabled = grossTotal === 0 ? 'disabled' : '';
+                    totalGrossAmount += grossTotal;
 
                     const row = $(`
                         <tr data-quotationid="${item.quotationID}">
@@ -244,63 +275,59 @@
                     tableBody.append(row);
                 });
 
+                $('#amountOfPayment').text(totalGrossAmount.toFixed(2));
+                $('#paymentToBeMade').text(totalGrossAmount.toFixed(2));
+                $('#journalAmount').text(totalGrossAmount.toFixed(2));
+
                 $('.status-btn').off('click').on('click', function () {
                     const $btn = $(this);
                     const originalGross = parseFloat($btn.data('gross'));
                     const quotationID = $btn.data('quotationid');
                     const CustomerID = $('#CustomerID').val();
-
                     let paymentInput = parseFloat($('#paymentReleased').val()) || 0;
 
                     if (paymentInput <= 0) {
                         alert("Please enter a valid payment amount.");
                         return;
                     }
-                         function FullPaid() {
-        Swal.fire({
-            title: "Amount submitted successfully",
-            text: "",
-            icon: "success",
-            confirmButtonText: "OK",
-            showCancelButton: false,
-            showDenyButton: false,
-            confirmButtonColor: "#138496"
-        });
-    }
 
-        function  PartialPaid(){
-             Swal.fire({
-                title: "Partial Amount submitted successfully",
-                text: "",
-                icon: "success",
-                confirmButtonText: "OK",
-            showCancelButton: false,
-            showDenyButton: false,
-                confirmButtonColor: "#138496",
-            });
-        }
+                    function FullPaid() {
+                        Swal.fire({
+                            title: "Amount submitted successfully",
+                            icon: "success",
+                            confirmButtonText: "OK",
+                            confirmButtonColor: "#138496"
+                        });
+                    }
+
+                    function PartialPaid() {
+                        Swal.fire({
+                            title: "Partial Amount submitted successfully",
+                            icon: "success",
+                            confirmButtonText: "OK",
+                            confirmButtonColor: "#138496"
+                        });
+                    }
+
                     let amountToPay = 0;
                     let newGrossTotal = 0;
                     let statusLabel = "";
                     let sendOldGrossTotal = 0;
 
                     if (paymentInput >= originalGross) {
-                        // Full payment
                         amountToPay = originalGross;
                         sendOldGrossTotal = originalGross;
                         newGrossTotal = 0;
                         statusLabel = "Paid";
                         FullPaid();
                     } else {
-                        // Partial payment
                         amountToPay = paymentInput;
-                        sendOldGrossTotal = amountToPay; 
+                        sendOldGrossTotal = amountToPay;
                         newGrossTotal = originalGross - amountToPay;
                         statusLabel = "Partial Paid";
                         PartialPaid();
                     }
 
-                    // Update UI
                     $btn.closest('tr').find('.gross').text(newGrossTotal.toFixed(2));
                     $btn.text(statusLabel).prop('disabled', true);
 
@@ -309,26 +336,25 @@
                     currentBalance = newBalance;
 
                     $('#paymentReleased').val(remainingPayment > 0 ? remainingPayment.toFixed(2) : '');
-                    $('#balance').val(newBalance.toFixed(2));
+                    $('#debitedTotal').text(remainingPayment > 0 ? remainingPayment.toFixed(2) : '0.00');
 
-                    
                     $.ajax({
                         url: '/Account/UpdateInvoiceWithNewBalanceReceivePayment',
                         type: 'POST',
                         data: {
-                            OldGrossTotal: sendOldGrossTotal,      
+                            OldGrossTotal: sendOldGrossTotal,
                             NewGrossTotal: newGrossTotal,
                             Balance: newBalance,
                             QuotationID: quotationID,
                             CustomerID: CustomerID
                         },
-                        success: function () {
-                            
-                        },
+                        success: function () { },
                         error: function () {
                             alert('Error posting updated values.');
                         }
                     });
+
+                    updateTotalAmountSummary(); // update totals again
                 });
             },
             error: function () {
@@ -337,6 +363,160 @@
         });
     }
 
+    function updateTotalAmountSummary() {
+        let totalGross = 0;
+        $('#dataTable .gross').each(function () {
+            const val = parseFloat($(this).text());
+            if (!isNaN(val)) totalGross += val;
+        });
+
+        const originalPayment = parseFloat($('#paymentReleased').val()) || 0;
+        const originalTotal = parseFloat($('#amountOfPayment').text()) || 0;
+
+        const journalAmount = originalTotal - totalGross;
+        const toBeMade = totalGross;
+
+        $('#amountOfPayment').text(totalGross.toFixed(2));
+        $('#paymentToBeMade').text(toBeMade.toFixed(2));
+        $('#journalAmount').text(journalAmount.toFixed(2));
+    }
+
+
+
+    // function AmountSummaryOfCustomer() {
+    //     const CustomerID = $('#CustomerID').val();
+    //     if (!CustomerID) return;
+
+    //     $.ajax({
+    //         url: '/Account/AmountSummaryOfCustomer',
+    //         type: 'GET',
+    //         data: { CustomerID },
+    //         success: function (response) {
+    //             const tableBody = $('#dataTable tbody');
+    //             tableBody.empty();
+
+    //             const items = response.listItems || response || [];
+    //             if (!items.length) {
+    //                 tableBody.append("<tr><td colspan='5'>No data found</td></tr>");
+    //                 return;
+    //             }
+
+    //             items.forEach((item, index) => {
+    //                 const grossTotal = parseFloat(item.grossTotal);
+    //                 const isDisabled = grossTotal === 0 ? 'disabled' : '';
+
+    //                 const row = $(`
+    //                     <tr data-quotationid="${item.quotationID}">
+    //                         <td>${index + 1}</td>
+    //                         <td>${item.invoiceNumber}</td>
+    //                         <td class="gross">${grossTotal.toFixed(2)}</td>
+    //                         <td class="status">
+    //                             <button class="status-btn btn btn-sm" style="background-color: #138496; color: white;" ${isDisabled}
+    //                                 data-gross="${grossTotal}"
+    //                                 data-invoice="${item.invoiceNumber}"
+    //                                 data-quotationid="${item.quotationID}">
+    //                                 Pay
+    //                             </button>
+    //                         </td>
+    //                     </tr>
+    //                 `);
+    //                 tableBody.append(row);
+    //             });
+
+    //             $('.status-btn').off('click').on('click', function () {
+    //                 const $btn = $(this);
+    //                 const originalGross = parseFloat($btn.data('gross'));
+    //                 const quotationID = $btn.data('quotationid');
+    //                 const CustomerID = $('#CustomerID').val();
+
+    //                 let paymentInput = parseFloat($('#paymentReleased').val()) || 0;
+
+    //                 if (paymentInput <= 0) {
+    //                     alert("Please enter a valid payment amount.");
+    //                     return;
+    //                 }
+    //                      function FullPaid() {
+    //     Swal.fire({
+    //         title: "Amount submitted successfully",
+    //         text: "",
+    //         icon: "success",
+    //         confirmButtonText: "OK",
+    //         showCancelButton: false,
+    //         showDenyButton: false,
+    //         confirmButtonColor: "#138496"
+    //     });
+    // }
+
+    //     function  PartialPaid(){
+    //          Swal.fire({
+    //             title: "Partial Amount submitted successfully",
+    //             text: "",
+    //             icon: "success",
+    //             confirmButtonText: "OK",
+    //         showCancelButton: false,
+    //         showDenyButton: false,
+    //             confirmButtonColor: "#138496",
+    //             draggable: true
+    //         });
+    //     }
+    //                 let amountToPay = 0;
+    //                 let newGrossTotal = 0;
+    //                 let statusLabel = "";
+    //                 let sendOldGrossTotal = 0;
+
+    //                 if (paymentInput >= originalGross) {
+    //                     // Full payment
+    //                     amountToPay = originalGross;
+    //                     sendOldGrossTotal = originalGross;
+    //                     newGrossTotal = 0;
+    //                     statusLabel = "Paid";
+    //                     FullPaid();
+    //                 } else {
+    //                     // Partial payment
+    //                     amountToPay = paymentInput;
+    //                     sendOldGrossTotal = amountToPay; 
+    //                     newGrossTotal = originalGross - amountToPay;
+    //                     statusLabel = "Partial Paid";
+    //                     PartialPaid();
+    //                 }
+
+    //                 // Update UI
+    //                 $btn.closest('tr').find('.gross').text(newGrossTotal.toFixed(2));
+    //                 $btn.text(statusLabel).prop('disabled', true);
+
+    //                 const remainingPayment = paymentInput - amountToPay;
+    //                 const newBalance = currentBalance - amountToPay;
+    //                 currentBalance = newBalance;
+
+    //                 $('#paymentReleased').val(remainingPayment > 0 ? remainingPayment.toFixed(2) : '');
+    //                 $('#balance').val(newBalance.toFixed(2));
+
+                    
+    //                 $.ajax({
+    //                     url: '/Account/UpdateInvoiceWithNewBalanceReceivePayment',
+    //                     type: 'POST',
+    //                     data: {
+    //                         OldGrossTotal: sendOldGrossTotal,      
+    //                         NewGrossTotal: newGrossTotal,
+    //                         Balance: newBalance,
+    //                         QuotationID: quotationID,
+    //                         CustomerID: CustomerID
+    //                     },
+    //                     success: function () {
+                            
+    //                     },
+    //                     error: function () {
+    //                         alert('Error posting updated values.');
+    //                     }
+    //                 });
+    //             });
+    //         },
+    //         error: function () {
+    //             alert('Error retrieving invoice data.');
+    //         }
+    //     });
+    // }
+    // ---------------------------------------------------------------
 
     //     function CustomerPaymentDetails() {
     //     const CustomerID = $('#CustomerID').val();

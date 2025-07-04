@@ -10,7 +10,7 @@ namespace ERP_Component_DAL.Models
     {
         public int Complete { get; set; }
         public int Pending { get; set; }
-
+        public int TotalReturn { get; set; }
         public string FilterType { get; set; }
         public decimal TotalAmount { get; set; }
         public DateOnly CreatedAt { get; set; }

@@ -8,6 +8,7 @@ namespace ERP_Component_DAL.Models
 {
     public class ReceivePayment
     {
+        //public decimal TotalAdvanceAmount { get; set; }
        public Guid InvoiceID { get; set; }
         public decimal AdvanceAmount { get; set; }
         public decimal TotalAmount { get; set; }

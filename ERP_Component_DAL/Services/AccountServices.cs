@@ -631,7 +631,8 @@ namespace ERP_Component_DAL.Services
 
 
                     Item.Balance = reader["Balance"] != DBNull.Value ? Convert.ToDecimal(reader["Balance"]) : 0m;
-                    //Item.TotalBalance = reader["TotalBalance"] != DBNull.Value ? Convert.ToDecimal(reader["TotalBalance"]) : 0m;
+
+                    //Item.TotalAdvanceAmount = reader["TotalAdvanceAmount"] != DBNull.Value ? Convert.ToDecimal(reader["TotalAdvanceAmount"]) : 0m;
                     //Item.TotalPaid = reader["TotalPaid"] != DBNull.Value ? Convert.ToDecimal(reader["TotalPaid"]) : 0m;
                 }
 
@@ -749,33 +750,63 @@ namespace ERP_Component_DAL.Services
 
 
         }
-        
 
-      public bool UpdateInvoiceWithNewBalance(ReceivePayment mp)
+
+        //public bool UpdateInvoiceWithNewBalance(ReceivePayment mp)
+        //  {
+        //      try
+        //      {
+        //          String ConnectionString = configuration.GetConnectionString("DefaultConnectionString");
+        //          connection = new SqlConnection(ConnectionString);
+        //          SqlCommand cmd = new SqlCommand();
+        //          cmd.CommandType = System.Data.CommandType.Text;
+
+
+        //          //cmd.CommandText = $" update Customers set Balance=@Balance where CustomerID=@CustomerID"; 
+        //          cmd.CommandText = $" update customerQuotation set GrossTotal=GrossTotal-@OldGrossTotal where QuotationID=@QuotationID";
+        //          //cmd.Parameters.AddWithValue("@GrossTotal", mp.NewGrossTotal);
+        //          cmd.Parameters.AddWithValue("@QuotationID", mp.QuotationID);
+        //          cmd.Parameters.AddWithValue("@OldGrossTotal", mp.OldGrossTotal);
+
+
+        //          cmd.Connection = connection;
+        //          connection.Open();
+        //          cmd.ExecuteScalar();
+
+
+
+        //          return true;
+
+        //      }
+        //      catch (Exception ex)
+        //      {
+        //          throw ex;
+        //      }
+        //      finally
+        //      {
+        //          connection.Close();
+        //      }
+        //  }
+        public bool UpdateInvoiceWithNewBalance(ReceivePayment mp)
         {
             try
             {
-                String ConnectionString = configuration.GetConnectionString("DefaultConnectionString");
+                string ConnectionString = configuration.GetConnectionString("DefaultConnectionString");
                 connection = new SqlConnection(ConnectionString);
                 SqlCommand cmd = new SqlCommand();
                 cmd.CommandType = System.Data.CommandType.Text;
 
+                cmd.CommandText = @"UPDATE customerQuotation SET GrossTotal = GrossTotal - @OldGrossTotal WHERE QuotationID = @QuotationID;
+            UPDATE Invoice SET Status = CASE WHEN (SELECT GrossTotal FROM customerQuotation WHERE QuotationID = @QuotationID) = 0 THEN 'Paid' ELSE 'Partial Paid' END WHERE QuotationID = @QuotationID;";
 
-                //cmd.CommandText = $" update Customers set Balance=@Balance where CustomerID=@CustomerID"; 
-                cmd.CommandText = $" update customerQuotation set GrossTotal=GrossTotal-@OldGrossTotal where QuotationID=@QuotationID";
-                //cmd.Parameters.AddWithValue("@GrossTotal", mp.NewGrossTotal);
                 cmd.Parameters.AddWithValue("@QuotationID", mp.QuotationID);
                 cmd.Parameters.AddWithValue("@OldGrossTotal", mp.OldGrossTotal);
 
-
                 cmd.Connection = connection;
                 connection.Open();
-                cmd.ExecuteScalar();
-              
-
+                cmd.ExecuteNonQuery();
 
                 return true;
-
             }
             catch (Exception ex)
             {
@@ -786,6 +817,7 @@ namespace ERP_Component_DAL.Services
                 connection.Close();
             }
         }
+
 
         public bool UpdateAdvancedAmountOFCustomer(ReceivePayment mp)
         {
@@ -797,7 +829,7 @@ namespace ERP_Component_DAL.Services
                 cmd.CommandType = System.Data.CommandType.Text;
 
 
-                cmd.CommandText = $"update Invoice Set AdvanceAmount= AdvanceAmount + @AdvanceAmount WHERE InvoiceID = @InvoiceID";
+                cmd.CommandText = "UPDATE Invoice SET AdvanceAmount = (Select AdvanceAmount From Invoice Where InvoiceID = @InvoiceID)  + @AdvanceAmount WHERE InvoiceID = @InvoiceID";
 
                 cmd.Parameters.AddWithValue("@AdvanceAmount", mp.AdvanceAmount);
                 cmd.Parameters.AddWithValue("@InvoiceID", mp.InvoiceID);
@@ -806,7 +838,7 @@ namespace ERP_Component_DAL.Services
 
                 cmd.Connection = connection;
                 connection.Open();
-                cmd.ExecuteScalar();
+                cmd.ExecuteNonQuery();
                 connection.Close();
 
 
@@ -824,7 +856,7 @@ namespace ERP_Component_DAL.Services
             }
         }
 
-
+       
         public List<ReceivePayment> getAmountSummaryOfCustomer(Guid CustomerID)
         {
             try
@@ -835,7 +867,7 @@ namespace ERP_Component_DAL.Services
                 SqlCommand cmd = new SqlCommand();
                 cmd.CommandType = System.Data.CommandType.Text;
                 //cmd.CommandText = $"select Q.GrossTotal,Q.QuotationID ,I.InvoiceNumber from Customers c join CustomerQuotation Q on c.CustomerID=Q.CustomerID join Invoice I on Q.QuotationID=I.QuotationID where Q.CustomerID ='{CustomerID}'";
-                cmd.CommandText = $"select Q.GrossTotal,Q.QuotationID ,I.InvoiceNumber ,I.InvoiceID from customerQuotation Q join Invoice I on  Q.QuotationID=I.QuotationID where Q.CustomerID = '{CustomerID}'";
+                cmd.CommandText = $"select Q.GrossTotal,Q.QuotationID ,I.InvoiceNumber ,I.InvoiceID from customerQuotation Q join Invoice I on  Q.QuotationID=I.QuotationID where Q.CustomerID = '{CustomerID}'  AND I.Status IN ('Unpaid', 'Partial Paid')";
                 cmd.Parameters.AddWithValue("@CustomerID", CustomerID);
 
                 cmd.Connection = connection;

@@ -461,11 +461,7 @@ namespace ERP_Components.Controllers
         }
 
 
-        public IActionResult ViewInventory()
-        {
-            List<Items> items = salesServices.ViewWarehouseInventory();
-            return View(items);
-        }
+       
 
 
 
@@ -483,7 +479,12 @@ namespace ERP_Components.Controllers
         }
 
 
-     
+        public IActionResult ViewInventory()
+        {
+            List<Items> items = salesServices.ViewWarehouseInventory();
+            return View(items);
+        }
+
 
         public IActionResult BillsReceivable()
         {

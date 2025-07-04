@@ -28,8 +28,8 @@
 <div class="form-section">
     <h3>Payment Details</h3>
     <div class="form-row" style="width:50%">
-        <label for="date">Date</label>
-        <input type="date" id="date" name="date" required />
+        @* <label for="date">Date</label>
+        <input type="date" id="date" name="date" required /> *@
     </div>
     <div class="form-row">
         <label for="VenderName">Vendor Name</label>
@@ -49,8 +49,8 @@
             }
             }
         </select>
-        <label for="project">Project:</label>
-        <input type="text" id="project" name="project" required />
+       @*  <label for="project">Project:</label>
+        <input type="text" id="project" name="project" required /> *@
     </div>
 </div>
 <div id="outstanding">
@@ -61,11 +61,11 @@
                 <tr><th>Particular</th><th>Debited</th><th>Credited</th></tr>
             </thead>
             <tbody>
-                <tr><td>Amount Paid in advance:</td><td>1000</td><td>0</td></tr>
-                <tr><td>Outstanding Bill Amount:</td><td>0</td><td>1000</td></tr>
-                <tr><td>Debit Note Amount:</td><td>0</td><td>1000</td></tr>
-                <tr><td>Credit Note Amount:</td><td>0</td><td>1000</td></tr>
-                <tr><td>Unsettled Journal Entries</td><td>0</td><td>1000</td></tr>
+                <tr><td>Amount Paid in advance:</td><td>0</td><td>0</td></tr>
+                <tr><td>Outstanding Bill Amount:</td><td>0</td><td>0</td></tr>
+                <tr><td>Debit Note Amount:</td><td>0</td><td>0</td></tr>
+                <tr><td>Credit Note Amount:</td><td>0</td><td>0</td></tr>
+                <tr><td>Unsettled Journal Entries</td><td>0</td><td>0</td></tr>
                 <tr><td>Total Amount</td><td></td><td></td></tr>
             </tbody>
         </table>
@@ -74,7 +74,10 @@
 
 
 
-        <div class="alert alert-warning mt-3 " style="margin-bottom: 7px;">
+
+  </div>
+
+        <div id="pamountcontent"  class="alert alert-warning mt-3 " style="margin-bottom: 7px;">
             <i class="fas fa-exclamation-circle"></i>
             You have pending bill of ₹  <span id="pendingAmount"></span>. Settle bill?
             <input  type="radio" name="taxtype" value="yes" onchange="getAmountSummary(); paymentsettle();">Yes
@@ -85,19 +88,22 @@
             @* <label >No</label> *@
     </div>
 
-  </div>
-
-    <div id="bill" style="display:none; margin:25px;" class="form-section">
+    <div id="bill" style="display:none;width:94%;padding: 1%;margin: auto;" class="form-section">
         <div style="display:flex; justify-content:space-between; margin-left:25px;">
             <div class="label" style="height:50px;">
                 <label for="payment">Payment Released</label>
                 <input type="text" id="payment" name="payment" oninput="paymentrelease()" />
             </div>
-            <div>
-                <p>Payment to be made: <input type="text" readonly value="₹" /></p>
+            <div style="padding-right:50px;">
+                <p> Payment to be made: ₹ <span id="paymentToBeMade">0.00</span></p>
+                <p> Amount of payment: ₹ <span id="amountOfPayment">0.00</span></p>
+                <p> Journal Amount: ₹ <span id="journalAmount">0.00</span></p>
+                <p> Amount In Hand: ₹ <span id="debitedTotal">0.00</span></p>
+
+             @*    <p>Payment to be made: <input type="text" readonly value="₹" /></p>
                 <p>Amount of payment: <input type="text" readonly /></p>
                 <p>Journal Amount: <input type="text" readonly /></p>
-                <p>Amount in hand: <input type="text" id="debitedTotal" readonly /></p>
+                <p>Amount in hand: <input type="text" id="debitedTotal" readonly /></p> *@
             </div>
         </div>
         <input type="hidden" name="PurchaseOrderID" value="@Model.PurchaseOrderID" hidden />
@@ -123,7 +129,7 @@
 </div>
 
 
-<div id="Advancepayment" style="display:none;width:94%;padding: 1%;margin: auto;" class="alert alert-warning mt-3">
+<div id="Advancepayment" style="display:none;width:100%;padding: 1%;margin: auto ; background-color:#e8f9fc;" class="alert alert-warning mt-3">
         <label id="pendingpayment" class="required fas fa-exclamation-circle" for="advance">Do you want to make advance payment?</label>
     <input type="radio" name="advancePay" value="yes" onchange="getPaymentDetailsList(); paymentbill() ;" /> Yes
     <input type="radio" name="advancePay" value="no" /> No
@@ -138,6 +144,8 @@
 
         </div>
         <div>
+
+
             <p>Payment to be made: <input type="text" readonly /></p>
             <p>Amount of payment: <input type="text" readonly /></p>
             <p>Journal Amount: <input type="text" readonly /></p>
@@ -170,29 +178,43 @@
     $(document).ready(function () {
 
         var vendorName = '@ViewBag.VendorName';
-    if(vendorName != null){
+    if(vendorName !== null && vendorName!=""){
         getPendingAmount();
         showOutstanding();
     }
     
     });
 
-    function showOutstanding() {
+       function showOutstanding() {
         document.getElementById("outstanding").style.display = "block";
+        ScrollToElementById("outstanding");
     }
 
-    function paymentsettle() {
+      function ScrollToElementById(id) {
+        const targetElement = document.getElementById(id);
+        if (targetElement) {
+            targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+    }
+
+
+       function paymentsettle() {
         document.getElementById("bill").style.display = "block";
+        ScrollToElementById("bill");
     }
 
     function advancepayment() {
         document.getElementById("Advancepayment").style.display = "block";
         document.getElementById("bill").style.display = "none";
+        ScrollToElementById("Advancepayment");
     }
 
-    function paymentbill() {
+
+        function paymentbill() {
         document.getElementById("paymenttable").style.display = "block";
+        ScrollToElementById("paymenttable");
     }
+
 
     function getPendingAmount() {
         const vendorId = $('#VendorID').val();
@@ -211,11 +233,17 @@
         }
     }
 
-    function paymentrelease() {
-        const payment = parseFloat($('#payment').val()) || 0;
-        $('#debitedTotal').val(payment);
-        remainingPaymentInput = payment; // update remaining globally
-        resetPaymentButtons(); // reset any previous clicks
+    // function paymentrelease() {
+    //     const payment = parseFloat($('#payment').val()) || 0;
+    //     $('#debitedTotal').val(payment);
+    //     remainingPaymentInput = payment; // update remaining globally
+    //     resetPaymentButtons(); // reset any previous clicks
+    // }
+       function paymentrelease() {
+        const payment = $('#payment').val();
+        $('#debitedTotal').text(payment || '0.00');
+         remainingPaymentInput = payment;
+         resetPaymentButtons();
     }
 
     function getAmountSummary() {
@@ -300,68 +328,74 @@
         paymentrelease(); // only updates UI, no controller call
     });
 
-    // When clicking status button for a PO
-    $(document).on('click', '.status-btn', function () {
+        $(document).on('click', '.status-btn', function () {
         const button = $(this);
+        const row = button.closest('tr');
+
         const total = parseFloat(button.data('total'));
+        const paidAmount = parseFloat(button.data('paidamount'));
         const remaining = parseFloat(button.data('remaining'));
         const purchaseOrderID = button.data('poid');
 
         if (usedOrders.has(purchaseOrderID) || remainingPaymentInput <= 0) {
             return;
         }
-          // Define the alert function
+
         function FullPaid() {
             Swal.fire({
                 title: "Amount submitted successfully",
-                text: "",
                 icon: "success",
-                confirmButtonColor: "#138496",
-                draggable: true
-            });
-        }
-        function  PartialPaid(){
-             Swal.fire({
-                title: "Partial Amount submitted successfully",
-                text: "",
-                icon: "success",
-                confirmButtonColor: "#138496",
-                draggable: true
+                confirmButtonColor: "#138496"
             });
         }
 
+        function PartialPaid() {
+            Swal.fire({
+                title: "Partial amount submitted successfully",
+                icon: "success",
+                confirmButtonColor: "#138496"
+            });
+        }
 
-           const finalPaidAmount = Math.min(remaining, remainingPaymentInput);
-    remainingPaymentInput -= finalPaidAmount;
+        // Calculate payment to apply
+        const finalPaidAmount = Math.min(remaining, remainingPaymentInput);
+        remainingPaymentInput -= finalPaidAmount;
 
-    $('#payment').val(remainingPaymentInput.toFixed(2));
-    $('#debitedTotal').val(remainingPaymentInput.toFixed(2));
+        // Update input and debited display
+        $('#payment').val(remainingPaymentInput.toFixed(2));
+        $('#debitedTotal').val(finalPaidAmount.toFixed(2)); // fixed: show paid amount, not remaining balance
 
-    usedOrders.add(purchaseOrderID);
-    button.prop('disabled', true);
-    button.text(finalPaidAmount === remaining
-        ? "Full Paid"
-        :"Partial Paid");
+        // Disable button and track usage
+        usedOrders.add(purchaseOrderID);
+        button.prop('disabled', true);
+        button.text(finalPaidAmount === remaining ? "Full Paid" : "Partial Paid");
+
+        // Show success alert
         if (finalPaidAmount === remaining) {
             FullPaid();
-        }else{
+        } else {
             PartialPaid();
         }
 
-    // Update the corresponding Due Amount cell dynamically
-    const row = button.closest('tr');
-    const dueAmountCell = row.find('td').eq(3); // Assuming 4th column is Due Amount
-    const newRemaining = (remaining - finalPaidAmount).toFixed(2);
-    dueAmountCell.text(newRemaining);
+        // Update Paid and Remaining Amounts in the row
+        const newPaidAmount = (paidAmount + finalPaidAmount).toFixed(2);
+        const newRemaining = (remaining - finalPaidAmount).toFixed(2);
 
+        // Update table cells (index: 3 = paid, 4 = remaining)
+        row.find('td').eq(3).text(newPaidAmount);   // Update PaidAmount
+        row.find('td').eq(4).text(newRemaining);   // Update Remaining
 
+        // Optionally update the button's data attributes
+        button.data('paidamount', parseFloat(newPaidAmount));
+        button.data('remaining', parseFloat(newRemaining));
+
+        // Send payment to backend
         $.ajax({
             url: '/Account/ReceivePaymentDetails',
             type: 'POST',
             data: {
-
                 totalAmount: total,
-                remainingAmount: remaining,
+                remainingAmount: newRemaining, // fixed: send updated remaining amount
                 finalPaidAmount: finalPaidAmount,
                 purchaseOrderID: purchaseOrderID
             },
@@ -376,6 +410,7 @@
             }
         });
     });
+
 </script>
 
 
