@@ -2536,16 +2536,12 @@ RequisitionStatus=1
                 String ConnectionString = configuration.GetConnectionString("DefaultConnectionString");
                 connection = new SqlConnection(ConnectionString);
 
+                string query = $"UPDATE Requisitions SET Description = @Description, RequisitionSeries = @RequisitionSeries, " +
+                    $"RequisitionType = 1, RequisitionStatus=1 WHERE RequisitionID = @RequisitionID " +
+                    $"INSERT INTO RequisitionsDistributionCenterBridge (RequisitionID, CenterId) VALUES " +
+                    $"(@RequisitionID, 'f8e38789-b040-436e-a5ae-8a904b386524')";
 
-
-                SqlCommand cmd2 = new SqlCommand(@"
-    UPDATE Requisitions 
-    SET 
-        Description = @Description, 
-        RequisitionSeries = @RequisitionSeries, 
-        RequisitionType = 1,
-RequisitionStatus=1
-    WHERE RequisitionID = @RequisitionID", connection);
+                SqlCommand cmd2 = new SqlCommand(query, connection);
 
                 cmd2.Parameters.AddWithValue("@RequisitionSeries", Aq.RequisitionSeries ?? (object)DBNull.Value);
                 cmd2.Parameters.AddWithValue("@Description", Aq.Description);

@@ -186,7 +186,7 @@ namespace ERP_Components.Controllers
         {
 
             Vendor vendor = purchaseServices.GetVendorAddressDetails(vendorId);
-            List<AddPurchaseRequisition> ItemData = purchaseServices.PurchaseOrderItemsList(vendorId, purchaseOrderId);
+            List<AddPurchaseRequisition> ItemData = purchaseServices.PurchaseOrderItemsList(vendorId, purchaseOrderId, PurchaseOrderStatus.ITEMS_RECEIVED);
             vendor.Items = ItemData;
             return View(vendor);
         }
@@ -214,7 +214,7 @@ namespace ERP_Components.Controllers
         {
 
             Vendor vendor = purchaseServices.GetPurchaseBills(purchaseOrderId);
-            List<AddPurchaseRequisition> ItemData = purchaseServices.PurchaseOrderItemsList(vendorId, purchaseOrderId);
+            List<AddPurchaseRequisition> ItemData = purchaseServices.PurchaseOrderItemsList(vendorId, purchaseOrderId, PurchaseOrderStatus.CONVERTED_TO_BILL);
             vendor.Items = ItemData;
             return View(vendor);
         }

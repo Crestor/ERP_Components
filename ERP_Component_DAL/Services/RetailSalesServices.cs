@@ -660,7 +660,10 @@ namespace ERP_Component_DAL.Services
                 String ConnectionString = configuration.GetConnectionString("DefaultConnectionString");
                 connection = new SqlConnection(ConnectionString);
 
-                var query = $"UPDATE Requisitions SET Description = @Description, RequisitionSeries = @RequisitionSeries, RequisitionStatus=1, RequisitionType=4 WHERE RequisitionID = @RequisitionID";
+                var query = $"UPDATE Requisitions SET Description = @Description, RequisitionSeries = @RequisitionSeries, " +
+                    $"RequisitionStatus=1, RequisitionType=4 WHERE RequisitionID = @RequisitionID; " +
+                    $"INSERT INTO RequisitionsDistributionCenterBridge (RequisitionID, CenterId) VALUES " +
+                    $"(@RequisitionID, '12bc8be2-c59a-409b-9dbe-9869a2102c16')";
 
                 SqlCommand cmd2 = new SqlCommand(query, connection);
 
