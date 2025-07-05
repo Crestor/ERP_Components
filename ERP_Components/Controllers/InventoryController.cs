@@ -366,7 +366,7 @@ namespace ERP_Components.Controllers
 
         public IActionResult AddStock()
         {
-            List<StockTransaction> stockTransactions = inventoryServices.GetStockTransactions(TransactionType.IN_STOCK);
+            List<StockTransaction> stockTransactions = inventoryServices.GetStockTransactions(StockTransactionType.IN_STOCK);
             return View(stockTransactions);          
         }
 
@@ -562,7 +562,7 @@ namespace ERP_Components.Controllers
 
         public IActionResult StockAdjustment()
         {
-            List<StockTransaction> stockTransactions = inventoryServices.GetStockTransactions(TransactionType.TRANSFER);
+            List<StockTransaction> stockTransactions = inventoryServices.GetStockTransactions(StockTransactionType.TRANSFER);
             return View(stockTransactions);
         }
 

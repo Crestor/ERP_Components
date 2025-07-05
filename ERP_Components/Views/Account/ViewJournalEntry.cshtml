@@ -4,6 +4,7 @@
     Layout = "~/Views/Shared/_LayoutINV.cshtml";
 }
 <link rel="stylesheet" href="~/css/Product.css" />
+@model List<JournalEntry>
 
 <div class="table">
 <table>
@@ -17,16 +18,16 @@
         </tr>
     </thead>
     <tbody>
-     @*    @foreach (var entry in Model)
+        @foreach (var entry in Model)
         {
             <tr>
-                <td>@entry.EntryDate.ToShortDateString()</td>
-                <td>@entry.AccountName</td>
-                <td>@entry.Debit</td>
-                <td>@entry.Credit</td>
-                <td>@entry.Narration</td>
+                <td>@entry.TransactionDate</td>
+                <td>@entry.AccountNumber</td>
+                <td>@(entry.Debit < 0 ? "-": entry.Debit)</td>
+                <td>@(entry.Credit < 0 ? "-": entry.Credit)</td>
+                <td>@entry.Remarks</td>
             </tr>
-        } *@
+        }
     </tbody>
 </table>
 </div>

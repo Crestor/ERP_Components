@@ -25,4 +25,15 @@ namespace ERP_Component_DAL.Models
         WEAVER_MATERIAL_REQUISITION = 3,
         SALES_FORECAST_RETAIL_STORE = 4
     }
+    public enum StockTransactionType
+    {
+        IN_STOCK = 1,
+        OUT_STOCK = 2,
+        TRANSFER = 3
+    }
+    public enum TransactionType
+    {
+        DEBIT = 1,
+        CREDIT = 2
+    }
 }

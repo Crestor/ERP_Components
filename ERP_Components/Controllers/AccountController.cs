@@ -188,7 +188,8 @@ namespace ERP_Components.Controllers
         }
         public IActionResult ViewJournalEntry()
         {
-            return View();
+            List<JournalEntry> journalEntries = accountServices.FindJournalEntries();
+            return View(journalEntries);
         }
 
 

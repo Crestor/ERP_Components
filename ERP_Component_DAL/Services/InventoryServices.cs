@@ -2931,7 +2931,7 @@ namespace ERP_Component_DAL.Services
             }
         }
 
-        public List<StockTransaction> GetStockTransactions(TransactionType transactionType)
+        public List<StockTransaction> GetStockTransactions(StockTransactionType transactionType)
         {
             List<StockTransaction> stockTransactions = new List<StockTransaction>();
             try

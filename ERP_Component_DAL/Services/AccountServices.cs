@@ -26,10 +26,10 @@ namespace ERP_Component_DAL.Services
             connection = new SqlConnection(_connectionString); // Initialize connection
         }
 
-     
+
         public bool createexpense(Expense e)
         {
-            var date =e.entrydate;
+            var date = e.entrydate;
             var date2 = date.ToString("yyyy-MM-dd");
             try
             {
@@ -40,7 +40,7 @@ namespace ERP_Component_DAL.Services
 
 
                 cmd.CommandText = $"insert into expense([entrydate],[project],[particular],[debited],[credited],[reference],[narration]) values('{date2}','{e.project}','{e.particular}','{e.debit}','{e.credit}','{e.reference}','{e.narration}');";
-  
+
                 cmd.Connection = connection;
                 connection.Open();
                 cmd.ExecuteNonQuery();
@@ -96,7 +96,7 @@ namespace ERP_Component_DAL.Services
 
         public bool addaccountdetails(Expense e)
         {
-            
+
             try
             {
                 String ConnectionString = configuration.GetConnectionString("DefaultConnectionString");
@@ -133,7 +133,7 @@ namespace ERP_Component_DAL.Services
             {
                 throw;
             }
-     
+
         }
 
 
@@ -347,12 +347,12 @@ namespace ERP_Component_DAL.Services
             }
             catch (Exception ex)
             {
-                throw; 
+                throw;
             }
         }
 
 
-        public MakePayment GetVendorPendingAmount( Guid VendorID)
+        public MakePayment GetVendorPendingAmount(Guid VendorID)
         {
             try
             {
@@ -391,8 +391,8 @@ namespace ERP_Component_DAL.Services
 
 
 
-        }    
-   
+        }
+
         public List<MakePayment> BalanceSummary(Guid VendorID)
         {
             try
@@ -413,8 +413,9 @@ namespace ERP_Component_DAL.Services
                 while (reader.Read())
                 {
                     CL.Add(new MakePayment()
-                    {   BillNumber = reader["BillNumber"] != DBNull.Value ? (string)reader["BillNumber"] : string.Empty,
-                        PurchaseOrderID= reader["PurchaseOrderID"] != DBNull.Value ? (Guid)reader["PurchaseOrderID"] : Guid.Empty,
+                    {
+                        BillNumber = reader["BillNumber"] != DBNull.Value ? (string)reader["BillNumber"] : string.Empty,
+                        PurchaseOrderID = reader["PurchaseOrderID"] != DBNull.Value ? (Guid)reader["PurchaseOrderID"] : Guid.Empty,
                         RemainingAmount = reader["RemainingAmount"] != DBNull.Value ? Convert.ToDecimal(reader["RemainingAmount"]) : 0m,
                         TotalAmount = reader["TotalAmount"] != DBNull.Value ? Convert.ToDecimal(reader["TotalAmount"]) : 0m,
                         PaidAmount = reader["PaidAmount"] != DBNull.Value ? Convert.ToDecimal(reader["PaidAmount"]) : 0m,
@@ -460,16 +461,16 @@ namespace ERP_Component_DAL.Services
                     CL.Add(new MakePayment()
                     {
 
-                      
-                            VendorID = reader["VendorID"] != DBNull.Value ? (Guid)reader["VendorID"] : Guid.Empty,
-                            Balance = reader["Balance"] != DBNull.Value ? Convert.ToDecimal(reader["Balance"]) : 0m,
-                            TaxableAmount = reader["TaxableAmount"] != DBNull.Value ? Convert.ToDecimal(reader["TaxableAmount"]) : 0m,
-                            NetTotal = reader["NetTotal"] != DBNull.Value ? Convert.ToDecimal(reader["NetTotal"]) : 0m,
-                            PaidAmount = reader["PaidAmount"] != DBNull.Value ? Convert.ToDecimal(reader["PaidAmount"]) : 0m,
-                            DueDate = reader["DueDate"] != DBNull.Value ? DateOnly.FromDateTime(Convert.ToDateTime(reader["DueDate"])) : DateOnly.MinValue
-                            //VendorName = reader["VendorName"] != DBNull.Value ? (string)reader["VendorName"] : string.Empty
 
-                        });
+                        VendorID = reader["VendorID"] != DBNull.Value ? (Guid)reader["VendorID"] : Guid.Empty,
+                        Balance = reader["Balance"] != DBNull.Value ? Convert.ToDecimal(reader["Balance"]) : 0m,
+                        TaxableAmount = reader["TaxableAmount"] != DBNull.Value ? Convert.ToDecimal(reader["TaxableAmount"]) : 0m,
+                        NetTotal = reader["NetTotal"] != DBNull.Value ? Convert.ToDecimal(reader["NetTotal"]) : 0m,
+                        PaidAmount = reader["PaidAmount"] != DBNull.Value ? Convert.ToDecimal(reader["PaidAmount"]) : 0m,
+                        DueDate = reader["DueDate"] != DBNull.Value ? DateOnly.FromDateTime(Convert.ToDateTime(reader["DueDate"])) : DateOnly.MinValue
+                        //VendorName = reader["VendorName"] != DBNull.Value ? (string)reader["VendorName"] : string.Empty
+
+                    });
                 }
 
                 return CL;
@@ -486,7 +487,7 @@ namespace ERP_Component_DAL.Services
 
 
         }
-        
+
         public bool UpdateAmount(MakePayment mp)
         {
             try
@@ -495,7 +496,7 @@ namespace ERP_Component_DAL.Services
                 connection = new SqlConnection(ConnectionString);
                 SqlCommand cmd = new SqlCommand();
                 cmd.CommandType = System.Data.CommandType.Text;
-              
+
 
                 cmd.CommandText = $"update PurchaseBills Set PaidAmount = PaidAmount + @PaidAmount where PurchaseOrderID = @PurchaseOrderID" +
                     $" UPDATE PurchaseBills SET BillStatus = 3 WHERE PurchaseOrderID = @PurchaseOrderID AND PaidAmount = " +
@@ -525,7 +526,7 @@ namespace ERP_Component_DAL.Services
                 connection.Close();
             }
         }
-   public List<MakePayment> GetAdvancedPaymentDetails(Guid VendorID)
+        public List<MakePayment> GetAdvancedPaymentDetails(Guid VendorID)
         {
             try
             {
@@ -552,7 +553,7 @@ namespace ERP_Component_DAL.Services
                         AmountPaid = reader["AmountPaid"] != DBNull.Value ? Convert.ToDecimal(reader["AmountPaid"]) : 0m,
                         AdvanceAmount = reader["AdvanceAmount"] != DBNull.Value ? Convert.ToDecimal(reader["AdvanceAmount"]) : 0m,
 
-                      
+
 
                     });
                 }
@@ -571,9 +572,9 @@ namespace ERP_Component_DAL.Services
 
 
         }
-        
 
-    public bool UpdateAdvancedAmount(MakePayment mp)
+
+        public bool UpdateAdvancedAmount(MakePayment mp)
         {
             try
             {
@@ -705,7 +706,7 @@ namespace ERP_Component_DAL.Services
             }
 
 
-        } 
+        }
         public List<ReceivePayment> GetCustomerPaymentDetails(Guid CustomerID)
         {
             try
@@ -857,7 +858,7 @@ namespace ERP_Component_DAL.Services
             }
         }
 
-       
+
         public List<ReceivePayment> getAmountSummaryOfCustomer(Guid CustomerID)
         {
             try
@@ -884,7 +885,7 @@ namespace ERP_Component_DAL.Services
                         InvoiceID = reader["InvoiceID"] != DBNull.Value ? (Guid)reader["InvoiceID"] : Guid.Empty,
                         //CustomerName = reader["CustomerName"] != DBNull.Value ? (string)reader["CustomerName"] : string.Empty,
                         GrossTotal = reader["GrossTotal"] != DBNull.Value ? Convert.ToDecimal(reader["GrossTotal"]) : 0m,
-                        InvoiceNumber =reader["InvoiceNumber"] != DBNull.Value ? (string)reader["InvoiceNumber"] : string.Empty,
+                        InvoiceNumber = reader["InvoiceNumber"] != DBNull.Value ? (string)reader["InvoiceNumber"] : string.Empty,
                         QuotationID = reader["QuotationID"] != DBNull.Value ? (Guid)reader["QuotationID"] : Guid.Empty,
                     });
                 }
@@ -1028,7 +1029,7 @@ namespace ERP_Component_DAL.Services
                         CustomerName = reader["CustomerName"] != DBNull.Value ? (string)reader["CustomerName"] : string.Empty,
                         CustomerID = reader["CustomerID"] != DBNull.Value ? (Guid)reader["CustomerID"] : Guid.Empty,
                         AdvanceAmount = reader["TotalAdvanceAmount"] != DBNull.Value ? Convert.ToDecimal(reader["TotalAdvanceAmount"]) : 0m,
-                      
+
                     });
                 }
 
@@ -1088,5 +1089,45 @@ namespace ERP_Component_DAL.Services
 
         }
 
+        public List<JournalEntry> FindJournalEntries()
+        {
+            List<JournalEntry> journalEntries = new List<JournalEntry>();
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(_connectionString))
+                {
+                    string query = @"SELECT t.TransactionID, t.TransactionDate, (CASE WHEN t.TransactionType = 1 THEN t.Amount ELSE -1.0 END) AS Debit, 
+                                    (CASE WHEN t.TransactionType = 2 THEN t.Amount ELSE -1.0 END) AS Credit, t.Remarks, ad.AccountNumber
+                                    FROM Transactions t
+                                    JOIN AccountDetails ad ON ad.AccountID = t.AccountID";
+                    connection.Open();
+                    using (SqlCommand cmd = new SqlCommand(query, connection))
+                    {
+                        using (SqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                journalEntries.Add(new JournalEntry()
+                                {
+                                    TransactionID = reader.GetGuid(reader.GetOrdinal("TransactionID")),
+                                    TransactionDate = DateOnly.FromDateTime(reader.GetDateTime(reader.GetOrdinal("TransactionDate"))),
+                                    Remarks = reader.GetString(reader.GetOrdinal("Remarks")),
+                                    Debit = reader.GetDecimal(reader.GetOrdinal("Debit")),
+                                    Credit = reader.GetDecimal(reader.GetOrdinal("Credit")),
+                                    AccountNumber = reader.GetString(reader.GetOrdinal("AccountNumber"))
+                                });
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            return journalEntries;
+
+        }
     }
 }
+
