@@ -47,35 +47,6 @@ namespace ERP_Components.Controllers
         //    return View(model);
         //}
 
-        //try
-        public IActionResult MakePaymentTwo(Guid VendorID)
-        {
-            if (VendorID != Guid.Empty)
-            {
-                List<MakePayment> List = accountServices.GetVendorNameList(VendorID);
-
-
-                var models = new MakePayment
-                {
-                    VendorNameList = List,
-                };
-
-                ViewBag.VendorID = VendorID;
-                ViewBag.VendorName = List[0].VendorName;
-
-                return View(models);
-            }
-
-            List<MakePayment> vendorList = accountServices.GetVendorNameList(Guid.Empty);
-            var model = new MakePayment
-            {
-                VendorNameList = vendorList,
-            };
-
-            return View(model);
-        }
-
-
         public IActionResult MakePayment(Guid VendorID)
         {
             if (VendorID != Guid.Empty)
@@ -150,31 +121,7 @@ namespace ERP_Components.Controllers
         }
 
         //ReceivePayment
-        //try
-        public IActionResult ReceivePaymentTwo(Guid CustomerID)
-        {
-            if (CustomerID != Guid.Empty)
-            {
-                List<ReceivePayment> List = accountServices.GetListOfCustomer(CustomerID);
-                var model = new ReceivePayment
-                {
-                    CustomerNameList = List,
-                };
-                ViewBag.CustomerID = CustomerID;
-                ViewBag.CustomerName = List[0].CustomerName;
-
-                return View(model);
-            }
-
-            List<ReceivePayment> ListOfCustomer = accountServices.GetListOfCustomer(CustomerID);
-            var models = new ReceivePayment
-            {
-                CustomerNameList = ListOfCustomer,
-            };
-            return View(models);
-
-
-        }
+  
         public IActionResult ReceivePayment( Guid CustomerID)
          {
             if (CustomerID != Guid.Empty)
@@ -239,6 +186,11 @@ namespace ERP_Components.Controllers
             accountServices.SetJournalEntry(JournalEntry);
             return RedirectToAction("JournalEntry");
         }
+        public IActionResult ViewJournalEntry()
+        {
+            return View();
+        }
+
 
         //ExpenseEntry
         public IActionResult Expense()
@@ -285,5 +237,12 @@ namespace ERP_Components.Controllers
             //List<Expense> a = customerServices.showacountgroup();
             return View();
         }
+
+
+
+
+
+  
+
     }
 }
