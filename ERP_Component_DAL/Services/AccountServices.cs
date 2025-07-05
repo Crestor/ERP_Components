@@ -551,6 +551,7 @@ namespace ERP_Component_DAL.Services
                         NetTotal = reader["NetTotal"] != DBNull.Value ? Convert.ToDecimal(reader["NetTotal"]) : 0m,
                         AmountPaid = reader["AmountPaid"] != DBNull.Value ? Convert.ToDecimal(reader["AmountPaid"]) : 0m,
                         AdvanceAmount = reader["AdvanceAmount"] != DBNull.Value ? Convert.ToDecimal(reader["AdvanceAmount"]) : 0m,
+
                       
 
                     });
@@ -576,25 +577,26 @@ namespace ERP_Component_DAL.Services
         {
             try
             {
-                String ConnectionString = configuration.GetConnectionString("DefaultConnectionString");
-                connection = new SqlConnection(ConnectionString);
+                connection = new SqlConnection(_connectionString);
                 SqlCommand cmd = new SqlCommand();
-                cmd.CommandType = System.Data.CommandType.Text;
+                Guid transactionID = Guid.NewGuid();
+                cmd.CommandType = CommandType.Text;
 
-
-                cmd.CommandText = $"update PurchaseOrders Set AmountPaid= AmountPaid + @AmountPaid WHERE PurchaseOrderID = @PurchaseOrderID; UPDATE PurchaseOrders SET OrderStatus = 3 WHERE PurchaseOrderID = @PurchaseOrderID";
+                cmd.CommandText = $"UPDATE PurchaseOrders SET AmountPaid= AmountPaid + @AmountPaid WHERE PurchaseOrderID = @PurchaseOrderID; " +
+                    $"UPDATE PurchaseOrders SET OrderStatus = 3 WHERE PurchaseOrderID = @PurchaseOrderID; " +
+                    $"INSERT INTO Transactions(TransactionID, Amount, TransactionType, Remarks, AccountID) " +
+                    $"VALUES (@TransactionID, @AmountPaid, 1, 'Paid Advaced Amount', @AccountID); " +
+                    $"INSERT INTO TransactionsPurchaseOrderBridge(TransactionID, PurchaseOrderID) " +
+                    $"VALUES (@TransactionID, @PurchaseOrderID);";
 
                 cmd.Parameters.AddWithValue("@AmountPaid", mp.AdvanceAmount);
                 cmd.Parameters.AddWithValue("@PurchaseOrderID", mp.PurchaseOrderID);
-
-
+                cmd.Parameters.AddWithValue("@TransactionID", transactionID);
 
                 cmd.Connection = connection;
                 connection.Open();
                 cmd.ExecuteScalar();
                 connection.Close();
-
-
 
                 return true;
 

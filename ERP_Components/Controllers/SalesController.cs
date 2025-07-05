@@ -10,15 +10,17 @@ namespace ERP_Components.Controllers
     {
         private readonly ILogger<SalesController> _logger;
         private readonly SalesServices salesServices;
+        private readonly CenterlizedService centerlizedService;
         private readonly IConfiguration _configuration;
         private List<QuotationModel> quotationModels = new List<QuotationModel>();
 
 
-        public SalesController(ILogger<SalesController> logger, IConfiguration configuration)
+        public SalesController(ILogger<SalesController> logger, IConfiguration configuration, CenterlizedService centerlizedService)
         {
             _logger = logger;
             _configuration = configuration;
             salesServices = new SalesServices(configuration);
+            this.centerlizedService = centerlizedService;
         }
         public IActionResult Dashboard()
         {
@@ -473,15 +475,16 @@ namespace ERP_Components.Controllers
         public IActionResult FinalSalesforecasting(QuotationModel O)
         {
             O.RequisitionID = Guid.Parse(HttpContext.Session.GetString("RequisitionID"));
-
-            salesServices.updateSFDetails(O);  //reamining1
+            Guid CenterID = Guid.Parse(HttpContext.Session.GetString("CenterID"));
+            centerlizedService.updateSalesForecastDetails(O, CenterID, RequisitionTypes.SALES_FORCASTING);  //reamining1
             return RedirectToAction("Salesforecasting");
         }
 
 
         public IActionResult ViewInventory()
         {
-            List<Items> items = salesServices.ViewWarehouseInventory();
+            Guid CenterID = Guid.Parse(HttpContext.Session.GetString("CenterID"));
+            List<Items> items = centerlizedService.ViewInventory(CenterID);
             return View(items);
         }
 

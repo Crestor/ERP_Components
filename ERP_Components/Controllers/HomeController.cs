@@ -33,8 +33,8 @@ namespace ERP_Components.Controllers
 
         public IActionResult Setting(Guid login, User user)
         {
-            login = Guid.Parse(HttpContext.Session.GetString("LoginID"));
-            user.loginId = login;
+            login = Guid.Parse(HttpContext.Session.GetString("EmployeeID"));
+            user.employeeId = login;
             user = userServices.GetUserName(login);
             return View(user);
         }
@@ -79,12 +79,13 @@ namespace ERP_Components.Controllers
         public IActionResult Login(User user)
         {
             HttpContext.Session.Clear();
-            user = userServices.GetUserInfo(user);
+            user = userServices.FindLoginCredentials(user);
             List<Role> roles = userServices.GetRoles();
 
             var role = roles.Where(role => role.roleId == user.role).FirstOrDefault();
             if (role != null)
             {
+                user = userServices.FindCenterID(user);
                 SetSession(user, role.role);
                 return Json(new { status = true, url = Url.Action(role.homePage, role.controllerName) });
             }
@@ -95,7 +96,8 @@ namespace ERP_Components.Controllers
         private void SetSession(User user, string role)
         {
             HttpContext.Session.SetString("UserId", Convert.ToString(user.userId));
-            HttpContext.Session.SetString("LoginID", Convert.ToString(user.loginId));
+            HttpContext.Session.SetString("EmployeeID", Convert.ToString(user.employeeId));
+            HttpContext.Session.SetString("CenterID", Convert.ToString(user.assignedCenterID));
             HttpContext.Session.SetString("UserName", user.userName);
             HttpContext.Session.SetString("Role", role);
         }

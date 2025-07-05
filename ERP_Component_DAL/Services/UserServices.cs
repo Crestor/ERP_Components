@@ -61,7 +61,7 @@ namespace ERP_Component_DAL.Services
 
         }
 
-        public User GetUserInfo(User users)
+        public User FindLoginCredentials(User users)
         {
             try
             {
@@ -70,13 +70,13 @@ namespace ERP_Component_DAL.Services
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
 
-                    string query = @"select LoginID, UserName,Password,RoleId from LoginCredentials where UserName = @username And Password = @password ";
+                    string query = @"SELECT EmployeeID, UserName, Password, RoleId FROM LoginCredentials WHERE UserName = @username AND Password = @password ";
 
                     using (SqlCommand cmd = new SqlCommand(query, connection))
                     {
 
-                        cmd.Parameters.Add("@username", SqlDbType.VarChar).Value = users.userName;
-                        cmd.Parameters.Add("@password", SqlDbType.VarChar).Value = users.password;
+                        cmd.Parameters.AddWithValue("@username", users.userName);
+                        cmd.Parameters.AddWithValue("@password", users.password);
                         connection.Open();
 
                         using (SqlDataReader reader = cmd.ExecuteReader())
@@ -85,7 +85,7 @@ namespace ERP_Component_DAL.Services
                             {
                                 user = new User
                                 {
-                                    loginId = reader["LoginID"]!=DBNull.Value?(Guid)reader["LoginID"]:Guid.Empty,
+                                    employeeId = reader["EmployeeID"]!=DBNull.Value?(Guid)reader["EmployeeID"]:Guid.Empty,
                                     userName = reader["UserName"] != DBNull.Value ? (string)reader["UserName"] : string.Empty,
                                     password = reader["Password"] != DBNull.Value ? (string)reader["Password"] : string.Empty,
                                     role = reader["RoleId"] != DBNull.Value ? Convert.ToInt32(reader["RoleId"]) : 0
@@ -103,7 +103,7 @@ namespace ERP_Component_DAL.Services
             }
         }
 
-        public User GetUserName(Guid login)
+        public User GetUserName(Guid employeeId)
         {
             try
             {
@@ -112,7 +112,7 @@ namespace ERP_Component_DAL.Services
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
 
-                    string query = $"select UserName,Password, LoginID from LoginCredentials where LoginID = '{login}' ";
+                    string query = $"select UserName,Password, EmployeeID from LoginCredentials where EmployeeID = '{employeeId}' ";
 
                     using (SqlCommand cmd = new SqlCommand(query, connection))
                     {
@@ -129,7 +129,7 @@ namespace ERP_Component_DAL.Services
                                     
                                     oldUserName = reader["UserName"] != DBNull.Value ? (string)reader["UserName"] : string.Empty,
                                     oldPassword = reader["Password"] != DBNull.Value ? (string)reader["Password"] : string.Empty,
-                                    loginId = reader["LoginID"] != DBNull.Value?(Guid)reader["LoginID"]:Guid.Empty,
+                                    employeeId = reader["EmployeeID"] != DBNull.Value?(Guid)reader["EmployeeID"]:Guid.Empty,
                                     
                                 };
 
@@ -157,12 +157,12 @@ namespace ERP_Component_DAL.Services
                 UPDATE LoginCredentials
                 SET UserName = @UserName
                     
-                WHERE LoginID = @LoginID";
+                WHERE EmployeeID = @EmployeeID";
 
                     using (SqlCommand cmd = new SqlCommand(query, connection))
                     {
                         cmd.Parameters.AddWithValue("@UserName", user.userName);
-                        cmd.Parameters.AddWithValue("@LoginID", user.loginId);
+                        cmd.Parameters.AddWithValue("@EmployeeID", user.employeeId);
 
                         connection.Open();
                         int rowsAffected = cmd.ExecuteNonQuery();
@@ -188,12 +188,12 @@ namespace ERP_Component_DAL.Services
                 UPDATE LoginCredentials
                 SET Password = @Password
                     
-                WHERE LoginID = @LoginID";
+                WHERE EmployeeID = @EmployeeID";
 
                     using (SqlCommand cmd = new SqlCommand(query, connection))
                     {
                         cmd.Parameters.AddWithValue("@Password", user.password);
-                        cmd.Parameters.AddWithValue("@LoginID", user.loginId);
+                        cmd.Parameters.AddWithValue("@EmployeeID", user.employeeId);
 
                         connection.Open();
                         int rowsAffected = cmd.ExecuteNonQuery();
@@ -209,6 +209,35 @@ namespace ERP_Component_DAL.Services
             }
         }
 
+        public User FindCenterID(User user)
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    string query = @"SELECT CenterID FROM AssignedCenter WHERE EmployeeID = @EmployeeID";
 
+                    using (SqlCommand cmd = new SqlCommand(query, connection))
+                    {                        
+                        cmd.Parameters.AddWithValue("@EmployeeID", user.employeeId);
+
+                        connection.Open();
+                        using (var reader = cmd.ExecuteReader())
+                        {
+                            if (reader.Read())
+                            {
+                                user.assignedCenterID = reader["CenterID"] != DBNull.Value ? (Guid)reader["CenterID"] : Guid.Empty;
+                            }
+                        }                        
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+            return user;
+        }
     }
 }

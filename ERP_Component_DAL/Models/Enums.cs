@@ -18,4 +18,11 @@ namespace ERP_Component_DAL.Models
     {
         PENDING = 1, ITEMS_RECEIVED = 2, ADVANCED_PAID = 3, CONVERTED_TO_BILL = 4
     }
+    public enum RequisitionTypes
+    {
+        SALES_FORCASTING = 1,
+        MATERIAL_REQUISITION = 2,
+        WEAVER_MATERIAL_REQUISITION = 3,
+        SALES_FORECAST_RETAIL_STORE = 4
+    }
 }
