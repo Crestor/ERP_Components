@@ -592,7 +592,7 @@ namespace ERP_Component_DAL.Services
                 cmd.Parameters.AddWithValue("@AmountPaid", mp.AdvanceAmount);
                 cmd.Parameters.AddWithValue("@PurchaseOrderID", mp.PurchaseOrderID);
                 cmd.Parameters.AddWithValue("@TransactionID", transactionID);
-
+                cmd.Parameters.AddWithValue("@AccountID", mp.AccountID);
                 cmd.Connection = connection;
                 connection.Open();
                 cmd.ExecuteScalar();
