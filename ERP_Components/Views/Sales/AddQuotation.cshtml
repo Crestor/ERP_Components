@@ -6,9 +6,14 @@
 
 <link rel="stylesheet" href="~/css/ProductTwo.css" />
 
+<style>
+    .taxes{
+        display:flex;
+    }
+    
+</style>
 
-
-<form method="post" asp-action="" asp-controller="">
+<form method="post" asp-action="SetQuotation" asp-controller="Sales">
      
     <div class="form-section">
         <h3>Basic Details</h3>
@@ -27,11 +32,12 @@
                 }
                 
             </select>
-        @* <input type="text" id="customerName" name="customerName" onchange="pass()"><br> *@
         </div> 
-	   <div class="form-row" style="width:50%">
+	   <div class="form-row">
 		<label>Date</label>
                 <input type="text" id="date" name="date" value="@DateTime.Now.ToString("yyyy-mm-dd")" onchange="pass()" />
+            <label>Dispatch No:</label>
+            <input type="text"  name="DispatchNo" ><br>
        </div>
    
   </div>
@@ -41,106 +47,77 @@
   <div class="form-section" style="padding:20px 20px 50px 20px">
         <h3>Item Details</h3>
 
-    <div class="table" style="width:98%; margin:auto">
-      <div id="orderDetailsForm">
-        <table id="orderTable">
-            <thead>
-                <tr>
-                   
-                    <th>Product</th>
-                    <th>HSN</th>
-                    <th>Qty</th>
-                    <th>UOM</th>
-                    <th>Product Code</th>
-                    <th>Description</th>
-                    <th>Product Code</th>
-                    <th>Unit Price</th>
-                    <th>Disc (%)</th>
-                    <th>Discount Amount</th>
-                    <th>Taxable Amount</th>
-                    <th>CGST (%)</th>
-                    <th>SGST (%)</th>
-                    <th>IGST (%)</th>
-                    <th>Total</th>
-                </tr>
-            </thead>
-            <tbody id="TableBody2">
-                <tr>
-                    
-                    <td>
-                        <select id="ItemId"  name="ItemId" onchange="SetPriceFromDropdown(event)" >
-                            <option selected disabled>Select Product</option>
-                            @foreach (var product in Model.ItemNames)
-                            {
-                                        <option value="@product.ItemId" data-price="@product.SellingPrice" data-HSN="@product.HSN" data-Code="@product.ItemCode" data-UOM="@product.UnitOFMeasure" data-Desc="@product.Description" data-ItemId="@product.ItemId">@product.ItemName</option>
+        <div class="form-row">
+            <label>Select Product</label>
+            <select id="ItemId" name="ItemId" onchange="SetPriceFromDropdown(event)">
+                <option selected disabled>Select Product</option>
+                @foreach (var product in Model.ItemNames)
+                {
+                    <option value="@product.ItemId" data-price="@product.SellingPrice" data-HSN="@product.HSN" data-Code="@product.ItemCode" data-UOM="@product.UnitOFMeasure" data-Desc="@product.Description" data-ItemId="@product.ItemId">@product.ItemName</option>
 
-                            }
-                        </select>
-                    </td>
+                }
+            </select>
 
-                    <td><input type="text" id="HSN" name="HSN"></td>
-                    <td><input type="number" id="Quantity" name="Quantity" oninput="calculateRow(this)"></td>
-                    <td><input type="text" id="UnitOFMeasure" name="UnitOFMeasure"></td>
-                    <td><input type="text"  id="ItemCode" name="ItemCode" /></td>
-                    <td><input type="text" id="Description" name="Description"></td>
-                    <td><input type="text" id="ProductCode" name="ProductCode"></td>
-                    <td><input type="number" id="SellingPrice" name="SellingPrice" oninput="calculateRow(this)"></td>
-                    <td><input type="number" id="discountRate" name="discountRate" oninput="calculateRow(this)"></td>
-                    <td><input type="number" id="discountAmount" name="discountAmount" readonly></td>
-                    <td><input type="number" id="taxableAmount" name="taxableAmount" readonly></td>
-                            <td>
-                                <input type="number" id="cgst" name="cgst" value="2.5" readonly  />
-                           @*  <select id="cgst" name="cgst" style="width: 40px;" onchange="syncGST()">
-                            <option value="0">0%</option>
-                            <option value="2.5">2.5%</option>
-                            <option value="5">5%</option>
-                            <option value="9">9%</option>
-                            <option value="12">12%</option>
-                            <option value="18">18%</option>
-                            <option value="28">28%</option>
-                        </select> *@
-                    </td>
-                            <td>
-                                <input type="number" id="sgst" name="sgst" value="2.5" readonly />
+            <label>HSN</label>
+            <input type="text" id="HSN" name="HSN" readonly>
+        </div>
+        <div class="form-row">
+            <label>Quantity</label>
+            <input type="number" id="Quantity" name="Quantity" oninput="calculateRow(this)">
+            <label>Unit Of Measurement</label>
+            <input type="text" id="UnitOFMeasure" name="UnitOFMeasure" readonly>
 
-                            @* <select id="sgst" name="sgst" style="width: 40px;" onchange="calculateRow(this)">
-                            <option value="0">0%</option>
-                            <option value="2.5">2.5%</option>
-                            <option value="5">5%</option>
-                            <option value="9">9%</option>
-                            <option value="12">12%</option>
-                            <option value="18">18%</option>
-                            <option value="28">28%</option>
-                        </select> *@
-                    </td>
-                        <td>
-                            <select id="igst" name="igst" style="width: 40px;" onchange="calculateRow(this)">
-                                <option value="0">0%</option>
-                                @* <option value="2.5">2.5%</option> *@
-                                <option value="5">5%</option>
-                                <option value="9">9%</option>
-                                <option value="12">12%</option>
-                                <option value="18">18%</option>
-                                <option value="28">28%</option>
-                            </select>
-                        </td>
+        </div>
 
-                    <td><input id="total" type="number" name="TotalAmount" readonly></td>
-                </tr>
-            </tbody>
-        </table>
-        @* <button type="button" class="button" id="addNewRow" onclick="AddProduct()">Add Row</button> *@
-            @* onclick="location.href='@Url.Action("QuotationOrder", "Home")'" *@
-        
-    </div>
-                        <input type="text" id="ItemId" name="ItemId" hidden />
+        <div class="form-row">
+            <label>Item Code</label>
+            <input type="text" id="ItemCode" name="ItemCode" readonly />
+            <label>Description</label>
+            <input type="text" id="Description" name="Description" readonly>
 
-   @*  </div>
+        </div>
 
-    </div>
+        <div class="form-row">
+            <label>Selling Price</label>
+            <input type="number" id="SellingPrice" name="SellingPrice" oninput="calculateRow(this)" readonly/>
+            <label>Discount Rate</label>
+            <input type="number" id="discountRate" name="discountRate" oninput="calculateRow(this)">
 
-  </form> *@
-         </div>
+        </div>
+
+        <div class="form-row">
+            <label>Discount Amount</label>
+            <input type="number" id="discountAmount" name="discountAmount" readonly />
+            <label>Taxable Amount</label>
+            <input type="number" id="taxableAmount" name="taxableAmount" readonly>
+
+        </div>
+        <div class="form-row">
+            <div class="taxes">
+                <div class="checkbox">
+            <label>CGST %</label>
+                    <input type="checkbox" name="cgst" id="cgstCheck" onchange="handleGSTCheckbox()" />
+            <input type="hidden" id="cgst" name="cgst" readonly />
+                </div>
+                <div class="checkbox">
+            <label>SGST %</label>
+                    <input type="checkbox" name="sgst" id="sgstCheck" onchange="handleGSTCheckbox()" />
+            <input type="hidden" id="sgst" name="sgst" readonly />
+                </div>
+                <div class="checkbox">
+            <label>IGST %</label>
+                    <input type="checkbox" name="igst" id="igstCheck" onchange="handleGSTCheckbox()" />
+            <input type="hidden" id="igst" name="igst" readonly />
+                </div>
+            </div>
+
+            <label>Total Amount</label>
+            <input id="total" type="number" name="TotalAmount" readonly>
+
+
+       </div>
+
+
         <button type="button" id="addItem" class="button" style="background-color:#138496;color: white; display:flex;float:right;margin-top:10px;margin-right:10px">
 
             Add item
@@ -148,12 +125,15 @@
 
     </div>
 
-  </form>
+ 
 
 
 
 <div class="form-section" id="Addeditemtable" style="padding:20px 20px 50px 20px;display:none">
     <h3>Added Items</h3>
+    <div class="button" style="float: right;">
+        <button onclick="editSelectedRow()">Edit</button>
+    </div>
     <div class="table" style="width:98%; margin:auto">
         <table >   
        <thead>   
@@ -161,7 +141,6 @@
                   <th>S.No</th>  
                    <th>Item</th>   
                    <th>HSN</th>   
-                  
                    <th>Qty</th>   
                    <th>UOM</th>   
                    <th>Product Code</th>
@@ -172,6 +151,7 @@
                    <th>Taxable Amount</th>   
                    <th>CGST(%)</th>   
                    <th>SGST(%)</th>   
+                   <th>IGST(%)</th>   
                    <th>Total</th>   
            </tr>   
      </thead>
@@ -181,14 +161,13 @@
    </table>   
    </div>   
    </div>
-<form method="post" asp-action="SubmitQuotation" asp-controller="Sales">
 
 
     <input type="hidden" name="QuotationSeries" id="hiddenQuotationSeries" value=""/>
     <input type="hidden" name="CustomerID" id="hiddenCustomerID" value="" />
     <input type="hidden" name="date" id="hiddendate" value=""/>
 
-    @* <h2>Summary</h2> *@
+   
     
     <div class="form-section">
         <h3>Terms & Conditions</h3>
@@ -233,22 +212,22 @@
 
 
     <div style="text-align: center; margin-top: 30px;">
-        <button type="submit" class="button" style="background-color:#138496; color:white;    margin-left: 79%;">
+        <button type="submit" class="button" style="background-color:#138496; color:white; margin-left: 79%;">
             Submit Quotation
         </button>
     </div>
 </form>
 
-@* </div> *@
 
 
 
-<script>
+
+    <script>
        
      function syncGST() {
         var cgst = document.getElementById("cgst").value;
         document.getElementById("sgst").value = cgst;
-        calculateRow(document.getElementById("sgst")); // Trigger calculation if needed
+        calculateRow(document.getElementById("sgst")); 
     }
 
 
@@ -265,165 +244,221 @@
        };
 
 
-       
 
-    function SetPriceFromDropdown(event) {
+
+        function SetPriceFromDropdown(event) {
         const dropdown = event.target;
         const selectedOption = dropdown.options[dropdown.selectedIndex];
-        const SellingPrice = selectedOption.getAttribute("data-price");
-		const HSN = selectedOption.getAttribute("data-HSN");
-		const UnitOFMeasure = selectedOption.getAttribute("data-UOM");
-		const Description = selectedOption.getAttribute("data-Desc");
-        const ItemCode = selectedOption.getAttribute("data-Code");
-        const row = dropdown.closest('tr');
-        const SellingPriceInput = row.querySelector('[name="SellingPrice"]');
-		const HSNInput = row.querySelector('[name="HSN"]');
-		const UnitOFMeasureInput = row.querySelector('[name="UnitOFMeasure"]');
-        const ItemCodeInput = row.querySelector('[name="ItemCode"]')
-		const DescriptionInput = row.querySelector('[name="Description"]');
-        SellingPriceInput.value = SellingPrice;
-        HSNInput.value = HSN;
-		UnitOFMeasureInput.value = UnitOFMeasure;
-         DescriptionInput.value = Description;
-         ItemCodeInput.value = ItemCode;
 
-        calculateRow(SellingPriceInput);
+        const SellingPrice = selectedOption.getAttribute("data-price");
+        const HSN = selectedOption.getAttribute("data-HSN");
+        const UnitOFMeasure = selectedOption.getAttribute("data-UOM");
+        const Description = selectedOption.getAttribute("data-Desc");
+        const ItemCode = selectedOption.getAttribute("data-Code");
+
+        const row = dropdown.closest('tr');
+
+        if (row) {
+            
+            row.querySelector('[name="SellingPrice"]').value = SellingPrice;
+            row.querySelector('[name="HSN"]').value = HSN;
+            row.querySelector('[name="UnitOFMeasure"]').value = UnitOFMeasure;
+            row.querySelector('[name="Description"]').value = Description;
+            row.querySelector('[name="ItemCode"]').value = ItemCode;
+
+            calculateRow(row.querySelector('[name="SellingPrice"]'));
+        } else {
+            
+            document.getElementById("SellingPrice").value = SellingPrice;
+            document.getElementById("HSN").value = HSN;
+            document.getElementById("UnitOFMeasure").value = UnitOFMeasure;
+            document.getElementById("Description").value = Description;
+            document.getElementById("ItemCode").value = ItemCode;
+
+            calculateRow(document.getElementById("SellingPrice"));
+        }
     }
 
 
-    function calculateRow(input) {
-        const row = input.closest('tr');
 
-        const qty = parseFloat(row.querySelector('[name="Quantity"]').value) || 0;
-        const SellingPrice = parseFloat(row.querySelector('[name="SellingPrice"]').value) || 0;
-        const discountRate = parseFloat(row.querySelector('[name="discountRate"]').value) || 0;
-        const cgst = parseFloat(row.querySelector('[name="cgst"]').value) || 0;
-        const sgst = parseFloat(row.querySelector('[name="sgst"]').value) || 0;
-        const igst = parseFloat(row.querySelector('[name="igst"]').value) || 0;
+       function calculateRow(input) {
+        let row = input.closest('tr');
 
-        const gross = qty * SellingPrice;
+        let qty, price, discountRate, cgst, sgst, igst;
+        let discountAmountField, taxableField, totalField;
+
+        if (row) {
+            
+            qty = parseFloat(row.querySelector('[name="Quantity"]').value) || 0;
+            price = parseFloat(row.querySelector('[name="SellingPrice"]').value) || 0;
+            discountRate = parseFloat(row.querySelector('[name="discountRate"]').value) || 0;
+            cgst = parseFloat(row.querySelector('[name="cgst"]').value) || 0;
+            sgst = parseFloat(row.querySelector('[name="sgst"]').value) || 0;
+            igst = parseFloat(row.querySelector('[name="igst"]').value) || 0;
+
+            discountAmountField = row.querySelector('[name="discountAmount"]');
+            taxableField = row.querySelector('[name="taxableAmount"]');
+            totalField = row.querySelector('[name="TotalAmount"]');
+        } 
+        else {
+            
+            qty = parseFloat(document.getElementById("Quantity").value) || 0;
+            price = parseFloat(document.getElementById("SellingPrice").value) || 0;
+            discountRate = parseFloat(document.getElementById("discountRate").value) || 0;
+            cgst = parseFloat(document.getElementById("cgst").value) || 0;
+            sgst = parseFloat(document.getElementById("sgst").value) || 0;
+            igst = parseFloat(document.getElementById("igst").value) || 0;
+
+            discountAmountField = document.getElementById("discountAmount");
+            taxableField = document.getElementById("taxableAmount");
+            totalField = document.getElementById("total"); 
+        }
+
+        const gross = qty * price;
         const discountAmount = gross * (discountRate / 100);
         const taxable = gross - discountAmount;
-        const TotalAmount = taxable + (taxable * cgst / 100) + (taxable * sgst / 100) + (taxable * igst /100);
+        const total = taxable + (taxable * cgst / 100) + (taxable * sgst / 100) + (taxable * igst / 100);
 
-        row.querySelector('[name="discountAmount"]').value = discountAmount.toFixed(2);
-        row.querySelector('[name="taxableAmount"]').value = taxable.toFixed(2);
-        row.querySelector('[name="TotalAmount"]').value = TotalAmount.toFixed(2);-
+        discountAmountField.value = discountAmount.toFixed(2);
+        taxableField.value = taxable.toFixed(2);
+        totalField.value = total.toFixed(2);
 
         calculateSummary();
     }
-   
-    function calculateSummary() {
-        const discountAmountFields = document.querySelectorAll('[name="discountAmount"]');
-        const totalFields = document.querySelectorAll('[name="TotalAmount"]');
-        const discountRateFields = document.querySelectorAll('[name="discountRate"]');
-        const SellingPriceFields = document.querySelectorAll('[name="SellingPrice"]');
-        const qtyFields = document.querySelectorAll('[name="Quantity"]');
 
+
+       function calculateSummary() {
+        let totalDiscount = 0;
+        let totalGross = 0;
+        let totalTaxable = 0;
+        let totalAmount = 0;
+
+        document.querySelectorAll('#TableBody tr').forEach(row => {
+            const qty = parseFloat(row.querySelector('[name="Quantity"]').value) || 0;
+            const price = parseFloat(row.querySelector('[name="SellingPrice"]').value) || 0;
+            const discount = parseFloat(row.querySelector('[name="discountAmount"]').value) || 0;
+            const taxable = parseFloat(row.querySelector('[name="taxableAmount"]').value) || 0;
+            const total = parseFloat(row.querySelector('[name="TotalAmount"]').value) || 0;
+
+            totalGross += qty * price;
+            totalDiscount += discount;
+            totalTaxable += taxable;
+            totalAmount += total;
+        });
+
+        
+        let discountPercent = totalGross !== 0 ? (totalDiscount / totalGross) * 100 : 0;
+
+      
+        document.getElementById("grossTotal").value = totalAmount.toFixed(2);
+        document.getElementById("totalDiscountAmount").value = totalDiscount.toFixed(2);
+        document.getElementById("totalDiscountPercent").value = discountPercent.toFixed(2);
     }
+
 
 </script>
 
 
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
 <script>
-           $(document).ready(function () {
-        $("#addItem").click(function () {
+    let addedItems = [];
 
-            var productData = {
-                QuotationID: $("#QuotationID").val(),
-                ItemId:$('#ItemId').val(),
-                ItemName: $("#ItemName").val(),
-                HSN: $("#HSN").val(),
-                ItemCode : $("#ItemCode").val(),
-                Description: $("#Description").val(),
-                Quantity: parseInt($("#Quantity").val()),
-                UnitOFMeasure: $("#UnitOFMeasure").val(),
-                SellingPrice: parseFloat($("#SellingPrice").val()),
-                discountRate: parseFloat($("#discountRate").val()),
-                DiscountAmount: parseFloat($("#discountAmount").val()),
-                TaxableAmount: parseFloat($("#taxableAmount").val()),
-                CGST: parseFloat($("#cgst").val()),
-                SGST: parseFloat($("#sgst").val()),
-                IGST: parseFloat($("#igst").val()),
-                TotalAmount: parseFloat($("#total").val()),
-
-				
+    $(document).ready(function () {
+        $('#addItem').click(function () {
+            const item = {
+                ItemId: $('#ItemId').val(),
+                ItemName: $('#ItemId option:selected').text(),
+                HSN: $('#HSN').val(),
+                Quantity: parseFloat($('#Quantity').val()) || 0,
+                UnitOFMeasure: $('#UnitOFMeasure').val(),
+                ItemCode: $('#ItemCode').val(),
+                Description: $('#Description').val(),
+                SellingPrice: parseFloat($('#SellingPrice').val()) || 0,
+                discountRate: parseFloat($('#discountRate').val()) || 0,
+                discountAmount: parseFloat($('#discountAmount').val()) || 0,
+                taxableAmount: parseFloat($('#taxableAmount').val()) || 0,
+                CGST: parseFloat($('#cgst').val()) || 0,
+                SGST: parseFloat($('#sgst').val()) || 0,
+                IGST: parseFloat($('#igst').val()) || 0,
+                totalAmount: parseFloat($('#total').val()) || 0
             };
-            $.ajax({
-                type: "POST",
-                url: "/Sales/SetQuotationProducts",
-                data: productData,
-                success: function (response) {
-                    document.getElementById("Addeditemtable").style.display = "block";
-                    console.log("Success:", response);
-                    items();
-                    // alert("Item added successfully!");
-                    let tableBody = document.getElementById("TableBody");
-                    tableBody.innerHTML = "";
-                    $(response.orderList).each(function (index, item) {
-                        var seq = index + 1;                   
-                        console.log(item);
 
-                        const tr = document.createElement("tr");
-                        tr.innerHTML = `<td>${seq}</td>
-                          <td>${item.itemName}</td>
-                            <td>${item.hsn}</td>
-                          <td>${item.quantity}</td>
-                               <td>${item.unitOFMeasure}</td>
-                               <td>${item.itemCode}</td>
-                               <td>${item.description}</td>
-                            <td>${item.sellingPrice}</td>
-                          <td>${item.discountRate}</td>
-                            <td>${item.discountAmount}</td>
-                              <td>${item.taxableAmount}</td>
-                                   <td>${item.cgst} </td>
-                                    <td>${item.sgst} </td>
-                            <td>${item.totalAmount}</td>`;
-                        document.getElementById("totalDiscountAmount").value= response.totalDiscountAmount;
-                        document.getElementById("totalDiscountPercent").value= response.totalDiscountPercent;
-                        document.getElementById("grossTotal").value=response.grossTotal;
-                        // document.getElementById("totalPriceBeforeDiscount").value=response.totalPriceBeforeDiscount;
-                        // document.getElementById("TotalAmountAfterDiscount").value=response.totalAmountAfterDiscount;    
-                        tableBody.appendChild(tr);
-                        // addRow();
-                    });
-                    
-					// Clear the input fields after adding the item
-					$("#ItemName").val("");
-					$("#HSN").val("");
-					$("#Quantity").val("");
-					$("#Description").val("");
-                    #("#ItemCode").val("");
-					$("#UnitOFMeasure").val("");
-					$("#SellingPrice").val("");
-					$("#discountRate").val("");
-					$("#discountAmount").val("");
-					$("#taxableAmount").val("");
-					$("#cgst").val("0");
-					$("#sgst").val("0");
-					$("#total").val("");
-                },
-                error: function (xhr, status, error) {
-                    console.error("Error:", xhr.responseText);
-                    alert("Failed ");
-                }
-            });
+            addedItems.push(item);
+            renderItemTable();
+            clearForm();
+        });
+
+        $('form').on('submit', function () {
+            $('#ItemJson').val(JSON.stringify(addedItems));
         });
     });
 
+    function renderItemTable() {
+        const tableBody = $('#TableBody');
+        tableBody.empty();
+
+        if (addedItems.length > 0) {
+            $('#Addeditemtable').show();
+        }
+
+        addedItems.forEach((item, index) => {
+            const row = `<tr>
+                <td>${index + 1}</td>
+                <td>${item.ItemName}</td>
+                <td>${item.HSN}</td>
+                <td>${item.Quantity}</td>
+                <td>${item.SellingPrice}</td>
+                <td>${item.discountRate}</td>
+                <td>${item.discountAmount}</td>
+                <td>${item.taxableAmount}</td>
+                <td>${item.CGST}</td>
+                <td>${item.SGST}</td>
+                <td>${item.IGST}</td>
+                <td>${item.totalAmount}</td>
+            </tr>`;
+            tableBody.append(row);
+        });
+    }
+
+    function clearForm() {
+        $('#ItemId').val('');
+        $('#HSN').val('');
+        $('#Quantity').val('');
+        $('#UnitOFMeasure').val('');
+        $('#ItemCode').val('');
+        $('#Description').val('');
+        $('#SellingPrice').val('');
+        $('#discountRate').val('');
+        $('#discountAmount').val('');
+        $('#taxableAmount').val('');
+        $("#sgstCheck").prop("checked", false);
+        $("#cgstCheck").prop("checked", false);
+        $("#igstCheck").prop("checked", false);
+        $('#cgst').val('0');
+        $('#sgst').val('0');
+        $('#igst').val('0');
+        $('#total').val('');
+    }
+
+    $('#ItemId').on('change', function () {
+        const selected = this.options[this.selectedIndex];
+        $('#SellingPrice').val(selected.getAttribute('data-price'));
+        $('#HSN').val(selected.getAttribute('data-HSN'));
+        $('#ItemCode').val(selected.getAttribute('data-Code'));
+        $('#UnitOFMeasure').val(selected.getAttribute('data-UOM'));
+        $('#Description').val(selected.getAttribute('data-Desc'));
+    });
 </script>
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
+
+ <script>
+        document.addEventListener("DOMContentLoaded", function () {
         const orderInput = document.getElementById("QuotationSeries");
         const hiddenInput = document.getElementById("hiddenQuotationSeries");
 
         const year = new Date().getFullYear();
         let nextNumber = 1;
 
-        // Get the last order series from localStorage
         let lastOrder = localStorage.getItem("lastQuotationSeries");
 
         if (lastOrder) {
@@ -438,11 +473,10 @@
 
         const newSeries = `ORD-${year}-${String(nextNumber).padStart(4, "0")}`;
 
-        // Set the input values
+     
         orderInput.value = newSeries;
         hiddenInput.value = newSeries;
 
-        // Store the new series in localStorage
         localStorage.setItem("lastQuotationSeries", newSeries);
     });
 </script>
@@ -464,31 +498,243 @@
     });
     }
 
+</script>
 
- 
+<script>
+        function editSelectedRow() {
+        const selectedRows = document.querySelectorAll('.edit-checkbox:checked');
 
-    // function AddQuotation() {
+        if (selectedRows.length === 0) {
+            Swal.fire("Please select at least one row to edit.");
+            return;
+        }
 
-          
-    //       Swal.fire({
-    //          title: "Drag me!",
-    //           icon: "success",
-          
-    //         confirmButtonColor: "#138496",
-         
-    //         confirmButtonText: "Yes, OK!"
-    //       }).then((result) => {
-    //         if (result.isConfirmed) {
+        selectedRows.forEach(chk => {
+            const row = chk.closest("tr");
+            const inputs = row.querySelectorAll(".input-field");
+
+               inputs.forEach(input => {
+        if (["Quantity", "SellingPrice", "discountRate"].includes(input.name)) {
+            input.removeAttribute("readonly");
+            input.classList.add("editable");
+
+            input.addEventListener('input', function () {
+                calculateRowFromRow(row); 
+                calculateSummary();      
+            });
+            }
+            });
+
+            });
+      
+
+        if (!document.getElementById("saveChangesBtn")) {
+            const btn = document.createElement("button");
+            btn.id = "saveChangesBtn";
+            btn.innerText = "Save All";
+            btn.className = "button";
+            btn.style = "margin-left: 10px; background-color: green; color: white;";
+            btn.onclick = saveEditedRows;
+            document.querySelector(".form-section#Addeditemtable .button").appendChild(btn);
+        }
+    }
+
+
+
+
+        function saveEditedRows() {
+        const selectedRows = document.querySelectorAll('.edit-checkbox:checked');
+
+        if (selectedRows.length === 0) {
+            Swal.fire("Please select at least one row to save.");
+            return;
+        }
+
+        selectedRows.forEach(chk => {
+            const row = chk.closest("tr");
+            const inputs = row.querySelectorAll(".input-field");
+
+            const data = {
+                ItemId: row.getAttribute("data-id"),
+                ItemName: inputs[0].value,
+                HSN: inputs[1].value,
+                Quantity: parseFloat(inputs[2].value),
+                UnitOFMeasure: inputs[3].value,
+                ItemCode: inputs[4].value,
+                Description: inputs[5].value,
+                SellingPrice: parseFloat(inputs[6].value),
+                discountRate: parseFloat(inputs[7].value),
+                DiscountAmount: parseFloat(inputs[8].value),
+                TaxableAmount: parseFloat(inputs[9].value),
+                CGST: parseFloat(inputs[10].value),
+                SGST: parseFloat(inputs[11].value),
+                TotalAmount: parseFloat(inputs[12].value)
+            };
+
+            $.ajax({
+                type: "POST",
+                url: "/Sales/UpdateQuotationItem",
+                data: data,
+                success: function () {
+                    
+                    inputs.forEach(input => input.setAttribute("readonly", true));
+                },
+                error: function (xhr) {
+                    console.error("Update failed:", xhr.responseText);
+                }
+            });
+        });
+
+        Swal.fire("All selected items updated.");
+        document.getElementById("saveChangesBtn").remove();
+    }
+
               
+    function attachLiveRecalculation() {
+        document.querySelectorAll('#TableBody tr').forEach((row, index) => {
+            const qtyInput = row.querySelector('[name="Quantity"]');
+            const rateInput = row.querySelector('[name="SellingPrice"]');
+            const discountInput = row.querySelector('[name="discountRate"]');
 
-    //             let url = `/Sales/QuotationFinal`;
+            const recalc = () => calculateRowFromRow(row, index);
+            [qtyInput, rateInput, discountInput].forEach(input => {
+                input.addEventListener('input', recalc);
+            });
+        });
+    }
 
-    //             console.log('Redirecting to', url);
-    //             window.location.href = url;
-              
-    //         }
-    //       });
+    
+        function calculateRowFromRow(row, index) {
+        const qty = parseFloat(row.querySelector('[name="Quantity"]').value) || 0;
+        const price = parseFloat(row.querySelector('[name="SellingPrice"]').value) || 0;
+        const discountRate = parseFloat(row.querySelector('[name="discountRate"]').value) || 0;
+        const cgst = parseFloat(row.querySelector('[name="cgst"]').value) || 0;
+        const sgst = parseFloat(row.querySelector('[name="sgst"]').value) || 0;
+        const igst = parseFloat(row.querySelector('[name="igst"]').value) || 0;
 
-    //     }
+        const gross = qty * price;
+        const discountAmount = gross * (discountRate / 100);
+        const taxable = gross - discountAmount;
+        const totalAmount = taxable + (taxable * cgst / 100) + (taxable * sgst / 100) + (taxable * igst / 100);
+
+        row.querySelector('[name="discountAmount"]').value = discountAmount.toFixed(2);
+        row.querySelector('[name="taxableAmount"]').value = taxable.toFixed(2);
+        row.querySelector('[name="TotalAmount"]').value = totalAmount.toFixed(2);
+
+        
+        addedItems[index].Quantity = qty;
+        addedItems[index].SellingPrice = price;
+        addedItems[index].discountRate = discountRate;
+        addedItems[index].discountAmount = discountAmount;
+        addedItems[index].taxableAmount = taxable;
+        addedItems[index].totalAmount = totalAmount;
+    }
+
+
+
+
+               function renderItemTable() {
+        const tableBody = $('#TableBody');
+        tableBody.empty();
+
+        if (addedItems.length > 0) {
+            $('#Addeditemtable').show();
+        }
+
+        addedItems.forEach((item, index) => {
+            const row = `
+                <tr>
+                    <td>${index + 1}</td>
+                    <td><input type="text" readonly name="ItemName" value="${item.ItemName}"/></td>
+                    <td><input type="text" readonly name="HSN" value="${item.HSN}"/></td>
+                    <td><input type="number" name="Quantity" value="${item.Quantity}"/></td>
+                    <td><input type="text" name="UnitOFMeasure" readonly value="${item.UnitOFMeasure}"/></td>
+                    <td><input type="text" name="ItemCode" readonly value="${item.ItemCode}"/></td>
+                    <td><input type="text" name="Description" readonly value="${item.Description}"/></td>
+                    <td><input type="number" name="SellingPrice" readonly value="${item.SellingPrice}"/></td>
+                    <td><input type="number" name="discountRate" value="${item.discountRate}"/></td>
+                    <td><input type="number" name="discountAmount" readonly value="${item.discountAmount.toFixed(2)}"/></td>
+                    <td><input type="number" name="taxableAmount" readonly value="${item.taxableAmount.toFixed(2)}"/></td>
+                    <td><input type="number" name="cgst" readonly value="${item.CGST}"/></td>
+                    <td><input type="number" name="sgst" readonly value="${item.SGST}"/></td>
+                    <td><input type="number" name="igst" readonly value="${item.IGST}"/></td>
+                    <td><input type="number" name="TotalAmount" readonly value="${item.totalAmount.toFixed(2)}"/></td>
+                </tr>
+            `;
+            tableBody.append(row);
+        });
+
+        attachLiveRecalculation();
+        calculateSummary(); 
+    }
+
+
 
 </script>
+<script>
+    document.querySelector('form').addEventListener('submit', function (e) {
+       
+        document.querySelectorAll('.dynamic-item-input').forEach(el => el.remove());
+
+        addedItems.forEach((item, index) => {
+            for (const key in item) {
+                const input = document.createElement('input');
+                input.type = 'hidden';
+                input.name = `ItemLists[${index}].${key}`;
+                input.value = item[key];
+                input.className = 'dynamic-item-input';
+                this.appendChild(input);
+            }
+        });
+    });
+
+
+
+
+
+        function handleGSTCheckbox() {
+        const cgstCheck = document.getElementById('cgstCheck');
+        const sgstCheck = document.getElementById('sgstCheck');
+        const igstCheck = document.getElementById('igstCheck');
+
+        const cgst = document.getElementById('cgst');
+        const sgst = document.getElementById('sgst');
+        const igst = document.getElementById('igst');
+
+        if (igstCheck.checked) {
+            
+            cgstCheck.checked = false;
+            sgstCheck.checked = false;
+            cgstCheck.disabled = true;
+            sgstCheck.disabled = true;
+
+            cgst.value = 0;
+            sgst.value = 0;
+            igst.value = 5;
+        } else if (cgstCheck.checked || sgstCheck.checked) {
+            
+            cgstCheck.checked = true;
+            sgstCheck.checked = true;
+            cgstCheck.disabled = false;
+            sgstCheck.disabled = false;
+
+            cgst.value = 2.5;
+            sgst.value = 2.5;
+            igstCheck.checked = false;
+            igst.value = 0;
+        } else {
+           
+            cgstCheck.disabled = false;
+            sgstCheck.disabled = false;
+
+            cgst.value = 0;
+            sgst.value = 0;
+            igst.value = 0;
+        }
+
+        
+        calculateRow(document.getElementById("SellingPrice"));
+    }
+
+</script>
+

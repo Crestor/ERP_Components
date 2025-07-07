@@ -190,6 +190,73 @@ namespace ERP_Component_DAL.Services
         }
 
 
+        public void AddQuotation(QuotationModel quotation, List<QuotationModel> ItemLists)
+        {
+            try
+            {
+                string connectionString = configuration.GetConnectionString("DefaultConnectionString");
+                connection = new SqlConnection(connectionString);
+                connection.Open();
+
+                SqlCommand cmd = new SqlCommand();
+                cmd.CommandType = CommandType.Text;
+
+                cmd.CommandText = $"INSERT INTO CustomerQuotation ([QuotationSeries], [status]) OUTPUT INSERTED.QuotationID VALUES (@QuotationSeries, 'open' )";
+                cmd.Parameters.AddWithValue("@QuotationSeries", quotation.QuotationSeries);
+
+                cmd.Connection = connection;
+
+                Guid QuotationID = (Guid)cmd.ExecuteScalar();
+
+                foreach (var item in ItemLists)
+                {
+                    string insertLineQuery = @"INSERT INTO QuotationProduct 
+                                    ([QuotationID], [Quantity], [SellingPrice], [TaxableAmount], [discountRate],
+                                    [DiscountAmount], [CGST], [SGST], [IGST], [TotalAmount], [ProductID])
+                                    VALUES(@QuotationID, @Quantity, @SellingPrice, @TaxableAmount, @discountRate,
+                                    @DiscountAmount, @CGST, @SGST, @IGST, @TotalAmount, @ProductID)";
+                    using (SqlCommand cmd1 = new SqlCommand(insertLineQuery, connection))
+                    {
+                        cmd1.Parameters.AddWithValue("@QuotationID", QuotationID);
+                        cmd1.Parameters.AddWithValue("@Quantity", item.Quantity);
+                        cmd1.Parameters.AddWithValue("@SellingPrice", item.SellingPrice);
+                        cmd1.Parameters.AddWithValue("@TaxableAmount", item.TaxableAmount);
+                        cmd1.Parameters.AddWithValue("@discountRate", item.discountRate);
+                        cmd1.Parameters.AddWithValue("@DiscountAmount", item.DiscountAmount);
+                        cmd1.Parameters.AddWithValue("@CGST", item.CGST);
+                        cmd1.Parameters.AddWithValue("@SGST", item.SGST);
+                        cmd1.Parameters.AddWithValue("@IGST", item.IGST);
+                        cmd1.Parameters.AddWithValue("@TotalAmount", item.TotalAmount);
+                        cmd1.Parameters.AddWithValue("@ProductID", item.ItemId);
+
+                        cmd1.ExecuteNonQuery();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                if (connection.State == ConnectionState.Open)
+                    connection.Close();
+            }
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         public bool finalEditQuota(QuotationModel Aq)
         {
             try

@@ -65,13 +65,8 @@ namespace ERP_Components.Controllers
         public IActionResult AddQuotation()
         {
             HttpContext.Session.SetString("QuotationAdded", "False");
-
-
-
             List<QuotationModel> aq = salesServices.GetProductDetails();
-
             List<QuotationViewModel.Customer> Customers = salesServices.GetCustomersList();
-
 
             var model = new QuotationViewModel
             {
@@ -81,67 +76,70 @@ namespace ERP_Components.Controllers
 
             return View(model);
         }
+
+        //public JsonResult SetQuotationProducts(QuotationModel quotationModel)
+        //{
+        //    var QuotationCreated = HttpContext.Session.GetString("QuotationAdded");
+        //    if (QuotationCreated == "False")
+        //    {
+        //        quotationModel.QuotationID = salesServices.AddQuotaDetails(quotationModel);
+        //        HttpContext.Session.SetString("QuotationAdded", "True");
+        //        HttpContext.Session.SetString("QuotationID", quotationModel.QuotationID.ToString());
+        //        var x = salesServices.SaveQuotationProduct(quotationModel);
+        //    }
+        //    else
+        //    {
+        //        quotationModel.QuotationID = Guid.Parse(HttpContext.Session.GetString("QuotationID"));
+
+        //        var x = salesServices.SaveQuotationProduct(quotationModel);
+        //    }
+
+        //    List<QuotationModel> ol = salesServices.OrderList(quotationModel.QuotationID);
+
+
+        //    var totalPriceBeforeDiscount = ol.Sum(x => x.SellingPrice * x.Quantity);
+        //    var totalDiscountAmount = ol.Sum(x => x.DiscountAmount);
+        //    var totalDiscountPercent = totalPriceBeforeDiscount == 0
+        //        ? 0
+        //        : totalDiscountAmount / totalPriceBeforeDiscount * 100;
+        //    var grossTotal = ol.Sum(x => x.TotalAmount);
+        //    var totalAmountAfterDiscount = ol.Sum(x => x.TaxableAmount);
+        //    var model = new QuotationViewModel
+        //    {
+        //        OrderList = ol,
+        //        totalPriceBeforeDiscount = totalPriceBeforeDiscount,
+        //        TotalDiscountAmount = totalDiscountAmount,
+        //        TotalDiscountPercent = Math.Round(totalDiscountPercent, 2),
+        //        GrossTotal = Math.Round(grossTotal),
+        //        TotalAmountAfterDiscount = totalAmountAfterDiscount,
+        //    };
+
+        //    model.OrderList = ol;
+
+
+        //    return Json(model);
+        //}
+
+
         [HttpPost]
-        public JsonResult SetQuotationProducts(QuotationModel quotationModel)
+        public IActionResult SetQuotation(QuotationModel quotation,List<QuotationModel> ItemLists)
         {
-            var QuotationCreated = HttpContext.Session.GetString("QuotationAdded");
-            if (QuotationCreated == "False")
-            {
-                quotationModel.QuotationID = salesServices.AddQuotaDetails(quotationModel);// get QuotationID 
-                HttpContext.Session.SetString("QuotationAdded", "True");
-                HttpContext.Session.SetString("QuotationID", quotationModel.QuotationID.ToString());
-                var x = salesServices.SaveQuotationProduct(quotationModel);
-            }
-            else
-            {
-                quotationModel.QuotationID = Guid.Parse(HttpContext.Session.GetString("QuotationID"));
-
-                var x = salesServices.SaveQuotationProduct(quotationModel);
-
-
-
-            }
-
-
-            
-
-
-
-            List<QuotationModel> ol = salesServices.OrderList(quotationModel.QuotationID);
-
-
-            var totalPriceBeforeDiscount = ol.Sum(x => x.SellingPrice * x.Quantity);
-            var totalDiscountAmount = ol.Sum(x => x.DiscountAmount);
-            var totalDiscountPercent = totalPriceBeforeDiscount == 0
-                ? 0
-                : totalDiscountAmount / totalPriceBeforeDiscount * 100;
-            var grossTotal = ol.Sum(x => x.TotalAmount);
-            var totalAmountAfterDiscount = ol.Sum(x => x.TaxableAmount);
-            var model = new QuotationViewModel
-            {
-                OrderList = ol,
-                totalPriceBeforeDiscount = totalPriceBeforeDiscount,
-                TotalDiscountAmount = totalDiscountAmount,
-                TotalDiscountPercent = Math.Round(totalDiscountPercent, 2),
-                GrossTotal = Math.Round(grossTotal),
-                TotalAmountAfterDiscount = totalAmountAfterDiscount,
-            };
-
-            model.OrderList = ol;
-
-
-            return Json(model);
+            salesServices.AddQuotation(quotation, ItemLists);
+            return RedirectToAction("AddQuotation");
         }
+
 
 
         // update details  
-        public IActionResult SubmitQuotation(QuotationModel O)
-        {
-            O.QuotationID = Guid.Parse(HttpContext.Session.GetString("QuotationID"));
+        //public IActionResult SubmitQuotation(QuotationModel O)
+        //{
+        //    O.QuotationID = Guid.Parse(HttpContext.Session.GetString("QuotationID"));
 
-            salesServices.updateQuotaDetails(O);  //reamining1
-            return RedirectToAction("ManageQuotation");
-        }
+        //    salesServices.updateQuotaDetails(O);  
+        //    return RedirectToAction("ManageQuotation");
+        //}
+
+
 
         //delete Quotation
 
@@ -152,7 +150,7 @@ namespace ERP_Components.Controllers
         }
 
 
-        public IActionResult ViewQuotation(Guid QuotationID)//QuotationModel vq,
+        public IActionResult ViewQuotation(Guid QuotationID)
         {
             //salesServices.ViewQuotationDoc(vq, QuotationID);
             //List<QuotationModel> pl = salesServices.ShowProductLi(QuotationID);
