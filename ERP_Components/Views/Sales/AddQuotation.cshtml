@@ -98,7 +98,24 @@
 
         </div>
         <div class="form-row">
+            <label>Applicable Taxes:</label>
             <div class="taxes">
+                <label>
+                    <input type="checkbox" name="cgst" id="cgstCheck" onchange="handleGSTCheckbox()" />
+                    <input type="hidden" id="cgst" name="cgst" readonly />CGST
+                </label>
+                <label>
+                    <input type="checkbox" name="sgst" id="sgstCheck" onchange="handleGSTCheckbox()" />
+                    <input type="hidden" id="sgst" name="sgst" readonly /> SGST
+                </label>
+                <label>
+                    <input type="checkbox" name="igst" id="igstCheck" onchange="handleGSTCheckbox()" />
+                    <input type="hidden" id="igst" name="igst" readonly /> IGST
+                </label>
+            </div>
+
+
+           @*  <div class="taxes">
                 <div class="checkbox">
             <label>CGST %</label>
                     <input type="checkbox" name="cgst" id="cgstCheck" onchange="handleGSTCheckbox()" />
@@ -114,9 +131,9 @@
                     <input type="checkbox" name="igst" id="igstCheck" onchange="handleGSTCheckbox()" />
             <input type="hidden" id="igst" name="igst" readonly />
                 </div>
-            </div>
+            </div> *@
 
-            <label style="margin-left: 37px;">Total Amount</label>
+            <label style="margin-left: -30px;">Total Amount</label>
             <input id="total" type="number" class="noteditable-field" name="TotalAmount" readonly>
 
 
@@ -145,14 +162,14 @@
            <tr>  
                   <th></th>  
                    <th>Item</th>   
-                   <th>HSN</th>   
+                   @* <th>HSN</th>    *@
+                   <th>Product Code</th>
                    <th>Qty</th>   
                    <th>UOM</th>   
-                   <th>Product Code</th>
                    <th>Description</th>   
                    <th>Unit Price</th>  
                    <th>Discount(%)</th>  
-                   <th>Discount Amount</th>   
+                   @* <th>Discount Amount</th>    *@
                    <th>Taxable Amount</th>   
                    <th>CGST(%)</th>   
                    <th>SGST(%)</th>   
@@ -518,10 +535,16 @@
             row.querySelectorAll('.editable-field').forEach(field => {
                 field.removeAttribute('readonly');
                 field.style.border = "1px solid #007bff";
-                field.addEventListener('input', function () {
-                    calculateRowFromRow(row);
-                    calculateSummary();
-                });
+                    field.addEventListener('input', () => {
+        const index = row.rowIndex - 1; 
+        calculateRowFromRow(row, index);
+        calculateSummary();
+    });
+
+                // field.addEventListener('input', function () {
+                //     calculateRowFromRow(row);
+                //     calculateSummary();
+                // });
             });
         });
 
@@ -638,19 +661,19 @@
             $('#Addeditemtable').show();
         }
 
+                   
         addedItems.forEach((item, index) => {
             const row = `
                 <tr>
                     <td><input type="checkbox" class="edit-checkbox" data-index="${index}" /></td>
                     <td><input type="text" readonly name="ItemName" class="noteditable-field" value="${item.ItemName}" /></td>
-                    <td><input type="text" readonly name="HSN"class="noteditable-field" value="${item.HSN}" /></td>
+                    <td><input type="text" name="ItemCode" class="noteditable-field" readonly value="${item.ItemCode}" /></td>
                     <td><input type="number" name="Quantity" class="editable-field" readonly value="${item.Quantity}" /></td>
                     <td><input type="text" name="UnitOFMeasure" class="noteditable-field" readonly value="${item.UnitOFMeasure}" /></td>
-                    <td><input type="text" name="ItemCode" class="noteditable-field" readonly value="${item.ItemCode}" /></td>
                     <td><input type="text" name="Description" class="noteditable-field" readonly value="${item.Description}" /></td>
                     <td><input type="number" name="SellingPrice" class="noteditable-field" readonly value="${item.SellingPrice}" /></td>
-                    <td><input type="number" name="discountRate" class="editable-field"  readonly value="${item.discountRate}" /></td>
-                    <td><input type="number" name="discountAmount" class="noteditable-field" readonly value="${item.discountAmount.toFixed(2)}" /></td>
+                    <td><input type="number" name="discountRate" class="editable-field"  readonly value="${item.discountRate}" />
+                    <input type="hidden" name="discountAmount" class="noteditable-field" readonly value="${item.discountAmount.toFixed(2)}" /></td>
                     <td><input type="number" name="taxableAmount" class="noteditable-field" readonly value="${item.taxableAmount.toFixed(2)}" /></td>
                     <td><input type="number" name="cgst" readonly class="noteditable-field" value="${item.CGST}" /></td>
                     <td><input type="number" name="sgst" readonly class="noteditable-field" value="${item.SGST}" /></td>
