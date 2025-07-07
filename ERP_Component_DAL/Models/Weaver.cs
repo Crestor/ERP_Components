@@ -15,6 +15,9 @@ namespace ERP_Component_DAL.Models
 
         public List<Weaver> Dyer { get; set; }
         public string? WeaverName { get; set; }
+        public string? WorkerName { get; set; }
+        public string? WorkerType { get; set; }
+
 
         public string? DeyerName { get; set; }
         public string? Firm { get; set; }

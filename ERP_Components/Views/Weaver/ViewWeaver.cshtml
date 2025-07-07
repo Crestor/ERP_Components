@@ -1,12 +1,20 @@
 ﻿@using ERP_Component_DAL.Models;
 @{
-    ViewBag.Title = "View Weaver";
+    ViewBag.Title = "View Worker";
     Layout = "~/Views/Shared/_LayoutINV.cshtml";
 }
 @model List<Weaver>
 
 <link rel="stylesheet" href="~/css/Product.css" />
-<div class="table">
+
+<div class="button justify-content-start">
+    <button class="tab-btn active" data-section="Weaver" onclick="showSection('Weaver')">Weaver</button>
+    <button class="tab-btn" data-section="Dyer" onclick="showSection('Dyer')">Dyer</button>
+</div>
+
+
+
+<div id="Weaver" class="vender-section d-block" >
     <table>
         <thead>
         <tr>
@@ -36,3 +44,46 @@
         </tbody>
     </table>
 </div>
+<div id="Dyer" class="vender-section d-none">
+    <table>
+        <thead>
+            <tr>
+                <th>Sr no</th>
+                <th>Name</th>
+                <th>Contact no</th>
+                <th>Firm</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (int i = 0; i < Model.Count; i++)
+            {
+                <tr>
+                    <td>@(i + 1)</td>
+                    <td>@Model[i].WeaverName</td>
+                    <td>@Model[i].ContactNumber</td>
+                    <td>@Model[i].Firm</td>
+                    <td>
+                        <div class="button">
+                            <button onclick="location.href='@Url.Action("EditWeaver", "Weaver", new { id = Model[i].WeaverId })'"> Edit</button>
+                            <button onclick="location.href='@Url.Action("DeleteWeaver", "Weaver", new { id = Model[i].WeaverId })'"> Delete</button>
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<script>
+         function showSection(sectionId) {
+        document.querySelectorAll('.vender-section').forEach(el => el.style.display = 'none');
+        document.getElementById(sectionId).style.display = 'block';
+        document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+        const clickedBtn = document.querySelector(`.tab-btn[data-section="${sectionId}"]`);
+        if (clickedBtn) {
+            clickedBtn.classList.add('active');
+        }
+
+    }
+</script>

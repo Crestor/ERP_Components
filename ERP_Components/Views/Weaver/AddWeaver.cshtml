@@ -1,57 +1,116 @@
-﻿@using ERP_Component_DAL.Models;
-@{
-    ViewBag.Title = "Add Weaver";
+﻿@{
+    ViewBag.Title = "Add Worker";
     Layout = "~/Views/Shared/_LayoutINV.cshtml";
 }
 <link rel="stylesheet" href="~/css/Product.css" />
 
-<form asp-action="AddWeaverDetails" asp-controller="Weaver" method="post" enctype="multipart/form-data">
+<div class="button justify-content-start">
+    <button class="tab-btn active rounded-2" onclick="openForm('Weaver')">Add Weaver</button>
+    <button class="tab-btn rounded-2" onclick="openForm('Dyer')">Add Dyer</button>
+</div>
+
+<form id="workerForm" asp-action="AddWeaverDetails" asp-controller="Weaver" method="post" enctype="multipart/form-data">
     <div class="form-section">
-        <h3>Add Weaver</h3>
+        <h3 id="formTitle">Add Worker</h3>
+
+        <!-- Hidden WorkerType set from button click -->
+        <input type="hidden" name="WorkerType" id="WorkerType" />
+
         <div class="form-row">
-            <label class="required" for="WeaverName">Weaver Name</label>
-            <input type="text" name="WeaverName" id="WeaverName" required />
-            <label class="required" for="firm">Firm Name</label>
-            <input type="text" name="firm" id="firm" required />
+            <label class="required">Worker Name</label>
+            <input type="text" name="WorkerName" required />
+
+            <label class="required">Firm Name</label>
+            <input type="text" name="firm" required />
         </div>
+
         <div class="form-row">
-            <label class="required" for="ContactNumber">Contact Number</label>
-            <input type="text" name="ContactNumber" id="ContactNumber" required />
-            <label class="required" for="Email">Email</label>
-            <input type="email" name="Email" id="Email" required />
+            <label class="required">Contact Number</label>
+            <input type="text" name="ContactNumber" required />
+
+            <label class="required">Email</label>
+            <input type="email" name="Email" required />
         </div>
+
         <div class="form-row">
-            <label class="required" for="Address">Address</label>
-            <input type="text" name="Address" id="Address" required />
-            <label class="required" for="City">City</label>
-            <input type="text" name="City" id="City" required />
+            <label class="required">Address</label>
+            <input type="text" name="Address" required />
+
+            <label class="required">City</label>
+            <input type="text" name="City" required />
         </div>
+
         <div class="form-row">
-            <label class="required" for="District">District</label>
-            <input type="text" name="District" id="District" required />
-            <label class="required" for="State">State</label>
-            <input type="text" name="State" id="State" required />
+            <label class="required">District</label>
+            <input type="text" name="District" required />
+
+            <label class="required">State</label>
+            <input type="text" name="State" required />
         </div>
+
         <div class="form-row">
-            <label class="required" for="Pincode">Pincode</label>
-            <input type="text" name="Pincode" id="Pincode" required />
-            <label class="required" for="Country">Country</label>
-            <input type="text" name="Country" id="Country" required />
+            <label class="required">Pincode</label>
+            <input type="text" name="Pincode" required />
+
+            <label class="required">Country</label>
+            <input type="text" name="Country" required />
         </div>
+
         <div class="form-row">
-            <label class="required" for="AadharNumber">Aadhar Number</label>
-            <input type="text" name="AadharNumber" id="AadharNumber" required />
-            <label class="required" for="PANNumber">PAN Number</label>
-            <input type="text" name="PANNumber" id="PANNumber" required />
+            <label class="required">Aadhar Number</label>
+            <input type="text" name="AadharNumber" required />
+
+            <label class="required">PAN Number</label>
+            <input type="text" name="PANNumber" required />
         </div>
+
         <div class="form-row">
-            <label class="required" for="docpancard">Photo of PAN:</label>
-            <input type="file" name="DocPANCard" id="docpancard" accept="image/*" required />
-            <label class="required" for="docaadhar">Photo of Aadhar:</label>
-            <input type="file" name="DocAadhar" id="docaadhar" accept="image/*" required />
-       </div>
+            <label class="required">Photo of PAN</label>
+            <input type="file" name="DocPANCard" accept="image/*" required />
+
+            <label class="required">Photo of Aadhar</label>
+            <input type="file" name="DocAadhar" accept="image/*" required />
+        </div>
+
         <div class="button">
-            <button type="submit">Add Weaver</button>
+            <button type="submit">Submit</button>
         </div>
     </div>
 </form>
+
+<script>
+    function openForm(workerType) {
+        document.querySelectorAll(".tab-btn").forEach(section => {
+            section.classList.remove("active");
+            const clickedBtn = document.querySelector(`.tab-btn[data-section="${sectionId}"]`);
+        if (clickedBtn) {
+            clickedBtn.classList.add('active');
+        }
+        });
+        document.getElementById("workerForm").classList.remove("d-none");
+        document.getElementById("WorkerType").value = workerType;
+        document.getElementById("formTitle").innerText = "Add " + workerType;
+    }
+</script>
+<script>
+    function openForm(workerType) {
+        // Remove active class from all buttons
+        document.querySelectorAll(".tab-btn").forEach(btn => {
+            btn.classList.remove("active");
+        });
+
+        // Add active class to clicked button
+        const clickedBtn = document.querySelector(`.tab-btn[onclick*="${workerType}"]`);
+        if (clickedBtn) {
+            clickedBtn.classList.add("active");
+        }
+
+        // Show form
+        document.getElementById("workerForm").classList.remove("d-none");
+
+        // Set worker type and title
+        document.getElementById("WorkerType").value = workerType;
+        document.getElementById("formTitle").innerText = "Add " + workerType;
+    }
+</script>
+

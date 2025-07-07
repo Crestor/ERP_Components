@@ -145,11 +145,11 @@ input:focus {
     .form-row input {
         font-size: 16px;
         flex: 1;
-        padding: 4px;
+        padding: 3px;
         border: 1px solid #ccc;
         border-radius: 4px;
         box-sizing: border-box; /* Ensures padding doesn't affect width */
-        margin-right: 10px;
+/*        margin-right: 10px;*/
         color: grey;
     }
     .form-row textarea {
@@ -386,17 +386,17 @@ p input{
     }
 
         /* Optional bottom curve underline look */
-        .button .tab-btn.active::after {
+        /*.button .tab-btn.active::after {
             content: "";
             position: absolute;
             bottom: -5px;
             left: 50%;
             transform: translateX(-50%);
-            width: 70%;
-            height: 4px;
-            background-color: #138496;
+            width: 70%;*/
+/*            height: 4px;*/
+            /*background-color: #138496;
             border-radius: 20px;
-        }
+        }*/
 .card i p{
     font-size:large;
     margin:0px !important;
