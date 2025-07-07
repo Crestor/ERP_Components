@@ -36,4 +36,12 @@ namespace ERP_Component_DAL.Models
         DEBIT = 1,
         CREDIT = 2
     }
+    public enum RequisitionStatus
+    {
+        PENDING	= 1,
+        CLOSED = 4,
+        DISPATCHED_TO_SALES	= 5,
+        REJECTED = 6,
+        SENT_FOR_PURCHASE_REQUISITION = 7
+    }
 }

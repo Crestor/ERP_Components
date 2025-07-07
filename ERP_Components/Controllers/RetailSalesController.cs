@@ -184,6 +184,13 @@ namespace ERP_Components.Controllers
             return RedirectToAction("RetailSalesforecasting");
         }
 
+        public IActionResult SetSalesForecast(Requisition salesForecast)
+        {
+            Guid CenterID = Guid.Parse(HttpContext.Session.GetString("CenterID"));
+            centerlizedService.SaveRequisition(salesForecast, CenterID);
+            return RedirectToAction("Salesforecasting");
+        }
+
 
 
 

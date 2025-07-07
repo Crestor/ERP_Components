@@ -480,6 +480,14 @@ namespace ERP_Components.Controllers
             return RedirectToAction("Salesforecasting");
         }
 
+        //TODO: Implement this controller and mek it one
+        public IActionResult SetSalesForecast(Requisition salesForecast)
+        {
+            Guid CenterID = Guid.Parse(HttpContext.Session.GetString("CenterID"));
+            centerlizedService.SaveRequisition(salesForecast);
+            return RedirectToAction("Salesforecasting");
+        }
+
 
         public IActionResult ViewInventory()
         {

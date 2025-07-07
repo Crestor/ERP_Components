@@ -1,0 +1,24 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace ERP_Component_DAL.Models
+{
+    public class Item
+    {
+        public Guid itemId { get; set; }
+        public string? itemName { get; set; }
+        public int sku { get; set; }
+        public string? specification { get; set; }
+        public byte itemType { get; set; }
+        public int locationId { get; set; }
+        public int hsn { get; set; }
+        public decimal gstRate { get; set; }
+        public string? unitOfMeasure { get; set; }
+        public Category? category { get; set; }
+        public SubCategory? subCategory { get; set; }
+        
+    }
+}

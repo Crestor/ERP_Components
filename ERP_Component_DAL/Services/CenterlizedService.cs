@@ -6,6 +6,7 @@ using Microsoft.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Data;
 
 namespace ERP_Component_DAL.Services
 {
@@ -95,6 +96,57 @@ namespace ERP_Component_DAL.Services
             finally
             {
                 connection.Close();
+            }
+        }
+
+        public void SaveRequisition(Requisition requisition, Guid centerID)
+        {
+            requisition.requisitionId = Guid.NewGuid();
+
+            DataTable requisitionItemsTable = new DataTable();
+            requisitionItemsTable.Columns.Add("ItemID", typeof(Guid));
+            requisitionItemsTable.Columns.Add("Quantity", typeof(decimal));
+            requisitionItemsTable.Columns.Add("RequisitionID", typeof(Guid));
+
+            requisition.requisitionItems?
+                .ForEach(item => requisitionItemsTable.Rows.Add(item.itemId, item.quantity, requisition.requisitionId));
+            SqlTransaction transaction = null;
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(_connectionString))
+                {
+                    connection.Open();
+                    transaction = connection.BeginTransaction();
+
+                    using (SqlBulkCopy bulkCopy = new SqlBulkCopy(connection))
+                    {
+                        bulkCopy.DestinationTableName = "RequisitionItems";
+                        bulkCopy.WriteToServer(requisitionItemsTable);
+                    }
+
+                    string query = $"INSERT INTO Requisitions(RequisitionID, Description, RequisitionStatus, RequisitionSeries, RequisitionType) " +
+                                   $"VALUES (@RequisitionID, @Description, @RequisitionStatus, @RequisitionSeries, @RequisitionType); " +
+                                   $"INSERT INTO RequisitionsDistributionCenterBridge(RequisitionID, CenterID) " +
+                                   $"VALUES (@RequisitonID, @CenterID)";
+
+                    using (SqlCommand cmd = new SqlCommand(query, connection))
+                    {
+                        cmd.Parameters.AddWithValue("@RequisitionID", requisition.requisitionId);
+                        cmd.Parameters.AddWithValue("@Description", requisition.description);
+                        cmd.Parameters.AddWithValue("@RequisitionStatus", (byte)requisition.requisitionStatus);
+                        cmd.Parameters.AddWithValue("@RequisitionSeries", requisition.requisitionSeries);
+                        cmd.Parameters.AddWithValue("@RequisitionType", (byte)requisition.requisitionType);
+                        cmd.Parameters.AddWithValue("@CenterID", centerID);
+
+                        cmd.ExecuteNonQuery();
+                    }
+                    transaction.Commit();
+                }
+            }
+            catch (Exception)
+            {
+                transaction?.Rollback();
+                throw;
             }
         }
     }
