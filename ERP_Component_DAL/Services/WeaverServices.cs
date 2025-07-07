@@ -1117,7 +1117,7 @@ namespace ERP_Component_DAL.Services
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
                     connection.Open();
-                    string query = @"UPDATE AllocatedWork SET RecievedQuantity = @RecievedQuantity WHERE AllocatedWorkID = @AllocatedWorkID;
+                    string query = @"UPDATE AllocatedWork SET RecievedQuantity = RecievedQuantity + @RecievedQuantity WHERE AllocatedWorkID = @AllocatedWorkID;
                                      UPDATE Inventory SET InStock = InStock + @RecievedQuantity WHERE ItemId = (SELECT wop.OutPutProductID FROM WorkOrderPhases wop 
                                      JOIN WorkOrder wo ON wop.ProductID = wo.ProductID
                                      JOIN AllocatedWork aw ON aw.WorkOrderID=wo.WorkOrderID
@@ -1126,7 +1126,7 @@ namespace ERP_Component_DAL.Services
                     using (SqlCommand cmd = new SqlCommand(query, connection))
                     {
                         cmd.Parameters.AddWithValue("@RecievedQuantity", allocated.RecievedQuantity);
-                        //cmd.Parameters.AddWithValue("@AllocatedWorkID", allocatedWorkID);
+                        cmd.Parameters.AddWithValue("@AllocatedWorkID", allocated.AllocatedWorkID);
                         cmd.ExecuteNonQuery();
                     }
                 }
