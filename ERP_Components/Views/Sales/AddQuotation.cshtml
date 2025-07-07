@@ -10,6 +10,11 @@
     .taxes{
         display:flex;
     }
+
+    .noteditable-field[readonly] {
+        background-color: #f9f9f9;
+    }
+
     
 </style>
 
@@ -21,7 +26,7 @@
 
       
                 <label>Quotation Series:</label>
-                <input type="text" id="QuotationSeries" name="QuotationSeries" onchange="pass()"><br>
+            <input type="text" id="QuotationSeries" name="QuotationSeries" class="noteditable-field" readonly onchange="pass()"><br>
         <label>Customer Name:</label>
             <select id="CustomerID" name="CustomerID" style="width: 40px;" onchange="pass()">
                 <option selected disabled>select</option>
@@ -35,7 +40,7 @@
         </div> 
 	   <div class="form-row">
 		<label>Date</label>
-                <input type="text" id="date" name="date" value="@DateTime.Now.ToString("yyyy-mm-dd")" onchange="pass()" />
+            <input type="text" id="date" class="noteditable-field" readonly name="date" value="@DateTime.Now.ToString("yyyy-mm-dd")" onchange="pass()" />
             <label>Dispatch No:</label>
             <input type="text"  name="DispatchNo" ><br>
        </div>
@@ -59,27 +64,27 @@
             </select>
 
             <label>HSN</label>
-            <input type="text" id="HSN" name="HSN" readonly>
+            <input type="text" id="HSN" name="HSN" class="noteditable-field" readonly>
         </div>
         <div class="form-row">
             <label>Quantity</label>
             <input type="number" id="Quantity" name="Quantity" oninput="calculateRow(this)">
             <label>Unit Of Measurement</label>
-            <input type="text" id="UnitOFMeasure" name="UnitOFMeasure" readonly>
+            <input type="text" id="UnitOFMeasure" class="noteditable-field" name="UnitOFMeasure" readonly>
 
         </div>
 
         <div class="form-row">
             <label>Item Code</label>
-            <input type="text" id="ItemCode" name="ItemCode" readonly />
+            <input type="text" id="ItemCode" class="noteditable-field" name="ItemCode" readonly />
             <label>Description</label>
-            <input type="text" id="Description" name="Description" readonly>
+            <input type="text" id="Description" class="noteditable-field" name="Description" readonly>
 
         </div>
 
         <div class="form-row">
             <label>Selling Price</label>
-            <input type="number" id="SellingPrice" name="SellingPrice" oninput="calculateRow(this)" readonly/>
+            <input type="number" id="SellingPrice" class="noteditable-field" name="SellingPrice" oninput="calculateRow(this)" readonly />
             <label>Discount Rate</label>
             <input type="number" id="discountRate" name="discountRate" oninput="calculateRow(this)">
 
@@ -87,9 +92,9 @@
 
         <div class="form-row">
             <label>Discount Amount</label>
-            <input type="number" id="discountAmount" name="discountAmount" readonly />
+            <input type="number" id="discountAmount" class="noteditable-field" name="discountAmount" readonly />
             <label>Taxable Amount</label>
-            <input type="number" id="taxableAmount" name="taxableAmount" readonly>
+            <input type="number" id="taxableAmount" class="noteditable-field" name="taxableAmount" readonly>
 
         </div>
         <div class="form-row">
@@ -111,8 +116,8 @@
                 </div>
             </div>
 
-            <label>Total Amount</label>
-            <input id="total" type="number" name="TotalAmount" readonly>
+            <label style="margin-left: 37px;">Total Amount</label>
+            <input id="total" type="number" class="noteditable-field" name="TotalAmount" readonly>
 
 
        </div>
@@ -132,13 +137,13 @@
 <div class="form-section" id="Addeditemtable" style="padding:20px 20px 50px 20px;display:none">
     <h3>Added Items</h3>
     <div class="button" style="float: right;">
-        <button onclick="editSelectedRow()">Edit</button>
+        <button type="button" onclick="editSelectedRow()">Edit</button>
     </div>
     <div class="table" style="width:98%; margin:auto">
         <table >   
        <thead>   
            <tr>  
-                  <th>S.No</th>  
+                  <th></th>  
                    <th>Item</th>   
                    <th>HSN</th>   
                    <th>Qty</th>   
@@ -184,7 +189,7 @@
                 <option value="30 Day"> 30 Day</option>
             </datalist>
             <label>Total Discount (%):</label>
-            <input type="number" id="totalDiscountPercent" name="TotalDiscountPercent" value="@Model.TotalDiscountPercent" readonly><br>
+            <input type="number" id="totalDiscountPercent" class="noteditable-field" name="TotalDiscountPercent" value="@Model.TotalDiscountPercent" readonly><br>
         
       
             
@@ -197,14 +202,14 @@
                 <option value="cash after service"> cash after service</option>
             </select>
             <label>Total Discount Amount:</label>
-            <input type="number" id="totalDiscountAmount" name="TotalDiscountAmount" value="@Model.TotalDiscountAmount" readonly><br>
+            <input type="number" id="totalDiscountAmount" name="TotalDiscountAmount" class="noteditable-field" value="@Model.TotalDiscountAmount" readonly><br>
         </div>
 
         <div class="form-row">
             <label>Other:</label>
             <input type="text" id="other" name="Other"><br> 
             <label>Gross Total:</label>
-            <input type="number" id="grossTotal" name="GrossTotal" value="@Model.GrossTotal" readonly><br>
+            <input type="number" id="grossTotal" name="GrossTotal" class="noteditable-field" value="@Model.GrossTotal" readonly><br>
        </div>
                
 
@@ -501,43 +506,36 @@
 </script>
 
 <script>
-        function editSelectedRow() {
-        const selectedRows = document.querySelectorAll('.edit-checkbox:checked');
-
-        if (selectedRows.length === 0) {
+           function editSelectedRow() {
+        const selectedCheckboxes = document.querySelectorAll('.edit-checkbox:checked');
+        if (selectedCheckboxes.length === 0) {
             Swal.fire("Please select at least one row to edit.");
             return;
         }
 
-        selectedRows.forEach(chk => {
-            const row = chk.closest("tr");
-            const inputs = row.querySelectorAll(".input-field");
-
-               inputs.forEach(input => {
-        if (["Quantity", "SellingPrice", "discountRate"].includes(input.name)) {
-            input.removeAttribute("readonly");
-            input.classList.add("editable");
-
-            input.addEventListener('input', function () {
-                calculateRowFromRow(row); 
-                calculateSummary();      
+        selectedCheckboxes.forEach(chk => {
+            const row = chk.closest('tr');
+            row.querySelectorAll('.editable-field').forEach(field => {
+                field.removeAttribute('readonly');
+                field.style.border = "1px solid #007bff";
+                field.addEventListener('input', function () {
+                    calculateRowFromRow(row);
+                    calculateSummary();
+                });
             });
-            }
-            });
-
-            });
-      
+        });
 
         if (!document.getElementById("saveChangesBtn")) {
             const btn = document.createElement("button");
             btn.id = "saveChangesBtn";
-            btn.innerText = "Save All";
+            btn.innerText = "Save";
             btn.className = "button";
             btn.style = "margin-left: 10px; background-color: green; color: white;";
-            btn.onclick = saveEditedRows;
+            btn.onclick = showSavePopup;
             document.querySelector(".form-section#Addeditemtable .button").appendChild(btn);
         }
     }
+
 
 
 
@@ -632,8 +630,7 @@
 
 
 
-
-               function renderItemTable() {
+        function renderItemTable() {
         const tableBody = $('#TableBody');
         tableBody.empty();
 
@@ -644,29 +641,30 @@
         addedItems.forEach((item, index) => {
             const row = `
                 <tr>
-                    <td>${index + 1}</td>
-                    <td><input type="text" readonly name="ItemName" value="${item.ItemName}"/></td>
-                    <td><input type="text" readonly name="HSN" value="${item.HSN}"/></td>
-                    <td><input type="number" name="Quantity" value="${item.Quantity}"/></td>
-                    <td><input type="text" name="UnitOFMeasure" readonly value="${item.UnitOFMeasure}"/></td>
-                    <td><input type="text" name="ItemCode" readonly value="${item.ItemCode}"/></td>
-                    <td><input type="text" name="Description" readonly value="${item.Description}"/></td>
-                    <td><input type="number" name="SellingPrice" readonly value="${item.SellingPrice}"/></td>
-                    <td><input type="number" name="discountRate" value="${item.discountRate}"/></td>
-                    <td><input type="number" name="discountAmount" readonly value="${item.discountAmount.toFixed(2)}"/></td>
-                    <td><input type="number" name="taxableAmount" readonly value="${item.taxableAmount.toFixed(2)}"/></td>
-                    <td><input type="number" name="cgst" readonly value="${item.CGST}"/></td>
-                    <td><input type="number" name="sgst" readonly value="${item.SGST}"/></td>
-                    <td><input type="number" name="igst" readonly value="${item.IGST}"/></td>
-                    <td><input type="number" name="TotalAmount" readonly value="${item.totalAmount.toFixed(2)}"/></td>
+                    <td><input type="checkbox" class="edit-checkbox" data-index="${index}" /></td>
+                    <td><input type="text" readonly name="ItemName" class="noteditable-field" value="${item.ItemName}" /></td>
+                    <td><input type="text" readonly name="HSN"class="noteditable-field" value="${item.HSN}" /></td>
+                    <td><input type="number" name="Quantity" class="editable-field" readonly value="${item.Quantity}" /></td>
+                    <td><input type="text" name="UnitOFMeasure" class="noteditable-field" readonly value="${item.UnitOFMeasure}" /></td>
+                    <td><input type="text" name="ItemCode" class="noteditable-field" readonly value="${item.ItemCode}" /></td>
+                    <td><input type="text" name="Description" class="noteditable-field" readonly value="${item.Description}" /></td>
+                    <td><input type="number" name="SellingPrice" class="noteditable-field" readonly value="${item.SellingPrice}" /></td>
+                    <td><input type="number" name="discountRate" class="editable-field"  readonly value="${item.discountRate}" /></td>
+                    <td><input type="number" name="discountAmount" class="noteditable-field" readonly value="${item.discountAmount.toFixed(2)}" /></td>
+                    <td><input type="number" name="taxableAmount" class="noteditable-field" readonly value="${item.taxableAmount.toFixed(2)}" /></td>
+                    <td><input type="number" name="cgst" readonly class="noteditable-field" value="${item.CGST}" /></td>
+                    <td><input type="number" name="sgst" readonly class="noteditable-field" value="${item.SGST}" /></td>
+                    <td><input type="number" name="igst" readonly class="noteditable-field" value="${item.IGST}" /></td>
+                    <td><input type="number" name="TotalAmount" class="noteditable-field" readonly value="${item.totalAmount.toFixed(2)}" /></td>
                 </tr>
             `;
             tableBody.append(row);
         });
 
         attachLiveRecalculation();
-        calculateSummary(); 
+        calculateSummary();
     }
+
 
 
 
@@ -735,6 +733,23 @@
         
         calculateRow(document.getElementById("SellingPrice"));
     }
+
+
+        function showSavePopup() {
+        Swal.fire({
+            title: "Your changes have been saved!",
+            icon: "success"
+        });
+
+        document.querySelectorAll('.editable-field').forEach(field => {
+            field.setAttribute("readonly", true);
+            field.style.border = "none";
+        });
+
+        const saveBtn = document.getElementById("saveChangesBtn");
+        if (saveBtn) saveBtn.remove();
+    }
+
 
 </script>
 

@@ -482,7 +482,7 @@ namespace ERP_Components.Controllers
         public IActionResult SetSalesForecast(Requisition salesForecast)
         {
             Guid CenterID = Guid.Parse(HttpContext.Session.GetString("CenterID"));
-            centerlizedService.SaveRequisition(salesForecast);
+            centerlizedService.SaveRequisition(salesForecast, CenterID);
             return RedirectToAction("Salesforecasting");
         }
 
