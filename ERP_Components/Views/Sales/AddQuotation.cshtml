@@ -18,7 +18,7 @@
     
 </style>
 
-<form method="post" asp-action="SetQuotation" asp-controller="Sales">
+<form method="post" asp-action="SetQuotation" asp-controller="Sales" onsubmit="return items()">
      
     <div class="form-section">
         <h3>Basic Details</h3>
@@ -773,6 +773,17 @@
         if (saveBtn) saveBtn.remove();
     }
 
+     function items(){
+            Swal.fire({
+      title: "Add successfully  ",
+      text: "",
+      icon: "success",
+      confirmButtonColor: "#138496",
+      draggable: true
+
+
+      });
+    }
 
 </script>
 
