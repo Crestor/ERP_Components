@@ -653,7 +653,7 @@ namespace ERP_Component_DAL.Services
             }
         }
 
-        public bool updateSFDetails(QuotationModel Aq)
+        public bool updateSalesForecastDetails(QuotationModel Aq, Guid CenterID)
         {
             try
             {

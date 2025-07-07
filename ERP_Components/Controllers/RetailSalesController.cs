@@ -12,9 +12,10 @@ namespace ERP_Components.Controllers
 		private readonly PurchaseServices purchaseServices;
 		private readonly IConfiguration _configuration;
 		private readonly RetailSalesServices retailsalesServices ;
+        private readonly CenterlizedService centerlizedService;
 
 
-		public RetailSalesController(ILogger<RetailSalesController> logger, IConfiguration configuration)
+		public RetailSalesController(ILogger<RetailSalesController> logger, IConfiguration configuration, CenterlizedService centerlizedService)
 		{
 
 			_logger = logger;
@@ -22,6 +23,7 @@ namespace ERP_Components.Controllers
 			_userServices = new UserServices(configuration);
 			purchaseServices = new PurchaseServices(configuration);
 			retailsalesServices = new RetailSalesServices(configuration);
+            this.centerlizedService = centerlizedService;
 
 		}
 		public IActionResult Index()
@@ -177,8 +179,8 @@ namespace ERP_Components.Controllers
         public IActionResult FinalSalesforecasting(QuotationModel O)
         {
             O.RequisitionID = Guid.Parse(HttpContext.Session.GetString("RequisitionID"));
-
-            retailsalesServices.updateSFDetails(O);  //reamining1
+            Guid CenterID = Guid.Parse(HttpContext.Session.GetString("CenterID"));
+            centerlizedService.updateSalesForecastDetails(O, CenterID, RequisitionTypes.SALES_FORECAST_RETAIL_STORE);  //reamining1
             return RedirectToAction("RetailSalesforecasting");
         }
 

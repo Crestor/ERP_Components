@@ -228,14 +228,15 @@ namespace ERP_Component_DAL.Services
             {
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
-                    string query = $"select wo.WorkOrderSeries,wo.WorkOrderID,wo.Quantity,ws.StatusName,wo.WorkOrderStatus,it.ItemName from WorkOrder wo " +
-                                   $"join Items it on wo.ProductID = it.ItemId join WorkOrderStatuses ws on ws.WorkOrderStatus = wo.WorkOrderStatus " +
-                                   $"where wo.WorkOrderStatus = '{(byte)workOrderStatus}' ORDER BY wo.WorkOrderSeries";
+                    string query = @"select wo.WorkOrderSeries,wo.WorkOrderID,wo.Quantity,ws.StatusName,wo.WorkOrderStatus,it.ItemName from WorkOrder wo 
+                                   join Items it on wo.ProductID = it.ItemId join WorkOrderStatuses ws on ws.WorkOrderStatus = wo.WorkOrderStatus 
+                                   where wo.WorkOrderStatus = @WorkOrderStatus ORDER BY wo.WorkOrderSeries";
 
 
 
                     using (SqlCommand cmd = new SqlCommand(query, connection))
                     {
+                        cmd.Parameters.AddWithValue("@WorkOrderStatus", (byte)workOrderStatus);
                         connection.Open();
 
                         using (SqlDataReader reader = cmd.ExecuteReader())
@@ -276,14 +277,16 @@ namespace ERP_Component_DAL.Services
             {
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
-                    string query = $"SELECT wo.WorkOrderSeries,wo.WorkOrderID,wo.Quantity,wo.WorkOrderStatus,i.ItemName,iv.InStock from WorkOrder wo \r\njoin Items i on wo.ProductID = i.ItemId join Inventory iv on iv.ItemId = i.ItemId JOIN DistributionCenter dc ON dc.CenterID = iv.CenterID where WorkOrderID = '{WorkOrederId}' AND dc.CenterType = 6";
+                    string query = @"SELECT wo.WorkOrderSeries,wo.WorkOrderID,wo.Quantity,wo.WorkOrderStatus,i.ItemName,iv.InStock FROM WorkOrder wo 
+                                     JOIN Items i ON wo.ProductID = i.ItemId JOIN Inventory iv ON iv.ItemId = i.ItemId JOIN DistributionCenter dc ON
+                                     dc.CenterID = iv.CenterID WHERE WorkOrderID = @WorkOrderId AND dc.CenterType = 6";
 
 
 
                     using (SqlCommand cmd = new SqlCommand(query, connection))
                     {
+                        cmd.Parameters.AddWithValue("@WorkOrderId", WorkOrederId);
                         connection.Open();
-
                         using (SqlDataReader reader = cmd.ExecuteReader())
                         {
                             
@@ -322,18 +325,18 @@ namespace ERP_Component_DAL.Services
             {
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
-                    string query = $"SELECT wo.WorkOrderSeries,wo.Quantity,wo.WorkOrderStatus,i.ItemName, i.ItemID,i.Specification,iv.InStock, " +
-                        $"(SELECT SUM(Quantity) FROM AllocatedWork WHERE WorkOrderID = '{WorkOrederId}') AS AllocatedQuantity, " +
-                        $"(SELECT SUM(Quantity) FROM DyeingOrder WHERE WorkOrderID = '{WorkOrederId}') AS DyeingQuantity from WorkOrder wo " +
-                        $"join Items i on wo.ProductID = i.ItemId join Inventory iv on iv.ItemId = i.ItemId " +
-                        $"JOIN DistributionCenter dc ON dc.CenterID = iv.CenterID where WorkOrderID = '{WorkOrederId}' AND dc.CenterType = 6; ";
+                    string query = @"SELECT wo.WorkOrderSeries,wo.Quantity,wo.WorkOrderStatus,i.ItemName, i.ItemID,i.Specification,iv.InStock, 
+                        (SELECT SUM(Quantity) FROM AllocatedWork WHERE WorkOrderID = @WorkOrderId) AS AllocatedQuantity, 
+                        (SELECT SUM(Quantity) FROM DyeingOrder WHERE WorkOrderID = @WorkOrderId) AS DyeingQuantity FROM WorkOrder wo 
+                        JOIN Items i on wo.ProductID = i.ItemId JOIN Inventory iv ON iv.ItemId = i.ItemId 
+                        JOIN DistributionCenter dc ON dc.CenterID = iv.CenterID where WorkOrderID = @WorkOrderId AND dc.CenterType = 6;";
 
 
 
                     using (SqlCommand cmd = new SqlCommand(query, connection))
                     {
+                        cmd.Parameters.AddWithValue("@WorkOrderId", WorkOrederId);
                         connection.Open();
-
                         using (SqlDataReader reader = cmd.ExecuteReader())
                         {
 
@@ -945,11 +948,13 @@ namespace ERP_Component_DAL.Services
                 {
                     connection.Open();
 
-                    string query = $"UPDATE WorkOrder SET WorkOrderStatus = '{(byte)status}' WHERE WorkOrderID = '{workOrderId}'";
-                                    
+                    string query = "UPDATE WorkOrder SET WorkOrderStatus = @Status WHERE WorkOrderID = @WorkOrderID";
 
-                    using(SqlCommand cmd = new SqlCommand(query, connection))
+
+                    using (SqlCommand cmd = new SqlCommand(query, connection))
                     {
+                        cmd.Parameters.AddWithValue("@Status", (byte)status);
+                        cmd.Parameters.AddWithValue("@WorkOrderID", workOrderId);
                         cmd.ExecuteScalar();
                     }                    
                 }
@@ -1143,10 +1148,11 @@ namespace ERP_Component_DAL.Services
                     connection.Open();
                     string query = @"SELECT it.ItemName AS YarnName, it.ItemId AS YarnID, it.Specification FROM Weaving_BOM wb " +
                                     "JOIN Items it ON wb.MaterialID = it.ItemId " +
-                                    $"WHERE wb.ProductID = '{ProductID}' ";
+                                     "WHERE wb.ProductID = @ProductID";
 
                     using (SqlCommand cmd = new SqlCommand(query, connection))
                     {
+                        cmd.Parameters.AddWithValue("@ProductID", ProductID);
                         using (SqlDataReader reader = cmd.ExecuteReader())
                         {
                             while (reader.Read())

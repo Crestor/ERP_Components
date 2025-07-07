@@ -1,3 +1,4 @@
+using ERP_Component_DAL.Services;
 using Microsoft.AspNetCore.HttpOverrides;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -22,6 +23,8 @@ builder.Services.Configure<CookiePolicyOptions>(options =>
     options.MinimumSameSitePolicy = SameSiteMode.None;
 
 });
+
+builder.Services.AddSingleton<CenterlizedService>();
 
 var app = builder.Build();
 

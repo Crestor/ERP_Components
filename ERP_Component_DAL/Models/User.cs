@@ -8,8 +8,9 @@ namespace ERP_Component_DAL.Models
 {
     public class User
     {
-
+        public Guid employeeId { get; set; }
         public Guid loginId { get; set; }
+        public Guid assignedCenterID { get; set; }
         public int userId {  get; set; }
         public string? oldUserName { get; set; }
         public string? oldPassword { get; set; }

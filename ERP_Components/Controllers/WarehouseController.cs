@@ -11,16 +11,18 @@ namespace ERP_Components.Controllers
         private readonly UserServices _userServices;
 
         private readonly WarehouseServices warehouseServices;
+        private readonly CenterlizedService centerlizedService;
         private readonly IConfiguration _configuration;
 
 
-        public WarehouseController(ILogger<WarehouseController> logger, IConfiguration configuration)
+        public WarehouseController(ILogger<WarehouseController> logger, IConfiguration configuration, CenterlizedService centerlizedService)
         {
 
             _logger = logger;
             _configuration = configuration;
             _userServices = new UserServices(configuration);
             warehouseServices = new WarehouseServices(configuration);
+            this.centerlizedService = centerlizedService;
         }
 
 
@@ -89,7 +91,8 @@ namespace ERP_Components.Controllers
 
         public IActionResult ViewInventory()
         {
-            List<Items> items = warehouseServices.ViewWarehouseInventory();
+            Guid CenterID = Guid.Parse(HttpContext.Session.GetString("CenterID"));
+            List<Items> items = centerlizedService.ViewInventory(CenterID);
             return View(items);
         }
 

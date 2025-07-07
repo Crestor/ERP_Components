@@ -13,7 +13,9 @@ namespace ERP_Component_DAL.Models
         public decimal Amount { get; set; }
         public int TransactionType { get; set; }
         public string Remarks { get; set; }
-        public string AccountID { get; set; }
-        public string transactionType { get; set; }
+        public string AccountNumber { get; set; }
+        public string? transactionType { get; set; }
+        public decimal Credit { get; set; }
+        public decimal Debit { get; set; }
     }
 }

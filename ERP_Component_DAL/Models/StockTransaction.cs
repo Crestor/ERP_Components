@@ -15,13 +15,6 @@ namespace ERP_Component_DAL.Models
         public string SourceDC { get; set; }
         public string DestinationDC { get; set; }
         public string? Reason { get; set; }
-        public TransactionType Type { get; set; }
-    }
-
-    public enum TransactionType
-    {
-        IN_STOCK = 1,
-        OUT_STOCK = 2,
-        TRANSFER = 3
+        public StockTransactionType Type { get; set; }
     }
 }

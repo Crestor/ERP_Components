@@ -21,7 +21,7 @@
         <div class="form-row" style="width:50%">
             <label for="currentUsername">Current Username:</label>
             <input type="text" id="currentUsername" name="oldUserName" value="@Model.oldUserName" placeholder="Username">
-            <input type="hidden" name="loginId" value="@Model.loginId" placeholder="Username">
+            <input type="hidden" name="employeeId" value="@Model.employeeId" placeholder="Username">
         </div>
         <div class="form-row">
             <label for="newUsername">New Username:</label>
@@ -46,7 +46,7 @@
         <div class="form-row"style="width:100%">
             <label for="newPassword">New Password:</label>
             <input type="password" id="newPassword" name="password" placeholder="New Password">
-                <input type="hidden" id="newPassword" name="loginId" value="@Model.loginId" placeholder="New Password">
+                <input type="hidden" id="newPassword" name="employeeId" value="@Model.employeeId" placeholder="New Password">
             <label for="reenterPassword">Re-Enter Password:</label>
             <input type="password" id="reenterPassword" name="reenterPassword" placeholder="Re-Enter Password">
         </div>
