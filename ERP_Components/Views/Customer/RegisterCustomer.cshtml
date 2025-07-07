@@ -13,24 +13,24 @@
         <div class="section-toggle" data-target="BasicDetails">👤 Basic Details <i class="fas fa-chevron-down"></i></div>
         <div id="BasicDetails" class="form-section">
             <div class="form-row">
-                <label for="gstin">GST No</label>
-                <input type="text" id="gstin" name="GstIn" maxlength="15" placeholder="Enter GST Number" />
-                <input id="vendorCode" name="VendorCode" type="hidden" />
-
-                <label for="panno">PAN No</label>
-                <input type="text" id="panno" name="PAN" maxlength="10" placeholder="ABCDE1234F" />
-            </div>
-            <div class="form-row">
-                <label for="CustomerName">Customer Name<span class="required">*</span></label>
+                <label class="required" for="CustomerName">Customer Name</label>
                 <input type="text" id="CustomerName" name="CustomerName" required />
-                <label for="Email">Email</label>
+                <label class="required" for="Email">Email</label>
                 <input type="email" id="Email" name="Email" />
             </div>
             <div class="form-row">
-                <label for="Contact">Contact No</label>
+                <label class="required" for="gstin">GST No</label>
+                <input type="text" id="gstin" name="GstIn" maxlength="15" placeholder="Enter GST Number" />
+                <input id="vendorCode" name="VendorCode" type="hidden" />
+
+                <label class="required" for="panno">PAN No</label>
+                <input type="text" id="panno" name="PAN" maxlength="10" placeholder="ABCDE1234F" />
+            </div>
+            <div class="form-row">
+                <label class="required" for="Contact">Contact No</label>
                 <input type="text" id="Contact" name="ContactNo" />
 
-                <label for="alterContactNo">Alternate Contact No</label>
+                <label class="required" for="alterContactNo">Alternate Contact No</label>
                 <input type="text" id="alterContactNo" name="alterContactNo" />
             </div>
         </div>
@@ -38,23 +38,23 @@
         <div class="section-toggle" data-target="BillingDetails">💳 Billing Details <i class="fas fa-chevron-down"></i></div>
         <div id="BillingDetails" class="form-section">
             <div class="form-row">
-                <label for="country">Country</label>
+                <label class="required" for="country">Country</label>
                 <select id="country" name="Country">
                     <option>India</option>
                 </select>
-                <label for="state">State</label>
+                <label class="required" for="state">State</label>
                 <select id="state" name="State"></select>
             </div>
             <div class="form-row">
-                <label for="district">District</label>
+                <label class="required" for="district">District</label>
                 <select id="district" name="District"></select>
-                <label for="city">City</label>
+                <label class="required" for="city">City</label>
                 <input type="text" id="city" name="City" />
             </div>
             <div class="form-row">
-                <label for="pin">Pin Code</label>
+                <label class="required" for="pin">Pin Code</label>
                 <input type="text" id="pin" name="PinCode" />
-                <label for="address">Address (Line1)</label>
+                <label class="required" for="address">Address (Line1)</label>
                 <input type="text" id="address" name="Address" />
             </div>
         </div>
@@ -62,33 +62,33 @@
         <div class="section-toggle" data-target="ShippingDetails">🚚 Shipping Details <i class="fas fa-chevron-down"></i></div>
         <div id="ShippingDetails" class="form-section">
             <div class="form-row">
-                <label for="shipName">Customer Name</label>
+                <label class="required" for="shipName">Customer Name</label>
                 <input type="text" id="shipName" name="ShippingCustomerName" />
-                <label for="shipContact">Contact No</label>
+                <label class="required" for="shipContact">Contact No</label>
                 <input type="text" id="shipContact" name="ShippingContactNo" />
             </div>
             <div class="form-row">
-                <label for="Street">Street/Locality</label>
+                <label class="required" for="Street">Street/Locality</label>
                 <input type="text" name="Street" />
-                <label for="Area">Area</label>
+                <label class="required" for="Area">Area</label>
                 <input type="text" id="Area" name="Area" />
             </div>
             <div class="form-row">
-                <label for="ShippingState">State</label>
+                <label class="required" for="ShippingState">State</label>
                 <input id="ShippingState" name="State" />
 
-                <label for="ShippingDistrict">District</label>
+                <label class="required" for="ShippingDistrict">District</label>
                 <input id="ShippingDistrict" name="District" />
             </div>
             <div class="form-row">
-                <label for="ShippingCity">City</label>
+                <label class="required" for="ShippingCity">City</label>
                 <input type="text" id="ShippingCity" name="City" />
 
-                <label for="ShippingPinCode">PinCode</label>
+                <label class="required" for="ShippingPinCode">PinCode</label>
                 <input type="text" id="ShippingPinCode" name="PinCode" />
             </div>
             <div class="form-row" style="width:50%">
-                <label for="other">Other Reference</label>
+                <label class="required" for="other">Other Reference</label>
                 <input id="other" name="other" />
             </div>
         </div>
@@ -96,13 +96,13 @@
         <div class="section-toggle" data-target="OpeningBalance">📊 Opening Balance <i class="fas fa-chevron-down"></i></div>
         <div id="OpeningBalance" class="form-section">
             <div class="form-row">
-                <label for="date">As On Date</label>
+                <label class="required" for="date">As On Date</label>
                 <input type="date" id="date" name="OpeningDate" />
-                <label for="Balance">Balance</label>
+                <label class="required" for="Balance">Balance</label>
                 <input type="text" id="Balance" name="Balance" />
             </div>
             <div class="form-row" style="width:50%">
-                <label for="mode">Mode</label>
+                <label class="required" for="mode">Mode</label>
                 <select id="mode" name="Mode">
                     <option>Credit</option>
                     <option>Debit</option>

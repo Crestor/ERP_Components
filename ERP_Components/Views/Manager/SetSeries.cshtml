@@ -1,0 +1,42 @@
+﻿@using ERP_Component_DAL.Models;
+@{
+    ViewBag.Title = "Set Series";
+    Layout = "~/Views/Shared/_LayoutINV.cshtml";
+}
+
+<link rel="stylesheet" href="~/css/Product.css" />
+
+<form asp-action="SetseiesByManager" asp-controller="Manager">
+        <div class="form-section">
+            <h3>Set Series</h3>
+
+            <div class="form-row w-50">
+                <label for="reqType">Series Type</label>
+                <select id="reqType" name="Series_Type">
+                    <option value="Material_riquisition">Material Requisition</option>
+                    <option value="Return_Material">Return Material</option>
+                    <option value="Finished_Good">Finished Goods Transfer</option>
+                    <option value="Sales_Order">Sales Order</option>
+                    <option value="Invoice">Invoice</option>
+                    <option value="Debit_Note">Debit Note</option>
+                    <option value="Credit_Note">Credit Note</option>
+                    <option value="Deliver_Challan">Delivery Challan</option>
+                    <option value="Packing">Packing</option>
+                    <option value="Dyeing">Dyeing</option>
+                    <option value="Dispatch">Dispatch</option>
+                </select>
+            </div>
+
+            <div id="seriesFields" class="hidden">
+                <div class="form-row">
+                    <label for="Prifix">Prefix</label>
+                    <input type="text" id="Prifix" name="Prifix" placeholder="MP">
+                    <label for="StartFrom">Start From</label>
+                    <input type="number" id="StartFrom" name="StartFrom" placeholder="1001">
+                </div>
+                <div class="button">
+                  <button>Save</button>
+                </div>
+            </div>
+        </div>
+</form>

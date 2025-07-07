@@ -454,5 +454,15 @@ namespace ERP_Components.Controllers
             var month = managerServices.GetPendingQuotationCount();
             return Json(month.BillCount);
         }
+
+        public IActionResult SetSeries()
+        {
+            //var series = managerServices.GetSeries();
+            return View();
+        }
+        public IActionResult SetseiesByManager(Series series)
+        {
+            return RedirectToAction("SetSeries");
+        }
     }
 }

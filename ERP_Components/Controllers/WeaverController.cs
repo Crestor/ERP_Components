@@ -274,6 +274,14 @@ namespace ERP_Components.Controllers
             return RedirectToAction("ViewWeavingOrders");
         }
 
+        public IActionResult BillOfMaterial()
+        {
+            return View();
+        }
+        public IActionResult SaveBillOfMaterial()
+        {
+            return RedirectToAction("BillOfMaterial");
+        }
 
     }
 }

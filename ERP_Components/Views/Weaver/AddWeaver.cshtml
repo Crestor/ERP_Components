@@ -5,11 +5,11 @@
 <link rel="stylesheet" href="~/css/Product.css" />
 
 <div class="button justify-content-start">
-    <button class="tab-btn active rounded-2" onclick="openForm('Weaver')">Add Weaver</button>
+    <button class="tab-btn rounded-2" onclick="openForm('Weaver')">Add Weaver</button>
     <button class="tab-btn rounded-2" onclick="openForm('Dyer')">Add Dyer</button>
 </div>
 
-<form id="workerForm" asp-action="AddWeaverDetails" asp-controller="Weaver" method="post" enctype="multipart/form-data">
+<form id="workerForm" class="d-none" asp-action="AddWeaverDetails" asp-controller="Weaver" method="post" enctype="multipart/form-data">
     <div class="form-section">
         <h3 id="formTitle">Add Worker</h3>
 
