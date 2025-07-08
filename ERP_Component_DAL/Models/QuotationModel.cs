@@ -10,6 +10,7 @@
         public List<QuotationModel> items { get; set; }
         public string Description { get; set; }
         public string ItemName { get; set; }
+        public string DispatchNumber { get; set; }
 
         public string ItemCode { get; set; }
         public Guid ItemId { get; set; }
