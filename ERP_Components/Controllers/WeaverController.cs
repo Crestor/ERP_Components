@@ -67,7 +67,7 @@ namespace ERP_Components.Controllers
 
 
         [HttpPost]
-        public IActionResult EditWorkerDetails(Weaver weaver)
+        public IActionResult EditWorkerDetails(Worker worker)
         {
             weaverServices.UpdateWorker(worker);
             return RedirectToAction("ViewWeaver");
