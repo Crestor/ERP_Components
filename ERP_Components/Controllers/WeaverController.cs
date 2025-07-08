@@ -281,10 +281,17 @@ namespace ERP_Components.Controllers
         public IActionResult BillOfMaterial()
         {
             Guid CenterID = Guid.Parse(HttpContext.Session.GetString("CenterID"));
-            var materials =  weaverServices.FindItems(ItemType.MATERIAL);
-            var products = weaverServices.FindItems(ItemType.PRODUCT);
+            var materials =  weaverServices.FindItems(ItemType.MATERIAL, CenterID);
+            var products = weaverServices.FindItems(ItemType.PRODUCT, CenterID);
             Weaver_BOM weaver_BOM = new Weaver_BOM() { Products = products, Materials = materials};
             return View(weaver_BOM);
+        }
+
+        public IActionResult CreateBillOfMaterial(BOM bom)
+        {
+            weaverServices.SaveBillOfMaterial(bom);
+            return RedirectToAction("BillOfMaterial"); 
+
         }
         public IActionResult SaveBillOfMaterial()
         {

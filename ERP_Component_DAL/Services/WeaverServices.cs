@@ -1182,7 +1182,7 @@ namespace ERP_Component_DAL.Services
             return yarns;
         }
 
-        public List<Item> FindItems(ItemType itemType)
+        public List<Item> FindItems(ItemType itemType, Guid centerId)
         {
             List<Item> items = new List<Item>();
 
@@ -1191,11 +1191,15 @@ namespace ERP_Component_DAL.Services
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
                     connection.Open();
-                    string query = @"SELECT it.ItemName AS YarnName, it.ItemId AS YarnID, it.Specification FROM Items it WHERE it.ItemType = @ItemType";
+                    string query = @"SELECT it.ItemName AS YarnName, it.ItemId AS YarnID, it.Specification FROM Items it 
+                                    JOIN Inventory i ON i.ItemId=it.ItemId
+                                    WHERE i.CenterId = @CenterID
+                                    AND it.ItemType = @ItemType";
 
                     using (SqlCommand cmd = new SqlCommand(query, connection))
                     {
                         cmd.Parameters.AddWithValue("@ItemType", (byte)itemType);
+                        cmd.Parameters.AddWithValue("@CenterID", centerId);
                         using (SqlDataReader reader = cmd.ExecuteReader())
                         {
                             while (reader.Read())
@@ -1218,6 +1222,41 @@ namespace ERP_Component_DAL.Services
             }
 
             return items;
+        }
+
+        public void SaveBillOfMaterial(BOM bom)
+        {
+            DataTable BOMTable = new DataTable();
+            BOMTable.Columns.Add("ProductID", typeof(Guid));
+            BOMTable.Columns.Add("MaterialID", typeof(Guid));
+            BOMTable.Columns.Add("Quantity", typeof(decimal));
+
+            bom.materials.ForEach(item => BOMTable.Rows.Add(bom.ProductID, item.MatrialID, item.Quantity));
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+
+                    using (SqlBulkCopy bulkCopy = new SqlBulkCopy(connection))
+                    {
+                        bulkCopy.DestinationTableName = "Weaving_BOM";
+                        try
+                        {
+                            bulkCopy.WriteToServer(BOMTable);
+                        }
+                        catch (Exception)
+                        {
+                            throw;
+                        }
+
+
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
     }
 }
