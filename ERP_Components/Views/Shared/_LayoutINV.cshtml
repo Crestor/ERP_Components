@@ -949,7 +949,7 @@
                                 </a>
                             </li>
 
-                            <!-- Vendor (Has children) -->
+                            
                             <li class="nav-item">
                                 <a href="#" class="nav-link">
                                     <i class="fas fa-users-cog me-2"></i>
@@ -1162,9 +1162,8 @@
             method: 'GET',
             success: function (count) {
                 if (count > 0) {
-    $('#quotationBadge').text(count).removeClass('d-none');
-}
-
+              $('#quotationBadge').text(count).removeClass('d-none');
+            }
             }
         });
     });
