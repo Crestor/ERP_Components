@@ -28,7 +28,7 @@ namespace ERP_Component_DAL.Services
             {
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
-                    using (SqlCommand cmd = new SqlCommand("AddWeaver", connection))
+                    using (SqlCommand cmd = new SqlCommand("AddWorker", connection))
                     {
                         cmd.CommandType = CommandType.StoredProcedure;
 
@@ -48,6 +48,7 @@ namespace ERP_Component_DAL.Services
                         cmd.Parameters.AddWithValue("@PANCardNumber", worker.PANNumber ?? (object)DBNull.Value);
                         cmd.Parameters.AddWithValue("@AadharImage", GetBytesFromIFormFile(worker.DocAadhar) ?? (object)DBNull.Value);
                         cmd.Parameters.AddWithValue("@AadharNumber", worker.AadharNumber ?? (object)DBNull.Value);
+                        cmd.Parameters.AddWithValue("@WorkerType", (byte)worker.WorkerType);
 
                         connection.Open();
                         cmd.ExecuteNonQuery();
