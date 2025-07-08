@@ -3,43 +3,116 @@
     ViewBag.Title = "Bill Of Material";
     Layout = "~/Views/Shared/_LayoutINV.cshtml";
 }
+@model Weaver_BOM
 
 <link rel="stylesheet" href="~/css/Product.css" />
-<form asp-action="SaveBillOfMaterial" asp-controller="Weaver" method="post ">
+
+<form asp-action="CreateBillOfMaterial" asp-controller="Weaver" method="post">
     <div class="form-section">
         <h3>Bill Of Material</h3>
+
+        <!-- Product Selection -->
         <div class="form-row" style="width:50.5%">
             <label for="ProductName">Product Name</label>
-            <select type="text" id="ProductName" name="ProductId">
+            <select id="ProductName" name="ProductId">
                 <option value="">Select Product</option>
-                <option value="product1">Product1</option>
-                <option value="product2">Product2</option>
-                <option value="product3">Product3</option>
-                @* @foreach (var product in Model.Product)
+                @foreach (var product in Model.Products)
                 {
-                    <option value="@product.productId">@product.productName</option>
-                } *@
+                    <option value="@product.itemId">@product.itemName</option>
+                }
             </select>
         </div>
+
+        <!-- Material Entry -->
         <div class="form-row">
             <label for="Material">Material</label>
-            <select type="text" id="Material" name="MaterialId">
+            <select id="Material">
                 <option value="">Select Material</option>
-                <option value="material1">Material1</option>
-                <option value="material2">Material2</option>
-                <option value="material3">Material3</option>
-
-               @*  @foreach (var material in Model.materials)
+                @foreach (var material in Model.Materials)
                 {
-                    <option value="@material.materialId">@material.materialName</option>
-                } *@
+                    <option value="@material.itemId">@material.itemName</option>
+                }
             </select>
-            <label for="Quantity">Quantity</label>
-            <input type="number" id="Quantity" name="Quantity" placeholder="Enter Quantity">
 
+            <label for="Quantity">Quantity</label>
+            <input type="number" id="Quantity" placeholder="Enter Quantity">
         </div>
+
+        <!-- Add Button -->
         <div class="button">
-            <button type="submit" id="AddMaterial">Add Material</button>
+            <button type="button" id="AddMaterial">Add Material</button>
         </div>
+
+        <!-- Hidden Inputs Will Be Injected Here -->
+        <div id="hiddenInputsContainer"></div>
     </div>
+
+    <!-- Display Table -->
+    <div class="table" style="margin-top: 30px;">
+        <table>
+            <thead>
+                <tr>
+                    <th>Sr No</th>
+                    <th>Material</th>
+                    <th>Quantity</th>
+                </tr>
+            </thead>
+            <tbody id="materialListBody">
+                <!-- Dynamically added rows -->
+            </tbody>
+        </table>
+        <div class="button" style="margin-top: 15px;">
+            <button type="submit">Submit BOM</button>
+        </div>
+</div>
 </form>
+
+<!-- JavaScript -->
+<script>
+    let materialList = [];
+    let srNo = 1;
+
+    document.getElementById("AddMaterial").addEventListener("click", function (e) {
+        e.preventDefault();
+
+        const materialSelect = document.getElementById("Material");
+        const quantityInput = document.getElementById("Quantity");
+
+        const materialId = materialSelect.value;
+        const materialName = materialSelect.options[materialSelect.selectedIndex].text;
+        const quantity = quantityInput.value;
+
+        if (materialId === "" || quantity === "") {
+            alert("Please select material and enter quantity.");
+            return;
+        }
+
+        // Add to list
+        materialList.push({
+            materialId,
+            materialName,
+            quantity
+        });
+
+        // Add to table
+        const row = document.createElement("tr");
+        row.innerHTML = `
+            <td>${srNo++}</td>
+            <td>${materialName}</td>
+            <td>${quantity}</td>
+        `;
+        document.getElementById("materialListBody").appendChild(row);
+
+        // Add hidden fields based on BOM model
+        const index = materialList.length - 1;
+        const hiddenInputs = `
+            <input type="hidden" name="materials[${index}].MatrialID" value="${materialId}" />
+            <input type="hidden" name="materials[${index}].Quantity" value="${quantity}" />
+        `;
+        document.getElementById("hiddenInputsContainer").insertAdjacentHTML("beforeend", hiddenInputs);
+
+        // Reset inputs
+        materialSelect.selectedIndex = 0;
+        quantityInput.value = "";
+    });
+</script>

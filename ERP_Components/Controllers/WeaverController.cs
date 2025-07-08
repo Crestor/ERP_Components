@@ -293,10 +293,6 @@ namespace ERP_Components.Controllers
             return RedirectToAction("BillOfMaterial"); 
 
         }
-        public IActionResult SaveBillOfMaterial()
-        {
-            return RedirectToAction("BillOfMaterial");
-        }
 
     }
 }
