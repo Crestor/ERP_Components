@@ -5,13 +5,13 @@
 <link rel="stylesheet" href="~/css/Product.css" />
 
 <div class="button justify-content-start">
-    <button class="tab-btn rounded-2" onclick="openForm('Weaver')">Add Weaver</button>
+    <button class="tab-btn active rounded-2" onclick="openForm('Weaver')">Add Weaver</button>
     <button class="tab-btn rounded-2" onclick="openForm('Dyer')">Add Dyer</button>
 </div>
 
-<form id="workerForm" class="d-none" asp-action="AddWeaverDetails" asp-controller="Weaver" method="post" enctype="multipart/form-data">
+<form id="workerForm" asp-action="AddWeaverDetails" asp-controller="Weaver" method="post" enctype="multipart/form-data">
     <div class="form-section">
-        <h3 id="formTitle">Add Worker</h3>
+        <h3 id="formTitle">Add Weaver</h3>
 
         <!-- Hidden WorkerType set from button click -->
         <input type="hidden" name="WorkerType" id="WorkerType" />
