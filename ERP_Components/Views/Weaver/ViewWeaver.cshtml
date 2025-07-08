@@ -3,7 +3,7 @@
     ViewBag.Title = "View Worker";
     Layout = "~/Views/Shared/_LayoutINV.cshtml";
 }
-@model List<Worker>
+@model Worker
 
 <link rel="stylesheet" href="~/css/Product.css" />
 
@@ -12,39 +12,8 @@
     <button class="tab-btn" data-section="Dyer" onclick="showSection('Dyer')">Dyer</button>
 </div>
 
-
-
-<div id="Weaver" class="vender-section d-block" >
-    <table>
-        <thead>
-        <tr>
-            <th>Sr no</th>
-            <th>Name</th>
-            <th>Contact no</th>
-            <th>Firm</th>
-            <th>Action</th>
-        </tr>
-        </thead>
-        <tbody>
-            @for (int i = 0; i < Model.Count; i++)
-            {
-                <tr>
-                    <td>@(i + 1)</td>
-                    <td>@Model[i].WorkerName</td>
-                    <td>@Model[i].ContactNumber</td>
-                    <td>@Model[i].Firm</td>
-                    <td>
-                        <div class="button">
-                            <button onclick="location.href='@Url.Action("EditWeaver", "Weaver", new { id = Model[i].WorkerId })'"> Edit</button>
-                            <button onclick="location.href='@Url.Action("DeleteWeaver", "Weaver", new { id = Model[i].WorkerId })'"> Delete</button>
-                        </div>
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
-</div>
-<div id="Dyer" class="vender-section d-none">
+<!-- Weaver Section -->
+<div id="Weaver" class="vender-section" style="display: block;">
     <table>
         <thead>
             <tr>
@@ -56,17 +25,17 @@
             </tr>
         </thead>
         <tbody>
-            @for (int i = 0; i < Model.Count; i++)
+            @for (int i = 0; i < Model.Weavers.Count; i++)
             {
                 <tr>
                     <td>@(i + 1)</td>
-                    <td>@Model[i].WorkerName</td>
-                    <td>@Model[i].ContactNumber</td>
-                    <td>@Model[i].Firm</td>
+                    <td>@Model.Weavers[i].WorkerName</td>
+                    <td>@Model.Weavers[i].ContactNumber</td>
+                    <td>@Model.Weavers[i].Firm</td>
                     <td>
                         <div class="button">
-                            <button onclick="location.href='@Url.Action("EditWeaver", "Weaver", new { id = Model[i].WorkerId })'"> Edit</button>
-                            <button onclick="location.href='@Url.Action("DeleteWeaver", "Weaver", new { id = Model[i].WorkerId })'"> Delete</button>
+                            <button onclick="location.href='@Url.Action("EditWorker", "Weaver", new { id = Model.Weavers[i].WorkerId })'">Edit</button>
+                            <button onclick="location.href='@Url.Action("DeleteWorker", "Weaver", new { id = Model.Weavers[i].WorkerId })'">Delete</button>
                         </div>
                     </td>
                 </tr>
@@ -75,15 +44,57 @@
     </table>
 </div>
 
+<!-- Dyer Section -->
+<div id="Dyer" class="vender-section" style="display: none;">
+    <table>
+        <thead>
+            <tr>
+                <th>Sr no</th>
+                <th>Name</th>
+                <th>Contact no</th>
+                <th>Firm</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (int i = 0; i < Model.Dyers.Count; i++)
+            {
+                <tr>
+                    <td>@(i + 1)</td>
+                    <td>@Model.Dyers[i].WorkerName</td>
+                    <td>@Model.Dyers[i].ContactNumber</td>
+                    <td>@Model.Dyers[i].Firm</td>
+                    <td>
+                        <div class="button">
+                            <button onclick="location.href='@Url.Action("EditWorker", "Weaver", new { id = Model.Dyers[i].WorkerId })'">Edit</button>
+                            <button onclick="location.href='@Url.Action("DeleteWorker", "Weaver", new { id = Model.Dyers[i].WorkerId })'">Delete</button>
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<!-- Tab Switching Script -->
 <script>
-         function showSection(sectionId) {
-        document.querySelectorAll('.vender-section').forEach(el => el.style.display = 'none');
-        document.getElementById(sectionId).style.display = 'block';
+    function showSection(sectionId) {
+        // Hide all sections
+        document.querySelectorAll('.vender-section').forEach(el => {
+            el.style.display = 'none';
+        });
+
+        // Show selected section
+        const target = document.getElementById(sectionId);
+        if (target) {
+            target.style.display = 'block';
+        }
+
+        // Update tab button styles
         document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
         const clickedBtn = document.querySelector(`.tab-btn[data-section="${sectionId}"]`);
         if (clickedBtn) {
             clickedBtn.classList.add('active');
         }
-
     }
 </script>

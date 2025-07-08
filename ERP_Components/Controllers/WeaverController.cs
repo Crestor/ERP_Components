@@ -50,14 +50,16 @@ namespace ERP_Components.Controllers
         }
         public IActionResult ViewWeaver()
         {
-            List<Worker> weavers = weaverServices.FindWorkers(WorkerType.Weaver);
-            List<Worker> dyers = weaverServices.FindWorkers(WorkerType.Dyer);
-            var workers = new { weavers = weavers, dyers = dyers };
+            var workers = new Worker();
+            workers.Weavers = weaverServices.FindWorkers(WorkerType.Weaver);
+            workers.Dyers = weaverServices.FindWorkers(WorkerType.Dyer);
+            
             return View(workers);
         }
 
-        public IActionResult EditWeaver(Guid id)
+        public IActionResult EditWorker(Guid id)
         {
+            //change the model to worker and update the services 
             Weaver model = weaverServices.GetWeaverDetailsById(id);
             model.WeaverId = id;
             return View(model);
@@ -70,7 +72,7 @@ namespace ERP_Components.Controllers
             weaverServices.UpdateWeaver(weaver);
             return RedirectToAction("ViewWeaver");
         }
-        public IActionResult DeleteWeaver(Guid id)
+        public IActionResult DeleteWorker(Guid id)
         {
             weaverServices.DeleteWeaver(id);
             return RedirectToAction("ViewWeaver");

@@ -23,6 +23,10 @@ namespace ERP_Component_DAL.Models
         public string? Country { get; set; }
         public string? AadharNumber { get; set; }
         public string? PANNumber { get; set; }
+
+        public List<Worker> Weavers { get; set; }
+
+        public List<Worker> Dyers { get; set; }
         public IFormFile? DocPANCard { get; set; }
         public IFormFile? DocAadhar { get; set; }
     }

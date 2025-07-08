@@ -4,14 +4,18 @@
     Layout = "~/Views/Shared/_LayoutINV.cshtml";
 }
 <link rel="stylesheet" href="~/css/Product.css" />
-@model Weaver
+@model Worker
 <form asp-action="EditWeaverDetails" asp-controller="Weaver" method="post" enctype="multipart/form-data">
     <div class="form-section">
-        <h3>Add Weaver</h3>
+        <h3>Edit Worker</h3>
+        <div class="form-row w-50">
+          <label for="WorkerType" >Worker Type</label>
+            <input type="text" name="WorkerType" id="WorkerType" value="@Model.WorkerType" readonly />
+        </div>
         <div class="form-row">
-            <input type="hidden" name="WeaverId" value="@Model.WeaverId" />
+            <input type="hidden" name="WeaverId" value="@Model.WorkerId" />
             <label class="required" for="WeaverName">Weaver Name</label>
-            <input type="text" name="WeaverName" id="WeaverName" value="@Model.WeaverName" required />
+            <input type="text" name="WeaverName" id="WeaverName" value="@Model.WorkerName" required />
             <label class="required" for="firm">Firm Name</label>
             <input type="text" name="firm" id="firm" value="@Model.Firm" required />
         </div>
