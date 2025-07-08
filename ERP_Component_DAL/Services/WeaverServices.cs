@@ -162,32 +162,32 @@ namespace ERP_Component_DAL.Services
                 throw;
             }
         }
-        public bool UpdateWeaver(Weaver weaver)
+        public bool UpdateWorker(Worker worker)
         {
             try
             {
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
-                    using (SqlCommand cmd = new SqlCommand("UpdateWeaver", connection))
+                    using (SqlCommand cmd = new SqlCommand("UpdateWorker", connection))
                     {
                         cmd.CommandType = CommandType.StoredProcedure;
-                        cmd.Parameters.AddWithValue("@WorkerID", weaver.WeaverId);
-                        cmd.Parameters.AddWithValue("@WorkerName", weaver.WeaverName ?? (object)DBNull.Value);
-                        cmd.Parameters.AddWithValue("@FirmName", weaver.Firm ?? (object)DBNull.Value);
-                        cmd.Parameters.AddWithValue("@ContactNumber", weaver.ContactNumber ?? (object)DBNull.Value);
-                        cmd.Parameters.AddWithValue("@EmailID", weaver.Email ?? (object)DBNull.Value);
+                        cmd.Parameters.AddWithValue("@WorkerID", worker.WorkerId);
+                        cmd.Parameters.AddWithValue("@WorkerName", worker.WorkerName ?? (object)DBNull.Value);
+                        cmd.Parameters.AddWithValue("@FirmName", worker.Firm ?? (object)DBNull.Value);
+                        cmd.Parameters.AddWithValue("@ContactNumber", worker.ContactNumber ?? (object)DBNull.Value);
+                        cmd.Parameters.AddWithValue("@EmailID", worker.Email ?? (object)DBNull.Value);
 
-                        cmd.Parameters.AddWithValue("@Country", weaver.Country ?? (object)DBNull.Value);
-                        cmd.Parameters.AddWithValue("@State", weaver.State ?? (object)DBNull.Value);
-                        cmd.Parameters.AddWithValue("@City", weaver.City ?? (object)DBNull.Value);
-                        cmd.Parameters.AddWithValue("@Pincode", weaver.Pincode ?? (object)DBNull.Value);
-                        cmd.Parameters.AddWithValue("@AddressLine1", weaver.Address ?? (object)DBNull.Value);
-                        cmd.Parameters.AddWithValue("@District", weaver.District ?? (object)DBNull.Value);
+                        cmd.Parameters.AddWithValue("@Country", worker.Country ?? (object)DBNull.Value);
+                        cmd.Parameters.AddWithValue("@State", worker.State ?? (object)DBNull.Value);
+                        cmd.Parameters.AddWithValue("@City", worker.City ?? (object)DBNull.Value);
+                        cmd.Parameters.AddWithValue("@Pincode", worker.Pincode ?? (object)DBNull.Value);
+                        cmd.Parameters.AddWithValue("@AddressLine1", worker.Address ?? (object)DBNull.Value);
+                        cmd.Parameters.AddWithValue("@District", worker.District ?? (object)DBNull.Value);
 
-                        cmd.Parameters.AddWithValue("@PANCard", GetBytesFromIFormFile(weaver.DocPANCard) ?? (object)DBNull.Value);
-                        cmd.Parameters.AddWithValue("@PANCardNumber", weaver.PANNumber ?? (object)DBNull.Value);
-                        cmd.Parameters.AddWithValue("@AadharImage", GetBytesFromIFormFile(weaver.DocAadhar) ?? (object)DBNull.Value);
-                        cmd.Parameters.AddWithValue("@AadharNumber", weaver.AadharNumber ?? (object)DBNull.Value);
+                        cmd.Parameters.AddWithValue("@PANCard", GetBytesFromIFormFile(worker.DocPANCard) ?? (object)DBNull.Value);
+                        cmd.Parameters.AddWithValue("@PANCardNumber", worker.PANNumber ?? (object)DBNull.Value);
+                        cmd.Parameters.AddWithValue("@AadharImage", GetBytesFromIFormFile(worker.DocAadhar) ?? (object)DBNull.Value);
+                        cmd.Parameters.AddWithValue("@AadharNumber", worker.AadharNumber ?? (object)DBNull.Value);
 
                         connection.Open();
                         cmd.ExecuteNonQuery();
