@@ -3,7 +3,7 @@
     ViewBag.Title = "Set Series";
     Layout = "~/Views/Shared/_LayoutINV.cshtml";
 }
-
+@model List<Series>
 <link rel="stylesheet" href="~/css/Product.css" />
 
 <form asp-action="SetseiesByManager" asp-controller="Manager">
@@ -40,3 +40,26 @@
             </div>
         </div>
 </form>
+
+    <h2>Series</h2>
+<div class="table">
+        <table>
+            <thead>
+                <tr>
+                    <th>Sr no</th>
+                    <th>Series Type</th>
+                    <th>Current Series</th>
+                </tr>
+            </thead>
+            <tbody>
+            @for (int i = 0; i < Model.Count; i++)
+            {
+                <tr>
+                    <td>@(i + 1)</td>
+                    <td>@Model[i].Series_Type</td>
+                    <td>@Model[i].CurrentSeries</td>
+                </tr>
+            }
+            </tbody>
+        </table>
+</div>

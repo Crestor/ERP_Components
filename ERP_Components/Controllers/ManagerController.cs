@@ -458,7 +458,7 @@ namespace ERP_Components.Controllers
         public IActionResult SetSeries()
         {
             var seriesList = managerServices.FindAllSeries();
-            return View();
+            return View(seriesList);
         }
         public IActionResult SetseiesByManager(Series series)
         {
