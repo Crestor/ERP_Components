@@ -1181,6 +1181,44 @@ namespace ERP_Component_DAL.Services
 
             return yarns;
         }
+
+        public List<Item> FindItems(ItemType itemType)
+        {
+            List<Item> items = new List<Item>();
+
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    connection.Open();
+                    string query = @"SELECT it.ItemName AS YarnName, it.ItemId AS YarnID, it.Specification FROM Items it WHERE it.ItemType = @ItemType";
+
+                    using (SqlCommand cmd = new SqlCommand(query, connection))
+                    {
+                        cmd.Parameters.AddWithValue("@ItemType", (byte)itemType);
+                        using (SqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                Item item = new Item
+                                {
+                                    itemId = reader.GetGuid(reader.GetOrdinal("YarnID")),
+                                    itemName = reader.GetString(reader.GetOrdinal("YarnName")),
+                                    specification = reader.IsDBNull(reader.GetOrdinal("Specification")) ? null : reader.GetString(reader.GetOrdinal("Specification"))
+                                };
+                                items.Add(item);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+
+            return items;
+        }
     }
 }
 

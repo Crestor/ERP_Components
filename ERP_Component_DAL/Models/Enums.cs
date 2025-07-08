@@ -44,4 +44,10 @@ namespace ERP_Component_DAL.Models
         REJECTED = 6,
         SENT_FOR_PURCHASE_REQUISITION = 7
     }
+    public enum ItemType
+    {
+        PRODUCT = 1,
+        MATERIAL = 2,
+        ASSET = 3
+    }
 }
