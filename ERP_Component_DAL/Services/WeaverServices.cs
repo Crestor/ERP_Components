@@ -110,15 +110,15 @@ namespace ERP_Component_DAL.Services
                 throw;
             }
         }
-        public Weaver GetWeaverDetailsById(Guid workerId)
+        public Worker GetWorkerDetailsById(Guid workerId)
         {
-            Weaver weaver = new Weaver();
+            Worker Worker = new Worker();
 
             try
             {
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
-                    string query = @"SELECT w.WorkerName, w.FirmName, w.ContactNumber, w.EmailID, a.Country, a.State, a.City, a.Pincode, a.AddressLine1, a.District, d.PANCardNumber, d.AadharNumber
+                    string query = @"SELECT w.WorkerName, w.FirmName, w.ContactNumber, w.EmailID, w.WorkerType, a.Country, a.State, a.City, a.Pincode, a.AddressLine1, a.District, d.PANCardNumber, d.AadharNumber
                          FROM Workers w JOIN Address a ON w.AddressID = a.AddressID
                     JOIN Documents d ON w.DocumentID = d.DocumentID where WorkerID =@WorkerID";
 
@@ -133,18 +133,19 @@ namespace ERP_Component_DAL.Services
                         {
                             if (reader.Read())
                             {
-                                weaver.WeaverName = reader["WorkerName"] != DBNull.Value ? reader["WorkerName"].ToString() : string.Empty;
-                                weaver.Firm = reader["FirmName"] != DBNull.Value ? reader["FirmName"].ToString() : string.Empty;
-                                weaver.ContactNumber = reader["ContactNumber"] != DBNull.Value ? reader["ContactNumber"].ToString() : string.Empty;
-                                weaver.Email = reader["EmailID"] != DBNull.Value ? reader["EmailID"].ToString() : string.Empty;
-                                weaver.Country = reader["Country"] != DBNull.Value ? reader["Country"].ToString() : string.Empty;
-                                weaver.State = reader["State"] != DBNull.Value ? reader["State"].ToString() : string.Empty;
-                                weaver.City = reader["City"] != DBNull.Value ? reader["City"].ToString() : string.Empty;
-                                weaver.Pincode = reader["Pincode"] != DBNull.Value ? reader["Pincode"].ToString() : string.Empty;
-                                weaver.Address = reader["AddressLine1"] != DBNull.Value ? reader["AddressLine1"].ToString() : string.Empty;
-                                weaver.District = reader["District"] != DBNull.Value ? reader["District"].ToString() : string.Empty;
-                                weaver.PANNumber = reader["PANCardNumber"] != DBNull.Value ? reader["PANCardNumber"].ToString() : string.Empty;
-                                weaver.AadharNumber = reader["AadharNumber"] != DBNull.Value ? reader["AadharNumber"].ToString() : string.Empty;
+                                Worker.WorkerName = reader["WorkerName"] != DBNull.Value ? reader["WorkerName"].ToString() : string.Empty;
+                                Worker.Firm = reader["FirmName"] != DBNull.Value ? reader["FirmName"].ToString() : string.Empty;
+                                Worker.ContactNumber = reader["ContactNumber"] != DBNull.Value ? reader["ContactNumber"].ToString() : string.Empty;
+                                Worker.Email = reader["EmailID"] != DBNull.Value ? reader["EmailID"].ToString() : string.Empty;
+                                Worker.Country = reader["Country"] != DBNull.Value ? reader["Country"].ToString() : string.Empty;
+                                Worker.State = reader["State"] != DBNull.Value ? reader["State"].ToString() : string.Empty;
+                                Worker.City = reader["City"] != DBNull.Value ? reader["City"].ToString() : string.Empty;
+                                Worker.Pincode = reader["Pincode"] != DBNull.Value ? reader["Pincode"].ToString() : string.Empty;
+                                Worker.Address = reader["AddressLine1"] != DBNull.Value ? reader["AddressLine1"].ToString() : string.Empty;
+                                Worker.District = reader["District"] != DBNull.Value ? reader["District"].ToString() : string.Empty;
+                                Worker.PANNumber = reader["PANCardNumber"] != DBNull.Value ? reader["PANCardNumber"].ToString() : string.Empty;
+                                Worker.AadharNumber = reader["AadharNumber"] != DBNull.Value ? reader["AadharNumber"].ToString() : string.Empty;
+                                Worker.WorkerType = (WorkerType)reader["WorkerType"];
 
 
 
@@ -153,7 +154,7 @@ namespace ERP_Component_DAL.Services
                     }
                 }
 
-                return weaver;
+                return Worker;
             }
             catch (Exception)
             {

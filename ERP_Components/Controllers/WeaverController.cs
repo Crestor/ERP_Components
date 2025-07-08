@@ -60,8 +60,8 @@ namespace ERP_Components.Controllers
         public IActionResult EditWorker(Guid id)
         {
             //change the model to worker and update the services 
-            Weaver model = weaverServices.GetWeaverDetailsById(id);
-            model.WeaverId = id;
+            Worker model = weaverServices.GetWorkerDetailsById(id);
+            model.WorkerId = id;
             return View(model);
         }
 
