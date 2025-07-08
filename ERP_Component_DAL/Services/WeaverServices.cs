@@ -145,7 +145,7 @@ namespace ERP_Component_DAL.Services
                                 Worker.District = reader["District"] != DBNull.Value ? reader["District"].ToString() : string.Empty;
                                 Worker.PANNumber = reader["PANCardNumber"] != DBNull.Value ? reader["PANCardNumber"].ToString() : string.Empty;
                                 Worker.AadharNumber = reader["AadharNumber"] != DBNull.Value ? reader["AadharNumber"].ToString() : string.Empty;
-                                Worker.WorkerType = (WorkerType)reader["WorkerType"];
+                                Worker.WorkerType = (WorkerType)reader.GetByte("WorkerType");
 
 
 
