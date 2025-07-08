@@ -14,5 +14,6 @@ namespace ERP_Component_DAL.Models
         public string? Prifix { get; set; }
 
         public int? StartFrom { get; set; }
+        public string? CurrentSeries { get; set; }
     }
 }

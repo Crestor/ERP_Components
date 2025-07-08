@@ -1981,6 +1981,72 @@ namespace ERP_Component_DAL.Services
             }
         }
 
+        public void SaveSeries(Series series)
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(_connectionString))
+                {
+                    string query = $"INSERT INTO SeriesCounter (SeriesPrefix, LastNumber, SeriesName) " +
+                    $"VALUES (@Prefix, @StartFrom, @Name)";
+
+                    using (SqlCommand cmd = new SqlCommand(query, connection))
+                    {
+                        cmd.Parameters.AddWithValue("Prefix", series.Prifix);
+                        cmd.Parameters.AddWithValue("@StartFrom", series.StartFrom);
+                        cmd.Parameters.AddWithValue("@Name", series.Series_Type);
+                        connection.Open();
+                        cmd.ExecuteScalar();
+                    }
+
+
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public List<Series> FindAllSeries()
+        {
+            var seriesList = new List<Series>();
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(_connectionString))
+                {
+                    string query = $"SELECT SeriesName, SeriesPrefix + '-' + CAST(CurrentYear AS VARCHAR) + '-' + CAST(LastNumber AS VARCHAR) AS CurrentSeries FROM SeriesCounter";
+
+                    using (SqlCommand cmd = new SqlCommand(query, connection))
+                    {
+                        connection.Open();
+                        using (SqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                seriesList.Add(
+                                    new Series
+                                    {
+                                        Series_Type = reader.GetString(reader.GetOrdinal("SeriesName")),
+                                        CurrentSeries = reader.GetString(reader.GetOrdinal("CurrentSeries"))
+                                    }
+                                );
+
+                            }
+                        }
+                        
+                    }
+
+
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            return seriesList;
+        }
+
         //public List<VendorQuotationItem> GetRequisitionItems(Guid RequisitionID)
         //{
         //    List<VendorQuotationItem> vendorQuotationItems = new List<VendorQuotationItem>();
