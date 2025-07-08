@@ -36,11 +36,11 @@ namespace ERP_Components.Controllers
         }
 
         [HttpPost]
-        public IActionResult AddWeaverDetails(Weaver weaver)
+        public IActionResult AddWeaverDetails(Worker worker)
         {
             try
             {
-                weaverServices.addWeaver(weaver);
+                weaverServices.SaveWorker(worker);
                 return RedirectToAction("AddWeaver");
             }
             catch (Exception e)
@@ -50,8 +50,10 @@ namespace ERP_Components.Controllers
         }
         public IActionResult ViewWeaver()
         {
-            List<Weaver> weavers = weaverServices.ViewWeaver();
-            return View(weavers);
+            List<Worker> weavers = weaverServices.FindWorkers(WorkerType.Weaver);
+            List<Worker> dyers = weaverServices.FindWorkers(WorkerType.Dyer);
+            var workers = new { weavers = weavers, dyers = dyers };
+            return View(workers);
         }
 
         public IActionResult EditWeaver(Guid id)

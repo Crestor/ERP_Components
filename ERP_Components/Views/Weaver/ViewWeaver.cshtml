@@ -3,7 +3,7 @@
     ViewBag.Title = "View Worker";
     Layout = "~/Views/Shared/_LayoutINV.cshtml";
 }
-@model List<Weaver>
+@model List<Worker>
 
 <link rel="stylesheet" href="~/css/Product.css" />
 
@@ -30,13 +30,13 @@
             {
                 <tr>
                     <td>@(i + 1)</td>
-                    <td>@Model[i].WeaverName</td>
+                    <td>@Model[i].WorkerName</td>
                     <td>@Model[i].ContactNumber</td>
                     <td>@Model[i].Firm</td>
                     <td>
                         <div class="button">
-                            <button onclick="location.href='@Url.Action("EditWeaver", "Weaver", new { id = Model[i].WeaverId })'"> Edit</button>
-                            <button onclick="location.href='@Url.Action("DeleteWeaver", "Weaver", new { id = Model[i].WeaverId })'"> Delete</button>
+                            <button onclick="location.href='@Url.Action("EditWeaver", "Weaver", new { id = Model[i].WorkerId })'"> Edit</button>
+                            <button onclick="location.href='@Url.Action("DeleteWeaver", "Weaver", new { id = Model[i].WorkerId })'"> Delete</button>
                         </div>
                     </td>
                 </tr>
@@ -60,13 +60,13 @@
             {
                 <tr>
                     <td>@(i + 1)</td>
-                    <td>@Model[i].WeaverName</td>
+                    <td>@Model[i].WorkerName</td>
                     <td>@Model[i].ContactNumber</td>
                     <td>@Model[i].Firm</td>
                     <td>
                         <div class="button">
-                            <button onclick="location.href='@Url.Action("EditWeaver", "Weaver", new { id = Model[i].WeaverId })'"> Edit</button>
-                            <button onclick="location.href='@Url.Action("DeleteWeaver", "Weaver", new { id = Model[i].WeaverId })'"> Delete</button>
+                            <button onclick="location.href='@Url.Action("EditWeaver", "Weaver", new { id = Model[i].WorkerId })'"> Edit</button>
+                            <button onclick="location.href='@Url.Action("DeleteWeaver", "Weaver", new { id = Model[i].WorkerId })'"> Delete</button>
                         </div>
                     </td>
                 </tr>

@@ -22,7 +22,7 @@ namespace ERP_Component_DAL.Services
             connectionString = config.GetConnectionString("DefaultConnectionString");
         }
 
-        public bool addWeaver(Weaver weaver)
+        public bool SaveWorker(Worker worker)
         {
             try
             {
@@ -32,22 +32,22 @@ namespace ERP_Component_DAL.Services
                     {
                         cmd.CommandType = CommandType.StoredProcedure;
 
-                        cmd.Parameters.AddWithValue("@WorkerName", weaver.WeaverName ?? (object)DBNull.Value);
-                        cmd.Parameters.AddWithValue("@FirmName", weaver.Firm ?? (object)DBNull.Value);
-                        cmd.Parameters.AddWithValue("@ContactNumber", weaver.ContactNumber ?? (object)DBNull.Value);
-                        cmd.Parameters.AddWithValue("@EmailID", weaver.Email ?? (object)DBNull.Value);
+                        cmd.Parameters.AddWithValue("@WorkerName", worker.WorkerName ?? (object)DBNull.Value);
+                        cmd.Parameters.AddWithValue("@FirmName", worker.Firm ?? (object)DBNull.Value);
+                        cmd.Parameters.AddWithValue("@ContactNumber", worker.ContactNumber ?? (object)DBNull.Value);
+                        cmd.Parameters.AddWithValue("@EmailID", worker.Email ?? (object)DBNull.Value);
 
-                        cmd.Parameters.AddWithValue("@Country", weaver.Country ?? (object)DBNull.Value);
-                        cmd.Parameters.AddWithValue("@State", weaver.State ?? (object)DBNull.Value);
-                        cmd.Parameters.AddWithValue("@City", weaver.City ?? (object)DBNull.Value);
-                        cmd.Parameters.AddWithValue("@Pincode", weaver.Pincode ?? (object)DBNull.Value);
-                        cmd.Parameters.AddWithValue("@AddressLine1", weaver.Address ?? (object)DBNull.Value);
-                        cmd.Parameters.AddWithValue("@District", weaver.District ?? (object)DBNull.Value);
+                        cmd.Parameters.AddWithValue("@Country", worker.Country ?? (object)DBNull.Value);
+                        cmd.Parameters.AddWithValue("@State", worker.State ?? (object)DBNull.Value);
+                        cmd.Parameters.AddWithValue("@City", worker.City ?? (object)DBNull.Value);
+                        cmd.Parameters.AddWithValue("@Pincode", worker.Pincode ?? (object)DBNull.Value);
+                        cmd.Parameters.AddWithValue("@AddressLine1", worker.Address ?? (object)DBNull.Value);
+                        cmd.Parameters.AddWithValue("@District", worker.District ?? (object)DBNull.Value);
 
-                        cmd.Parameters.AddWithValue("@PANCard", GetBytesFromIFormFile(weaver.DocPANCard) ?? (object)DBNull.Value);
-                        cmd.Parameters.AddWithValue("@PANCardNumber", weaver.PANNumber ?? (object)DBNull.Value);
-                        cmd.Parameters.AddWithValue("@AadharImage", GetBytesFromIFormFile(weaver.DocAadhar) ?? (object)DBNull.Value);
-                        cmd.Parameters.AddWithValue("@AadharNumber", weaver.AadharNumber ?? (object)DBNull.Value);
+                        cmd.Parameters.AddWithValue("@PANCard", GetBytesFromIFormFile(worker.DocPANCard) ?? (object)DBNull.Value);
+                        cmd.Parameters.AddWithValue("@PANCardNumber", worker.PANNumber ?? (object)DBNull.Value);
+                        cmd.Parameters.AddWithValue("@AadharImage", GetBytesFromIFormFile(worker.DocAadhar) ?? (object)DBNull.Value);
+                        cmd.Parameters.AddWithValue("@AadharNumber", worker.AadharNumber ?? (object)DBNull.Value);
 
                         connection.Open();
                         cmd.ExecuteNonQuery();
@@ -72,35 +72,38 @@ namespace ERP_Component_DAL.Services
             return memoryStream.ToArray();
         }
 
-        public List<Weaver> ViewWeaver()
+        public List<Worker> FindWorkers(WorkerType type)
         {
-            List<Weaver> weavers = new List<Weaver>();
+            List<Worker> workers = new List<Worker>();
 
             try
             {
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
-                    using (SqlCommand cmd = new SqlCommand("SELECT WorkerID, WorkerName, FirmName, ContactNumber FROM Workers", connection))
+                    string query = "SELECT WorkerID, WorkerName, FirmName, ContactNumber, WorkerType FROM Workers WHERE WorkerType = @WorkerType";
+                    using (SqlCommand cmd = new SqlCommand(query, connection))
                     {
+                        cmd.Parameters.AddWithValue("@WorkerType", (byte)type);
                         connection.Open();
 
                         using (SqlDataReader reader = cmd.ExecuteReader())
                         {
                             while (reader.Read())
                             {
-                                weavers.Add(new Weaver
+                                workers.Add(new Worker
                                 {
-                                    WeaverId = reader["WorkerID"] != DBNull.Value ? (Guid)reader["WorkerID"] : Guid.Empty,
-                                    WeaverName = reader["WorkerName"] != DBNull.Value ? reader["WorkerName"].ToString() : string.Empty,
+                                    WorkerId = reader["WorkerID"] != DBNull.Value ? (Guid)reader["WorkerID"] : Guid.Empty,
+                                    WorkerName = reader["WorkerName"] != DBNull.Value ? reader["WorkerName"].ToString() : string.Empty,
                                     Firm = reader["FirmName"] != DBNull.Value ? reader["FirmName"].ToString() : string.Empty,
-                                    ContactNumber = reader["ContactNumber"] != DBNull.Value ? reader["ContactNumber"].ToString() : string.Empty
+                                    ContactNumber = reader["ContactNumber"] != DBNull.Value ? reader["ContactNumber"].ToString() : string.Empty,
+                                    WorkerType = (WorkerType)reader.GetByte("WorkerType")
                                 });
                             }
                         }
                     }
                 }
 
-                return weavers;
+                return workers;
             }
             catch (Exception)
             {
