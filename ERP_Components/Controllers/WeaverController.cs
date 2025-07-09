@@ -293,6 +293,12 @@ namespace ERP_Components.Controllers
             return RedirectToAction("BillOfMaterial"); 
 
         }
+        public IActionResult ViewBillOfMaterial()
+        {
+        //    Guid CenterID = Guid.Parse(HttpContext.Session.GetString("CenterID"));
+        //    var bom = weaverServices.GetBillOfMaterial(CenterID);
+            return View();
+        }
 
     }
 }
