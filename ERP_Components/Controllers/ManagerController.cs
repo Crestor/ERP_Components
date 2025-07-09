@@ -446,14 +446,9 @@ namespace ERP_Components.Controllers
         }
 
 
-     
 
-        [HttpGet]
-        public JsonResult GetPendingQuotationCount()
-        {
-            var month = managerServices.GetPendingQuotationCount();
-            return Json(month.BillCount);
-        }
+       
+
 
         public IActionResult SetSeries()
         {

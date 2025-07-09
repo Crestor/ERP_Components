@@ -153,7 +153,7 @@
 
 <div class="form-section" id="Addeditemtable" style="padding:20px 20px 50px 20px;display:none">
     <h3>Added Items</h3>
-    <div class="button" style="float: right;">
+    <div class="button" style="float: right; margin-bottom:10px; margin-right:12px">
         <button type="button" onclick="editSelectedRow()">Edit</button>
     </div>
     <div class="table" style="width:98%; margin:auto">
@@ -665,7 +665,7 @@
         addedItems.forEach((item, index) => {
             const row = `
                 <tr>
-                    <td><input type="checkbox" class="edit-checkbox" data-index="${index}" /></td>
+                    <td><input type="checkbox" class="edit-checkbox" data-index="${index}" style="border:none" /></td>
                     <td><input type="text" readonly name="ItemName" class="noteditable-field" value="${item.ItemName}" /></td>
                     <td><input type="text" name="ItemCode" class="noteditable-field" readonly value="${item.ItemCode}" /></td>
                     <td><input type="number" name="Quantity" class="editable-field" readonly value="${item.Quantity}" /></td>

@@ -133,7 +133,11 @@
                             </li>
                             <li class="nav-item">
                                 <a href="/Inventory/MaterialOrderList" class="nav-link">
-                                    <i class="fas fa-tachometer-alt me-2"></i>
+                                    <i class="fas fa-tachometer-alt me-2 position-relative">
+                                   <span id="ViewStoreOrder" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger d-none">
+                                0
+                            </span>
+                                    </i>
                                     <p>
                                         View Order
                                     </p>
@@ -142,7 +146,12 @@
                             </li>
                             <li class="nav-item">
                                 <a href="/Inventory/RecievePurchaseOrder" class="nav-link">
-                                    <i class="fas fa-tachometer-alt me-2"></i>
+                                    <i class="fas fa-tachometer-alt me-2 position-relative">
+                                              
+                                                             <span id="RecievedPurchaseOrder" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger d-none">
+                                0
+                            </span>
+                                    </i>
                                     <p>
                                         View Purchase Order
                                     </p>
@@ -151,7 +160,11 @@
                             </li>
                             <li class="nav-item">
                                 <a href="/Inventory/AllocateToProduction" class="nav-link">
-                                    <i class="fas fa-tachometer-alt me-2"></i>
+                                    <i class="fas fa-tachometer-alt me-2 position-relative">
+                                                                        <span id="ViewPrMr" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger d-none">
+                                0
+                            </span>
+                                    </i>
                                     <p>
                                         View PR Material Requisition
                                     </p>
@@ -332,7 +345,11 @@
                             </li>
                             <li class="nav-item">
                                 <a href="/Weaver/WorkOrder" class="nav-link">
-                                    <i class="fas fa-tasks me-2"></i>
+                                    <i class="fas fa-tasks me-2 position-relative">
+                                                   <span id="WorkOrder" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger d-none">
+                                0
+                            </span>
+                                    </i>
                                     <p>
                                         Work Order
                                     </p>
@@ -347,7 +364,11 @@
                             </li>
                             <li class="nav-item">
                                 <a href="@Url.Action("ViewCompletedWorkOrder", "Weaver")" class="nav-link">
-                                    <i class="fas fa-check-double me-2"></i><p>Completed Work Order</p>
+                                    <i class="fas fa-check-double me-2 position-relative">
+                                          <span id="CompletedWorkOrder" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger d-none">
+                                0
+                            </span>
+                                    </i><p>Completed Work Order</p>
                                 </a>
                             </li>
                             <li class="nav-item">
@@ -388,7 +409,11 @@
                             </li> *@
                             <li class="nav-item">
                                 <a href="/Weaver/ViewDyeingOrders" class="nav-link">
-                                    <i class="fas fa-eye"></i>
+                                    <i class="fas fa-eye position-relative">
+                               <span id="DyeingOrder" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger d-none">
+                                0
+                            </span>
+                                    </i>
                                     <p>
                                         View Dyeing Order
                                     </p>
@@ -397,7 +422,12 @@
                             </li>
                             <li class="nav-item">
                                 <a href="/Weaver/ViewWeavingOrders" class="nav-link">
-                                    <i class="fas fa-eye"></i>
+                                    <i class="fas fa-eye position-relative">
+                                                <span id="ViewWeavingOrder" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger d-none">
+                                0
+                            </span>
+              
+                                    </i>
                                     <p>
                                         View Weaving Order
                                     </p>
@@ -463,7 +493,11 @@
                             </li>
                             <li class="nav-item">
                                 <a href="/Production/ViewMR" class="nav-link">
-                                    <i class="fas fa-file-signature me-2"></i>
+                                    <i class="fas fa-file-signature me-2 position-relative">
+                                                  <span id="ViewMaterialRequisition" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger d-none">
+                                0
+                            </span>
+                                    </i>
                                     <p>
                                         View Material Requisition
                                     </p>
@@ -496,7 +530,11 @@
                             </li>
                             <li class="nav-item">
                                 <a href="@Url.Action("SalesForCasting", "Warehouse")" class="nav-link">
-                                    <i class="fas fa-shopping-bag me-2"></i><p> View Order</p>
+                                    <i class="fas fa-shopping-bag me-2 position-relative">
+                                                <span id="ViewOrder" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger d-none">
+                                0
+                            </span>
+                                    </i><p> View Order</p>
                                 </a>
                             </li>
                             <li class="nav-item">
@@ -506,7 +544,12 @@
                             </li>
                             <li class="nav-item">
                                 <a href="@Url.Action("ViewCompletedProductionOrder", "Warehouse")" class="nav-link">
-                                    <i class="fas fa-shopping-bag me-2"></i><p> View Completed Order</p>
+                                    <i class="fas fa-shopping-bag me-2 position-relative">
+                                                     <span id="ViewCompletedOrder" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger d-none">
+                                0
+                            </span>
+                                    
+                                    </i><p> View Completed Order</p>
                                 </a>
                             </li>
 
@@ -656,8 +699,6 @@
                         {
                           
 
-                   
-
                             <li class="nav-item">
                                 <a href="/Account/ChartOfAccount" class="nav-link">
                                     <i class="fas fa-chart-line"></i>
@@ -709,7 +750,11 @@
                             </li>
                             <li class="nav-item">
                                 <a href="/Account/Receivable" class="nav-link">
-                                    <i class="fas fa-hand-holding-usd"></i>
+                                    <i class="fas fa-hand-holding-usd position-relative">
+                                                    <span id="Receivable" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger d-none">
+                                0
+                            </span>
+                                    </i>
                                     <p>
                                         Receivable
                                     </p>
@@ -844,7 +889,11 @@
                             <!-- Invoice (Single link) -->
                             <li class="nav-item">
                                 <a href="@Url.Action("ManageInvoice", "Sales")" class="nav-link">
-                                    <i class="fas fa-receipt me-2"></i>
+                                    <i class="fas fa-receipt me-2 position-relative">
+                                                    <span id="SalesInvoice" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger d-none">
+                                0
+                            </span>
+                                    </i>
                                     <p>Invoice</p>
                                 </a>
                             </li>
@@ -931,17 +980,36 @@
                             </li> *@
                             <li class="nav-item">
                                 <a href="@Url.Action("ViewRequisition", "Purchase")" class="nav-link">
-                                    <i class="fas fa-eye me-2"></i> <p>View Requisition</p>
+                                    <i class="fas fa-tachometer-alt me-2 position-relative">
+                                    <span id="approvalBadge" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger d-none">
+                                0
+                            </span>
+
+              
+                                    </i>
+
+                                  <p>View Requisition</p>
                                 </a>
                             </li>
                             <li class="nav-item">
                                 <a href="@Url.Action("CreatePurchaseOrder", "Purchase")" class="nav-link">
-                                    <i class="fas fa-shopping-cart me-2"></i> <p>Purchase Order</p>
+                                    <i class="fas fa-shopping-cart me-2 position-relative">
+                 
+                                    <span id="purchaseOrderBadge" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger d-none">
+                                0
+                            </span>
+              
+                                    </i>
+                                     <p>Purchase Order</p>
                                 </a>
                             </li>
                             <li class="nav-item">
                                 <a href="@Url.Action("GeneratePurchaseOrder", "Purchase")" class="nav-link">
-                                    <i class="fas fa-receipt me-2"></i><p> Generate Purchase Order</p>
+                                    <i class="fas fa-receipt me-2 position-relative">
+                                        <span id="generatePurchaseOrder" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger d-none">
+                                0
+                            </span>
+                                    </i><p> Generate Purchase Order</p>
                                 </a>
                             </li>
                             <li class="nav-item">
@@ -951,7 +1019,11 @@
                             </li>
                             <li class="nav-item">
                                 <a href="@Url.Action("CreateVendorQuotation", "Purchase")" class="nav-link">
-                                    <i class="fas fa-file-signature me-2"></i><p> Create Vendor Quotation</p>
+                                    <i class="fas fa-file-signature me-2 position-relative">
+                                         <span id="createVendorQuotation" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger d-none">
+                                0
+                            </span>
+                                    </i><p> Create Vendor Quotation</p>
                                 </a>
                             </li>
                             <li class="nav-item">
@@ -1164,12 +1236,13 @@
 </html>
 
 
- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-<script>
+
+ <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+@* <script>
     $(document).ready(function () {
         $.ajax({
-            url: '/Manager/GetPendingQuotationCount',
+            url: '/Notification/GetPendingQuotationCount',
             method: 'GET',
             success: function (count) {
                 if (count > 0) {
@@ -1178,4 +1251,75 @@
             }
         });
     });
+</script>  *@
+
+<script>
+    $(document).ready(function () {
+        $.ajax({
+            url: '/Notification/GetNotifications',
+            method: 'GET',
+            success: function (data) {
+                console.log("Notification data:", data);
+                if (data.quotation > 0) {
+                    $('#quotationBadge').text(data.quotation).removeClass('d-none');
+                }
+                if (data.approval > 0) {
+                    $('#approvalBadge').text(data.approval).removeClass('d-none');
+                }
+                if (data.purchase > 0) {
+                    $('#purchaseOrderBadge').text(data.purchase).removeClass('d-none');
+                }
+                if (data.vendorQuotation > 0) {
+                    $('#createVendorQuotation').text(data.vendorQuotation).removeClass('d-none');
+                }
+                if (data.generatePurchaseOrder > 0) {
+                    $('#generatePurchaseOrder').text(data.generatePurchaseOrder).removeClass('d-none');
+                }
+                if (data.purchaseOrder > 0) {
+                   $('#PurchaseOrder').text(data.purchaseOrder).removeClass('d-none'); 
+ 
+                }
+                if (data.invoice > 0) {
+                    $('#SalesInvoice').text(data.invoice).removeClass('d-none');
+                }
+                if (data.viewOrder > 0) {
+                    $('#ViewOrder').text(data.viewOrder).removeClass('d-none');
+                }
+                if (data.viewCompletedOrder > 0) {
+                    $('#ViewCompletedOrder').text(data.viewCompletedOrder).removeClass('d-none');
+                }
+                if (data.viewMaterialRequisition > 0) {
+                    $('#ViewMaterialRequisition').text(data.viewMaterialRequisition).removeClass('d-none');
+                }
+                if (data.viewStoreOrder > 0) {
+                    $('#ViewStoreOrder').text(data.viewStoreOrder).removeClass('d-none');
+                }
+                if (data.recievePurchaseOrder > 0) {
+                    $('#RecievedPurchaseOrder').text(data.recievePurchaseOrder).removeClass('d-none');
+                }
+                if (data.viewPrMr > 0) {
+                    $('#ViewPrMr').text(data.viewPrMr).removeClass('d-none');
+                }
+                if (data.workOrder > 0) {
+                    $('#WorkOrder').text(data.workOrder).removeClass('d-none');
+                }
+                if (data.viewWeavingOrder > 0) {
+                    $('#ViewWeavingOrder').text(data.viewWeavingOrder).removeClass('d-none');
+                }
+                if (data.dyeingOrder > 0) {
+                    $('#DyeingOrder').text(data.dyeingOrder).removeClass('d-none');
+                }
+                if (data.completedWorkOrder > 0) {
+                    $('#CompletedWorkOrder').text(data.completedWorkOrder).removeClass('d-none');
+                }
+                if (data.receivable > 0) {
+                    $('#Receivable').text(data.receivable).removeClass('d-none');
+                }
+            },
+            error: function (xhr, status, error) {
+                console.error("AJAX Error:", status, error);
+            }
+        });
+    });
 </script>
+

@@ -1789,41 +1789,7 @@ namespace ERP_Component_DAL.Services
                 connection.Close();
             }
         }
-        public MonthlyRetailSales GetPendingQuotationCount()
-        {
-            try
-            {
-                MonthlyRetailSales name = new();
-                string connectionstring = configuration.GetConnectionString("DefaultConnectionString");
-                connection = new SqlConnection(connectionstring);
-                SqlCommand cmd = new();
-                cmd.CommandType = System.Data.CommandType.Text;
-                cmd.CommandText = $"SELECT COUNT(*) AS PendingRequisitions FROM PurchaseRequisitions WHERE RequisitionStatus = 2";
-
-                cmd.Connection = connection;
-                cmd.CommandTimeout = 300;
-                connection.Open();
-                SqlDataReader reader = cmd.ExecuteReader();
-                while (reader.Read())
-                {
-
-                    name.BillCount = reader["PendingRequisitions"] != DBNull.Value ? (int)reader["PendingRequisitions"] : 0;
-
-                }
-
-
-                return name;
-
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-            finally
-            {
-                connection.Close();
-            }
-        }
+       
 
 
 
