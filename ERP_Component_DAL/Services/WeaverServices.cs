@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using System.Net.Http;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
@@ -670,7 +671,7 @@ namespace ERP_Component_DAL.Services
                 throw;
             }
         }
-        public List<Weaver> GetRequiredMaterial(Guid WorkOrderID)
+        public List<Weaver> GetRequiredMaterial(Guid WorkOrderID, Guid CenterID)
         {
             List<Weaver> weaver = new List<Weaver>();
 
@@ -683,14 +684,14 @@ namespace ERP_Component_DAL.Services
                                     JOIN ProductMaterialMapping pmm ON wo.ProductID = pmm.ProductID
                                     JOIN Items m ON m.ItemId = pmm.MaterialID
                                     JOIN Inventory i ON pmm.MaterialID = i.ItemId
-                                    JOIN DistributionCenter dc ON i.CenterId = dc.CenterId
-                                    WHERE dc.CenterType = 6 AND wo.WorkOrderID = @WorkOrderID";
+                                    WHERE i.CenterId = @CenterID AND wo.WorkOrderID = @WorkOrderID";
 
 
 
                     using (SqlCommand cmd = new SqlCommand(query, connection))
                     {
                         cmd.Parameters.AddWithValue("@WorkOrderID", WorkOrderID);
+                        cmd.Parameters.AddWithValue("@CenterID", CenterID);
                         connection.Open();
 
                         using (SqlDataReader reader = cmd.ExecuteReader())
@@ -864,7 +865,7 @@ namespace ERP_Component_DAL.Services
                 throw;
             }
         }
-        public bool AllocateToWeaver(AllocatedWork allocatedWork)
+        public bool AllocateToWeaver(AllocatedWork allocatedWork, Guid CenterID)
         {
             try
             {
@@ -874,7 +875,7 @@ namespace ERP_Component_DAL.Services
 
                     string query = @"INSERT INTO AllocatedWork (WorkOrderID, AllocationCode, WorkerID, Quantity, RatePerPeices, AllocatedYarnID)
                                      VALUES (@WorkOrderID, @AllocationCode, @WorkerID, @Quantity, @RatePerPieces, @AllocatedYarnID);
-                                      UPDATE Inventory SET InStock = InStock - @Quantity WHERE ItemID = @AllocatedYarnID AND CenterId = 'ee874827-af6d-4f9f-8bde-066ad03bfb86'";
+                                      UPDATE Inventory SET InStock = InStock - @Quantity WHERE ItemID = @AllocatedYarnID AND CenterId = @CenterID";
 
                     using (SqlCommand cmd = new SqlCommand(query, connection))
                     {
@@ -883,7 +884,8 @@ namespace ERP_Component_DAL.Services
                         cmd.Parameters.AddWithValue("@WorkerID", allocatedWork.WorkerID);
                         cmd.Parameters.AddWithValue("@Quantity", allocatedWork.Quantity);
                         cmd.Parameters.AddWithValue("@RatePerPieces", allocatedWork.RatePerPeices); 
-                        cmd.Parameters.AddWithValue("@AllocatedYarnID", allocatedWork.AllocatedYarnID ?? (object)DBNull.Value); 
+                        cmd.Parameters.AddWithValue("@AllocatedYarnID", allocatedWork.AllocatedYarnID ?? (object)DBNull.Value);
+                        cmd.Parameters.AddWithValue("@CenterID", CenterID);
 
                         int rowsAffected = cmd.ExecuteNonQuery();
                         return rowsAffected > 0;
@@ -1258,7 +1260,62 @@ namespace ERP_Component_DAL.Services
                 throw;
             }
         }
-    }
-}
 
+        public List<BOM> FindAllBOM()
+        {
+            var bomDictionary = new Dictionary<Guid, BOM>();
+
+            try
+            {
+                string query = @"SELECT wb.ProductID, p.ItemName AS ProductName, p.Specification, wb.MaterialID, m.ItemName AS MaterialName, 
+                                    wb.Quantity, m.UnitOFMeasure FROM Weaving_BOM wb
+                                    JOIN Items p ON wb.ProductID = p.ItemId
+                                    JOIN Items m ON wb.MaterialID = m.itemId";
+
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    connection.Open();
+                    using (SqlCommand cmd = new SqlCommand(query, connection))
+                    {
+                        using (SqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                Guid productId = reader.GetGuid(reader.GetOrdinal("ProductID"));
+
+                                if (!bomDictionary.TryGetValue(productId, out BOM currentBOM))
+                                {                                    
+                                    currentBOM = new BOM
+                                    {
+                                        ProductID = productId,
+                                        ProductName = reader.GetString(reader.GetOrdinal("ProductName")),
+                                        Spesification = reader.IsDBNull(reader.GetOrdinal("Specification")) ? null : reader.GetString(reader.GetOrdinal("Specification")),
+                                        materials = new List<BOM.Materail>() 
+                                    };
+                                    bomDictionary.Add(productId, currentBOM); 
+                                }
+                                BOM.Materail material = new BOM.Materail
+                                {
+                                    MatrialID = reader.GetGuid(reader.GetOrdinal("MaterialID")),
+                                    Quantity = reader.GetDecimal(reader.GetOrdinal("Quantity")),
+                                    UOM = reader.IsDBNull(reader.GetOrdinal("UnitOFMeasure")) ? null : reader.GetString(reader.GetOrdinal("UnitOFMeasure")),
+                                    MaterialName = reader.GetString(reader.GetOrdinal("MaterialName"))
+                                };
+
+                                currentBOM.materials.Add(material);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error in FindAllBOM: {ex.Message}");
+                throw;
+            }
+            return bomDictionary.Values.ToList();
+        }
+    }
+
+}
         

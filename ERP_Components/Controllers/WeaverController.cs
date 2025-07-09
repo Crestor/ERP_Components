@@ -106,9 +106,10 @@ namespace ERP_Components.Controllers
 
         public IActionResult StartWeaving(Guid WorkOrderId)
         {
+            Guid CenterID = Guid.Parse(HttpContext.Session.GetString("CenterID"));
             Weaver workOrders = weaverServices.ViewProductOfStartWeaving(WorkOrderId);
 
-            List<Weaver> weaver = weaverServices.GetRequiredMaterial(WorkOrderId);
+            List<Weaver> weaver = weaverServices.GetRequiredMaterial(WorkOrderId, CenterID);
 
             var workOrder = new Weaver
             {
@@ -185,9 +186,10 @@ namespace ERP_Components.Controllers
         }
         public IActionResult MaterialRequisitionforWeaver(Guid WorkOrderId)
         {
+            Guid CenterID = Guid.Parse(HttpContext.Session.GetString("CenterID"));
             Weaver workOrders = weaverServices.ViewProductOfStartWeaving(WorkOrderId);
 
-            List<Weaver> weaver = weaverServices.GetRequiredMaterial(WorkOrderId);
+            List<Weaver> weaver = weaverServices.GetRequiredMaterial(WorkOrderId, CenterID);
 
             var workOrder = new Weaver
             {
@@ -209,7 +211,8 @@ namespace ERP_Components.Controllers
         }
         public IActionResult AllocateToWeaver(AllocatedWork allocatedWork)
         {
-            weaverServices.AllocateToWeaver(allocatedWork);
+            Guid CenterID = Guid.Parse(HttpContext.Session.GetString("CenterID"));
+            weaverServices.AllocateToWeaver(allocatedWork, CenterID);
             return RedirectToAction("ViewPhases", new { WorkOrderId = allocatedWork.WorkOrderID });
         }
         public IActionResult AllocateToDeyer()
@@ -295,9 +298,10 @@ namespace ERP_Components.Controllers
         }
         public IActionResult ViewBillOfMaterial()
         {
-        //    Guid CenterID = Guid.Parse(HttpContext.Session.GetString("CenterID"));
-        //    var bom = weaverServices.GetBillOfMaterial(CenterID);
-            return View();
+            //    Guid CenterID = Guid.Parse(HttpContext.Session.GetString("CenterID"));
+            //    var bom = weaverServices.GetBillOfMaterial(CenterID);
+            var bomList = weaverServices.FindAllBOM();
+            return View(bomList);
         }
 
     }
