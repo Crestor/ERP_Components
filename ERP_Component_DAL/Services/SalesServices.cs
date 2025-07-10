@@ -203,7 +203,7 @@ namespace ERP_Component_DAL.Services
                 {
                     cmdTerm.CommandText = "INSERT INTO TermCondition (PaymentTerm, DeliveryTerms, Other) OUTPUT INSERTED.TermConditionID VALUES (@PaymentTerm, @DeliveryTerms, @Other)";
                     cmdTerm.Parameters.AddWithValue("@PaymentTerm", quotation.PaymentTerm ?? (object)DBNull.Value);
-                    cmdTerm.Parameters.AddWithValue("@DeliveryTerms", quotation.DeliveryTerms ?? (object)DBNull.Value);
+                    cmdTerm.Parameters.AddWithValue("@DeliveryTerms", quotation.DeliveryTerms);
                     cmdTerm.Parameters.AddWithValue("@Other", quotation.Other ?? (object)DBNull.Value);
                     cmdTerm.Connection = connection;
 
@@ -283,7 +283,7 @@ namespace ERP_Component_DAL.Services
                 cmd.CommandText = @" UPDATE TermCondition SET DeliveryTerms = @DeliveryTerms, PaymentTerm = @PaymentTerm, Other = @Other WHERE TermConditionID = @TermConditionID";
 
 
-                cmd.Parameters.AddWithValue("@DeliveryTerms", Aq.DeliveryTerms ?? (object)DBNull.Value);
+                cmd.Parameters.AddWithValue("@DeliveryTerms", Aq.DeliveryTerms);
                 cmd.Parameters.AddWithValue("@PaymentTerm", Aq.PaymentTerm ?? (object)DBNull.Value);
                 cmd.Parameters.AddWithValue("@Other", Aq.Other ?? (object)DBNull.Value);
                 cmd.Parameters.AddWithValue("@TermConditionID", Aq.TermConditionID);
@@ -362,7 +362,7 @@ namespace ERP_Component_DAL.Services
 
 
                 cmd.Parameters.AddWithValue("@PaymentTerm", Aq.PaymentTerm ?? (object)DBNull.Value);
-                cmd.Parameters.AddWithValue("@DeliveryTerms", Aq.DeliveryTerms ?? (object)DBNull.Value);
+                cmd.Parameters.AddWithValue("@DeliveryTerms", Aq.DeliveryTerms);
                 cmd.Parameters.AddWithValue("@Other", Aq.Other ?? (object)DBNull.Value);
 
 
@@ -594,7 +594,8 @@ namespace ERP_Component_DAL.Services
                     {
                         QuotationID = reader["QuotationID"] != DBNull.Value ? (Guid)reader["QuotationID"] : Guid.Empty,
                         PaymentTerm = reader["PaymentTerm"] != DBNull.Value ? (string)reader["PaymentTerm"] : string.Empty,
-                        DeliveryTerms = reader["DeliveryTerms"] != DBNull.Value ? (string)reader["DeliveryTerms"] : string.Empty,
+                        DeliveryTerms = reader["DeliveryTerms"] != DBNull.Value ? (int)reader["DeliveryTerms"] : 0,
+
                         ItemName = reader["ItemName"] != DBNull.Value ? (string)reader["ItemName"] : string.Empty,
                         HSN = reader["HSN"] != DBNull.Value ? (string)reader["HSN"] : string.Empty,
                         Quantity = reader["Quantity"] != DBNull.Value ? (int)reader["Quantity"] : 0,
@@ -691,7 +692,7 @@ namespace ERP_Component_DAL.Services
                     {
                         PaymentTerm = reader["PaymentTerm"] != DBNull.Value ? (string)reader["PaymentTerm"] : string.Empty,
                         QuotationSeries = reader["QuotationSeries"] != DBNull.Value ? (string)reader["QuotationSeries"] : string.Empty,
-                        DeliveryTerms = reader["DeliveryTerms"] != DBNull.Value ? (string)reader["DeliveryTerms"] : string.Empty,
+                        DeliveryTerms = reader["DeliveryTerms"] != DBNull.Value ? (int)reader["DeliveryTerms"] : 0,
                         ItemName = reader["ItemName"] != DBNull.Value ? (string)reader["ItemName"] : string.Empty,
                         HSN = reader["HSN"] != DBNull.Value ? (string)reader["HSN"] : string.Empty,
                         Quantity = reader["Quantity"] != DBNull.Value ? (int)reader["Quantity"] : 0,
