@@ -6,6 +6,7 @@ using ERP_Component_DAL.Models;
 using System.Configuration;
 using Newtonsoft.Json.Linq;
 using static System.Collections.Specialized.BitVector32;
+using AspNetCoreGeneratedDocument;
 
 namespace ERP_Components.Controllers
 {
@@ -467,8 +468,10 @@ namespace ERP_Components.Controllers
 
         public IActionResult ViewStockTransfer()
         {
-          List<Order> order = inventoryServices.ViewStockTransfer();
-            return View(order);
+            //List<Order> order = inventoryServices.ViewStockTransfer();
+            List<StockTransaction> stockTransactions = inventoryServices.GetStockTransactions(StockTransactionType.TRANSFER);
+
+            return View(stockTransactions);
         }
 
 
@@ -676,7 +679,14 @@ namespace ERP_Components.Controllers
             inventoryServices.AllocateToProductionFromStore(requisitionId);
             return RedirectToAction("MaterialOrderList");
         }
+         
+        public IActionResult ViewInventory()
+        {
+            Guid CenterID = Guid.Parse(HttpContext.Session.GetString("CenterID"));
 
+            List<Items> items = centerlizedService.ViewInventory(CenterID);
+            return View(items);
+        }
 
 
         //[HttpPost]

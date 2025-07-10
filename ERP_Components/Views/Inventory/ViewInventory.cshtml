@@ -1,0 +1,37 @@
+﻿@using ERP_Component_DAL.Models;
+
+
+@{
+    ViewBag.Title = "View Inventory";
+    Layout = "~/Views/Shared/_LayoutINV.cshtml";
+}
+@model List<Items>
+<link href="~/css/Product.css" rel="stylesheet" />
+
+<div class="table">
+    <table>
+        <thead>
+            <tr>
+                <th>Item Name</th>
+                <th>Specification</th>
+                <th>SKU</th>
+                <th>HSN</th>
+                <th>InStock</th>
+                <th>Stock Alert</th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (int i = 0; i < Model.Count; i++)
+            {
+                <tr>
+                    <td>@Model[i].itemName</td>
+                    <td>@Model[i].specification</td>
+                    <td>@Model[i].SKU</td>
+                    <td>@Model[i].HSN</td>
+                    <td>@Model[i].inStock<small><small><small>@Model[i].UOM</small></small></small></td>
+                    <td>@Model[i].stockAlert<small><small><small>@Model[i].UOM</small></small></small></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

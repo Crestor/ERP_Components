@@ -6,8 +6,8 @@
     Layout = "~/Views/Shared/_LayoutINV.cshtml";
 }
 
-@model List<Order>
-<link href="~/css/Product.css" rel="stylesheet" />
+    <link href="~/css/Product.css" rel="stylesheet" />
+@model List<StockTransaction>
 
  
     @* <h4>View Transfered Stock</h4> *@
@@ -18,7 +18,6 @@
         <thead>
             <tr>
                 <th>Transfer ID</th>
-                <th>Item ID</th>
                 <th>Item Name</th>
                 <th>From Location</th>
                 <th>To Location</th>
@@ -28,36 +27,18 @@
             </tr>
         </thead>
         <tbody>
-            <tr>
-                <td>TX001</td>
-                <td>1005</td>
-                <td>LED Monitor 24"</td>
-                <td>Warehouse A</td>
-                <td>Warehouse B</td>
-                <td>20</td>
-                <td>2025-05-29</td>
-                <td>Urgent Reallocation</td>
-            </tr>
-            <tr>
-                <td>TX002</td>
-                <td>1006</td>
-                <td>Wireless Router</td>
-                <td>Warehouse C</td>
-                <td>Warehouse D</td>
-                <td>15</td>
-                <td>2025-05-30</td>
-                <td>Stock Replenishment</td>
-             </tr>
-            <tr>
-                <td>TX003</td>
-                <td>1007</td>
-                <td>USB-C Hub</td>
-                <td>Warehouse E</td>
-                <td>Warehouse F</td>
-                <td>10</td>
-                <td>2025-05-31</td>
-                <td>Routine Transfer</td>
-            </tr>
+            @for (int i = 0; i < Model.Count; i++)
+            {
+                <tr>
+                    <td>@Model[i].TransactionID.ToString().Substring(Model[i].TransactionID.ToString().Length - 4)</td>
+                    <td>@Model[i].ItemName</td>
+                    <td>@Model[i].SourceDC</td>
+                    <td>@Model[i].DestinationDC</td>
+                    <td>@Model[i].Quantity</td>
+                    <td>@Model[i].TransactionDate.ToString("yyyy-MM-dd")</td>
+                    <td>@Model[i].Reason</td>
+                </tr>
+            }
         </tbody>
     </table>
 
