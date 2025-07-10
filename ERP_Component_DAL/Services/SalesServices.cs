@@ -879,7 +879,7 @@ namespace ERP_Component_DAL.Services
                 cmd.Parameters.AddWithValue("@InvoiceDate", Aq.InvoiceDate);
                 cmd.Parameters.AddWithValue("@PaymentMode", Aq.PaymentMode ?? (object)DBNull.Value);
                 cmd.Parameters.AddWithValue("@PaymentType", Aq.PaymentType ?? (object)DBNull.Value);
-                cmd.Parameters.AddWithValue("@ReferenceNumber", Aq.ReferenceNumber);
+                cmd.Parameters.AddWithValue("@ReferenceNumber", Aq.ReferenceNumber ?? (object)DBNull.Value);
                 cmd.Parameters.AddWithValue("@InvoiceNumber", Aq.InvoiceNumber ?? (object)DBNull.Value);
                 cmd.Parameters.AddWithValue("@TDSPercentage", Aq.TDSPercentage);
                 cmd.Parameters.AddWithValue("@TDSAmount", Aq.TDSAmount);
