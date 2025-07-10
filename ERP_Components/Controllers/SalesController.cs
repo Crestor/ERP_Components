@@ -407,6 +407,7 @@ namespace ERP_Components.Controllers
         }
         //sales forecasting
 
+        //Ye wala acation sahi hai isko use as it is use karna
         public IActionResult Salesforecasting()
         {
             HttpContext.Session.SetString("SalesforecastingADD", "False");
@@ -424,7 +425,10 @@ namespace ERP_Components.Controllers
 
             return View(model);
         }
+
+
         [HttpPost]
+        //Harsh sir ye wala remove kar dena iski bhi koi zaruurat nahi hia
         public JsonResult SetSalesforecasting(QuotationModel O)
         {
             var QuotationCreated = HttpContext.Session.GetString("SalesforecastingADD");
@@ -470,6 +474,7 @@ namespace ERP_Components.Controllers
 
 
         // update details  
+        // Harsh sir ye wala Action remove kar dena iski zaruurat nahi hai
         public IActionResult FinalSalesforecasting(QuotationModel O)
         {
             O.RequisitionID = Guid.Parse(HttpContext.Session.GetString("RequisitionID"));
@@ -478,7 +483,8 @@ namespace ERP_Components.Controllers
             return RedirectToAction("Salesforecasting");
         }
 
-        //TODO: Implement this controller and mek it one
+        //Ye wala Action main data send karna or Requisition model ko dekhla usme send kar dena data
+        //Same problem Retails sales main bhi hai vaha bhi check kar lena
         public IActionResult SetSalesForecast(Requisition salesForecast)
         {
             Guid CenterID = Guid.Parse(HttpContext.Session.GetString("CenterID"));

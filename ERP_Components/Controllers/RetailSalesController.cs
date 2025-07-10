@@ -122,7 +122,7 @@ namespace ERP_Components.Controllers
 
         // Sales Forcast
 
-
+        //same problem as sales
         public IActionResult RetailSalesforecasting()
         {
             HttpContext.Session.SetString("SalesforecastingADD", "False");
@@ -183,7 +183,7 @@ namespace ERP_Components.Controllers
             centerlizedService.updateSalesForecastDetails(O, CenterID, RequisitionTypes.SALES_FORECAST_RETAIL_STORE);  //reamining1
             return RedirectToAction("RetailSalesforecasting");
         }
-
+        //Same problem as sales 
         public IActionResult SetSalesForecast(Requisition salesForecast)
         {
             Guid CenterID = Guid.Parse(HttpContext.Session.GetString("CenterID"));
