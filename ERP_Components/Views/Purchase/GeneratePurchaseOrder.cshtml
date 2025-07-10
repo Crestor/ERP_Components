@@ -118,24 +118,27 @@
 				createdAt: formValues.createdAt
 			};
 
-			fetch('/Purchase/AddPurchaseInvoice', {
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json'
-				},
-				body: JSON.stringify(data)
-			})
-			.then(response => {
-				if (response.ok) {
-					Swal.fire('Success', 'Invoice submitted successfully!', 'success');
-				} else {
-					Swal.fire('Error', 'Failed to submit invoice.', 'error');
-				}
-			})
-			.catch(error => {
-				console.error('Error:', error);
-				Swal.fire('Error', 'Something went wrong.', 'error');
+				fetch('/Purchase/AddPurchaseInvoice', {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json'
+		},
+		body: JSON.stringify(data)
+	})
+	.then(response => {
+		if (response.ok) {
+			Swal.fire('Success', 'Invoice submitted successfully!', 'success').then(() => {
+				location.reload(); 
 			});
+		} else {
+			Swal.fire('Error', 'Failed to submit invoice.', 'error');
+		}
+	})
+	.catch(error => {
+		console.error('Error:', error);
+		Swal.fire('Error', 'Something went wrong.', 'error');
+	});
+
 		}
 	}
 
