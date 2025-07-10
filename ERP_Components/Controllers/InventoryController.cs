@@ -17,16 +17,18 @@ namespace ERP_Components.Controllers
         private readonly UserServices _userServices;
         private readonly InventoryServices inventoryServices;
         private readonly IConfiguration _configuration;
+        private readonly CenterlizedService centerlizedService;
       
 
 
-        public InventoryController(ILogger<InventoryController> logger, IConfiguration configuration)
+        public InventoryController(ILogger<InventoryController> logger, IConfiguration configuration, CenterlizedService centerlizedService)
         {
           
             _logger = logger;
             _configuration = configuration;
             _userServices = new UserServices(configuration);
             inventoryServices = new InventoryServices(configuration);
+            this.centerlizedService = centerlizedService;
         }
        
         public IActionResult Index()
