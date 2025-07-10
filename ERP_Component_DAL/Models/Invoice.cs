@@ -127,7 +127,7 @@
         public string DeliveryTerms { get; set; }
 
 
-        public string PaymentTerm { get; set; }
+        public decimal PaymentTerm { get; set; }
         public string Other { get; set; }
 
         public DateOnly date { get; set; }

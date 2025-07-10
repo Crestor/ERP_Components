@@ -202,7 +202,9 @@ namespace ERP_Component_DAL.Services
                 using (SqlCommand cmdTerm = new SqlCommand())
                 {
                     cmdTerm.CommandText = "INSERT INTO TermCondition (PaymentTerm, DeliveryTerms, Other) OUTPUT INSERTED.TermConditionID VALUES (@PaymentTerm, @DeliveryTerms, @Other)";
-                    cmdTerm.Parameters.AddWithValue("@PaymentTerm", quotation.PaymentTerm ?? (object)DBNull.Value);
+                    //cmdTerm.Parameters.AddWithValue("@PaymentTerm", quotation.PaymentTerm ?? (object)DBNull.Value);
+                    cmdTerm.Parameters.AddWithValue("@PaymentTerm", quotation.PaymentTerm != null ? quotation.PaymentTerm : (object)DBNull.Value);
+
                     cmdTerm.Parameters.AddWithValue("@DeliveryTerms", quotation.DeliveryTerms);
                     cmdTerm.Parameters.AddWithValue("@Other", quotation.Other ?? (object)DBNull.Value);
                     cmdTerm.Connection = connection;
@@ -284,7 +286,9 @@ namespace ERP_Component_DAL.Services
 
 
                 cmd.Parameters.AddWithValue("@DeliveryTerms", Aq.DeliveryTerms);
-                cmd.Parameters.AddWithValue("@PaymentTerm", Aq.PaymentTerm ?? (object)DBNull.Value);
+                //cmd.Parameters.AddWithValue("@PaymentTerm", Aq.PaymentTerm ?? (object)DBNull.Value);
+                cmd.Parameters.AddWithValue("@PaymentTerm", Aq.PaymentTerm != null ? Aq.PaymentTerm : (object)DBNull.Value);
+
                 cmd.Parameters.AddWithValue("@Other", Aq.Other ?? (object)DBNull.Value);
                 cmd.Parameters.AddWithValue("@TermConditionID", Aq.TermConditionID);
 
@@ -361,7 +365,9 @@ namespace ERP_Component_DAL.Services
                 cmd.CommandText = $"INSERT INTO TermCondition ([PaymentTerm],[DeliveryTerms],[Other]) OUTPUT INSERTED.TermConditionId VALUES (@PaymentTerm,@DeliveryTerms,@Other)";
 
 
-                cmd.Parameters.AddWithValue("@PaymentTerm", Aq.PaymentTerm ?? (object)DBNull.Value);
+                //cmd.Parameters.AddWithValue("@PaymentTerm", Aq.PaymentTerm ?? (object)DBNull.Value);
+                cmd.Parameters.AddWithValue("@PaymentTerm", Aq.PaymentTerm != null ? Aq.PaymentTerm : (object)DBNull.Value);
+
                 cmd.Parameters.AddWithValue("@DeliveryTerms", Aq.DeliveryTerms);
                 cmd.Parameters.AddWithValue("@Other", Aq.Other ?? (object)DBNull.Value);
 
@@ -593,7 +599,7 @@ namespace ERP_Component_DAL.Services
                     CL.Add(new QuotationModel()
                     {
                         QuotationID = reader["QuotationID"] != DBNull.Value ? (Guid)reader["QuotationID"] : Guid.Empty,
-                        PaymentTerm = reader["PaymentTerm"] != DBNull.Value ? (string)reader["PaymentTerm"] : string.Empty,
+                        PaymentTerm = reader["PaymentTerm"] != DBNull.Value ? (decimal)reader["PaymentTerm"] : 0m,
                         DeliveryTerms = reader["DeliveryTerms"] != DBNull.Value ? (int)reader["DeliveryTerms"] : 0,
 
                         ItemName = reader["ItemName"] != DBNull.Value ? (string)reader["ItemName"] : string.Empty,
@@ -690,7 +696,7 @@ namespace ERP_Component_DAL.Services
                 {
                     CL.Add(new QuotationModel()
                     {
-                        PaymentTerm = reader["PaymentTerm"] != DBNull.Value ? (string)reader["PaymentTerm"] : string.Empty,
+                        PaymentTerm = reader["PaymentTerm"] != DBNull.Value ? (decimal)reader["PaymentTerm"] :0m,
                         QuotationSeries = reader["QuotationSeries"] != DBNull.Value ? (string)reader["QuotationSeries"] : string.Empty,
                         DeliveryTerms = reader["DeliveryTerms"] != DBNull.Value ? (int)reader["DeliveryTerms"] : 0,
                         ItemName = reader["ItemName"] != DBNull.Value ? (string)reader["ItemName"] : string.Empty,
@@ -860,7 +866,9 @@ namespace ERP_Component_DAL.Services
                 cmd1.CommandType = System.Data.CommandType.Text;
                 cmd1.CommandText = "UPDATE TermCondition SET PaymentTerm = @PaymentTerm, DeliveryTerms = @DeliveryTerms, Other = @Other WHERE TermConditionID = @TermConditionID";
     
-                cmd1.Parameters.AddWithValue("@PaymentTerm", Aq.PaymentTerm ?? (object)DBNull.Value);
+                //cmd1.Parameters.AddWithValue("@PaymentTerm", Aq.PaymentTerm ?? (object)DBNull.Value);
+                cmd1.Parameters.AddWithValue("@PaymentTerm", Aq.PaymentTerm != null ? Aq.PaymentTerm : (object)DBNull.Value);
+
                 cmd1.Parameters.AddWithValue("@DeliveryTerms", Aq.DeliveryTerms ?? (object)DBNull.Value);
                 cmd1.Parameters.AddWithValue("@Other", Aq.Other ?? (object)DBNull.Value);
                 cmd1.Parameters.AddWithValue("@TermConditionID", Aq.TermConditionID);
