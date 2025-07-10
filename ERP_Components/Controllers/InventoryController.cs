@@ -609,9 +609,8 @@ namespace ERP_Components.Controllers
 
            
             var requisition = new AddPurchaseRequisition();
-        
+           requisition.RequisitionId = RequisitionId;
             requisition.listItesms =   inventoryServices.RequisitionListItems(RequisitionId);
-            inventoryServices.UpdateMaterialRequisitionStatus(RequisitionId);
 
             return View(requisition);
 
@@ -621,6 +620,8 @@ namespace ERP_Components.Controllers
         [HttpPost]
         public IActionResult AddPurchaseRequisition(AddPurchaseRequisition requisition)
         {
+            inventoryServices.UpdateMaterialRequisitionStatus(requisition.RequisitionId);
+
             requisition.RequisitionId = inventoryServices.AddRequisition(requisition);
 
             HttpContext.Session.SetString("RequisitionID", requisition.RequisitionId.ToString());
@@ -638,6 +639,8 @@ namespace ERP_Components.Controllers
                 };
 
                 inventoryServices.AddPurchaseRequisition(item);
+
+
             }
 
 
