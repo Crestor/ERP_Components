@@ -74,7 +74,7 @@
 
         //public decimal grossTotal { get; set; }
 
-        public string DeliveryTerms { get; set; }
+        public int DeliveryTerms { get; set; }
 
 
         public string PaymentTerm { get; set; }

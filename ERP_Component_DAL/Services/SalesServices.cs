@@ -198,11 +198,24 @@ namespace ERP_Component_DAL.Services
                 connection = new SqlConnection(connectionString);
                 connection.Open();
 
+                Guid termConditionID;
+                using (SqlCommand cmdTerm = new SqlCommand())
+                {
+                    cmdTerm.CommandText = "INSERT INTO TermCondition (PaymentTerm, DeliveryTerms, Other) OUTPUT INSERTED.TermConditionID VALUES (@PaymentTerm, @DeliveryTerms, @Other)";
+                    cmdTerm.Parameters.AddWithValue("@PaymentTerm", quotation.PaymentTerm ?? (object)DBNull.Value);
+                    cmdTerm.Parameters.AddWithValue("@DeliveryTerms", quotation.DeliveryTerms ?? (object)DBNull.Value);
+                    cmdTerm.Parameters.AddWithValue("@Other", quotation.Other ?? (object)DBNull.Value);
+                    cmdTerm.Connection = connection;
+
+                    termConditionID = (Guid)cmdTerm.ExecuteScalar();
+                }
                 SqlCommand cmd = new SqlCommand();
                 cmd.CommandType = CommandType.Text;
-
-                cmd.CommandText = $"INSERT INTO CustomerQuotation ([QuotationSeries], [status],[DispatchNumber]) OUTPUT INSERTED.QuotationID VALUES (@QuotationSeries, 'open',@DispatchNumber )";
+                cmd.CommandText = "INSERT INTO CustomerQuotation ([QuotationSeries], [status], [GrossTotal], [TermConditionID], [CustomerID], [DispatchNumber]) OUTPUT INSERTED.QuotationID VALUES (@QuotationSeries, 'open', @GrossTotal, @TermConditionID, @CustomerID, @DispatchNumber)";
                 cmd.Parameters.AddWithValue("@QuotationSeries", quotation.QuotationSeries);
+                cmd.Parameters.AddWithValue("@GrossTotal", quotation.GrossTotal);
+                cmd.Parameters.AddWithValue("@TermConditionID", termConditionID); 
+                cmd.Parameters.AddWithValue("@CustomerID", quotation.CustomerID);
                 cmd.Parameters.AddWithValue("@DispatchNumber", quotation.DispatchNumber);
 
                 cmd.Connection = connection;
@@ -1579,10 +1592,10 @@ namespace ERP_Component_DAL.Services
                 SqlCommand cmd1 = new SqlCommand();
                 cmd1.CommandType = System.Data.CommandType.Text;
                 cmd1.CommandText = @"INSERT INTO ProformaInvoice 
-                ([OrderSeriesID],[CustomerName],[POReferenceNumber],[VenderCode],[JobCode],[PODate],[TermConditionID],[Status])
-                VALUES (@OrderSeriesID, @CustomerName, @POReferenceNumber, @VenderCode, @JobCode, @PODate, @TermConditionID, 'Pending')";
+                ([OrderSeriesID],[CustomerID],[POReferenceNumber],[VenderCode],[JobCode],[PODate],[TermConditionID],[Status])
+                VALUES (@OrderSeriesID, @CustomerID, @POReferenceNumber, @VenderCode, @JobCode, @PODate, @TermConditionID, 'Pending')";
                 cmd1.Parameters.AddWithValue("@OrderSeriesID", Aq.OrderSeriesID ?? (object)DBNull.Value);
-                cmd1.Parameters.AddWithValue("@CustomerName", Aq.CustomerName ?? (object)DBNull.Value);
+                cmd1.Parameters.AddWithValue("@CustomerID", Aq.CustomerID);
                 cmd1.Parameters.AddWithValue("@POReferenceNumber", Aq.POReferenceNumber ?? (object)DBNull.Value);
                 cmd1.Parameters.AddWithValue("@VenderCode", Aq.VenderCode ?? (object)DBNull.Value);
                 cmd1.Parameters.AddWithValue("@JobCode", Aq.JobCode ?? (object)DBNull.Value);
