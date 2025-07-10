@@ -4,25 +4,51 @@
     Layout = "~/Views/Shared/_LayoutINV.cshtml";
 }
 <link rel="stylesheet" href="~/css/Product.css" />
+<style>
+  
+</style>
 
 @model List<BOM>
-<div class="row row-cols-1 row-cols-md-3 g-4 p-5">
-    @for (int i = 0; i <Model.Count; i++)
+
+<div class="row row-cols-1 row-cols-md-4 g-4">
+    @for (int i = 0; i < Model.Count; i++)
     {
         var v = Model[i];
-        <div class="col mt-0 position-relative">
-            <div class="card vendor-card" style="width: 18rem; cursor: pointer;">
-                    <p>@v.</p>
-                <div class="card-body position-relative z-1">
-                    <p class="card-text">Material <span>Quantity</span></p>
-                    @for (int j = 0; j < v.materials.Count; j++)
-                    {
-                        var item = v.materials[j];
-                        <p class="card-text">@item.MatrialID: <span>@item.Quantity</span></p>
-                        @* <p class="card-text">Unit: <span>@item.</span></p> *@
-                    })
+        <div class="col mt-0">
+            <div class="flip-card">
+                <div class="flip-card-inner">
+                    <!-- Front Side -->
+                    <div class="flip-card-front">
+                        <p class="Header">@v.ProductName</p>
+                        <p class="subheader">@v.Spesification</p>
+                        <div class="card-body">
+                            <i class="designicon fas fa-arrow-circle-right"></i>
+                        </div>
+                    </div>
+
+                    <!-- Back Side -->
+                    <div class="flip-card-back">
+                        <p class="Header">@v.ProductName</p>
+                        <p class="Header">Materials:</p>
+                        @for (int j = 0; j < v.materials.Count; j++)
+                        {
+                            var item = v.materials[j];
+                            <p class="card-text">
+                                @item.MaterialName: <span>@item.Quantity<small><small><small>@item.UOM</small></small></small></span>
+                            </p>
+                        }
+                    </div>
                 </div>
             </div>
         </div>
-    }
+    } 
 </div>
+    <script>
+    document.addEventListener("DOMContentLoaded", function () {
+        document.querySelectorAll('.flip-card').forEach(card => {
+            card.addEventListener("click", function () {
+                card.classList.toggle("flipped");
+            });
+        });
+    });
+</script>

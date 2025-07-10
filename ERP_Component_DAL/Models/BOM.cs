@@ -8,10 +8,12 @@ namespace ERP_Component_DAL.Models
 {
     public class BOM
     {
+            public List<Item> Products { get; set; }
+        public List<Item> MaterialList { get; set; }
         public Guid ProductID { get; set; }
         public string? ProductName { get; set; }
         public string? Spesification { get; set; }
-        public List<Materail>? materials   = new List<Materail>();
+        public List<Materail>? materials { get; set; }  = new List<Materail>();
         
         public class Materail
         {

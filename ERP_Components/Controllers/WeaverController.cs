@@ -286,7 +286,7 @@ namespace ERP_Components.Controllers
             Guid CenterID = Guid.Parse(HttpContext.Session.GetString("CenterID"));
             var materials =  weaverServices.FindItems(ItemType.MATERIAL, CenterID);
             var products = weaverServices.FindItems(ItemType.PRODUCT, CenterID);
-            Weaver_BOM weaver_BOM = new Weaver_BOM() { Products = products, Materials = materials};
+            BOM weaver_BOM = new BOM() { Products = products, MaterialList = materials};
             return View(weaver_BOM);
         }
 
