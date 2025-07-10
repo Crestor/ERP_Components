@@ -12,7 +12,6 @@
     <div class="form-section">
         <h3>Bill Of Material</h3>
 
-        <!-- Product Selection -->
         <div class="form-row" style="width: 50.5%">
             <label for="ProductID">Product Name</label>
             <select id="ProductID" name="ProductID" required>
@@ -24,7 +23,6 @@
             </select>
         </div>
 
-        <!-- Material Entry -->
         <div class="form-row">
             <label for="Material">Material</label>
             <select id="Material">
@@ -39,13 +37,11 @@
             <input type="number" id="Quantity" placeholder="Enter Quantity" min="0.01" step="0.01" />
         </div>
 
-        <!-- Add Button -->
         <div class="button">
             <button type="button" id="AddMaterial">Add Material</button>
         </div>
     </div>
 
-    <!-- Table Section -->
     <div id="showtable" class="table" style="margin-top: 30px; display: none;">
         <table>
             <thead>
@@ -56,14 +52,11 @@
                 </tr>
             </thead>
             <tbody id="materialListBody">
-                <!-- JS will inject rows here -->
             </tbody>
         </table>
      </div>
-    <!-- Hidden Inputs Container -->
     <div id="hiddenInputsContainer"></div>
 
-    <!-- Submit Button -->
     <div id="showbutton" class="button" style="margin-top: 15px;display:none">
         <button type="submit">Submit BOM</button>
     </div>
@@ -89,11 +82,9 @@
             return;
         }
 
-        // Show table
         showtable.style.display = "block";
         showbutton.style.display = "block";
 
-        // Add to table
         const row = document.createElement("tr");
         row.innerHTML = `
             <td>${srNo++}</td>
@@ -102,7 +93,6 @@
         `;
         document.getElementById("materialListBody").appendChild(row);
 
-        // Add hidden inputs
         const index = materialList.length;
         const hiddenInputs = `
             <input type="hidden" name="materials[${index}].MatrialID" value="${materialId}" />
@@ -111,10 +101,8 @@
         `;
         document.getElementById("hiddenInputsContainer").insertAdjacentHTML("beforeend", hiddenInputs);
 
-        // Track internally
         materialList.push({ materialId, quantity });
 
-        // Reset inputs
         materialSelect.selectedIndex = 0;
         quantityInput.value = "";
     });
