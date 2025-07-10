@@ -77,7 +77,7 @@
         public int DeliveryTerms { get; set; }
 
 
-        public string PaymentTerm { get; set; }
+        public decimal PaymentTerm { get; set; }
         public string Other { get; set; }
 
         public DateOnly QuotationDate { get; set; }
