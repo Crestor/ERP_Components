@@ -77,28 +77,6 @@ namespace ERP_Components.Controllers
            
     
 
-        //public JsonResult GetNotifications()
-        //{
-        //    var result = new
-        //    {
-        //        quotation = NotificationServices.GetPendingQuotationCount(),
-
-        //        approval = NotificationServices.GetPurchaseViewRequisitionsCount(),
-        //    };
-
-        //    return Json(result);
-
-        //}
-
-
-
-        //[HttpGet]
-        //public JsonResult GetPendingQuotationCount()
-        //{
-        //    var month = NotificationServices.GetPendingQuotationCount();
-        //    return Json(month.BillCount);
-        //}
-
 
     }
 }
