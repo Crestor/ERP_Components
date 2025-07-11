@@ -7,6 +7,7 @@ using System.Configuration;
 using Newtonsoft.Json.Linq;
 using static System.Collections.Specialized.BitVector32;
 using AspNetCoreGeneratedDocument;
+using System.Reflection;
 
 namespace ERP_Components.Controllers
 {
@@ -620,6 +621,7 @@ namespace ERP_Components.Controllers
         [HttpPost]
         public IActionResult AddPurchaseRequisition(AddPurchaseRequisition requisition)
         {
+            var selectedItems = requisition.listItesms.Where(x => x.IsSelected).ToList();              // only selected items 
             inventoryServices.UpdateMaterialRequisitionStatus(requisition.RequisitionId);
 
             requisition.RequisitionId = inventoryServices.AddRequisition(requisition);
@@ -627,7 +629,8 @@ namespace ERP_Components.Controllers
             HttpContext.Session.SetString("RequisitionID", requisition.RequisitionId.ToString());
 
 
-            foreach (var mat in requisition.listItesms)
+            //foreach (var mat in requisition.listItesms)                                               //PREV 
+            foreach (var mat in selectedItems)                                                          //NEW
             {
                 var item = new AddPurchaseRequisition
                 {
@@ -679,7 +682,10 @@ namespace ERP_Components.Controllers
 
         public IActionResult AllocateToProductionFromStoreSeven(Guid requisitionId)
         {
-            inventoryServices.AllocateToProductionFromStore(requisitionId);
+            
+         
+                inventoryServices.AllocateToProductionFromStore(requisitionId);
+            
             return RedirectToAction("MaterialOrderList");
         }
          

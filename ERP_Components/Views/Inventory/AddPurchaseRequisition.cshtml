@@ -11,69 +11,63 @@
 
 @model AddPurchaseRequisition
 
-
 <form asp-action="AddPurchaseRequisition" asp-controller="Inventory" method="post">
-<div class="form-section">
-	<h3>Create Requisition</h3>
-	<div class="form-row">
+	<div class="form-section">
+		<h3>Create Requisition</h3>
+		<div class="form-row">
 			<input type="hidden" name="RequisitionId" value="@Model.RequisitionId" />
-			        <label for="requisitionSeries" >Requisition Series</label>
-	                <input type="text" id="RequisitionSeries" name="requisitionSeries" readonly>
-					<label for="Descripion">Description</label>
-					<input type="text" name="Descripion">
+			<label for="requisitionSeries">Requisition Series</label>
+			<input type="text" id="RequisitionSeries" name="requisitionSeries" readonly>
+			<label for="Descripion">Description</label>
+			<input type="text" name="Descripion">
 		</div>
-		<div class="form-row" style="width:50%">
-					<label for=" TotalAmount">Total Amount</label>
-					<input type="text" id="totalAmountInput" name="TotalAmount" readonly />
+		<div class="button">
+			<button type="submit">Submit</button>
 		</div>
-
-
-	<div class="button">
-
-		<button type="submit">Submit</button>
 	</div>
 
-</div>
-
-<div class="table">
-	<table>
-		<thead>
-			<tr>
-				@* <th>S.No</th> *@
-				<th>Item Name</th>
-				@* <th>Category</th> *@
-				<th>Specification</th>
-				@* <th>Item Type</th> *@
-				@* <th>HSN</th> *@
-				<th>Quantity</th>
-
-			</tr>
-		</thead>
-
-		<tbody>
-
-			@for (int i = 0; i < Model.listItesms.Count; i++)
-			{
+	<div class="table">
+		<table>
+			<thead>
 				<tr>
-					@* <td>@</td> *@
-					<input type="hidden" name="listItesms[@i].itemId" value="@Model.listItesms[i].itemId" />
-					<td><input type="text" name="listItesms[@i].itemName" value="@Model.listItesms[i].itemName" readonly/></td>
-					@* <td><input type="text" name="listItesms[@i].category" value="@Model.listItesms[i].category" readonly/></td> *@
-					<td><input type="text" name="listItesms[@i].specification" value="@Model.listItesms[i].specification" readonly/></td>
-					@* <td><input type="text" name="listItesms[@i].itemtype" value="@Model.listItesms[i].itemtype" readonly/></td> *@
-					@* <td><input type="text" name="listItesms[@i].hsn" value="@Model.listItesms[i].hsn" readonly/></td> *@
-					<td><input type="text" name="listItesms[@i].quantity" value="@Model.listItesms[i].quantity" /></td>
+					<th>
+						<input type="checkbox" id="selectAll" />
+						<label for="selectAll">Select All</label>
+					</th>
+					<th>Item Name</th>
+					<th>Specification</th>
+					<th>Quantity</th>
 				</tr>
-			}
-
-
-
-
-		</tbody>
-
-	</table>
-</div>
+			</thead>
+			<tbody>
+				@for (int i = 0; i < Model.listItesms.Count; i++)
+				{
+					<tr>
+						<td>
+							<input type="checkbox" class="selectItem" name="listItesms[@i].IsSelected" value="true" />
+							<input type="hidden" name="listItesms[@i].IsSelected" value="false" />
+						</td>
+						<input type="hidden" name="listItesms[@i].itemId" value="@Model.listItesms[i].itemId" />
+						<td><input type="text" name="listItesms[@i].itemName" value="@Model.listItesms[i].itemName" readonly /></td>
+						<td><input type="text" name="listItesms[@i].specification" value="@Model.listItesms[i].specification" readonly /></td>
+						<td><input type="text" name="listItesms[@i].quantity" value="@Model.listItesms[i].quantity" /></td>
+					</tr>
+				}
+			</tbody>
+		</table>
+	</div>
 </form>
+
+@section Scripts {
+	<script>
+		document.getElementById('selectAll').addEventListener('change', function () {
+			const isChecked = this.checked;
+			const checkboxes = document.querySelectorAll('.selectItem');
+			checkboxes.forEach(cb => cb.checked = isChecked);
+		});
+	</script>
+}
+
 
 
 <script>

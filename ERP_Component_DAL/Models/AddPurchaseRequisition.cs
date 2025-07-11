@@ -55,7 +55,7 @@
         public string RequisitionType { get; set; }
         public string CenterName { get; set; }
 
-
+        public bool IsSelected { get; set; }
         public List<AddPurchaseRequisition> listItesms { get; set; }
 
     }
