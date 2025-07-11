@@ -65,7 +65,7 @@ namespace ERP_Component_DAL.Models
 
         public int requiredQuantity { get; set; }
         public int? availableQuantity { get; set; }
-
+        public int? receivedQuantity { get; set; }
         public int? pendingQuantity { get; set; }
         public int? AllocatedQuantity { get; set; }
         public int? dyeingQuantity { get; set; }
@@ -96,6 +96,7 @@ namespace ERP_Component_DAL.Models
     public class YarnInfo { 
         public Guid YranID { get; set; }
         public string? YarnName { get; set; }
+        public decimal YarnQuantity { get; set; }
         public string? Specification { get; set; }
     }
 

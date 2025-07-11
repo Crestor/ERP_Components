@@ -323,7 +323,7 @@ namespace ERP_Component_DAL.Services
             }
         }
 
-        public Weaver ViewProductOfStartWeaving(Guid WorkOrederId)
+        public Weaver ViewProductOfStartWeaving(Guid WorkOrederId, Guid CenterID)
         {
             Weaver weaver = new Weaver();
 
@@ -332,16 +332,20 @@ namespace ERP_Component_DAL.Services
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
                     string query = @"SELECT wo.WorkOrderSeries,wo.Quantity,wo.WorkOrderStatus,i.ItemName, i.ItemID,i.Specification,iv.InStock, 
-                        (SELECT SUM(Quantity) FROM AllocatedWork WHERE WorkOrderID = @WorkOrderId) AS AllocatedQuantity, 
-                        (SELECT SUM(Quantity) FROM DyeingOrder WHERE WorkOrderID = @WorkOrderId) AS DyeingQuantity FROM WorkOrder wo 
-                        JOIN Items i on wo.ProductID = i.ItemId JOIN Inventory iv ON iv.ItemId = i.ItemId 
-                        JOIN DistributionCenter dc ON dc.CenterID = iv.CenterID where WorkOrderID = @WorkOrderId AND dc.CenterType = 6;";
+                                    ISNULL((SELECT SUM(Quantity) FROM AllocatedWork WHERE WorkOrderID = @WorkOrderId), 0) AS AllocatedQuantity,
+                                    ISNULL((SELECT SUM(RecievedQuantity) FROM AllocatedWork WHERE WorkOrderID = @WorkOrderId), 0) AS ReceivedQuantity, 
+                                    ISNULL((SELECT SUM(Quantity) FROM DyeingOrder WHERE WorkOrderID = @WorkOrderId), 0) AS DyeingQuantity,
+                                    (SELECT CASE WHEN SUM(WorkStatus) = COUNT(*)*2 AND SUM(Quantity) >= wo.Quantity THEN 2 ELSE 1 END 
+                                    FROM AllocatedWork WHERE WorkOrderID = @WorkOrderID) AS WorkStatus FROM WorkOrder wo
+                                    JOIN Items i on wo.ProductID = i.ItemId JOIN Inventory iv ON iv.ItemId = i.ItemId 
+                                    WHERE WorkOrderID = @WorkOrderId AND iv.CenterID = @CenterID;";
 
 
 
                     using (SqlCommand cmd = new SqlCommand(query, connection))
                     {
                         cmd.Parameters.AddWithValue("@WorkOrderId", WorkOrederId);
+                        cmd.Parameters.AddWithValue("@CenterID", CenterID);
                         connection.Open();
                         using (SqlDataReader reader = cmd.ExecuteReader())
                         {
@@ -358,8 +362,9 @@ namespace ERP_Component_DAL.Services
                                     ProductName = reader["ItemName"]?.ToString(),
                                     Specification = reader["Specification"] != DBNull.Value ? reader["Specification"].ToString() : string.Empty,
                                     AllocatedQuantity = reader["AllocatedQuantity"] != DBNull.Value ? Convert.ToInt32(reader["AllocatedQuantity"]) : 0,
-                                    dyeingQuantity = reader["DyeingQuantity"] != DBNull.Value ? Convert.ToInt32(reader["DyeingQuantity"]): 0,
-                                    ProductId = reader.GetGuid(reader.GetOrdinal("ItemID"))
+                                    dyeingQuantity = reader["DyeingQuantity"] != DBNull.Value ? Convert.ToInt32(reader["DyeingQuantity"]) : 0,
+                                    ProductId = reader.GetGuid(reader.GetOrdinal("ItemID")),
+                                    receivedQuantity = reader.GetInt32("ReceivedQuantity")
                                 };
                             }
                         }
@@ -873,8 +878,8 @@ namespace ERP_Component_DAL.Services
                 {
                     connection.Open();
 
-                    string query = @"INSERT INTO AllocatedWork (WorkOrderID, AllocationCode, WorkerID, Quantity, RatePerPeices, AllocatedYarnID)
-                                     VALUES (@WorkOrderID, @AllocationCode, @WorkerID, @Quantity, @RatePerPieces, @AllocatedYarnID);
+                    string query = @"INSERT INTO AllocatedWork (WorkOrderID, AllocationCode, WorkerID, Quantity, RatePerPeices, AllocatedYarnID, AllocatedYarnQty)
+                                     VALUES (@WorkOrderID, @AllocationCode, @WorkerID, @Quantity, @RatePerPieces, @AllocatedYarnID, @AllocatedYarnQty);
                                       UPDATE Inventory SET InStock = InStock - @Quantity WHERE ItemID = @AllocatedYarnID AND CenterId = @CenterID";
 
                     using (SqlCommand cmd = new SqlCommand(query, connection))
@@ -886,6 +891,7 @@ namespace ERP_Component_DAL.Services
                         cmd.Parameters.AddWithValue("@RatePerPieces", allocatedWork.RatePerPeices); 
                         cmd.Parameters.AddWithValue("@AllocatedYarnID", allocatedWork.AllocatedYarnID ?? (object)DBNull.Value);
                         cmd.Parameters.AddWithValue("@CenterID", CenterID);
+                        cmd.Parameters.AddWithValue("@AllocatedYarnQty", allocatedWork.AllocatedYarnQty);
 
                         int rowsAffected = cmd.ExecuteNonQuery();
                         return rowsAffected > 0;
@@ -1011,8 +1017,14 @@ namespace ERP_Component_DAL.Services
                 {
                     connection.Open();
 
-                    string query = @"SELECT aw.WorkOrderID, aw.AllocationCode, aw.WorkerID, w.WorkerName, aw.Quantity, aw.RatePerPeices, aw.CreatedAt, 
-                                    aw.RecievedQuantity, aw.WorkStatus,aw.AllocatedWorkID, aw.AllocatedYarnID FROM AllocatedWork aw JOIN Workers w ON aw.WorkerID = w.WorkerID where aw.RecievedQuantity<aw.Quantity;";
+                    string query = @"SELECT aw.WorkOrderID, aw.AllocationCode, aw.WorkerID, w.WorkerName, aw.Quantity,
+                                    aw.RatePerPeices, aw.CreatedAt, aw.RecievedQuantity, aw.WorkStatus, 
+                                    aw.AllocatedWorkID, aw.AllocatedYarnID, aw.AllocatedYarnQty, wb.Quantity AS YarnQtyPerPiece
+                                    FROM AllocatedWork aw 
+                                    JOIN Workers w ON aw.WorkerID = w.WorkerID 
+                                    JOIN WorkOrder wo ON wo.WorkOrderID = aw.WorkOrderID
+                                    JOIN Weaving_BOM wb ON aw.AllocatedYarnID = wb.MaterialID AND wb.ProductID = wo.ProductID
+                                    WHERE aw.WorkStatus = 1;";
 
                     using (SqlCommand cmd = new SqlCommand(query, connection))
                     {
@@ -1032,7 +1044,8 @@ namespace ERP_Component_DAL.Services
                                     RecievedQuantity = reader.GetInt32(reader.GetOrdinal("RecievedQuantity")),
                                     WorkStatus = reader.GetByte(reader.GetOrdinal("WorkStatus")),
                                     AllocatedYarnID = reader.IsDBNull(reader.GetOrdinal("AllocatedYarnID")) ? (Guid?)null : reader.GetGuid(reader.GetOrdinal("AllocatedYarnID")),
-                                    AllocatedWorkID= reader.GetGuid(reader.GetOrdinal("AllocatedWorkID"))
+                                    AllocatedWorkID= reader.GetGuid(reader.GetOrdinal("AllocatedWorkID")),
+                                    AllocatedYarnQty = reader.GetDecimal(reader.GetOrdinal("YarnQtyPerPiece"))
 
                                 };
                                 weavingOrders.Add(allocatedWork);
@@ -1124,7 +1137,7 @@ namespace ERP_Component_DAL.Services
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
                     connection.Open();
-                    string query = @"UPDATE AllocatedWork SET RecievedQuantity = RecievedQuantity + @RecievedQuantity WHERE AllocatedWorkID = @AllocatedWorkID;
+                    string query = @"UPDATE AllocatedWork SET RecievedQuantity = RecievedQuantity + @RecievedQuantity, Wastage = @Wastage, WorkStatus = 2 WHERE AllocatedWorkID = @AllocatedWorkID;
                                      UPDATE Inventory SET InStock = InStock + @RecievedQuantity WHERE ItemId = (SELECT wop.OutPutProductID FROM WorkOrderPhases wop 
                                      JOIN WorkOrder wo ON wop.ProductID = wo.ProductID
                                      JOIN AllocatedWork aw ON aw.WorkOrderID=wo.WorkOrderID
@@ -1134,6 +1147,7 @@ namespace ERP_Component_DAL.Services
                     {
                         cmd.Parameters.AddWithValue("@RecievedQuantity", allocated.RecievedQuantity);
                         cmd.Parameters.AddWithValue("@AllocatedWorkID", allocated.AllocatedWorkID);
+                        cmd.Parameters.AddWithValue("@Wastage", allocated.Wastage);
                         cmd.ExecuteNonQuery();
                     }
                 }
@@ -1153,7 +1167,7 @@ namespace ERP_Component_DAL.Services
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
                     connection.Open();
-                    string query = @"SELECT it.ItemName AS YarnName, it.ItemId AS YarnID, it.Specification FROM Weaving_BOM wb " +
+                    string query = @"SELECT it.ItemName AS YarnName, it.ItemId AS YarnID, it.Specification, wb.Quantity FROM Weaving_BOM wb " +
                                     "JOIN Items it ON wb.MaterialID = it.ItemId " +
                                      "WHERE wb.ProductID = @ProductID";
 
@@ -1168,7 +1182,8 @@ namespace ERP_Component_DAL.Services
                                 {
                                     YranID = reader.GetGuid(reader.GetOrdinal("YarnID")),
                                     YarnName = reader.GetString(reader.GetOrdinal("YarnName")),
-                                    Specification = reader.IsDBNull(reader.GetOrdinal("Specification")) ? null : reader.GetString(reader.GetOrdinal("Specification"))
+                                    Specification = reader.IsDBNull(reader.GetOrdinal("Specification")) ? null : reader.GetString(reader.GetOrdinal("Specification")),
+                                    YarnQuantity = reader.GetDecimal(reader.GetOrdinal("Quantity"))
                                 };
                                 yarns.Add(yarn);
                             }

@@ -20,7 +20,9 @@ namespace ERP_Component_DAL.Models
         public int RecievedQuantity { get; set; }
         public byte WorkStatus { get; set; }
         public Guid? AllocatedYarnID { get; set; }
-
+        public decimal AllocatedYarnQty { get; set; }
+        public decimal YarnQtyPerPiece { get; set; }
+        public decimal Wastage {  get; set; }
         public List<AllocatedWork> allocatedWorks { get; set; }
 
     }

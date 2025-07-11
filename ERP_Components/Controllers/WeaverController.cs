@@ -107,7 +107,7 @@ namespace ERP_Components.Controllers
         public IActionResult StartWeaving(Guid WorkOrderId)
         {
             Guid CenterID = Guid.Parse(HttpContext.Session.GetString("CenterID"));
-            Weaver workOrders = weaverServices.ViewProductOfStartWeaving(WorkOrderId);
+            Weaver workOrders = weaverServices.ViewProductOfStartWeaving(WorkOrderId, CenterID);
 
             List<Weaver> weaver = weaverServices.GetRequiredMaterial(WorkOrderId, CenterID);
 
@@ -151,7 +151,8 @@ namespace ERP_Components.Controllers
         }
         public IActionResult ViewPhases(Guid WorkOrderId)
         {
-            Weaver workOrders = weaverServices.ViewProductOfStartWeaving(WorkOrderId);
+            Guid CenterID = Guid.Parse(HttpContext.Session.GetString("CenterID"));
+            Weaver workOrders = weaverServices.ViewProductOfStartWeaving(WorkOrderId, CenterID);
             workOrders = weaverServices.GetPhases(workOrders);
 
             List<Weaver> weaver = weaverServices.GetWeavers();
@@ -170,6 +171,7 @@ namespace ERP_Components.Controllers
                 workOrderPhases = workOrders.workOrderPhases,
                 AllocatedQuantity = workOrders.AllocatedQuantity,
                 dyeingQuantity = workOrders.dyeingQuantity,
+                receivedQuantity = workOrders.receivedQuantity,
                 Yarns= yarns
             };
 
@@ -187,7 +189,7 @@ namespace ERP_Components.Controllers
         public IActionResult MaterialRequisitionforWeaver(Guid WorkOrderId)
         {
             Guid CenterID = Guid.Parse(HttpContext.Session.GetString("CenterID"));
-            Weaver workOrders = weaverServices.ViewProductOfStartWeaving(WorkOrderId);
+            Weaver workOrders = weaverServices.ViewProductOfStartWeaving(WorkOrderId, CenterID);
 
             List<Weaver> weaver = weaverServices.GetRequiredMaterial(WorkOrderId, CenterID);
 
