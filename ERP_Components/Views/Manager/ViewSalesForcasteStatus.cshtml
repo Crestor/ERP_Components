@@ -1,0 +1,45 @@
+﻿@using ERP_Component_DAL.Models;
+@{
+    ViewBag.Title = "View Sales Forecast";
+    Layout = "~/Views/Shared/_LayoutINV.cshtml";
+}
+
+@model List<SalesForecast>
+
+<link rel="stylesheet" href="~/css/Product.css" />
+
+<div class="table">
+    <table>
+        <thead>
+            <tr>
+                <th>Sr no</th>
+                <th>Discription</th>
+                <th>Created On</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model != null && Model.Count > 0)
+            {
+                int i = 1;
+                foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@i</td>
+                        <td>@item.Description</td>
+                        <td>@item.CreatedOn.ToString("dd/MM/yyyy")</td>
+                        <td>
+                            <button onclick="location.href='@Url.Action("ViewSalesForCastItems","Manager", new{requisitionid = item.requisitionId})'">View</button>
+                        </td>
+                    </tr>
+                    i++;
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="4" class="text-center">No Sales Forecasts available.</td>
+                </tr>
+            }
+    </table>
+</div>

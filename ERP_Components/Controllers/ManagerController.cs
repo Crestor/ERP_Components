@@ -460,5 +460,14 @@ namespace ERP_Components.Controllers
             managerServices.SaveSeries(series);
             return RedirectToAction("SetSeries");
         }
+        public IActionResult ViewSalesForcasteStatus()
+        {
+            //List<SalesForcast> salesForcasts = managerServices.GetSalesForcastStatus();
+            return View();
+        }
+        public IActionResult ViewSalesForCastItems()
+        {
+            return View();
+        }
     }
 }

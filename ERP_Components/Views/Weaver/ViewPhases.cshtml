@@ -113,15 +113,19 @@
                 <label for="PerPiecePrize">Per Piece Prize:</label>
                 <input type="number" id="PerPiecePrizeweaver" name="RatePerPeices" required />
             </div>
-            <div class="form-row mt-4" style="width:50%">
-                    <label for="allocatedYarn">Select Yarn:</label>
-                    <select name="AllocatedYarnID" id="allocatedYarn" required>
-                        @foreach (var yarn in Model.Yarns)
-                        {
-                            <option value="@yarn.YranID">@yarn.YarnName</option>
-                        }
-                    </select>
+            <div class="form-row mt-4">
+                <label for="allocatedYarn">Select Yarn:</label>
+                <select name="AllocatedYarnID" id="allocatedYarn" onchange="handleYarnChange()" required>
+                    @foreach (var yarn in Model.Yarns)
+                    {
+                        <option value="@yarn.YranID" data-qty="@yarn.YarnQuantity">@yarn.YarnName</option>
+                    }
+                </select>
+
+                <label for="AllocatedYarnQty">Allocated Yarn:</label>
+                <input type="number" id="AllocatedYarnQty" name="AllocatedYarnQty" readonly />
             </div>
+
             <input type="hidden" name="WorkOrderId" value="@Model.WorkOrderId" />
             <div class="button">
                 <button type="submit">Allocate</button>
@@ -265,5 +269,30 @@
         if (inputDeyer) inputDeyer.value = newCode;
 
         localStorage.setItem("lastAllocationCode", newCode);
+    });
+</script>
+<script>
+    function handleYarnChange() {
+        const yarnSelect = document.getElementById("allocatedYarn");
+        const selectedOption = yarnSelect.options[yarnSelect.selectedIndex];
+        const yarnQty = parseFloat(selectedOption.getAttribute("data-qty")) || 0;
+        const allocatedQty = parseFloat(document.getElementById("AllocatedQuantityPopup").value) || 0;
+
+        document.getElementById("AllocatedYarnQty").value = yarnQty * allocatedQty;
+    }
+
+    document.addEventListener("DOMContentLoaded", function () {
+        const inputQty = document.getElementById("AllocatedQuantityPopup");
+        const yarnSelect = document.getElementById("allocatedYarn");
+
+        if (inputQty && yarnSelect) {
+            inputQty.addEventListener("input", function () {
+                const selectedOption = yarnSelect.options[yarnSelect.selectedIndex];
+                const yarnQty = parseFloat(selectedOption.getAttribute("data-qty")) || 0;
+                const allocatedQty = parseFloat(this.value) || 0;
+
+                document.getElementById("AllocatedYarnQty").value = yarnQty * allocatedQty;
+            });
+        }
     });
 </script>
