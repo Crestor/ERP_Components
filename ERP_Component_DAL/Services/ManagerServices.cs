@@ -56,6 +56,9 @@ namespace ERP_Component_DAL.Services
                         Date = reader["CreatedAt"] != DBNull.Value ? ((DateTime)reader["CreatedAt"]).Date : default(DateTime),
 
                     });
+
+
+
                 }
 
                 return prod;
@@ -2012,6 +2015,43 @@ namespace ERP_Component_DAL.Services
             }
             return seriesList;
         }
+
+        public List<SalesForecast> ViewSalesForecast()
+        {
+            try
+            {
+                List<SalesForecast> prod = new();
+                string connectionstring = configuration.GetConnectionString("DefaultConnectionString");
+                connection = new SqlConnection(connectionstring);
+                SqlCommand cmd = new();
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.CommandText = $"select RequisitionID,Description,CreatedAt,RequisitionStatus from Requisitions where RequisitionType=1";
+                cmd.Connection = connection;
+                connection.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    prod.Add(new SalesForecast
+                    {
+                        RequisitionID = reader["RequisitionID"] != DBNull.Value ? (Guid)reader["RequisitionID"] : Guid.Empty,
+                        Description = reader["Description"] != DBNull.Value ? (string)reader["Description"] : string.Empty,
+                        CreatedAt = reader["CreatedAt"] != DBNull.Value ? DateOnly.FromDateTime((DateTime)reader["CreatedAt"]) : default(DateOnly),
+                        RequisitionStatus = reader["RequisitionStatus"] != DBNull.Value ? (byte)Convert.ToInt32(reader["RequisitionStatus"]) : (byte)0
+                    });
+                }
+                return prod;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                connection.Close();
+            }
+        }
+
+
 
         //public List<VendorQuotationItem> GetRequisitionItems(Guid RequisitionID)
         //{

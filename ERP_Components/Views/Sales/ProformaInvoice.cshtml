@@ -1,10 +1,9 @@
-﻿@using ERP_Component_DAL.Models
+﻿@model ERP_Component_DAL.Models.QuotationViewModel
 
 @{
     ViewBag.Title = "Create ProformaInvoice";
     Layout = "~/Views/Shared/_LayoutINV.cshtml";
 }
-
 <link rel="stylesheet" href="~/css/ProductTwo.css" />
 
 @* <div class="toggle-buttons" style="margin-left: 28px;">
@@ -28,8 +27,16 @@
         </div>
             <div class="form-row">
 
-                <label for="customerName">Customer Name</label>
-                <input type="text" id="CustomerName" name="CustomerName">
+            <label>Customer Name:</label>
+            <select id="CustomerID" name="CustomerID" style="width: 40px;" onchange="pass()">
+                <option selected disabled>select</option>
+
+                @foreach (var customer in Model.Customers)
+                {
+                    <option value="@customer.CustomerID">@customer.CustomerName</option>
+                }
+
+            </select>
             
                 <label for="deliveryTerm">Delivery Term</label>
                 <input type="text" id="DeliveryTerms" name="DeliveryTerms">
@@ -94,77 +101,3 @@
             localStorage.setItem("lastQuotationSeries", newSeries);
         });
 </script>
-@* 
-
-<script>
-    function showSection(section) {
-      const basic = document.getElementById('basicSection');
-      const additional = document.getElementById('additionalSection');
-
-      if (section === 'basic') {
-        basic.style.display = 'block';
-        additional.style.display = 'none';
-      } else {
-        basic.style.display = 'none';
-        additional.style.display = 'block';
-      }
-    }
-
-    // Show Basic Details section by default on page load
-    window.onload = function() {
-      showSection('basic');
-    };
-</script> *@
-
-
-
-@* <h2>Basic Details</h2>
-<div id="basicDetailsForm">
-
-
-  <div class="basicdetail1" style="padding-left: 73px;">
-
-    <div class="BasicDetails">
-        <label>Order Series:</label>
-            <input type="text" id="orderSeries" name="orderSeries" ><br>
-            <label>Customer Name:</label>
-            <input type="text" id="customerName" name="customerName" style="width: 228px !important;"><br>
-
-            <div class="Dates">
-                <label>Invoice Date</label>
-                <input type="date" id="InvoiceDate" name="InvoiceDate" />
-            </div>
-            <div style="display: flex; justify-content: space-between; align-items: flex-start;">
-                <div class="termss">
-                    <div>
-                        <label>Delivery Terms:</label>
-                        <select id="deliveryTerms" name="DeliveryTerms" style="width: 11%;">
-                            <option value="">select</option>
-                            <option value="7 day">7 days</option>
-                            <option value="10 Day"> 10 Day</option>
-                            <option value="14 Day"> 14 Day</option>
-                            <option value="19 Day"> 19 Day</option>
-                            <option value="21 Day"> 21 Day</option>
-                            <option value="30 Day"> 30 Day</option>
-                        </select>
-                    </div>
-                    @* <input type="text" id="deliveryTerms" name="DeliveryTerms"><br> 
-                    <div>
-                        <label>Payment Terms:</label>
-                        <select id="paymentTerms" name="PaymentTerm" style="width: 11%;">
-
-                            <option value="">select</option>
-                            <option value="Addvance">Advance</option>
-                            <option value="cash after service"> cash after service</option>
-                        </select>
-                    </div>
-    </div>
-             
-            </div>
-
-    </div>
-   </div>
-   <h2></h2>
-
-</div>
- *@

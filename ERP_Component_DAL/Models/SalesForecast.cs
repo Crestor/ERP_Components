@@ -8,5 +8,10 @@ namespace ERP_Component_DAL.Models
 {
     public class SalesForecast
     {
+        public Guid RequisitionID  { get; set; }
+        public string Description { get; set; }
+        public DateOnly CreatedAt { get; set; }
+        public byte RequisitionStatus { get; set; }
+
     }
 }
