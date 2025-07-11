@@ -364,7 +364,8 @@ namespace ERP_Component_DAL.Services
                                     AllocatedQuantity = reader["AllocatedQuantity"] != DBNull.Value ? Convert.ToInt32(reader["AllocatedQuantity"]) : 0,
                                     dyeingQuantity = reader["DyeingQuantity"] != DBNull.Value ? Convert.ToInt32(reader["DyeingQuantity"]) : 0,
                                     ProductId = reader.GetGuid(reader.GetOrdinal("ItemID")),
-                                    receivedQuantity = reader.GetInt32("ReceivedQuantity")
+                                    receivedQuantity = reader.GetInt32("ReceivedQuantity"),
+                                    WorkStatus = Convert.ToByte( reader.GetInt32("WorkStatus"))
                                 };
                             }
                         }

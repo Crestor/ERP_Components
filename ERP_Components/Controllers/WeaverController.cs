@@ -172,7 +172,8 @@ namespace ERP_Components.Controllers
                 AllocatedQuantity = workOrders.AllocatedQuantity,
                 dyeingQuantity = workOrders.dyeingQuantity,
                 receivedQuantity = workOrders.receivedQuantity,
-                Yarns= yarns
+                Yarns= yarns,
+                WorkStatus = workOrders.WorkStatus
             };
 
             return View(workOrder);

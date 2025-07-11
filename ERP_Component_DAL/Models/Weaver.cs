@@ -21,6 +21,7 @@ namespace ERP_Component_DAL.Models
 
         public string? DeyerName { get; set; }
         public string? Firm { get; set; }
+        public byte WorkStatus { get; set; }
 
             public string? ContactNumber { get; set; }
 
