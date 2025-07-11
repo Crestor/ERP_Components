@@ -5,186 +5,214 @@
 }
 <link rel="stylesheet" href="~/css/ProductTwo.css" />
 
-<form method="post" asp-action="" asp-controller="">
-<div class="form-section">
+<form method="post" asp-action="SetSalesForecast" asp-controller="Sales">
+    <div class="form-section">
         <h3>Items</h3>
         <div class="form-row">
             <label for="SalesSeries">Sales Series</label>
-            <input type="text" name="RequisitionSeries" id="RequisitionSeries" onchange="pass()" readonly />
+            <input type="text" name="RequisitionSeries" id="RequisitionSeries" readonly />
 
-            <label for="ItemName">ItemName</label>
-            <select id="ItemId" class="form-control" name="ItemId">
-            <option selected disabled>Select Product</option>
-            @foreach (var product in Model.ItemNames)
-            {
+            <label for="ItemName">Item Name</label>
+            <select id="ItemId" class="form-control">
+                <option selected disabled>Select Product</option>
+                @foreach (var product in Model.ItemNames)
+                {
                     <option value="@product.ItemId">@product.ItemName</option>
-            }
-        </select>
+                }
+            </select>
         </div>
-	<div class="form-row">
-        <label for="Description">Description</label>
-        <input type="text" name="Description" id="Description"  onchange="pass()"/>
-        <label for="Quantity">Quantity</label>
-		<input type="number" id="Quantity" name="Quantity">
-    </div>
-        <input type="text" id="ItemId" name="ItemId" value="@Model.ItemNames[0].ItemId" hidden />
-    </div>
-</form>
-<div>
-    <button class="button" type="submit" id="addItem" style="float: right;margin-right: 50px;margin-bottom: 18px; background-color:#138496;color: white;">Add</button>
 
-</div>
-<div id="showtable" style="display:none">
+        <div class="form-row">
+            <label for="Description">Description</label>
+            <input type="text" id="Description" />
+            <label for="Quantity">Quantity</label>
+            <input type="number" id="Quantity" />
+        </div>
+
+        <button type="button" class="button" id="addItem" style="margin: 10px 0; background-color:#138496;color: white;">Add</button>
+    </div>
+
+ 
+
+
+        <div id="showtable" style="display:none">
+
+   
+        <div style="margin: 10px; float:right">
+            <button type="button" id="editSelected" class="button">
+                Edit 
+            </button>
+            <button type="button" id="saveSelected" class="button" style="black; display:none;">
+                Save
+            </button>
+        </div>
+
+
         <div class="table">
             <table>
                 <thead>
                     <tr>
+                        <th></th>
                         <th>S.No</th>
                         <th>Item Name</th>
-                        @* <th>Sales Series</th> *@
-                        @* <th>Description</th> *@
+                        <th>Description</th>
                         <th>Quantity</th>
-
                     </tr>
                 </thead>
-                <tbody id="TableBody">
-                </tbody>
+                <tbody id="TableBody"></tbody>
             </table>
         </div>
+        </div>
 
-        <form method="post" asp-action="FinalSalesforecasting" asp-controller="Sales">
-            <input type="hidden" name="Description" id="hiddenDescription" value="" />
-            @* <input type="hidden" name="date" id="hiddendate" value="" /> *@
-                <input type="hidden" id="RequisitionType" value="1" name="RequisitionType" />
-            <input type="hidden" id="hiddenRequisitionSeries" name="RequisitionSeries" />
-            <button type="submit" class="button" onclick="SForecast()" style="margin-top: 13px;float: inline-end;margin-right: 26px ;background-color:#138496;color: white;">
-                submit
-            </button>
-        </form>
-</div>
+
+ 
+
+    <div style="text-align:right; margin:10px 20px;">
+        <button type="submit" class="button" style="background-color:#138496;color: white;">Submit</button>
+    </div>
+</form>
 
 
 
-
-
-<script>
-        function SForecast(){
-           Swal.fire({
-         title: "Forecast Created",
-         icon: "success"
-       });
-       }
-
-           </script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
+
 <script>
-      function pass() {
-             
-             const DescriptionSeries = document.getElementById("Description").value;
-             document.getElementById("hiddenDescription").value = DescriptionSeries;
-              const Requisition = document.getElementById("RequisitionSeries").value;
-             document.getElementById("hiddenRequisitionSeries").value = Requisition;
+    let itemList = [];
 
-       };
+    function renderTable() {
+        const tableBody = document.getElementById("TableBody");
+        tableBody.innerHTML = "";
 
-           $(document).ready(function () {
-        $("#addItem").click(function () {
+        itemList.forEach((item, index) => {
+            const tr = document.createElement("tr");
 
-          document.getElementById("showtable").style.display = "block";
+            tr.innerHTML = `
+                    <tr>
+        <td><input type="checkbox" class="rowCheckbox" data-index="${index}" /></td>
+        <td>${index + 1}</td>
+        <td>
+            <input type="text" name="requisitionItems[${index}].itemName" value="${item.itemName}" class="form-control" readonly />
+        </td>
+        <td>
+            <input type="text" name="requisitionItems[${index}].description" value="${item.description}" class="form-control" readonly />
+        </td>
+        <td>
+            <input type="number" name="requisitionItems[${index}].quantity" value="${item.quantity}" class="form-control" readonly />
+        </td>
+        <input type="hidden" name="requisitionItems[${index}].itemId" value="${item.itemId}" />
+    </tr>
 
-            var productData = {
-                RequisitionID: $("#RequisitionID").val(),
-                ItemId:$('#ItemId').val(),
-                // ItemName: $("#ItemName").val(),
-                Quantity: parseInt($("#Quantity").val()),
-                
+            `;
 
+            tableBody.appendChild(tr);
+        });
 
-            };
-            $.ajax({
-                type: "POST",
-                url: "/Sales/SetSalesforecasting",
-                data: productData,
-                success: function (response) {
-                    console.log("Success:", response);
-                    items();
-                    // alert("Item added successfully!");
-                    let tableBody = document.getElementById("TableBody");
-                    tableBody.innerHTML = "";
-                    $(response.orderTable).each(function (index, item) {
-                        var seq = index + 1;
-                        console.log(item);
+        document.getElementById("showtable").style.display = itemList.length > 0 ? "block" : "none";
+    }
 
-                        const tr = document.createElement("tr");
-                        tr.innerHTML = `<td>${seq}</td>
+    $("#addItem").click(function () {
+        const itemId = $("#ItemId").val();
+        const itemName = $("#ItemId option:selected").text();
+        const description = $("#Description").val();
+        const quantity = $("#Quantity").val();
 
-                          <td>${item.itemName}</td>
-                          <td>${item.quantity}</td>
-                         
-                          `;
+        if (!itemId || !quantity) {
+            Swal.fire("Required", "Please fill all required fields!", "warning");
+            return;
+        }
 
-    
-    
-                        tableBody.appendChild(tr);
-                    });
+        itemList.push({
+            itemId,
+            itemName,
+            description,
+            quantity
+        });
 
-                   
-                    $("#ItemName").val("");
-                    $("#Quantity").val("");
-                   
-                },
-                error: function (xhr, status, error) {
-                    console.error("Error:", xhr.responseText);
-                    alert("Failed ");
-                }
-            });
+        renderTable();
+
+        $("#Description").val("");
+        $("#Quantity").val("");
+        $("#ItemId").val("");
+    });
+
+    // Edit Button
+    $("#editSelected").click(function () {
+        const checkedRows = $(".rowCheckbox:checked");
+
+        if (checkedRows.length === 0) {
+            Swal.fire("No row selected", "", "warning");
+            return;
+        }
+
+        // Show Save button
+        $("#saveSelected").show();
+
+        // Make selected rows editable
+        checkedRows.each(function () {
+            const row = $(this).closest("tr");
+            row.find("input[type='text'], input[type='number']").prop("readonly", false);
         });
     });
 
+    // Save Button
+    $("#saveSelected").click(function () {
+        $(".rowCheckbox:checked").each(function () {
+            const row = $(this).closest("tr");
+            const index = $(this).data("index");
+
+            const updatedItemName = row.find("input[name^='ItemList'][name$='.ItemName']").val();
+            const updatedDescription = row.find("input[name^='ItemList'][name$='.Description']").val();
+            const updatedQuantity = row.find("input[name^='ItemList'][name$='.Quantity']").val();
+
+            // Update itemList
+            itemList[index].itemName = updatedItemName;
+            itemList[index].description = updatedDescription;
+            itemList[index].quantity = updatedQuantity;
+
+            // Set fields back to readonly
+            row.find("input[type='text'], input[type='number']").prop("readonly", true);
+        });
+
+        Swal.fire("Saved!", "Changes have been saved.", "success");
+
+        // Hide Save button again
+        $("#saveSelected").hide();
+
+        // Uncheck all
+        $(".rowCheckbox").prop("checked", false);
+        $("#selectAll").prop("checked", false);
+    });
+
+  
+    $("#selectAll").click(function () {
+        $(".rowCheckbox").prop("checked", this.checked);
+    });
 </script>
 
 
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
 <script>
-    // Generate RequisitionSeries
+
     document.addEventListener("DOMContentLoaded", function () {
         const orderInput = document.getElementById("RequisitionSeries");
         const year = new Date().getFullYear();
         let nextNumber = 1;
-
-        // Get the last order series from localStorage
         let lastOrder = localStorage.getItem("lastQuotationSeries");
 
         if (lastOrder) {
             let parts = lastOrder.split("-");
             let lastYear = parseInt(parts[1]);
             let lastNum = parseInt(parts[2]);
-
             if (lastYear === year) {
                 nextNumber = lastNum + 1;
             }
         }
 
         const newSeries = `SS-${year}-${String(nextNumber).padStart(4, "0")}`;
-
-        // Set the input values
         orderInput.value = newSeries;
-
-        // Store the new series in localStorage
         localStorage.setItem("lastQuotationSeries", newSeries);
     });
-      function items(){
-            Swal.fire({
-      title: "Add successfully  ",
-      text: "",
-      icon: "success",
-      confirmButtonColor: "#138496",
-      draggable: true
-
-      
-      });
-    }
-
 </script>
+
+

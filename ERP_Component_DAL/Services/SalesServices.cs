@@ -2741,6 +2741,52 @@ RequisitionStatus=1
             }
 
 
-        }    
+        }
+
+
+        public void SalesForCasting(QuotationModel quotation, List<QuotationModel> ItemLists)
+        {
+            try
+            {
+                string connectionString = configuration.GetConnectionString("DefaultConnectionString");
+                connection = new SqlConnection(connectionString);
+                connection.Open();
+
+                SqlCommand cmd = new SqlCommand();
+                cmd.CommandType = CommandType.Text;
+
+                cmd.CommandText = $"INSERT INTO Requisitions ([Description],[RequisitionSeries]) OUTPUT INSERTED.RequisitionID VALUES (@Description, @RequisitionSeries)";
+                cmd.Parameters.AddWithValue("@RequisitionSeries", quotation.RequisitionSeries);
+                cmd.Parameters.AddWithValue("@Description", quotation.Description);
+
+                cmd.Connection = connection;
+
+                Guid RequisitionID = (Guid)cmd.ExecuteScalar();
+
+                foreach (var item in ItemLists)
+                {
+                    string insertLineQuery = @"INSERT INTO RequisitionItems ([ItemID],[Quantity],[RequisitionID]) VALUES (@ItemID,@Quantity,@RequisitionID)";
+                    using (SqlCommand cmd1 = new SqlCommand(insertLineQuery, connection))
+                    {
+                        cmd1.Parameters.AddWithValue("@RequisitionID", RequisitionID);
+                        cmd1.Parameters.AddWithValue("@Quantity", item.Quantity);
+                        cmd1.Parameters.AddWithValue("@ItemID", item.ItemId);
+                       
+
+                        cmd1.ExecuteNonQuery();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                if (connection.State == ConnectionState.Open)
+                    connection.Close();
+            }
+        }
+
     }
 }

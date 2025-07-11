@@ -77,48 +77,9 @@ namespace ERP_Components.Controllers
             return View(model);
         }
 
-        //public JsonResult SetQuotationProducts(QuotationModel quotationModel)
-        //{
-        //    var QuotationCreated = HttpContext.Session.GetString("QuotationAdded");
-        //    if (QuotationCreated == "False")
-        //    {
-        //        quotationModel.QuotationID = salesServices.AddQuotaDetails(quotationModel);
-        //        HttpContext.Session.SetString("QuotationAdded", "True");
-        //        HttpContext.Session.SetString("QuotationID", quotationModel.QuotationID.ToString());
-        //        var x = salesServices.SaveQuotationProduct(quotationModel);
-        //    }
-        //    else
-        //    {
-        //        quotationModel.QuotationID = Guid.Parse(HttpContext.Session.GetString("QuotationID"));
-
-        //        var x = salesServices.SaveQuotationProduct(quotationModel);
-        //    }
-
-        //    List<QuotationModel> ol = salesServices.OrderList(quotationModel.QuotationID);
 
 
-        //    var totalPriceBeforeDiscount = ol.Sum(x => x.SellingPrice * x.Quantity);
-        //    var totalDiscountAmount = ol.Sum(x => x.DiscountAmount);
-        //    var totalDiscountPercent = totalPriceBeforeDiscount == 0
-        //        ? 0
-        //        : totalDiscountAmount / totalPriceBeforeDiscount * 100;
-        //    var grossTotal = ol.Sum(x => x.TotalAmount);
-        //    var totalAmountAfterDiscount = ol.Sum(x => x.TaxableAmount);
-        //    var model = new QuotationViewModel
-        //    {
-        //        OrderList = ol,
-        //        totalPriceBeforeDiscount = totalPriceBeforeDiscount,
-        //        TotalDiscountAmount = totalDiscountAmount,
-        //        TotalDiscountPercent = Math.Round(totalDiscountPercent, 2),
-        //        GrossTotal = Math.Round(grossTotal),
-        //        TotalAmountAfterDiscount = totalAmountAfterDiscount,
-        //    };
 
-        //    model.OrderList = ol;
-
-
-        //    return Json(model);
-        //}
 
 
         [HttpPost]
@@ -127,17 +88,6 @@ namespace ERP_Components.Controllers
             salesServices.AddQuotation(quotation, ItemLists);
             return RedirectToAction("AddQuotation");
         }
-
-
-
-        // update details  
-        //public IActionResult SubmitQuotation(QuotationModel O)
-        //{
-        //    O.QuotationID = Guid.Parse(HttpContext.Session.GetString("QuotationID"));
-
-        //    salesServices.updateQuotaDetails(O);  
-        //    return RedirectToAction("ManageQuotation");
-        //}
 
 
 
@@ -407,7 +357,6 @@ namespace ERP_Components.Controllers
         }
         //sales forecasting
 
-        //Ye wala acation sahi hai isko use as it is use karna
         public IActionResult Salesforecasting()
         {
             HttpContext.Session.SetString("SalesforecastingADD", "False");
@@ -427,42 +376,56 @@ namespace ERP_Components.Controllers
         }
 
 
-        [HttpPost]
+
+        //public IActionResult SetSalesForCasting(QuotationModel quotation, List<QuotationModel> ItemLists)
+        //{
+
+        //    salesServices.SalesForCasting(quotation, ItemLists); 
+        //    return RedirectToAction("Salesforecasting");
+
+        //}
+
+
+
+
+
+
+        //[HttpPost]
         //Harsh sir ye wala remove kar dena iski bhi koi zaruurat nahi hia
-        public JsonResult SetSalesforecasting(QuotationModel O)
-        {
-            var QuotationCreated = HttpContext.Session.GetString("SalesforecastingADD");
-            if (QuotationCreated == "False")
-            {
-                O.RequisitionID = salesServices.AddSFDetails(O);// get QuotationID 
-                HttpContext.Session.SetString("SalesforecastingADD", "True");
-                HttpContext.Session.SetString("RequisitionID", O.RequisitionID.ToString());
-                var x = salesServices.AddSFItems(O);
+        //public JsonResult SetSalesforecasting(QuotationModel O)
+        //{
+        //    var QuotationCreated = HttpContext.Session.GetString("SalesforecastingADD");
+        //    if (QuotationCreated == "False")
+        //    {
+        //        O.RequisitionID = salesServices.AddSFDetails(O);// get QuotationID 
+        //        HttpContext.Session.SetString("SalesforecastingADD", "True");
+        //        HttpContext.Session.SetString("RequisitionID", O.RequisitionID.ToString());
+        //        var x = salesServices.AddSFItems(O);
 
-            }
-            else
-            {
-                O.RequisitionID = Guid.Parse(HttpContext.Session.GetString("RequisitionID"));
+        //    }
+        //    else
+        //    {
+        //        O.RequisitionID = Guid.Parse(HttpContext.Session.GetString("RequisitionID"));
 
-                var x = salesServices.AddSFItems(O);
-
-
-
-            }
-
-            List<QuotationModel> ol = salesServices.OrderTable(O.RequisitionID);
-
-
-            var model = new QuotationViewModel
-            {
-                OrderTable = ol,
-
-            };
+        //        var x = salesServices.AddSFItems(O);
 
 
 
-            return Json(model);
-        }
+        //    }
+
+        //    List<QuotationModel> ol = salesServices.OrderTable(O.RequisitionID);
+
+
+        //    var model = new QuotationViewModel
+        //    {
+        //        OrderTable = ol,
+
+        //    };
+
+
+
+        //    return Json(model);
+        //}
 
 
        
@@ -475,13 +438,13 @@ namespace ERP_Components.Controllers
 
         // update details  
         // Harsh sir ye wala Action remove kar dena iski zaruurat nahi hai
-        public IActionResult FinalSalesforecasting(QuotationModel O)
-        {
-            O.RequisitionID = Guid.Parse(HttpContext.Session.GetString("RequisitionID"));
-            Guid CenterID = Guid.Parse(HttpContext.Session.GetString("CenterID"));
-            centerlizedService.updateSalesForecastDetails(O, CenterID, RequisitionTypes.SALES_FORCASTING);  //reamining1
-            return RedirectToAction("Salesforecasting");
-        }
+        //public IActionResult FinalSalesforecasting(QuotationModel O)
+        //{
+        //    O.RequisitionID = Guid.Parse(HttpContext.Session.GetString("RequisitionID"));
+        //    Guid CenterID = Guid.Parse(HttpContext.Session.GetString("CenterID"));
+        //    centerlizedService.updateSalesForecastDetails(O, CenterID, RequisitionTypes.SALES_FORCASTING);  //reamining1
+        //    return RedirectToAction("Salesforecasting");
+        //}
 
         //Ye wala Action main data send karna or Requisition model ko dekhla usme send kar dena data
         //Same problem Retails sales main bhi hai vaha bhi check kar lena

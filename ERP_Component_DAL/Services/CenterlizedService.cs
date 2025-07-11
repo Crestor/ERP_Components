@@ -127,7 +127,7 @@ namespace ERP_Component_DAL.Services
                     string query = $"INSERT INTO Requisitions(RequisitionID, Description, RequisitionStatus, RequisitionSeries, RequisitionType) " +
                                    $"VALUES (@RequisitionID, @Description, @RequisitionStatus, @RequisitionSeries, @RequisitionType); " +
                                    $"INSERT INTO RequisitionsDistributionCenterBridge(RequisitionID, CenterID) " +
-                                   $"VALUES (@RequisitonID, @CenterID)";
+                                   $"VALUES (@RequisitionID, @CenterID)";
 
                     using (SqlCommand cmd = new SqlCommand(query, connection))
                     {
@@ -145,7 +145,9 @@ namespace ERP_Component_DAL.Services
             }
             catch (Exception)
             {
-                transaction?.Rollback();
+                //if(transaction != null)
+                //transaction?.Rollback();
+                Console.WriteLine(transaction);
                 throw;
             }
         }
