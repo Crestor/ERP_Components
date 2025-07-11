@@ -1046,7 +1046,8 @@ namespace ERP_Component_DAL.Services
                                     WorkStatus = reader.GetByte(reader.GetOrdinal("WorkStatus")),
                                     AllocatedYarnID = reader.IsDBNull(reader.GetOrdinal("AllocatedYarnID")) ? (Guid?)null : reader.GetGuid(reader.GetOrdinal("AllocatedYarnID")),
                                     AllocatedWorkID= reader.GetGuid(reader.GetOrdinal("AllocatedWorkID")),
-                                    AllocatedYarnQty = reader.GetDecimal(reader.GetOrdinal("YarnQtyPerPiece"))
+                                    AllocatedYarnQty = reader.GetDecimal(reader.GetOrdinal("AllocatedYarnQty")),
+                                    YarnQtyPerPiece = reader.GetDecimal(reader.GetOrdinal("YarnQtyPerPiece"))
 
                                 };
                                 weavingOrders.Add(allocatedWork);
