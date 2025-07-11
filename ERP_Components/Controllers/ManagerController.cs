@@ -462,10 +462,10 @@ namespace ERP_Components.Controllers
         }
         public IActionResult ViewSalesForcasteStatus()
         {
-            //List<SalesForcast> salesForcasts = managerServices.GetSalesForcastStatus();
-            return View();
+            List<SalesForecast> salesForcasts = managerServices.ViewSalesForecast();
+            return View(salesForcasts);
         }
-        public IActionResult ViewSalesForCastItems()
+        public IActionResult ViewSalesForCastItems(Guid RequisitionID)
         {
             return View();
         }
