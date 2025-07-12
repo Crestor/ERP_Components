@@ -624,7 +624,8 @@ namespace ERP_Components.Controllers
             //var selectedItems = requisition.listItesms.Where(x => x.IsSelected).ToList();              // only selected items 
             inventoryServices.UpdateMaterialRequisitionStatus(requisition.RequisitionId);
 
-            requisition.RequisitionId = inventoryServices.AddRequisition(requisition);
+            //requisition.RequisitionId = inventoryServices.AddRequisition(requisition);
+            requisition.RequisitionId = inventoryServices.SaveRequisition(requisition);
 
             HttpContext.Session.SetString("RequisitionID", requisition.RequisitionId.ToString());
 
@@ -641,12 +642,13 @@ namespace ERP_Components.Controllers
                     unitPrice= requisition.unitPrice
                 };
 
-                inventoryServices.AddPurchaseRequisition(item);
+                //inventoryServices.AddPurchaseRequisition(item);
+                inventoryServices.SaveRequisitionItems(item);
 
 
             }
 
-
+            inventoryServices.ConvertToStore_PR(requisition.RequisitionId);
             return RedirectToAction("MaterialOrderList");
 
             

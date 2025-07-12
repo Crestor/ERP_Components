@@ -99,7 +99,7 @@ namespace ERP_Component_DAL.Services
             }
         }
 
-        public void SaveRequisition(Requisition requisition, Guid centerID)
+        public void SaveRequisition(Requisition requisition, Guid centerID, RequisitionTypes requisitionType)
         {
             requisition.requisitionId = Guid.NewGuid();
 
@@ -133,9 +133,9 @@ namespace ERP_Component_DAL.Services
                     {
                         cmd.Parameters.AddWithValue("@RequisitionID", requisition.requisitionId);
                         cmd.Parameters.AddWithValue("@Description", requisition.description);
-                        cmd.Parameters.AddWithValue("@RequisitionStatus", (byte)requisition.requisitionStatus);
+                        cmd.Parameters.AddWithValue("@RequisitionStatus", (byte)RequisitionStatus.PENDING);
                         cmd.Parameters.AddWithValue("@RequisitionSeries", requisition.requisitionSeries);
-                        cmd.Parameters.AddWithValue("@RequisitionType", (byte)requisition.requisitionType);
+                        cmd.Parameters.AddWithValue("@RequisitionType", (byte)requisitionType);
                         cmd.Parameters.AddWithValue("@CenterID", centerID);
 
                         cmd.ExecuteNonQuery();
@@ -146,10 +146,16 @@ namespace ERP_Component_DAL.Services
             catch (Exception)
             {
                 //if(transaction != null)
-                //transaction?.Rollback();
+                    //transaction?.Rollback();
                 Console.WriteLine(transaction);
                 throw;
             }
+        }
+
+        //TODO: 
+        public List<Requisition> FindRequisitionsByType()
+        {
+            throw new NotImplementedException();
         }
     }
 }

@@ -290,6 +290,11 @@ namespace ERP_Components.Controllers
             return RedirectToAction("ViewVendorQuotation");
         }
 
+        public IActionResult ViewStorePR()
+        {
+            return null;
+        }
+
        
 
         //<----------------------------------Vendor--------------------------------->

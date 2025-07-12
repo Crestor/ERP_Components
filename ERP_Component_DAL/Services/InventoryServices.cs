@@ -2633,20 +2633,24 @@ namespace ERP_Component_DAL.Services
                 connection = new SqlConnection(ConnectionString);
                 SqlCommand cmd = new SqlCommand();
                 cmd.CommandType = System.Data.CommandType.Text;
+                Guid RequisitionID = Guid.NewGuid();
 
-                cmd.CommandText = $"insert into PurchaseRequisitions([Description],[TotalAmount],[RequisitionSeries],[RequisitionStatus]) " + "OUTPUT INSERTED.PurchaseRequisitionID" + " values (@description,@totalAmount,@RequisitionSeries, 1)";
+                cmd.CommandText = $"insert into PurchaseRequisitions(PurchaseRequisitionID, [Description],[TotalAmount],[RequisitionSeries],[RequisitionStatus]) " + 
+                    $"VALUES ( @PurchaseRequisitionID, @description,@totalAmount,@RequisitionSeries, 1); " +
+                    $"INSERT INTO RequisitionPurchaseRequisitonBridge(RequisitionID, PurchaseRequisitionID) VALUES " +
+                    $"(@RequisitionID, @PurchaseRequisitionID)";
 
                 cmd.Parameters.AddWithValue("@description", Add.Descripion ?? (object)DBNull.Value);
                 cmd.Parameters.AddWithValue("@RequisitionSeries", Add.requisitionSeries ?? (object)DBNull.Value);
                 cmd.Parameters.AddWithValue("@totalAmount", Add.TotalAmount);
+                cmd.Parameters.AddWithValue("@RequisitionID", Add.RequisitionId);
+                cmd.Parameters.AddWithValue("@PurchaseRequisitionID", RequisitionID);
 
 
 
                 cmd.Connection = connection;
                 connection.Open();
-                Guid RequisitionID = (Guid)cmd.ExecuteScalar();
-
-
+                cmd.ExecuteScalar();
                 return RequisitionID;
 
             }
@@ -2695,7 +2699,77 @@ namespace ERP_Component_DAL.Services
                 connection.Close();
             }
         }
+        public Guid SaveRequisition(AddPurchaseRequisition Add)
+        {
+            try
+            {
+                String ConnectionString = configuration.GetConnectionString("DefaultConnectionString");
+                connection = new SqlConnection(ConnectionString);
+                SqlCommand cmd = new SqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+                Guid RequisitionID = Guid.NewGuid();
 
+                cmd.CommandText = $"insert into Requisitions(RequisitionID, [Description],[RequisitionSeries],[RequisitionStatus], RequisitionType) " +
+                    $"VALUES ( @StoreRequisitionID, @description,@RequisitionSeries, 1, 5); " +
+                    $"INSERT INTO RequisitionStoreRequisitionBridge(MaterailRequisitionID, StoreRequisitionID) VALUES " +
+                    $"(@RequisitionID, @StoreRequisitionID)";
+
+                cmd.Parameters.AddWithValue("@description", Add.Descripion ?? (object)DBNull.Value);
+                cmd.Parameters.AddWithValue("@RequisitionSeries", Add.requisitionSeries ?? (object)DBNull.Value);
+                cmd.Parameters.AddWithValue("@RequisitionID", Add.RequisitionId);
+                cmd.Parameters.AddWithValue("@StoreRequisitionID", RequisitionID);
+
+
+
+                cmd.Connection = connection;
+                connection.Open();
+                cmd.ExecuteScalar();
+                return RequisitionID;
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                connection.Close();
+            }
+        }
+
+        public bool SaveRequisitionItems(AddPurchaseRequisition requisition)
+        {
+            try
+            {
+                String ConnectionString = configuration.GetConnectionString("DefaultConnectionString");
+                connection = new SqlConnection(ConnectionString);
+                SqlCommand cmd = new SqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+
+                cmd.CommandText = $"insert into RequisitionItems (ItemID,Quantity,RequisitionID ) values (@ItemId,@Quantity,@RequisitionID)";
+                cmd.Parameters.AddWithValue("@RequisitionID", requisition.RequisitionId);
+                cmd.Parameters.AddWithValue("@ItemId", requisition.itemId);
+                cmd.Parameters.AddWithValue("@Quantity", requisition.quantity);
+
+                cmd.Connection = connection;
+                connection.Open();
+                cmd.ExecuteNonQuery();
+                connection.Close();
+
+
+
+                return true;
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                connection.Close();
+            }
+        }
 
         public List<Vendor> RecievePurchaseOrder()
         {
@@ -2976,6 +3050,28 @@ namespace ERP_Component_DAL.Services
             }
 
             return stockTransactions;
+        }
+
+        public void ConvertToStore_PR(Guid requisitionId)
+        {
+            try
+            {
+                using(SqlConnection connection = new SqlConnection(_connectionString))
+                {
+                    string query = "ConvertToStore_PR";
+                    connection.Open();
+                    using(SqlCommand cmd = new SqlCommand(query, connection))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@RequisitionID", requisitionId);
+                        cmd.ExecuteScalar();
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
     }
 
