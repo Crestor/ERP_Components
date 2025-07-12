@@ -2577,7 +2577,7 @@ namespace ERP_Component_DAL.Services
                 connection = new SqlConnection(connectionstring);
                 SqlCommand cmd = new();
                 cmd.CommandType = System.Data.CommandType.Text;
-                cmd.CommandText = $" SELECT it.ItemId, it.ItemName, it.HSN, it.Specification, it.UnitOfMeasure,ri.RequisitionID, ri.UnitPrice,ri.TotalPrice,ri.Quantity, c.CategoryName, i.TypeName FROM Items it JOIN RequisitionItems ri ON it.ItemId = ri.ItemId  Left Join Categories c On it.CategoryId = c.CategoryID Left Join ItemTypes i On it.ItemType = i.ItemTypeId Where ri.RequisitionID = '{RequisitionID}'";
+                cmd.CommandText = $" SELECT it.ItemId, it.ItemName, it.HSN, it.Specification, it.UnitOfMeasure,ri.RequisitionID, ri.Quantity, c.CategoryName, i.TypeName FROM Items it JOIN RequisitionItems ri ON it.ItemId = ri.ItemId  Left Join Categories c On it.CategoryId = c.CategoryID Left Join ItemTypes i On it.ItemType = i.ItemTypeId Where ri.RequisitionID = '{RequisitionID}'";
                 cmd.Parameters.AddWithValue("@RequisitionID", RequisitionID);
                 cmd.Connection = connection;
 
@@ -2602,8 +2602,8 @@ namespace ERP_Component_DAL.Services
                         category = reader["CategoryName"] != DBNull.Value ? (string)reader["CategoryName"] : string.Empty,
 
 
-                        unitPrice = reader["UnitPrice"] != DBNull.Value ? Convert.ToDecimal(reader["UnitPrice"]) : 0m,
-                        TotalAmount = reader["TotalPrice"] != DBNull.Value ? Convert.ToDecimal(reader["TotalPrice"]) : 0m,
+                        //unitPrice = reader["UnitPrice"] != DBNull.Value ? Convert.ToDecimal(reader["UnitPrice"]) : 0m,
+                        //TotalAmount = reader["TotalPrice"] != DBNull.Value ? Convert.ToDecimal(reader["TotalPrice"]) : 0m,
 
                     });
                 }
