@@ -42,7 +42,9 @@ namespace ERP_Component_DAL.Models
         CLOSED = 4,
         DISPATCHED_TO_SALES	= 5,
         REJECTED = 6,
-        SENT_FOR_PURCHASE_REQUISITION = 7
+        SENT_FOR_PURCHASE_REQUISITION = 7,
+        SENT_FOR_MANAGER_APPROVAL = 8,
+        APPROVED_FROM_MANAGER = 9
     }
     public enum ItemType
     {

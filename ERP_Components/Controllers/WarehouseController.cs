@@ -110,6 +110,13 @@ namespace ERP_Components.Controllers
             return Json(new { list = lists });
         }
 
+        //TODO: Complete this
+        public IActionResult SendForManagerApproval(Requisition requisition)
+        {
+            //warehouseServices.UpdateRequisition(requisition);
+            return null;
+        }
+
         public IActionResult SentToProduction(Guid RequisitionId)
         {
             warehouseServices.CreateProductionOrder(RequisitionId);

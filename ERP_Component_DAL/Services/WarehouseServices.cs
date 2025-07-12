@@ -1074,11 +1074,10 @@ namespace ERP_Component_DAL.Services
             }
         }
 
-
-
-
-
-
-
+        //TODO: Implement this method
+        public void UpdateRequisition(Requisition requisition)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
