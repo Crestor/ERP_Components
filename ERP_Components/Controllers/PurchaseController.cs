@@ -292,6 +292,7 @@ namespace ERP_Components.Controllers
 
         public IActionResult ViewStorePR()
         {
+            purchaseServices.FindStorePR();
             return null;
         }
 

@@ -1614,6 +1614,11 @@ namespace ERP_Component_DAL.Services
                 connection.Close();
             }
         }
+
+        public void FindStorePR()
+        {
+            throw new NotImplementedException();
+        }
     }
 
 }
