@@ -467,7 +467,8 @@ namespace ERP_Components.Controllers
         }
         public IActionResult ViewSalesForCastItems(Guid RequisitionID)
         {
-            return View();
+            List<SalesForecast> ViewItemsDetails = managerServices.individualSalesForecastDetails(RequisitionID);
+            return View(ViewItemsDetails);
         }
     }
 }

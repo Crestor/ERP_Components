@@ -604,7 +604,7 @@ namespace ERP_Components.Controllers
 
         //<---------------Purchase Requisition ------------->
 
-        public IActionResult AddPurchaseRequisition(Guid RequisitionId)
+        public IActionResult AddPurchaseRequisition(Guid RequisitionId) //page 
 
         {
 
@@ -619,9 +619,9 @@ namespace ERP_Components.Controllers
 
 
         [HttpPost]
-        public IActionResult AddPurchaseRequisition(AddPurchaseRequisition requisition)
+        public IActionResult AddPurchaseRequisition(AddPurchaseRequisition requisition) //set path 
         {
-            var selectedItems = requisition.listItesms.Where(x => x.IsSelected).ToList();              // only selected items 
+            //var selectedItems = requisition.listItesms.Where(x => x.IsSelected).ToList();              // only selected items 
             inventoryServices.UpdateMaterialRequisitionStatus(requisition.RequisitionId);
 
             requisition.RequisitionId = inventoryServices.AddRequisition(requisition);
@@ -629,8 +629,8 @@ namespace ERP_Components.Controllers
             HttpContext.Session.SetString("RequisitionID", requisition.RequisitionId.ToString());
 
 
-            //foreach (var mat in requisition.listItesms)                                               //PREV 
-            foreach (var mat in selectedItems)                                                          //NEW
+            foreach (var mat in requisition.listItesms)                                               //PREV 
+            //foreach (var mat in selectedItems)                                                          //NEW
             {
                 var item = new AddPurchaseRequisition
                 {
@@ -651,6 +651,8 @@ namespace ERP_Components.Controllers
 
             
         }
+     
+
 
     public IActionResult RecievePurchaseOrder()
         {

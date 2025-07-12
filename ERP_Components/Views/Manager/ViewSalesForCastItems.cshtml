@@ -3,8 +3,11 @@
     ViewBag.Title = "View Sales Forecast Items";
     Layout = "~/Views/Shared/_LayoutINV.cshtml";
 }
+@model List<SalesForecast>
 
 <link rel="stylesheet" href="~/css/Product.css" />
+
+
 
 <div class="table">
     <table>
@@ -13,11 +16,23 @@
                 <th>Sr no</th>
                 <th>Item Name</th>
                 <th>Quantity</th>
-                <th>Action</th>
+                <th>Status</th>
             </tr>
         </thead>
         <tbody>
-        
+            @for (var i = 0; i < Model.Count; i++)
+            {
+                var x = Model[i];
+                var index = i + 1;
+              
+
+                <tr>
+                    <td>@index</td>
+                    <td>@x.ItemName</td>
+                    <td>@x.Quantity</td>
+                   
+                </tr>
+            }
         </tbody>
     </table>
 </div>

@@ -10,8 +10,11 @@ namespace ERP_Component_DAL.Models
     {
         public Guid RequisitionID  { get; set; }
         public string Description { get; set; }
+        public string ItemName { get; set; }
+        public decimal Quantity { get; set; }
         public DateOnly CreatedAt { get; set; }
         public byte RequisitionStatus { get; set; }
+        public byte WorkOrderStatus { get; set; }
 
     }
 }

@@ -2051,6 +2051,40 @@ namespace ERP_Component_DAL.Services
             }
         }
 
+      public List<SalesForecast> individualSalesForecastDetails(Guid RequisitionID)
+        {
+            try
+            {
+                List<SalesForecast> prod = new();
+                string connectionstring = configuration.GetConnectionString("DefaultConnectionString");
+                connection = new SqlConnection(connectionstring);
+                SqlCommand cmd = new();
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.CommandText = $"SELECT i.ItemName, wo.Quantity, wo.WorkOrderStatus FROM WorkOrder wo JOIN RequisitionItems ri ON ri.RequisitionID=wo.SalesForecastID AND wo.ProductID=ri.ItemID JOIN Items i ON wo.ProductID=i.ItemId WHERE wo.SalesForecastID = '{RequisitionID}'";
+                cmd.Connection = connection;
+                connection.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    prod.Add(new SalesForecast 
+                    {
+
+                        Quantity = reader["Quantity"] != DBNull.Value ? Convert.ToDecimal(reader["Quantity"]) : 0m,
+                        ItemName = reader["ItemName"] != DBNull.Value ? (string)reader["ItemName"] : string.Empty,
+                        WorkOrderStatus = reader["WorkOrderStatus"] != DBNull.Value ? Convert.ToByte(reader["WorkOrderStatus"]) : (byte)0,
+                    });
+                }
+                return prod;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                connection.Close();
+            }
+        }
 
 
         //public List<VendorQuotationItem> GetRequisitionItems(Guid RequisitionID)

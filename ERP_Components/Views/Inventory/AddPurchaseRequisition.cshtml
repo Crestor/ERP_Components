@@ -5,9 +5,7 @@
 	Layout = "~/Views/Shared/_LayoutINV.cshtml";
 }
 
-
 <link rel="stylesheet" href="/css/Product.css" />
-
 
 @model AddPurchaseRequisition
 
@@ -17,38 +15,41 @@
 		<div class="form-row">
 			<input type="hidden" name="RequisitionId" value="@Model.RequisitionId" />
 			<label for="requisitionSeries">Requisition Series</label>
-			<input type="text" id="RequisitionSeries" name="requisitionSeries" readonly>
+			<input type="text" id="RequisitionSeries" name="requisitionSeries" readonly />
 			<label for="Descripion">Description</label>
-			<input type="text" name="Descripion">
+			<input type="text" name="Descripion" />
 		</div>
+
 		<div class="button">
 			<button type="submit">Submit</button>
+	
 		</div>
 	</div>
 
+	<div class="button" style="justify-content: start; padding: 0% 0% 1% 3%;">
+	   <button type="button" id="deleteSelected">Delete</button>
+	</div>
+
+
 	<div class="table">
-		<table>
+		<table id="requisitionTable">
 			<thead>
 				<tr>
-					<th>
-						<input type="checkbox" id="selectAll" />
-						<label for="selectAll">Select All</label>
-					</th>
+					<th><input type="checkbox" id="selectAll" /> Select All</th>
 					<th>Item Name</th>
 					<th>Specification</th>
 					<th>Quantity</th>
 				</tr>
 			</thead>
-			<tbody>
+			<tbody id="itemTableBody">
 				@for (int i = 0; i < Model.listItesms.Count; i++)
 				{
 					<tr>
+						<td><input type="checkbox" class="selectItem" /></td>
 						<td>
-							<input type="checkbox" class="selectItem" name="listItesms[@i].IsSelected" value="true" />
-							<input type="hidden" name="listItesms[@i].IsSelected" value="false" />
+							<input type="hidden" name="listItesms[@i].itemId" value="@Model.listItesms[i].itemId" />
+							<input type="text" name="listItesms[@i].itemName" value="@Model.listItesms[i].itemName" readonly />
 						</td>
-						<input type="hidden" name="listItesms[@i].itemId" value="@Model.listItesms[i].itemId" />
-						<td><input type="text" name="listItesms[@i].itemName" value="@Model.listItesms[i].itemName" readonly /></td>
 						<td><input type="text" name="listItesms[@i].specification" value="@Model.listItesms[i].specification" readonly /></td>
 						<td><input type="text" name="listItesms[@i].quantity" value="@Model.listItesms[i].quantity" /></td>
 					</tr>
@@ -62,9 +63,33 @@
 	<script>
 		document.getElementById('selectAll').addEventListener('change', function () {
 			const isChecked = this.checked;
-			const checkboxes = document.querySelectorAll('.selectItem');
-			checkboxes.forEach(cb => cb.checked = isChecked);
+			document.querySelectorAll('.selectItem').forEach(cb => cb.checked = isChecked);
 		});
+
+		document.getElementById('deleteSelected').addEventListener('click', function () {
+			const tableBody = document.getElementById('itemTableBody');
+			// Remove selected rows
+			document.querySelectorAll('.selectItem:checked').forEach(cb => {
+				const row = cb.closest('tr');
+				if (row) row.remove();
+			});
+			// Reindex remaining rows
+			reindexRows();
+		});
+
+		function reindexRows() {
+			const rows = document.querySelectorAll('#itemTableBody tr');
+			rows.forEach((row, index) => {
+				// Update name attributes with the new index
+				row.querySelectorAll('input').forEach(input => {
+					let name = input.getAttribute('name');
+					if (name) {
+						let newName = name.replace(/listItesms\[\d+\]/, `listItesms[${index}]`);
+						input.setAttribute('name', newName);
+					}
+				});
+			});
+		}
 	</script>
 }
 
