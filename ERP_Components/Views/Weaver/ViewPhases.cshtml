@@ -179,32 +179,28 @@
         document.getElementById("popupforDeyer").style.display = "none";
         document.getElementById("overlay").style.display = "none";
     }
-
     document.addEventListener("DOMContentLoaded", function () {
         const totalQuantity = parseInt(@Model.Quantity);
         const allocatedQuantity = parseInt(@Model.AllocatedQuantity);
         const phase1Status = "@(Model.workOrderPhases.Count > 0 ? Model.workOrderPhases[0].status : "")";
         const phase2Status = "@(Model.workOrderPhases.Count > 1 ? Model.workOrderPhases[1].status : "")";
-
         const weaverBtn = document.getElementById("showpopupforWaever");
         const deyerBtn = document.getElementById("showpopupforDeyer");
         const completedBtn = document.getElementById("completedworkorder");
         const allocatedforDying = parseInt(@Model.dyeingQuantity);
-
+        const RecievedQuantity = parseInt(@Model.receivedQuantity);
         if (weaverBtn) {
             weaverBtn.addEventListener("click", function () {
                 document.getElementById("popupforWeaver").style.display = "block";
                 document.getElementById("overlay").style.display = "block";
             });
         }
-
         if (deyerBtn) {
             deyerBtn.addEventListener("click", function () {
                 document.getElementById("popupforDeyer").style.display = "block";
                 document.getElementById("overlay").style.display = "block";
             });
         }
-
         // Phase button visibility logic
         if (phase2Status === "COMPLETED") {
             weaverBtn.style.display = "none";
@@ -219,16 +215,21 @@
             deyerBtn.style.display = "none";
             completedBtn.style.display = "none";
         }
-
         // Allocated Quantity Validation
         const inputQty = document.getElementById("AllocatedQuantityPopup");
         if (inputQty) {
             inputQty.addEventListener("input", function () {
-                if (parseInt(this.value) > (totalQuantity - allocatedQuantity)) {
+                if(allocatedQuantity === totalQuantity) {
+                    console.log(RecievedQuantity);
+                    this.value = allocatedQuantity-RecievedQuantity;
+                    document.getElementById("showinvalidinput").innerHTML = "";
+                }
+                else if (parseInt(this.value) > (totalQuantity - allocatedQuantity)) {
                     document.getElementById("showinvalidinput").innerHTML =
                         "<span style='color: red;'>Allocated quantity cannot exceed total quantity.</span>";
                     this.value = totalQuantity - allocatedQuantity;
-                } else {
+                }
+                else {
                     document.getElementById("showinvalidinput").innerHTML = "";
                 }
             });
@@ -245,32 +246,27 @@
                 }
             });
         }
-
         // Allocation Code
         let lastCode = localStorage.getItem("lastAllocationCode");
         const year = new Date().getFullYear();
         let newNumber = 1;
-
         if (lastCode) {
             const parts = lastCode.split("-");
             const lastYear = parseInt(parts[1]);
             const lastNum = parseInt(parts[2]);
-
             if (lastYear === year) {
                 newNumber = lastNum + 1;
             }
         }
-
         const newCode = `AL-${year}-${String(newNumber).padStart(4, '0')}`;
         const inputWeaver = document.getElementById("AllocationSeriesWeaver");
         const inputDeyer = document.getElementById("AllocationSeriesDeyer");
-
         if (inputWeaver) inputWeaver.value = newCode;
         if (inputDeyer) inputDeyer.value = newCode;
-
         localStorage.setItem("lastAllocationCode", newCode);
     });
 </script>
+
 <script>
     function handleYarnChange() {
         const yarnSelect = document.getElementById("allocatedYarn");
