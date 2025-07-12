@@ -26,7 +26,11 @@
                     <td>@Model.allocatedWorks[i].WorkerName</td>
                     <td>@Model.allocatedWorks[i].Quantity</td>
                     <td>
-                        <button type="button" onclick="showpopupforRecievedQuantity('@Model.allocatedWorks[i].AllocatedWorkID',@Model.allocatedWorks[i].Quantity)">
+                        <button type="button" onclick="showpopupforRecievedQuantity(
+                            '@Model.allocatedWorks[i].AllocatedWorkID',
+                            @Model.allocatedWorks[i].Quantity,
+                            @Model.allocatedWorks[i].AllocatedYarnQty,
+                            @Model.allocatedWorks[i].YarnQtyPerPiece)">
                             Received
                         </button>
                     </td>
@@ -39,60 +43,80 @@
 <!-- Popup Overlay -->
 <div id="overlay" class="overlay" style="display:none;">
     <div class="Popuptable" style="justify-self:center">
-        <p id="closepopup" >X</p>
+        <p id="closepopup" style="cursor:pointer;color:black;font-weight:bold;">X</p>
 
         <form asp-action="RecieveWeavingOrder" asp-controller="Weaver" class="form-section">
-            <h3>Recieved Details</h3>
+            <h3>Received Details</h3>
+
             <div class="form-row">
                 <label for="Quantity">Received Quantity</label>
                 <input type="number" id="recievedquantity" name="RecievedQuantity" required />
             </div>
+
             <div id="showinvalidinput"></div>
 
             <div class="form-row">
-                <label for="RecievedDate">Received Date</label>
-                <input type="date" name="RecievedDate" required />
+                <label for="Wastage">Wastage</label>
+                <input type="number" id="Wastage" name="Wastage" readonly />
             </div>
+
+            <div class="form-row">
+                <label for="RecievedDate">Received Date</label>
+                <input type="date" id="receivedDate" name="RecievedDate" required />
+            </div>
+
             <input type="hidden" id="workID" name="AllocatedWorkID" />
+
             <div class="button">
-             <button type="submit">Submit</button>
+                <button type="submit" id="submitBtn" disabled>Submit</button>
             </div>
         </form>
     </div>
 </div>
 
 <script>
+    let totalQuantity = 0;
+    let yarnQtyPerPiece = 0;
+    let allocatedYarnQty = 0;
 
-    var TotalQuantity;
+    const inputQty = document.getElementById("recievedquantity");
+    const wastageInput = document.getElementById("Wastage");
+    const showInvalid = document.getElementById("showinvalidinput");
+    const submitBtn = document.getElementById("submitBtn");
 
-    function showpopupforRecievedQuantity(WorkOrderID,Quantity) {
-           
-        TotalQuantity = Quantity;
+    function showpopupforRecievedQuantity(workId, quantity, yarnQtyAllocated, yarnPerPiece) {
+        totalQuantity = quantity;
+        yarnQtyPerPiece = yarnPerPiece;
+        allocatedYarnQty = yarnQtyAllocated;
 
+        inputQty.value = '';
+        wastageInput.value = '';
+        showInvalid.innerHTML = '';
+        submitBtn.disabled = true;
 
-        document.getElementById("workID").value = WorkOrderID;
+        document.getElementById("workID").value = workId;
+        document.getElementById("receivedDate").value = new Date().toISOString().split("T")[0];
 
         document.getElementById("overlay").style.display = 'block';
     }
 
-    
-            document.getElementById("closepopup").addEventListener("click",function(){
+    document.getElementById("closepopup").addEventListener("click", function () {
         document.getElementById("overlay").style.display = 'none';
+        inputQty.value = '';
+        wastageInput.value = '';
+        showInvalid.innerHTML = '';
+        submitBtn.disabled = true;
+    });
 
-            })
+    inputQty.addEventListener("input", function () {
+        const receivedQty = parseFloat(this.value) || 0;
 
+        showInvalid.innerHTML = '';
 
+        let calculatedWastage =  allocatedYarnQty - (receivedQty * yarnQtyPerPiece);
+        console.log("Wastage:", calculatedWastage);
 
-    const inputQty = document.getElementById("recievedquantity");
-        if (inputQty) {
-            inputQty.addEventListener("input", function () {
-                if (parseInt(this.value) > (TotalQuantity)) {
-                    document.getElementById("showinvalidinput").innerHTML =
-                        "<span style='color: red;'>Allocated quantity cannot exceed total quantity.</span>";
-                    this.value = TotalQuantity;
-                } else {
-                    document.getElementById("showinvalidinput").innerHTML = "";
-                }
-            });
-        }
+        wastageInput.value = calculatedWastage;
+        submitBtn.disabled = false;
+    });
 </script>
