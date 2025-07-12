@@ -89,7 +89,7 @@
     </table>
 </div>
 
-<form method="post" asp-action="AllocateToWeaver" asp-controller="Weaver">
+<form method="post" asp-action="AllocateToWeaver" asp-controller="Weaver" onsubmit="showloader()">
     <div id="popupforWeaver">
         <i class="fas fa-window-close float-end" onclick="closePopup()"></i>
         <div class="form-section">
@@ -128,13 +128,13 @@
 
             <input type="hidden" name="WorkOrderId" value="@Model.WorkOrderId" />
             <div class="button">
-                <button type="submit">Allocate</button>
+                <button  type="submit">Allocate</button>
             </div>
         </div>
     </div>
 </form>
 
-<form method="post" asp-action="Allocationfordying" asp-controller="Weaver">
+<form method="post" asp-action="Allocationfordying" asp-controller="Weaver" onsubmit="showloader()">
     <div id="popupforDeyer">
         <i class="fas fa-window-close float-end" onclick="closePopup()"></i>
         <div class="form-section">
@@ -159,7 +159,7 @@
             </div>
             <input type="hidden" name="WorkOrderId" value="@Model.WorkOrderId" />
             <div class="button">
-                <button type="submit">Allocate</button>
+                <button  type="submit">Allocate</button>
             </div>
         </div>
     </div>

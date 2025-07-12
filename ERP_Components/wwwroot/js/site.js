@@ -98,3 +98,8 @@ function createPurchaseOrder() {
         }
     });
 })();
+
+function showloader() {
+    document.getElementById("loginLoader").style.display = "flex";
+    $('.cool-button').prop('disabled', true);
+}

@@ -87,7 +87,6 @@ select:focus {
 }
 
 table td input {
-    width: 70px;
     BORDER: 1px solid #ccc;
     COLOR: GRAY;
 }
@@ -452,7 +451,6 @@ select:focus {
 }
 
 table td input {
-    width: 70px;
     BORDER: 1px solid #ccc;
     COLOR: GRAY;
 }
