@@ -1658,16 +1658,83 @@ namespace ERP_Component_DAL.Services
             }
         }
 
-        public void UpdateStorePRStatus(List<Store_PR>? store_PRs)
+        public void UpdateStorePRStatus(List<Store_PR>? store_PRs, StorePRStatus status)
         {
             try
             {
                 using (SqlConnection connection = new SqlConnection(_connectionString))
                 {
-                    string query = "UPDATE Store"
+                    connection.Open();
+
+                    string query = "UPDATE Store_PR SET StorePRStatus = @Status WHERE StorePRID = @ID";
+                    foreach (var pr in store_PRs)
+                    {
+                        using (SqlCommand cmd = new SqlCommand(query, connection))
+                        {
+
+                            cmd.Parameters.AddWithValue("@Status", (byte)status); 
+                            cmd.Parameters.AddWithValue("@ID", pr.StorePRID);
+
+                            cmd.ExecuteNonQuery(); 
+                        }
+                    }
                 }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public void SavePurchaseRequisition(PurchaseRequisition requisition, RequisitionStatus status)
+        {
+            requisition.requisitionId = Guid.NewGuid();
+
+            DataTable requisitionItemsTable = new DataTable();
+            requisitionItemsTable.Columns.Add("ItemID", typeof(Guid));
+            requisitionItemsTable.Columns.Add("Quantity", typeof(decimal));
+            requisitionItemsTable.Columns.Add("UnitPrice", typeof (decimal));
+            requisitionItemsTable.Columns.Add("PurchaseRequisitionID", typeof(Guid));
+            //requisitionItemsTable.Columns.Add("Total")
+
+            requisition.requisitionItems?
+                .ForEach(item => requisitionItemsTable.Rows.Add(item.itemId, item.quantity, requisition.requisitionId));
+            SqlTransaction transaction = null;
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(_connectionString))
+                {
+                    connection.Open();
+                    transaction = connection.BeginTransaction();
+
+                    using (SqlBulkCopy bulkCopy = new SqlBulkCopy(connection, SqlBulkCopyOptions.Default, transaction))
+                    {
+                        bulkCopy.DestinationTableName = "PurchaseRequisitionItems";
+                        bulkCopy.WriteToServer(requisitionItemsTable);
+                    }
+
+                    string query = $"INSERT INTO PurchaseRequisitions(RequisitionID, Description, RequisitionStatus, RequisitionSeries) " +
+                                   $"VALUES (@PurchaseRequisitionID, @Description, @RequisitionStatus, @RequisitionSeries); "
+
+                    using (SqlCommand cmd = new SqlCommand(query, connection, transaction))
+                    {
+                        cmd.Parameters.AddWithValue("@RequisitionID", requisition.requisitionId);
+                        cmd.Parameters.AddWithValue("@Description", requisition.description);
+                        cmd.Parameters.AddWithValue("@RequisitionStatus", (byte)RequisitionStatus.PENDING);
+                        cmd.Parameters.AddWithValue("@RequisitionSeries", requisition.requisitionSeries);
+
+                        cmd.ExecuteNonQuery();
+                    }
+                    transaction.Commit();
+                }
+            }
+            catch (Exception)
+            {
+                transaction?.Rollback();
+                throw;
             }
         }
     }
+}
 
 }

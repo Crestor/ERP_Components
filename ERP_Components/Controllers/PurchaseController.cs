@@ -22,7 +22,7 @@ namespace ERP_Components.Controllers
             _logger = logger;
             _configuration = configuration;
             _userServices = new UserServices(configuration);
-            purchaseServices = new PurchaseServices(configuration);
+            purchaseServices = new PurchaseServices(configuration);  
 
         }
 
@@ -296,21 +296,14 @@ namespace ERP_Components.Controllers
             return View(storePRList);
         }
 
-        [HttpPost]
-        public IActionResult SetViewStorePR(Store_PR StorePR)
-        {
-            purchaseServices.SaveStorePR(StorePR);
-            return View();
-        }
-
         public IActionResult CreatePurchaseRequisition(PurchaseRequisition purchaseRequisition)
         {
             //var selectedItems = requisition.listItesms.Where(x => x.IsSelected).ToList();              // only selected items 
-            purchaseServices.UpdateStorePRStatus(purchaseRequisition.store_PRs);
+            purchaseServices.UpdateStorePRStatus(purchaseRequisition.store_PRs, StorePRStatus.PENDING);
 
-            purchaseServices.SavePurchaseRequisition(purchaseRequisition);
+            purchaseServices.SavePurchaseRequisition(purchaseRequisition, RequisitionStatus.PENDING);
 
-            return RedirectToAction("MaterialOrderList");
+            return null;
 
 
         }

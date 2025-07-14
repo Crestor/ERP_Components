@@ -52,4 +52,10 @@ namespace ERP_Component_DAL.Models
         MATERIAL = 2,
         ASSET = 3
     }
+
+    public enum StorePRStatus
+    {
+        PENDING = 1,
+        MERGED_IN_PURCHASE_REQ = 2
+    }
 }
