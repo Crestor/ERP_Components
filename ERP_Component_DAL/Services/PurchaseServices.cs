@@ -1651,49 +1651,17 @@ namespace ERP_Component_DAL.Services
             catch (Exception ex)
             {
                 throw ex;
-            }
+        }
             finally
             {
                 connection.Close();
             }
         }
 
-        public void SaveStorePR(Store_PR StorePR)
+        public void UpdateStorePRStatus(List<Store_PR>? store_PRs)
         {
-
-            try
-            {
-
-                string connectionString = configuration.GetConnectionString("DefaultConnectionString");
-                connection = new SqlConnection(connectionString);
-                connection.Open();
-
-                SqlCommand cmd = new SqlCommand();
-                cmd.CommandType = CommandType.Text;
-
-                //cmd.CommandText = "  ";
-                //                
-
-         
-
-                cmd.Connection = connection;
-
-
-
-
-
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-            finally
-            {
-
-                connection.Close();
-            }
+            throw new NotImplementedException();
         }
-
     }
 
 }

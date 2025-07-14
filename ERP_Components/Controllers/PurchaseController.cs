@@ -303,7 +303,20 @@ namespace ERP_Components.Controllers
             return View();
         }
 
-       
+        public IActionResult CreatePurchaseRequisition(PurchaseRequisition purchaseRequisition)
+        {
+            //var selectedItems = requisition.listItesms.Where(x => x.IsSelected).ToList();              // only selected items 
+            purchaseServices.UpdateStorePRStatus(purchaseRequisition.store_PRs);
+
+            purchaseServices.SavePurchaseRequisition(purchaseRequisition);
+
+            return RedirectToAction("MaterialOrderList");
+
+
+        }
+
+
+
 
 
 

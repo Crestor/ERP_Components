@@ -14,4 +14,9 @@
         public List<RequisitionItem>? requisitionItems { get; set; }
         public List<Item> items { get; set; }
     }
+
+    public class PurchaseRequisition : Requisition
+    {
+        public List<Store_PR>? store_PRs { get; set; }
+    }
 }
