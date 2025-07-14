@@ -1615,10 +1615,85 @@ namespace ERP_Component_DAL.Services
             }
         }
 
-        public void FindStorePR()
+        public List<Store_PR> FindStorePR()
         {
-            throw new NotImplementedException();
+            try
+            {
+                List<Store_PR> prod = new();
+                string connectionstring = configuration.GetConnectionString("DefaultConnectionString");
+                connection = new SqlConnection(connectionstring);
+                SqlCommand cmd = new();
+                cmd.CommandType = CommandType.Text;
+                cmd.CommandText = $"SELECT sr.StorePRID, sr.StorePRSeries, sr.ItemID, sr.RequisitionID, i.ItemName, i.Specification, sr.Quantity, sr.CreatedAt FROM Store_PR sr JOIN Items i ON sr.ItemID=i.ItemId";
+                cmd.Connection = connection;
+                cmd.CommandTimeout = 300;
+                connection.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    prod.Add(new Store_PR
+                    {
+                        StorePRSeries = reader["StorePRSeries"] != DBNull.Value ? (string)reader["StorePRSeries"] : string.Empty,
+                        StorePRID = reader["StorePRID"] != DBNull.Value ? (Guid)reader["StorePRID"] : Guid.Empty,
+                        RequisitionID = reader["RequisitionID"] != DBNull.Value ? (Guid)reader["RequisitionID"] : Guid.Empty,
+                        Quantity = reader["Quantity"] != DBNull.Value ? Convert.ToDecimal(reader["Quantity"]) : 0m,
+                        CreatedAt = reader["CreatedAt"] != DBNull.Value ? ((DateTime)reader["CreatedAt"]).Date : default(DateTime),
+                        item = new Item
+                        {
+                            itemId = reader["ItemID"] != DBNull.Value ? (Guid)reader["ItemID"] : Guid.Empty,
+                            itemName = reader["ItemName"] != DBNull.Value ? (string)reader["ItemName"] : string.Empty,
+                            specification = reader["Specification"] != DBNull.Value ? (string)reader["Specification"] : string.Empty
+                        }
+                    });
+                }
+                return prod;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                connection.Close();
+            }
         }
+
+        public void SaveStorePR(Store_PR StorePR)
+        {
+
+            try
+            {
+
+                string connectionString = configuration.GetConnectionString("DefaultConnectionString");
+                connection = new SqlConnection(connectionString);
+                connection.Open();
+
+                SqlCommand cmd = new SqlCommand();
+                cmd.CommandType = CommandType.Text;
+
+                //cmd.CommandText = "  ";
+                //                
+
+         
+
+                cmd.Connection = connection;
+
+
+
+
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+
+                connection.Close();
+            }
+        }
+
     }
 
 }

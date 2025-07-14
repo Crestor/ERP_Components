@@ -292,11 +292,21 @@ namespace ERP_Components.Controllers
 
         public IActionResult ViewStorePR()
         {
-            purchaseServices.FindStorePR();
-            return null;
+            List<Store_PR> storePRList = purchaseServices.FindStorePR();
+            return View(storePRList);
+        }
+
+        [HttpPost]
+        public IActionResult SetViewStorePR(Store_PR StorePR)
+        {
+            purchaseServices.SaveStorePR(StorePR);
+            return View();
         }
 
        
+
+
+
 
         //<----------------------------------Vendor--------------------------------->
 

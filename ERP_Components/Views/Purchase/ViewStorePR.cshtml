@@ -1,0 +1,48 @@
+﻿@model List<ERP_Component_DAL.Models.Store_PR>
+@{
+    ViewBag.Title = "View Store PR";
+    Layout = "~/Views/Shared/_LayoutINV.cshtml";
+}
+
+<link rel="stylesheet" href="/css/Product.css" />
+
+<form asp-action="SetViewStorePR" asp-controller="Purchase" method="post">
+    <div class="button" style="padding: 0px 30px 5px 0px;">
+    <button type="submit">Send</button>
+    </div>
+    <div class="table">
+        <table>
+            <thead>
+                <tr>
+                    <th><input type="checkbox" id="selectAll" /> Select All</th>
+
+                    <th>Sr no</th>
+                    <th>Item Name</th>
+                    <th>Quantity</th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (var i = 0; i < Model.Count; i++)
+                {
+                    <tr>
+                        <td>
+                            <input type="checkbox" name="selectedIds" value="@Model[i].StorePRID" class="selectItem" />
+                        </td>
+                        <td>@(i + 1)</td>
+                        <td>@Model[i].item.itemName</td>
+                        <td>@Model[i].Quantity</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</form>
+
+@section Scripts {
+    <script>
+        document.getElementById('selectAll').addEventListener('change', function () {
+            const isChecked = this.checked;
+            document.querySelectorAll('.selectItem').forEach(cb => cb.checked = isChecked);
+        });
+    </script>
+}
