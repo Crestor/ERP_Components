@@ -118,7 +118,7 @@ namespace ERP_Component_DAL.Services
                     connection.Open();
                     transaction = connection.BeginTransaction();
 
-                    using (SqlBulkCopy bulkCopy = new SqlBulkCopy(connection))
+                    using (SqlBulkCopy bulkCopy = new SqlBulkCopy(connection, SqlBulkCopyOptions.Default, transaction))
                     {
                         bulkCopy.DestinationTableName = "RequisitionItems";
                         bulkCopy.WriteToServer(requisitionItemsTable);
@@ -129,7 +129,7 @@ namespace ERP_Component_DAL.Services
                                    $"INSERT INTO RequisitionsDistributionCenterBridge(RequisitionID, CenterID) " +
                                    $"VALUES (@RequisitionID, @CenterID)";
 
-                    using (SqlCommand cmd = new SqlCommand(query, connection))
+                    using (SqlCommand cmd = new SqlCommand(query, connection, transaction))
                     {
                         cmd.Parameters.AddWithValue("@RequisitionID", requisition.requisitionId);
                         cmd.Parameters.AddWithValue("@Description", requisition.description);
@@ -144,10 +144,8 @@ namespace ERP_Component_DAL.Services
                 }
             }
             catch (Exception)
-            {
-                //if(transaction != null)
-                    //transaction?.Rollback();
-                Console.WriteLine(transaction);
+            { 
+                transaction?.Rollback();
                 throw;
             }
         }
