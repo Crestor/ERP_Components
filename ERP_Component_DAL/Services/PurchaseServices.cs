@@ -1714,7 +1714,7 @@ namespace ERP_Component_DAL.Services
                     }
 
                     string query = $"INSERT INTO PurchaseRequisitions(RequisitionID, Description, RequisitionStatus, RequisitionSeries) " +
-                                   $"VALUES (@PurchaseRequisitionID, @Description, @RequisitionStatus, @RequisitionSeries); "
+                                   $"VALUES (@PurchaseRequisitionID, @Description, @RequisitionStatus, @RequisitionSeries); ";
 
                     using (SqlCommand cmd = new SqlCommand(query, connection, transaction))
                     {
@@ -1735,6 +1735,4 @@ namespace ERP_Component_DAL.Services
             }
         }
     }
-}
-
 }
