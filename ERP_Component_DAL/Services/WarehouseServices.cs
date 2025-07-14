@@ -384,7 +384,7 @@ namespace ERP_Component_DAL.Services
                 connection = new SqlConnection(connectionstring);
                 SqlCommand cmd = new();
                 cmd.CommandType = System.Data.CommandType.Text;
-                cmd.CommandText = $" SELECT  it.ItemName, it.HSN, it.Specification, it.UnitOfMeasure,ri.RequisitionID, ri.Quantity FROM Items it JOIN RequisitionItems ri ON it.ItemId = ri.ItemId Where ri.RequisitionID = '{RequisitionID}'";
+                cmd.CommandText = $" SELECT  it.ItemName,it.ItemId, it.HSN, it.Specification, it.UnitOfMeasure,ri.RequisitionID, ri.Quantity FROM Items it JOIN RequisitionItems ri ON it.ItemId = ri.ItemId Where ri.RequisitionID = '{RequisitionID}'";
                 cmd.Parameters.AddWithValue("@RequisitionID", RequisitionID);
                 cmd.Connection = connection;
 
@@ -397,7 +397,7 @@ namespace ERP_Component_DAL.Services
                     {
 
                         RequisitionId = reader["RequisitionID"] != DBNull.Value ? (Guid)reader["RequisitionID"] : Guid.Empty,
-
+                        itemId = reader["ItemId"] != DBNull.Value ? (Guid)reader["ItemId"] : Guid.Empty,
                         itemName = reader["ItemName"] != DBNull.Value ? (string)reader["ItemName"] : string.Empty,
                      
                         hsn = reader["HSN"] != DBNull.Value ? (string)reader["HSN"] : string.Empty,

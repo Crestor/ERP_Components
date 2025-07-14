@@ -114,7 +114,7 @@ namespace ERP_Components.Controllers
         public IActionResult SendForManagerApproval(Requisition requisition)
         {
             centerlizedService.UpdateRequisition(requisition.requisitionId, RequisitionStatus.SENT_FOR_MANAGER_APPROVAL);
-            return null;
+            return RedirectToAction("ViewSalesForcast");
         }
 
         public IActionResult SentToProduction(Guid RequisitionId)
@@ -220,6 +220,17 @@ namespace ERP_Components.Controllers
             return RedirectToAction("WarehouseStockView");
         }
 
+        //TODO: Complete this
+        //public IActionResult SendForManagerApproval(Requisition requisition)
+        //{
+        //    //warehouseServices.UpdateRequisition(requisition);
+        //    return RedirectToAction("ViewSalesForcast");
+        //}
+        public IActionResult ViewSalesForcast()
+        {
+            List<AddPurchaseRequisition> requisitions = warehouseServices.ViewSalesForCasting();
+            return View(requisitions);
+        }
     }
     }
 

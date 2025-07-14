@@ -467,15 +467,20 @@ namespace ERP_Components.Controllers
             List<SalesForecast> salesForcasts = managerServices.ViewSalesForecast();
             return View(salesForcasts);
         }
-        public IActionResult SendForManagerApproval(Requisition requisition)
+        public IActionResult SalesForecastApproved(Requisition requisition)
         {
             centerlizedService.UpdateRequisition(requisition.requisitionId, RequisitionStatus.APPROVED_FROM_MANAGER);
-            return null;
+            return RedirectToAction("ViewSalesForcast");
         }
-        public IActionResult ViewSalesForCastItems(Guid RequisitionID)
+        public JsonResult ViewSalesForCastItems(Guid requisitionId)
         {
-            List<SalesForecast> ViewItemsDetails = managerServices.individualSalesForecastDetails(RequisitionID);
-            return View(ViewItemsDetails);
+            List<SalesForecast> ViewItemsDetails = managerServices.individualSalesForecastDetails(requisitionId);
+            return Json(ViewItemsDetails);
+        }
+        public IActionResult ViewSalesForcast()
+        {
+            List<AddPurchaseRequisition> requisitions = managerServices.ViewSalesForCasting();
+            return View(requisitions);
         }
     }
 }

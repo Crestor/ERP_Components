@@ -3,6 +3,7 @@
     public class Requisition
     {
         public Requisition() { 
+
             this.requisitionItems = new List<RequisitionItem> ();
         }
         public Guid requisitionId { get; set; }
