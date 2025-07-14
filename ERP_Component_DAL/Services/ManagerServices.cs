@@ -2060,7 +2060,7 @@ namespace ERP_Component_DAL.Services
                 connection = new SqlConnection(connectionstring);
                 SqlCommand cmd = new();
                 cmd.CommandType = System.Data.CommandType.Text;
-                cmd.CommandText = $"SELECT i.ItemName, wo.Quantity, wo.WorkOrderStatus FROM WorkOrder wo JOIN RequisitionItems ri ON ri.RequisitionID=wo.SalesForecastID AND wo.ProductID=ri.ItemID JOIN Items i ON wo.ProductID=i.ItemId WHERE wo.SalesForecastID = '{RequisitionID}'";
+                cmd.CommandText = $"SELECT i.ItemName,i.Specification, wo.Quantity, wo.WorkOrderStatus FROM WorkOrder wo JOIN RequisitionItems ri ON ri.RequisitionID=wo.SalesForecastID AND wo.ProductID=ri.ItemID JOIN Items i ON wo.ProductID=i.ItemId WHERE wo.SalesForecastID = '{RequisitionID}'";
                 cmd.Connection = connection;
                 connection.Open();
                 SqlDataReader reader = cmd.ExecuteReader();
@@ -2068,7 +2068,7 @@ namespace ERP_Component_DAL.Services
                 {
                     prod.Add(new SalesForecast 
                     {
-
+                        Specification = reader["Specification"] != DBNull.Value ? (string)reader["Specification"] : string.Empty,
                         Quantity = reader["Quantity"] != DBNull.Value ? Convert.ToDecimal(reader["Quantity"]) : 0m,
                         ItemName = reader["ItemName"] != DBNull.Value ? (string)reader["ItemName"] : string.Empty,
                         WorkOrderStatus = reader["WorkOrderStatus"] != DBNull.Value ? Convert.ToByte(reader["WorkOrderStatus"]) : (byte)0,

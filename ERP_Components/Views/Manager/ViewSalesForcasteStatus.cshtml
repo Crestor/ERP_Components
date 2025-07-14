@@ -7,54 +7,7 @@
 @model List<SalesForecast>
 
 <link rel="stylesheet" href="~/css/Product.css" />
-<style>
-    #forecastCardsContainer {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 20px;
-        margin-top: 20px;
-    }
 
-    .forecast-card {
-        background: #fff;
-        border: 1px solid #ccc;
-        border-radius: 10px;
-        padding: 15px;
-        width: 300px;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    }
-
-    .card-header {
-        font-size: 16px;
-        font-weight: bold;
-        margin-bottom: 10px;
-        color: #34495e;
-    }
-
-    .card-body p {
-        margin: 5px 0;
-        font-size: 14px;
-    }
-
-    .progress-bar-wrapper {
-        width: 100%;
-        height: 20px;
-        background-color: #eee;
-        border-radius: 10px;
-        overflow: hidden;
-        margin-top: 5px;
-    }
-
-    .progress-bar {
-        height: 100%;
-        text-align: center;
-        color: white;
-        line-height: 20px;
-        font-size: 13px;
-        transition: width 0.4s ease-in-out;
-    }
-
-</style>
 <div class="table">
     <table>
         <thead>
@@ -90,64 +43,84 @@
             }
     </table>
 </div>
-<div id="forecastCardsContainer"></div>
-
+<div class="overlay" id="overlay">
+      <div id="forecastCardsContainer"></div>
+</div>
 <script>
-     function getitemsofsalesforcast(requisitionId) {
-         $.ajax({
-             type: 'POST',
-             url: '/Manager/ViewSalesForCastItems',
-             data: { requisitionId: requisitionId },
-             success: function (response) {
-                 console.log("Response received:", response);
+    function getitemsofsalesforcast(requisitionId) {
+        $.ajax({
+            type: 'POST',
+            url: '/Manager/ViewSalesForCastItems',
+            data: { requisitionId: requisitionId },
+            success: function (response) {
+                console.log("Response received:", response);
 
-                 const container = document.getElementById("forecastCardsContainer");
-                 container.innerHTML = "";
+                document.getElementById("overlay").style.display = "flex";
 
-                 const items = response.list || response;
+                const container = document.getElementById("forecastCardsContainer");
+                container.innerHTML = "";
 
-                 if (!items || items.length === 0) {
-                     container.innerHTML = "<p>No forecast items found.</p>";
-                     return;
-                 }
+                const items = response.list || response;
 
-                 items.forEach((item, index) => {
-                     const stage = item.workOrderStatus || 0;
-                     const totalStages = 5;
-                     const percent = Math.round((stage / totalStages) * 100);
+                if (!items || items.length === 0) {
+                    container.className = "forecast-card";
+                    container.innerHTML = "<p>No forecast items found.</p>";
+                    return;
+                }
 
-                     const card = document.createElement("div");
-                     card.className = "forecast-card";
+                items.forEach((item, index) => {
+                    const stage = item.workOrderStatus || 0;
+                    const totalStages = 5;
+                    const percent = Math.round((stage / totalStages) * 100);
+                    const statusText = getStatusText(stage);
 
-                     card.innerHTML = `
-                         <div class="card-header">
-                             <strong>Item ${index + 1}</strong>
-                         </div>
-                         <div class="card-body">
-                             <p><strong>Item Name:</strong> ${item.itemName}</p>
-                             <p><strong>Item ID:</strong> ${item.itemId}</p>
-                             <p><strong>Quantity:</strong> ${item.quantity}</p>
-                             <p><strong>Status:</strong></p>
-                             <div class="progress-bar-wrapper">
-                                 <div class="progress-bar" style="width: ${percent}%; background-color: ${getStageColor(percent)};">
-                                     ${percent}%
-                                 </div>
-                             </div>
-                         </div>
-                     `;
-                     container.appendChild(card);
-                 });
-             },
-             error: function (xhr, status, error) {
-                 console.error("Error:", error);
-                 document.getElementById("forecastCardsContainer").innerHTML = '<p>Error loading data.</p>';
-             }
-         });
-     }
+                    const card = document.createElement("div");
+                    card.className = "forecast-card";
 
-     function getStageColor(percent) {
-         if (percent >= 80) return '#2ecc71';
-         if (percent >= 50) return '#f1c40f';
-         return '#e74c3c';
-     }
+                    card.innerHTML = `
+                        <div class="card-header">
+                            <strong>Item ${index + 1}</strong>
+                        </div>
+                        <div class="card-body">
+                            <p><strong>Item Name:</strong> ${item.itemName}</p>
+                                    <p><strong>Specification:</strong> ${item.specification}</p>
+                            <p><strong>Quantity:</strong> ${item.quantity}</p>
+                            <p><strong>Status:</strong> ${statusText}</p>
+                            <div class="progress-bar-wrapper">
+                                <div class="progress-bar" style="width: ${percent}%; background-color: ${getStageColor(percent)};">
+                                    ${percent}%
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    container.appendChild(card);
+                });
+            },
+            error: function (xhr, status, error) {
+                console.error("Error:", error);
+                document.getElementById("forecastCardsContainer").innerHTML = '<p>Error loading data.</p>';
+            }
+        });
+    }
+
+    function getStageColor(percent) {
+        if (percent >= 80) return '#2ecc71';
+        if (percent >= 50) return '#f1c40f';
+        return '#e74c3c';
+    }
+
+    function getStatusText(status) {
+        switch (status) {
+            case 1: return "Pending";
+            case 2: return "Weaving";
+            case 3: return "Dyeing";
+            case 4: return "Complete";
+            case 5: return "Dispatch";
+            default: return "Unknown";
+        }
+    }
+    document.getElementById("overlay").addEventListener("click", function () {
+        document.getElementById("overlay").style.display = "none";
+        document.getElementById("forecastCardsContainer").innerHTML = "";
+    });
 </script>
