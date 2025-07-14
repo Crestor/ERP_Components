@@ -12,5 +12,6 @@
         public RequisitionTypes requisitionType { get; set; }
         public RequisitionStatus requisitionStatus { get; set; }
         public List<RequisitionItem>? requisitionItems { get; set; }
+        public List<Item> items { get; set; }
     }
 }
