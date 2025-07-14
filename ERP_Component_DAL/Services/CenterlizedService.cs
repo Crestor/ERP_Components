@@ -155,5 +155,27 @@ namespace ERP_Component_DAL.Services
         {
             throw new NotImplementedException();
         }
+
+        public void UpdateRequisition(Guid requisitionId, RequisitionStatus requisitionStatus)
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(_connectionString))
+                {
+                    string query = "UPDATE Requisitions SET RequisitionStatus = @RequisitionStatus WHERE RequisitionID = @RequisitionID";
+                    connection.Open();
+                    using (SqlCommand cmd = new SqlCommand(query, connection))
+                    {
+                        cmd.Parameters.AddWithValue("@RequisitionStatus", (byte)requisitionStatus);
+                        cmd.Parameters.AddWithValue("@RequisitionID", requisitionId);
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
     }
 }

@@ -12,14 +12,16 @@ namespace ERP_Components.Controllers
         private readonly ILogger<ManagerController> _logger;
         private readonly ManagerServices managerServices;
         private readonly IConfiguration _configuration;
+        private readonly CenterlizedService centerlizedService;
 
-        public ManagerController(ILogger<ManagerController> logger, IConfiguration configuration)
+        public ManagerController(ILogger<ManagerController> logger, IConfiguration configuration, CenterlizedService centerlizedService)
         {
 
             _logger = logger;
             _configuration = configuration;
 
             managerServices = new ManagerServices(configuration);
+            this.centerlizedService = centerlizedService;
         }
         public IActionResult Index()
         {
@@ -464,6 +466,11 @@ namespace ERP_Components.Controllers
         {
             List<SalesForecast> salesForcasts = managerServices.ViewSalesForecast();
             return View(salesForcasts);
+        }
+        public IActionResult SendForManagerApproval(Requisition requisition)
+        {
+            centerlizedService.UpdateRequisition(requisition.requisitionId, RequisitionStatus.APPROVED_FROM_MANAGER);
+            return null;
         }
         public IActionResult ViewSalesForCastItems(Guid RequisitionID)
         {

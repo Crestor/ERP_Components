@@ -113,7 +113,7 @@ namespace ERP_Components.Controllers
         //TODO: Complete this
         public IActionResult SendForManagerApproval(Requisition requisition)
         {
-            //warehouseServices.UpdateRequisition(requisition);
+            centerlizedService.UpdateRequisition(requisition.requisitionId, RequisitionStatus.SENT_FOR_MANAGER_APPROVAL);
             return null;
         }
 

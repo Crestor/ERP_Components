@@ -14,11 +14,13 @@ namespace ERP_Component_DAL.Services
     {
         private readonly IConfiguration configuration;
         SqlConnection connection;
+        private readonly string _connectionString;
 
 
         public WarehouseServices(IConfiguration config)
         {
             this.configuration = config;
+            _connectionString = configuration.GetConnectionString("DefaultConnectionString");
         }
 
 
@@ -1074,10 +1076,5 @@ namespace ERP_Component_DAL.Services
             }
         }
 
-        //TODO: Implement this method
-        public void UpdateRequisition(Requisition requisition)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

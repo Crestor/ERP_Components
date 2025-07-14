@@ -1660,7 +1660,13 @@ namespace ERP_Component_DAL.Services
 
         public void UpdateStorePRStatus(List<Store_PR>? store_PRs)
         {
-            throw new NotImplementedException();
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(_connectionString))
+                {
+                    string query = "UPDATE Store"
+                }
+            }
         }
     }
 
