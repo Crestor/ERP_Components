@@ -18,6 +18,12 @@
 
     public class PurchaseRequisition : Requisition
     {
-        public List<Store_PR>? store_PRs { get; set; }
+        public PurchaseRequisition()
+        {
+            this.purchaseRequisitionItems = new List<PurchaseRequisitionItems>();
+        }
+        public decimal totalAmount { get; set; }
+        public List<PurchaseRequisitionItems>? purchaseRequisitionItems { get; set; }
+        public List<Store_PR>? store_PRs { get; set; } //isko replace karna hai;
     }
 }

@@ -289,26 +289,32 @@ namespace ERP_Components.Controllers
             purchaseServices.UpdateRequisitionStatusToQuotationApproved(RequisitionID);
             return RedirectToAction("ViewVendorQuotation");
         }
-
         public IActionResult ViewStorePR()
         {
             List<Store_PR> storePRList = purchaseServices.FindStorePR();
             return View(storePRList);
         }
 
-        public IActionResult CreatePurchaseRequisition(PurchaseRequisition purchaseRequisition)
+
+        public IActionResult CreatePurchaseRequisition(List<Guid> selectedIds)
         {
-            //var selectedItems = requisition.listItesms.Where(x => x.IsSelected).ToList();              // only selected items 
-            purchaseServices.UpdateStorePRStatus(purchaseRequisition.store_PRs, StorePRStatus.PENDING);
+            List<PurchaseRequisitionItems> items = purchaseServices.GetStorePRItems(selectedIds);
+
+            return View(items);
+        }
+
+        [HttpPost]
+        public IActionResult SetCreatePurchaseRequisition(PurchaseRequisition purchaseRequisition)
+        {
+            purchaseServices.UpdateStorePRStatus(purchaseRequisition.purchaseRequisitionItems, StorePRStatus.PENDING);
 
             purchaseServices.SavePurchaseRequisition(purchaseRequisition, RequisitionStatus.PENDING);
 
-            return null;
+            return RedirectToAction("CreatePurchaseRequisition");
         }
 
 
 
-        //}
 
 
 

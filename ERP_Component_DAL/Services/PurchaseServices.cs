@@ -1734,5 +1734,82 @@ namespace ERP_Component_DAL.Services
                 throw;
             }
         }
+        public List<PurchaseRequisitionItems> GetStorePRItems(List<Guid> selectedIds)
+        {
+            try
+            {
+                if (selectedIds == null || selectedIds.Count == 0)
+                    return new List<PurchaseRequisitionItems>(); // Avoid empty IN clause
+
+                List<PurchaseRequisitionItems> items = new();
+                string connectionstring = configuration.GetConnectionString("DefaultConnectionString");
+                using SqlConnection connection = new(connectionstring);
+
+                // Build parameterized IN clause
+                string[] paramNames = selectedIds.Select((id, index) => $"@id{index}").ToArray();
+                string inClause = string.Join(",", paramNames);
+
+                string query = $@"
+            SELECT sr.StorePRID, sr.ItemID, i.ItemName, sr.Quantity 
+            FROM Store_PR sr 
+            JOIN Items i ON sr.ItemID = i.ItemId 
+            WHERE sr.StorePRID IN ({inClause})";
+
+                using SqlCommand cmd = new(query, connection);
+
+                // Add parameters
+                for (int i = 0; i < selectedIds.Count; i++)
+                {
+                    cmd.Parameters.AddWithValue(paramNames[i], selectedIds[i]);
+                }
+
+                connection.Open();
+                using SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    items.Add(new PurchaseRequisitionItems
+                    {
+                        quantity = reader["Quantity"] != DBNull.Value ? Convert.ToDecimal(reader["Quantity"]) : 0m,
+                        itemId = reader["ItemId"] != DBNull.Value ? (Guid)reader["ItemId"] : Guid.Empty,
+                        itemName = reader["ItemName"] != DBNull.Value ? (string)reader["ItemName"] : string.Empty,
+                        StorePRID = reader["StorePRID"] != DBNull.Value ? (Guid)reader["StorePRID"] : Guid.Empty,
+                    });
+                }
+
+                return items;
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
+
+        public void UpdateStorePRStatus(List<PurchaseRequisitionItems>? purchaseRequisitionItems, StorePRStatus status)
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(_connectionString))
+                {
+                    connection.Open();
+
+                    string query = "UPDATE Store_PR SET StorePRStatus = @Status WHERE StorePRID = @ID";
+                    foreach (var pr in purchaseRequisitionItems)
+                    {
+                        using (SqlCommand cmd = new SqlCommand(query, connection))
+                        {
+
+                            cmd.Parameters.AddWithValue("@Status", (byte)status);
+                            cmd.Parameters.AddWithValue("@ID", pr.StorePRID);
+
+                            cmd.ExecuteNonQuery();
+                        }
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
     }
 }
