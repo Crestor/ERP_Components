@@ -1,0 +1,24 @@
+﻿@using ERP_Component_DAL.Models;
+@{
+    ViewBag.Title = "Add Account";
+    Layout = "~/Views/Shared/_LayoutINV.cshtml";
+}
+
+<link rel="stylesheet" href="~/css/Product.css" />
+
+<div class="form-section">
+
+    <h3>Add Account</h3>
+    <div class="form-row">
+        <label class="required" for="AccountName">Account Head Name</label>
+        <input type="text" id="AccountName" name="accountheadName" required />
+        <label class="required" for="AccountNumber">Account No </label>
+        <input type="number" name="AccountNumber" required />
+    </div>
+    <div class="form-row">
+        <label class="required" for="IFSC">IFSC Code</label>
+        <input type="text" name="IFSC" required />
+        <label for="CurrentBalance" class="required">Current Balance</label>
+        <input type="number" name="CurrentBalance" required/>
+    </div>
+</div>
