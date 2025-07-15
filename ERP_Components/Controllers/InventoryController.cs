@@ -616,6 +616,20 @@ namespace ERP_Components.Controllers
             return View(requisition);
 
         }
+        public IActionResult PurchaseRequisition(AddPurchaseRequisition Ap)
+
+        {
+
+            HttpContext.Session.SetString("PurchaseAdded", "False");
+            List<AddPurchaseRequisition> data = inventoryServices.GetItemNames();
+            return View(data);
+
+        }
+        public JsonResult AddpurchaseData(Guid itemId)
+        {
+            var data = inventoryServices.GetItemsData(itemId);
+            return Json(data);
+        }
 
 
         [HttpPost]

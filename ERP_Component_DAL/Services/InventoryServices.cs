@@ -2567,7 +2567,97 @@ namespace ERP_Component_DAL.Services
 
 
         }
+        public List<AddPurchaseRequisition> GetItemNames()
+        {
+            try
+            {
+                List<AddPurchaseRequisition> prod = new();
+                string connectionstring = configuration.GetConnectionString("DefaultConnectionString");
+                connection = new SqlConnection(connectionstring);
+                SqlCommand cmd = new();
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.CommandText = $"select ItemId, ItemName From Items Where ItemType = 2";
+                cmd.Connection = connection;
 
+
+                cmd.CommandTimeout = 300;
+                connection.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    prod.Add(new AddPurchaseRequisition
+                    {
+                        itemId = reader["ItemId"] != DBNull.Value ? (Guid)reader["ItemId"] : Guid.Empty,
+                        itemName = reader["ItemName"] != DBNull.Value ? (string)reader["ItemName"] : string.Empty,
+
+                    });
+                }
+
+                return prod;
+
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+
+            }
+            finally
+            {
+                connection.Close();
+            }
+        }
+
+        public AddPurchaseRequisition GetItemsData(Guid itemId)
+        {
+            try
+            {
+                AddPurchaseRequisition Item = new();
+                string connectionstring = configuration.GetConnectionString("DefaultConnectionString");
+                connection = new SqlConnection(connectionstring);
+                SqlCommand cmd = new();
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.CommandText = $" SELECT it.ItemId, it.ItemName, it.HSN,it.GstRate, it.Specification, it.UnitOfMeasure, l.Id, l.CostPrice, c.CategoryName, i.TypeName FROM Items it JOIN LotBatch l ON it.ItemId = l.ItemId  Left Join Categories c On it.CategoryId = c.CategoryID Left Join ItemTypes i On it.ItemType = i.ItemTypeId Where it.ItemId = '{itemId}'";
+
+                cmd.Connection = connection;
+
+                cmd.CommandTimeout = 300;
+                connection.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+
+
+                    Item.itemId = reader["ItemId"] != DBNull.Value ? (Guid)reader["ItemId"] : Guid.Empty;
+                    Item.itemName = reader["ItemName"] != DBNull.Value ? (string)reader["ItemName"] : string.Empty;
+                    Item.itemtype = reader["TypeName"] != DBNull.Value ? (string)reader["TypeName"] : string.Empty;
+                    Item.hsn = reader["HSN"] != DBNull.Value ? (string)reader["HSN"] : string.Empty;
+
+
+                    Item.specification = reader["Specification"] != DBNull.Value ? (string)reader["Specification"] : string.Empty;
+                    Item.unitofmeasure = reader["UnitOFMeasure"] != DBNull.Value ? (string)reader["UnitOFMeasure"] : string.Empty;
+                    Item.category = reader["CategoryName"] != DBNull.Value ? (string)reader["CategoryName"] : string.Empty;
+
+                    Item.gst = reader["GstRate"] != DBNull.Value ? Convert.ToInt32(reader["GstRate"]) : 0;
+                    Item.unitPrice = reader["CostPrice"] != DBNull.Value ? Convert.ToDecimal(reader["CostPrice"]) : 0m;
+
+                }
+
+
+                return Item;
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                connection.Close();
+            }
+
+
+        }
         public List<AddPurchaseRequisition> RequisitionListItems(Guid RequisitionID)
         {
             try
