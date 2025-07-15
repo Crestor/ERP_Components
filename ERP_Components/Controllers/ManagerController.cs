@@ -3,18 +3,21 @@ using System.Numerics;
 using ERP_Component_DAL.Models;
 using ERP_Component_DAL.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Identity.Client;
+using Newtonsoft.Json.Linq;
 
 namespace ERP_Components.Controllers
 {
     public class ManagerController : Controller
     {
+        private readonly string jsonFilePath;
         private readonly ILogger<ManagerController> _logger;
         private readonly ManagerServices managerServices;
         private readonly IConfiguration _configuration;
         private readonly CenterlizedService centerlizedService;
 
-        public ManagerController(ILogger<ManagerController> logger, IConfiguration configuration, CenterlizedService centerlizedService)
+        public ManagerController(ILogger<ManagerController> logger, IConfiguration configuration, CenterlizedService centerlizedService, IWebHostEnvironment hostEnvironment)
         {
 
             _logger = logger;
@@ -22,6 +25,8 @@ namespace ERP_Components.Controllers
 
             managerServices = new ManagerServices(configuration);
             this.centerlizedService = centerlizedService;
+            jsonFilePath = Path.Combine(hostEnvironment.ContentRootPath, "Data", "city.json");
+
         }
         public IActionResult Index()
         {
@@ -29,6 +34,70 @@ namespace ERP_Components.Controllers
         }
 
 
+        [HttpGet("api/location-data")]
+        public IActionResult GetLocationData()
+        {
+
+            if (!System.IO.File.Exists(jsonFilePath))
+                return NotFound();
+
+            var json = System.IO.File.ReadAllText(jsonFilePath);
+            return Content(json, "application/json");
+        }
+
+
+
+        [HttpPost]
+
+        public IActionResult AddCity([FromBody] CityRequest request)
+        {
+            if (request == null ||
+                string.IsNullOrWhiteSpace(request.NewCity) ||
+                string.IsNullOrWhiteSpace(request.StateName) ||
+                string.IsNullOrWhiteSpace(request.DistrictName))
+            {
+                return BadRequest(new { success = false, message = "Invalid input." });
+            }
+
+            try
+            {
+                var jsonData = System.IO.File.ReadAllText(jsonFilePath);
+                var jsonObject = JObject.Parse(jsonData);
+
+                JArray states = (JArray)jsonObject["states"];
+                if (states == null)
+                    return BadRequest(new { success = false, message = "States data not found." });
+
+                var state = states.FirstOrDefault(s =>
+                    string.Equals((string)s["name"], request.StateName, StringComparison.OrdinalIgnoreCase));
+
+                if (state == null)
+                    return BadRequest(new { success = false, message = "State not found." });
+
+                JArray districts = (JArray)state["districts"];
+                var district = districts.FirstOrDefault(d =>
+                    string.Equals((string)d["name"], request.DistrictName, StringComparison.OrdinalIgnoreCase));
+
+                if (district == null)
+                    return BadRequest(new { success = false, message = "District not found." });
+
+                JArray cities = (JArray)district["cities"];
+                if (!cities.Any(c => string.Equals((string)c, request.NewCity, StringComparison.OrdinalIgnoreCase)))
+                {
+                    cities.Add(request.NewCity);
+                    System.IO.File.WriteAllText(jsonFilePath, jsonObject.ToString());
+                    return Ok(new { success = true });
+                }
+                else
+                {
+                    return BadRequest(new { success = false, message = "City already exists in this district." });
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { success = false, message = "Server error: " + ex.Message });
+            }
+        }
 
         //<----------------------------------------Dashboards------------------------------------->
 
@@ -481,6 +550,24 @@ namespace ERP_Components.Controllers
         {
             List<AddPurchaseRequisition> requisitions = managerServices.ViewSalesForCasting();
             return View(requisitions);
+        }
+        public IActionResult BussinessSetUp()
+        {
+            return View();
+        }
+        public IActionResult BussinessSetUpDetails(BusinessSetUp bussinessSetup)
+        {
+            //managerServices.SaveBussinessSetup(bussinessSetup);
+            return RedirectToAction("BussinessSetUp");
+        }
+        public IActionResult AddAccount()
+        {
+            return View();
+        }
+        public IActionResult AddAccountDetails(Accounthead account)
+        {
+            //managerServices.SaveAccount(account);
+            return RedirectToAction("AddAccount");
         }
     }
 }

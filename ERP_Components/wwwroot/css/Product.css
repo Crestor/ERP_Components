@@ -171,7 +171,6 @@ input:focus {
         border: 1px solid #ccc;
         border-radius: 4px;
         box-sizing: border-box; /* Ensures padding doesn't affect width */
-        margin-right: 10px;
         color: grey;
     }
 .form-section p {
@@ -660,4 +659,22 @@ p input{
     line-height: 20px;
     font-size: 13px;
     transition: width 0.4s ease-in-out;
+}
+.invalidinput {
+    color: red;
+    font-size: 12px;
+    margin-top: 45px;
+    margin-left: 170px;
+    position: absolute;
+}
+.invalidrightinput {
+    color: red;
+    font-size: 12px;
+    right:150px;
+    margin-top: 45px;
+    position: absolute;
+}
+
+input::placeholder{
+    color:lightgray;
 }
