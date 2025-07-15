@@ -538,7 +538,8 @@ namespace ERP_Components.Controllers
         }
         public IActionResult SalesForecastApproved(Requisition requisition)
         {
-            centerlizedService.UpdateRequisition(requisition.requisitionId, RequisitionStatus.APPROVED_FROM_MANAGER);
+            centerlizedService.UpdateRequisitionStatus(requisition.requisitionId, RequisitionStatus.APPROVED_FROM_MANAGER);
+            centerlizedService.UpdateRequisitionItems(requisition);
             return RedirectToAction("ViewSalesForcast");
         }
         public JsonResult ViewSalesForCastItems(Guid requisitionId)
@@ -548,7 +549,7 @@ namespace ERP_Components.Controllers
         }
         public IActionResult ViewSalesForcast()
         {
-            List<AddPurchaseRequisition> requisitions = managerServices.ViewSalesForCasting();
+            List<AddPurchaseRequisition> requisitions = managerServices.ViewSalesForCasting(RequisitionStatus.SENT_FOR_MANAGER_APPROVAL);
             return View(requisitions);
         }
         public IActionResult BussinessSetUp()

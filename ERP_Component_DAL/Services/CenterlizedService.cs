@@ -156,7 +156,7 @@ namespace ERP_Component_DAL.Services
             throw new NotImplementedException();
         }
 
-        public void UpdateRequisition(Guid requisitionId, RequisitionStatus requisitionStatus)
+        public void UpdateRequisitionStatus(Guid requisitionId, RequisitionStatus requisitionStatus)
         {
             try
             {
@@ -174,6 +174,37 @@ namespace ERP_Component_DAL.Services
             }
             catch (Exception ex)
             {
+                throw;
+            }
+        }
+
+        public void UpdateRequisitionItems(Requisition requisition)
+        {
+
+            //SqlTransaction transaction = null;
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(_connectionString))
+                {
+                    string updateQuery = "UPDATE RequisitionItem SET Quantity = @Quantity WHERE RequisitionID = @RequisitionID AND ItemID = @ItemID";
+                    connection.Open();
+                    //transaction = connection.BeginTransaction();
+                    foreach (var item in requisition.requisitionItems)
+                    {
+                        using (SqlCommand cmd = new SqlCommand(updateQuery, connection/*,transaction*/))
+                        {
+                            cmd.Parameters.AddWithValue("@Quantity", item.quantity);
+                            cmd.Parameters.AddWithValue("@ItemID", item.itemId);
+                            cmd.Parameters.AddWithValue("@RequisitionID", requisition.requisitionId);
+                            cmd.ExecuteNonQuery();
+                        }
+                    }
+                    //transaction.Commit();
+                }
+            }
+            catch (Exception)
+            {
+                //transaction?.Rollback();
                 throw;
             }
         }

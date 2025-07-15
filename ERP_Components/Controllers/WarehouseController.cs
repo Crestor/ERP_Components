@@ -113,7 +113,8 @@ namespace ERP_Components.Controllers
         //TODO: Complete this
         public IActionResult SendForManagerApproval(Requisition requisition)
         {
-            centerlizedService.UpdateRequisition(requisition.requisitionId, RequisitionStatus.SENT_FOR_MANAGER_APPROVAL);
+            centerlizedService.UpdateRequisitionStatus(requisition.requisitionId, RequisitionStatus.SENT_FOR_MANAGER_APPROVAL);
+            centerlizedService.UpdateRequisitionItems(requisition);
             return RedirectToAction("ViewSalesForcast");
         }
 

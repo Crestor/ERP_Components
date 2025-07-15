@@ -245,7 +245,7 @@ namespace ERP_Component_DAL.Services
                 cmd.CommandType = System.Data.CommandType.Text;
                 cmd.CommandText = $"SELECT r.RequisitionID, r.RequisitionSeries, r.[Description], r.CreatedAt, rt.TypeName, dc.CenterName FROM Requisitions r" +
                     $" JOIN RequisitionTypes rt ON r.RequisitionType = rt.RequisitionType LEFT JOIN RequisitionsDistributionCenterBridge rb ON r.RequisitionID = rb.RequisitionID" +
-                    $" LEFT JOIN  DistributionCenter dc ON rb.CenterId = dc.CenterId WHERE r.RequisitionType IN (1,4) AND r.RequisitionStatus = 1 Order By CreatedAt desc";
+                    $" LEFT JOIN  DistributionCenter dc ON rb.CenterId = dc.CenterId WHERE r.RequisitionType IN (1,4) AND r.RequisitionStatus = 9 Order By CreatedAt desc";
                 cmd.Connection = connection;
 
 
