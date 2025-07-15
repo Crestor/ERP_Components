@@ -636,12 +636,15 @@ namespace ERP_Components.Controllers
         public IActionResult AddPurchaseRequisition(AddPurchaseRequisition requisition) //set path 
         {
             //var selectedItems = requisition.listItesms.Where(x => x.IsSelected).ToList();              // only selected items 
-            inventoryServices.UpdateMaterialRequisitionStatus(requisition.RequisitionId);
+            if (!requisition.RequisitionId.Equals(Guid.Empty))
+            {
+                inventoryServices.UpdateMaterialRequisitionStatus(requisition.RequisitionId);
+            }
 
-            //requisition.RequisitionId = inventoryServices.AddRequisition(requisition);
             requisition.RequisitionId = inventoryServices.SaveRequisition(requisition);
-
+            //requisition.RequisitionId = inventoryServices.AddRequisition(requisition);
             HttpContext.Session.SetString("RequisitionID", requisition.RequisitionId.ToString());
+
 
 
             foreach (var mat in requisition.listItesms)                                               //PREV 
@@ -667,7 +670,7 @@ namespace ERP_Components.Controllers
 
             
         }
-     
+
 
 
     public IActionResult RecievePurchaseOrder()
