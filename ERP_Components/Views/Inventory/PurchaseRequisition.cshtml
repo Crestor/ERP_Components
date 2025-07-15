@@ -13,7 +13,7 @@
 
 
 
-<form method="post" asp-action="AddPurchaseRequisition" asp-controller="Inventory" id="mainForm" style="width:95%; margin-top:80px;">
+<form method="post" asp-action="AddPurchaseRequisition" asp-controller="Inventory" id="mainForm" style="width:100%; margin-top:80px;">
 	<div class="table">
 		<table>
 			<thead>
@@ -105,30 +105,31 @@
 	<!-- Hidden inputs for item list -->
 	<div id="hiddenItemsContainer"></div>
 
-	<div class="button-container">
+	<div class="button-container d-flex justify-content-end pb-2 pe-4">
 		<button type="submit">Submit</button>
 	</div>
 </form>
-
-<div class="table">
-	<table>
-		<thead>
-			<tr>
-				<th>S.No</th>
-				<th>Item Name</th>
-				<th>Category</th>
-				<th>Specification</th>
-				@* <th>UOM</th> *@
-				<th>Item Type</th>
-				<th>HSN</th>
-				<th>Quantity</th>
-				@* <th>Unit Price</th> *@
-				@* <th>Total Amount</th> *@
-			</tr>
-		</thead>
-		<tbody id="TableBody">
-		</tbody>
-	</table>
+<div id="showtable" style="display:none">
+	<div class="table">
+		<table>
+			<thead>
+				<tr>
+					<th>S.No</th>
+					<th>Item Name</th>
+					<th>Category</th>
+					<th>Specification</th>
+					@* <th>UOM</th> *@
+					<th>Item Type</th>
+					<th>HSN</th>
+					<th>Quantity</th>
+					@* <th>Unit Price</th> *@
+					@* <th>Total Amount</th> *@
+				</tr>
+			</thead>
+			<tbody id="TableBody">
+			</tbody>
+		</table>
+	</div>
 </div>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -210,6 +211,7 @@
 	// let totalAmountSum = 0;
 
 	document.getElementById("addItems").addEventListener("click", function () {
+        document.getElementById("showtable").style.display = "block";
 		const itemId = $('#itemId').val();
 		const itemName = $('#customDropdown').text();
 		// const unitPrice = parseFloat($('#unitPrice').val()) || 0;
