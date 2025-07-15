@@ -17,7 +17,7 @@
             <h3>Vendor Info</h3>
             <div class="form-row">
                 <label for="PurchaseRequisition">Purchase Requisition Series</label>
-                <input type="text" name="requisitionSeries" value="" readonly />
+                <input type="text" name="requisitionSeries" id="requisitionSeries" readonly />
 
                 <label class="required" for="totalTaxableAmount">Amount:</label>
                 <input type="text" id="totalTaxableAmount" name="totalAmount" value="" required readonly />
@@ -117,5 +117,32 @@
 </script>
 
 
+<script>
+        document.addEventListener("DOMContentLoaded", function () {
+        const orderInput = document.getElementById("requisitionSeries");
 
+        const year = new Date().getFullYear();
+        let nextNumber = 1;
+
+        let lastOrder = localStorage.getItem("lastrequisitionSeries");
+
+        if (lastOrder) {
+            let parts = lastOrder.split("-");
+            let lastYear = parseInt(parts[1]);
+            let lastNum = parseInt(parts[2]);
+
+            if (lastYear === year) {
+                nextNumber = lastNum + 1;
+            }
+        }
+
+        const newSeries = `PRS-${year}-${String(nextNumber).padStart(4, "0")}`;
+
+
+        orderInput.value = newSeries;
+        hiddenInput.value = newSeries;
+
+        localStorage.setItem("lastrequisitionSeries", newSeries);
+    });
+</script>
 
