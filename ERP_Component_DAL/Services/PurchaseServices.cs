@@ -1699,6 +1699,13 @@ namespace ERP_Component_DAL.Services
 
             requisition.purchaseRequisitionItems?
                 .ForEach(item => requisitionItemsTable.Rows.Add(item.itemId, item.quantity, item.unitPrice, requisition.requisitionId));
+
+            DataTable bridgingTable = new DataTable();
+            bridgingTable.Columns.Add("PurchaseRequisitionID", typeof(Guid));
+            bridgingTable.Columns.Add("ItemID", typeof(Guid));
+            bridgingTable.Columns.Add("StorePRID", typeof(Guid));
+
+            requisition.purchaseRequisitionItems?.ForEach(item => item.storePRIDs.ForEach(id => bridgingTable.Rows.Add(requisition.requisitionId, item.itemId, id)));
             SqlTransaction transaction = null;
             try
             {
@@ -1711,6 +1718,12 @@ namespace ERP_Component_DAL.Services
                     {
                         bulkCopy.DestinationTableName = "PurchaseRequisitionItems";
                         bulkCopy.WriteToServer(requisitionItemsTable);
+                    }
+
+                    using (SqlBulkCopy bulkCopy = new SqlBulkCopy(connection, SqlBulkCopyOptions.Default, transaction))
+                    {
+                        bulkCopy.DestinationTableName = "PurchaseRequisitionStorePRBridge";
+                        bulkCopy.WriteToServer(bridgingTable);
                     }
 
                     string query = $"INSERT INTO PurchaseRequisitions(PurchaseRequisitionID, Description, RequisitionStatus, RequisitionSeries, TotalAmount) " +
