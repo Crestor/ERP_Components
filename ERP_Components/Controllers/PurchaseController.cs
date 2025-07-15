@@ -296,11 +296,35 @@ namespace ERP_Components.Controllers
         }
 
 
-        public IActionResult CreatePurchaseRequisition(List<Guid> selectedIds)
+        public IActionResult CreatePurchaseRequisition(List<Store_PR> selectedIds)
         {
-            List<PurchaseRequisitionItems> items = purchaseServices.GetStorePRItems(selectedIds);
+            List<PurchaseRequisitionItems> purchaseRequisitionItems = new List<PurchaseRequisitionItems>();
+            for(int i = 0; i < selectedIds.Count; i++)
+            {
+                bool isAvailabe = false;
+                for(int j = 0; j < purchaseRequisitionItems.Count; j++)
+                {
+                    if (selectedIds[i].item.itemId == purchaseRequisitionItems[j].itemId)
+                    {
+                        isAvailabe = true;
+                        purchaseRequisitionItems[j].quantity += selectedIds[i].Quantity;
+                        purchaseRequisitionItems[j].storePRIDs.Add(selectedIds[i].StorePRID);
+                    }
+                }
+                if (!isAvailabe)
+                {
+                    var prItem = new PurchaseRequisitionItems
+                    {
+                        itemName = selectedIds[i].item.itemName,
+                        itemId = selectedIds[i].item.itemId,
+                        quantity = selectedIds[i].Quantity
+                    };
+                    prItem.storePRIDs.Add(selectedIds[i].StorePRID);
+                    purchaseRequisitionItems.Add(prItem);
+                }
+            }
 
-            return View(items);
+            return View(selectedIds);
         }
 
         [HttpPost]

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace ERP_Component_DAL.Models
 {
     public class Store_PR
-    {
+    { 
         public Guid StorePRID { get; set; }
         public string StorePRSeries { get; set; }
         public Guid RequisitionID { get; set; } 

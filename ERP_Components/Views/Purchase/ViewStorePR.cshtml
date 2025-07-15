@@ -6,17 +6,16 @@
 
 <link rel="stylesheet" href="/css/Product.css" />
 
-    <form asp-action="CreatePurchaseRequisition" asp-controller="Purchase" method="post">
-
+<form asp-action="CreatePurchaseRequisition" asp-controller="Purchase" method="post">
     <div class="button" style="padding: 0px 30px 5px 0px;">
-    <button type="submit">Send</button>
+        <button type="submit">Send</button>
     </div>
+
     <div class="table">
         <table>
             <thead>
                 <tr>
                     <th><input type="checkbox" id="selectAll" /> Select All</th>
-
                     <th>Sr no</th>
                     <th>Item Name</th>
                     <th>Quantity</th>
@@ -27,8 +26,28 @@
                 {
                     <tr>
                         <td>
-                            <input type="checkbox" name="selectedIds" value="@Model[i].StorePRID" class="selectItem" />
+                            <!-- checkbox decides whether this row is posted -->
+                            <input type="checkbox" name="selectedIds[@i].StorePRID" value="@Model[i].StorePRID" class="selectItem" />
                         </td>
+
+                        <!-- hidden fields for every property of Store_PR -->
+                        <input type="hidden" name="selectedIds[@i].StorePRID" value="@Model[i].StorePRID" />
+                        <input type="hidden" name="selectedIds[@i].StorePRSeries" value="@Model[i].StorePRSeries" />
+                        <input type="hidden" name="selectedIds[@i].RequisitionID" value="@Model[i].RequisitionID" />
+
+                        <input type="hidden" name="selectedIds[@i].item.itemId" value="@Model[i].item.itemId" />
+                        <input type="hidden" name="selectedIds[@i].item.itemName" value="@Model[i].item.itemName" />
+                        <input type="hidden" name="selectedIds[@i].item.sku" value="@Model[i].item.sku" />
+                        <input type="hidden" name="selectedIds[@i].item.specification" value="@Model[i].item.specification" />
+                        <input type="hidden" name="selectedIds[@i].item.itemType" value="@Model[i].item.itemType" />
+                        <input type="hidden" name="selectedIds[@i].item.locationId" value="@Model[i].item.locationId" />
+                        <input type="hidden" name="selectedIds[@i].item.hsn" value="@Model[i].item.hsn" />
+                        <input type="hidden" name="selectedIds[@i].item.gstRate" value="@Model[i].item.gstRate" />
+                        <input type="hidden" name="selectedIds[@i].item.unitOfMeasure" value="@Model[i].item.unitOfMeasure" />
+
+                        <input type="hidden" name="selectedIds[@i].Quantity" value="@Model[i].Quantity" />
+                        <input type="hidden" name="selectedIds[@i].CreatedAt" value="@Model[i].CreatedAt" />
+
                         <td>@(i + 1)</td>
                         <td>@Model[i].item.itemName</td>
                         <td>@Model[i].Quantity</td>
@@ -41,9 +60,28 @@
 
 @section Scripts {
     <script>
+        // select / un-select all checkboxes
         document.getElementById('selectAll').addEventListener('change', function () {
             const isChecked = this.checked;
             document.querySelectorAll('.selectItem').forEach(cb => cb.checked = isChecked);
+        });
+    </script>
+    <script>
+        // Select / un-select all (your existing code)
+        document.getElementById('selectAll').addEventListener('change', function () {
+            document.querySelectorAll('.selectItem').forEach(cb => cb.checked = this.checked);
+        });
+
+        // Filter out unchecked rows just before submit
+        document.querySelector('form').addEventListener('submit', function (e) {
+            document.querySelectorAll('.selectItem').forEach(cb => {
+                if (!cb.checked) {
+                    // find the <tr> that contains this checkbox
+                    const row = cb.closest('tr');
+                    // remove every hidden input in that row
+                    row.querySelectorAll('input[type=hidden]').forEach(el => el.remove());
+                }
+            });
         });
     </script>
 }

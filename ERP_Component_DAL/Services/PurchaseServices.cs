@@ -1697,8 +1697,8 @@ namespace ERP_Component_DAL.Services
             requisitionItemsTable.Columns.Add("PurchaseRequisitionID", typeof(Guid));
             //requisitionItemsTable.Columns.Add("Total")
 
-            requisition.requisitionItems?
-                .ForEach(item => requisitionItemsTable.Rows.Add(item.itemId, item.quantity, requisition.requisitionId));
+            requisition.purchaseRequisitionItems?
+                .ForEach(item => requisitionItemsTable.Rows.Add(item.itemId, item.quantity, item.unitPrice, requisition.requisitionId));
             SqlTransaction transaction = null;
             try
             {
@@ -1713,15 +1713,16 @@ namespace ERP_Component_DAL.Services
                         bulkCopy.WriteToServer(requisitionItemsTable);
                     }
 
-                    string query = $"INSERT INTO PurchaseRequisitions(RequisitionID, Description, RequisitionStatus, RequisitionSeries) " +
-                                   $"VALUES (@PurchaseRequisitionID, @Description, @RequisitionStatus, @RequisitionSeries); ";
+                    string query = $"INSERT INTO PurchaseRequisitions(PurchaseRequisitionID, Description, RequisitionStatus, RequisitionSeries, TotalAmount) " +
+                                   $"VALUES (@PurchaseRequisitionID, @Description, @RequisitionStatus, @RequisitionSeries, @TotalAmount); ";
 
                     using (SqlCommand cmd = new SqlCommand(query, connection, transaction))
                     {
-                        cmd.Parameters.AddWithValue("@RequisitionID", requisition.requisitionId);
+                        cmd.Parameters.AddWithValue("@PurchaseRequisitionID", requisition.requisitionId);
                         cmd.Parameters.AddWithValue("@Description", requisition.description);
                         cmd.Parameters.AddWithValue("@RequisitionStatus", (byte)RequisitionStatus.PENDING);
                         cmd.Parameters.AddWithValue("@RequisitionSeries", requisition.requisitionSeries);
+                        cmd.Parameters.AddWithValue("@TotalAmount", requisition.totalAmount);
 
                         cmd.ExecuteNonQuery();
                     }
@@ -1730,7 +1731,8 @@ namespace ERP_Component_DAL.Services
             }
             catch (Exception)
             {
-                transaction?.Rollback();
+                if(transaction != null && transaction.Connection != null && transaction.Connection.State == ConnectionState.Open)
+                    transaction.Rollback();
                 throw;
             }
         }

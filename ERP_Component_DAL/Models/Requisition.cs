@@ -24,6 +24,5 @@
         }
         public decimal totalAmount { get; set; }
         public List<PurchaseRequisitionItems>? purchaseRequisitionItems { get; set; }
-        public List<Store_PR>? store_PRs { get; set; } //isko replace karna hai;
     }
 }
