@@ -324,7 +324,7 @@ namespace ERP_Components.Controllers
                 }
             }
 
-            return View(selectedIds);
+            return View(purchaseRequisitionItems);
         }
 
         [HttpPost]
@@ -334,7 +334,7 @@ namespace ERP_Components.Controllers
 
             purchaseServices.SavePurchaseRequisition(purchaseRequisition, RequisitionStatus.PENDING);
 
-            return RedirectToAction("CreatePurchaseRequisition");
+            return RedirectToAction("ViewStorePR");
         }
 
 

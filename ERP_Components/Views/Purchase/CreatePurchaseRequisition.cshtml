@@ -54,20 +54,24 @@
 
                             <td>
                                 <input type="number" name="purchaseRequisitionItems[@i].Quantity" value="@item.quantity"
-                                       class="quantity" data-index="@i" />
+                                class="quantity" data-index="@i" />
                             </td>
 
                             <td>
                                 <input type="number" name="purchaseRequisitionItems[@i].unitPrice" value="@item.unitPrice"
-                                       class="unit-price" data-index="@i" />
+                                class="unit-price" data-index="@i" />
                             </td>
 
                             <td>
                                 <input type="number" name="purchaseRequisitionItems[@i].TotalAmount" value="@item.totalAmount"
-                                       class="total-amount" data-index="@i" readonly />
+                                class="total-amount" data-index="@i" readonly />
                             </td>
+                            @for(int j=0;j< item.storePRIDs.Count;j++)
+                            {
 
-                            <input type="hidden" name="purchaseRequisitionItems[@i].StorePRID" value="@item.StorePRID" />
+                                <input type="hidden" name="purchaseRequisitionItems[@i].storePRIDs[@j]" value="@item.storePRIDs[j]" />
+                            }
+
                         </tr>
                     }
                 </tbody>
