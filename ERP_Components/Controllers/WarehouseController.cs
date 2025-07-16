@@ -96,7 +96,7 @@ namespace ERP_Components.Controllers
             return View(items);
         }
 
-        public IActionResult SalesForCasting()
+        public IActionResult  ApprovedSalesForCasting()
         {
             List<AddPurchaseRequisition> requisitions = warehouseServices.ViewSalesForCasting();
             return View(requisitions);
