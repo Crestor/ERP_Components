@@ -122,7 +122,7 @@ namespace ERP_Components.Controllers
         {
             warehouseServices.CreateProductionOrder(RequisitionId);
             warehouseServices.UpdateRequisitionTypeAndSentToProduction(RequisitionId);
-            return RedirectToAction("SalesForCasting");
+            return RedirectToAction("ApprovedSalesForCasting");
         }
 
 
