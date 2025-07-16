@@ -186,7 +186,7 @@ namespace ERP_Component_DAL.Services
             {
                 using (SqlConnection connection = new SqlConnection(_connectionString))
                 {
-                    string updateQuery = "UPDATE RequisitionItem SET Quantity = @Quantity WHERE RequisitionID = @RequisitionID AND ItemID = @ItemID";
+                    string updateQuery = "UPDATE RequisitionItems SET Quantity = @Quantity WHERE RequisitionID = @RequisitionID AND ItemID = @ItemID";
                     connection.Open();
                     //transaction = connection.BeginTransaction();
                     foreach (var item in requisition.requisitionItems)
