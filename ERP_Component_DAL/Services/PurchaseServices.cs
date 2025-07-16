@@ -1747,7 +1747,7 @@ namespace ERP_Component_DAL.Services
             }
             catch (Exception)
             {
-                if(transaction != null && transaction.Connection != null && transaction.Connection.State == ConnectionState.Open)
+                if(transaction?.Connection.State == ConnectionState.Open)
                     transaction.Rollback();
                 throw;
             }
