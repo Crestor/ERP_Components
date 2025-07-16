@@ -98,7 +98,7 @@ namespace ERP_Components.Controllers
 
         public IActionResult  ApprovedSalesForCasting()
         {
-            List<AddPurchaseRequisition> requisitions = warehouseServices.ViewSalesForCasting();
+            List<AddPurchaseRequisition> requisitions = warehouseServices.ViewSalesForCasting(RequisitionStatus.APPROVED_FROM_MANAGER);
             return View(requisitions);
         }
 
@@ -229,7 +229,7 @@ namespace ERP_Components.Controllers
         //}
         public IActionResult ViewSalesForcast()
         {
-            List<AddPurchaseRequisition> requisitions = warehouseServices.ViewSalesForCasting();
+            List<AddPurchaseRequisition> requisitions = warehouseServices.ViewSalesForCasting(RequisitionStatus.PENDING);
             return View(requisitions);
         }
     }
