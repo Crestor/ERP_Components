@@ -99,7 +99,25 @@ function createPurchaseOrder() {
     });
 })();
 
-function showloader() {
-    document.getElementById("loginLoader").style.display = "flex";
-    $('.cool-button').prop('disabled', true);
-}
+document.addEventListener("DOMContentLoaded", function () {
+    function showloader() {
+        const loader = document.getElementById("loginLoader");
+        if (loader) {
+            loader.style.display = "flex";
+        }
+        const buttons = document.querySelectorAll('.cool-button');
+        buttons.forEach(btn => btn.disabled = true);
+    }
+
+    const navLinks = document.querySelectorAll('.nav-link');
+    navLinks.forEach(function (link) {
+        link.addEventListener('click', function (e) {
+            const href = link.getAttribute('href');
+            if (!href || href === "#") return;
+            showloader();
+        });
+    });
+});
+
+
+

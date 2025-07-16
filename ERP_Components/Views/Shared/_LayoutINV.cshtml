@@ -302,7 +302,7 @@
                                 </a>
                                 <ul class="nav nav-treeview">
                                     <li class="nav-item">
-                                        <a href="@Url.Action("PurchaseRequisition", "Inventory")" class="list-group-item list-group-item-action ps-5">
+                                        <a href="@Url.Action("AddPurchaseRequisition", "Purchase")" class="list-group-item list-group-item-action ps-5">
                                             <i class="fas fa-file-alt  "></i> Add Purchase Requisition
                                         </a>
                                     </li>
@@ -713,7 +713,28 @@
                         }
                         else if (Role == "Accounts")
                         {
+                          
 
+                            <li class="nav-item">
+                                <a href="/Account/ChartOfAccount" class="nav-link">
+                                    <i class="fas fa-chart-line"></i>
+                                    <p>
+                                        Chart of account
+                                    </p>
+                                </a>
+
+                            </li>
+                            <li class="nav-item">
+                                <a href="/Account/Expense" class="nav-link">
+                                    <i class="fas fa-money-bill-wave"></i>
+                                    <p>
+                                        Expense Entry
+                                    </p>
+                                </a>
+
+                            </li>
+
+                       
 
                             <li class="nav-item">
                                 <a href="/Account/MakePayment" class="nav-link">
@@ -724,6 +745,7 @@
                                 </a>
 
                             </li>
+
                             <li class="nav-item">
                                 <a href="/Account/Payable" class="nav-link">
                                     <i class="fas fa-money-check-alt"></i>
@@ -745,9 +767,9 @@
                             <li class="nav-item">
                                 <a href="/Account/Receivable" class="nav-link">
                                     <i class="fas fa-hand-holding-usd position-relative">
-                                        <span id="Receivable" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger d-none">
-                                            0
-                                        </span>
+                                                    <span id="Receivable" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger d-none">
+                                0
+                            </span>
                                     </i>
                                     <p>
                                         Receivable
@@ -755,27 +777,6 @@
                                 </a>
 
                             </li>
-
-
-                            <li class="nav-item">
-                                <a href="/Account/ChartOfAccount" class="nav-link">
-                                    <i class="fas fa-chart-line"></i>
-                                    <p>
-                                        Chart of account
-                                    </p>
-                                </a>
-
-                            </li>
-                            <li class="nav-item">
-                                <a href="/Account/Expense" class="nav-link">
-                                    <i class="fas fa-money-bill-wave"></i>
-                                    <p>
-                                        Expense Entry
-                                    </p>
-                                </a>
-
-                            </li>
-
 
                             <li class="nav-item">
                                 <a href="/Account/ViewJournalEntry" class="nav-link">
@@ -786,6 +787,12 @@
                                 </a>
 
                             </li>
+
+                        
+                         
+
+                         
+
 
                         }
 

@@ -9,7 +9,7 @@
     <button class="tab-btn rounded-2" onclick="openForm('Dyer')">Add Dyer</button>
 </div>
 
-<form id="workerForm" asp-action="AddWeaverDetails" asp-controller="Weaver" method="post" enctype="multipart/form-data">
+<form id="workerForm" asp-action="AddWeaverDetails" asp-controller="Weaver" method="post" enctype="multipart/form-data" onsubmit="showloader()">
     <div class="form-section">
         <h3 id="formTitle">Add Weaver</h3>
 
