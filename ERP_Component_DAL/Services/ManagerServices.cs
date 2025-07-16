@@ -2025,7 +2025,8 @@ namespace ERP_Component_DAL.Services
                 connection = new SqlConnection(connectionstring);
                 SqlCommand cmd = new();
                 cmd.CommandType = System.Data.CommandType.Text;
-                cmd.CommandText = $"select RequisitionID,Description,CreatedAt,RequisitionStatus from Requisitions where RequisitionType=1";
+                cmd.CommandText = $"select RequisitionID,Description,CreatedAt,RequisitionStatus from Requisitions where RequisitionType=1 WHERE RequisitionStatus = @Status";
+                cmd.Parameters.AddWithValue("@Status", RequisitionStatus.APPROVED_FROM_MANAGER);
                 cmd.Connection = connection;
                 connection.Open();
                 SqlDataReader reader = cmd.ExecuteReader();
