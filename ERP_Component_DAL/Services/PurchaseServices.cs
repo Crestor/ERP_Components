@@ -515,7 +515,8 @@ namespace ERP_Component_DAL.Services
                 connection = new SqlConnection(connectionstring);
                 SqlCommand cmd = new();
                 cmd.CommandType = System.Data.CommandType.Text;
-                cmd.CommandText = $"Select PurchaseRequisitionID,RequisitionSeries, Description, CreatedAt, TotalAmount From PurchaseRequisitions Where RequisitionStatus = 1";
+                cmd.CommandText = $"Select PurchaseRequisitionID, RequisitionSeries, Description, CreatedAt, TotalAmount From PurchaseRequisitions Where RequisitionStatus = @status";
+                cmd.Parameters.AddWithValue("@status", RequisitionStatus.PENDING);
                 cmd.Connection = connection;
 
 
@@ -1615,7 +1616,7 @@ namespace ERP_Component_DAL.Services
             }
         }
 
-        public List<Store_PR> FindStorePR()
+        public List<Store_PR> FindStorePR(StorePRStatus status)
         {
             try
             {
@@ -1624,7 +1625,9 @@ namespace ERP_Component_DAL.Services
                 connection = new SqlConnection(connectionstring);
                 SqlCommand cmd = new();
                 cmd.CommandType = CommandType.Text;
-                cmd.CommandText = $"SELECT sr.StorePRID, sr.StorePRSeries, sr.ItemID, sr.RequisitionID, i.ItemName, i.Specification, sr.Quantity, sr.CreatedAt FROM Store_PR sr JOIN Items i ON sr.ItemID=i.ItemId";
+                cmd.CommandText = $"SELECT sr.StorePRID, sr.StorePRSeries, sr.ItemID, sr.RequisitionID, i.ItemName, i.Specification, sr.Quantity, sr.CreatedAt FROM Store_PR sr " +
+                    $"JOIN Items i ON sr.ItemID=i.ItemId WHERE sr.StorePRStatus = @Status";
+                cmd.Parameters.AddWithValue("@Status", status);
                 cmd.Connection = connection;
                 cmd.CommandTimeout = 300;
                 connection.Open();
@@ -1801,6 +1804,7 @@ namespace ERP_Component_DAL.Services
 
         public void UpdateStorePRStatus(List<PurchaseRequisitionItems>? purchaseRequisitionItems, StorePRStatus status)
         {
+
             try
             {
                 using (SqlConnection connection = new SqlConnection(_connectionString))
@@ -1808,17 +1812,18 @@ namespace ERP_Component_DAL.Services
                     connection.Open();
 
                     string query = "UPDATE Store_PR SET StorePRStatus = @Status WHERE StorePRID = @ID";
-                    foreach (var pr in purchaseRequisitionItems)
-                    {
-                        using (SqlCommand cmd = new SqlCommand(query, connection))
+                    purchaseRequisitionItems.ForEach(item => 
+                        item.storePRIDs.ForEach( id =>
                         {
+                            using (SqlCommand cmd = new SqlCommand(query, connection))
+                            {
 
-                            cmd.Parameters.AddWithValue("@Status", (byte)status);
-                            cmd.Parameters.AddWithValue("@ID", pr.StorePRID);
+                                cmd.Parameters.AddWithValue("@Status", (byte)status);
+                                cmd.Parameters.AddWithValue("@ID", id);
 
-                            cmd.ExecuteNonQuery();
-                        }
-                    }
+                                cmd.ExecuteNonQuery();
+                            }
+                        }));
                 }
             }
             catch (Exception)

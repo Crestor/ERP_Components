@@ -291,7 +291,7 @@ namespace ERP_Components.Controllers
         }
         public IActionResult ViewStorePR()
         {
-            List<Store_PR> storePRList = purchaseServices.FindStorePR();
+            List<Store_PR> storePRList = purchaseServices.FindStorePR(StorePRStatus.PENDING);
             return View(storePRList);
         }
 
@@ -330,7 +330,7 @@ namespace ERP_Components.Controllers
         [HttpPost]
         public IActionResult SetCreatePurchaseRequisition(PurchaseRequisition purchaseRequisition)
         {
-            purchaseServices.UpdateStorePRStatus(purchaseRequisition.purchaseRequisitionItems, StorePRStatus.PENDING);
+            purchaseServices.UpdateStorePRStatus(purchaseRequisition.purchaseRequisitionItems, StorePRStatus.MERGED_IN_PURCHASE_REQ);
 
             purchaseServices.SavePurchaseRequisition(purchaseRequisition, RequisitionStatus.PENDING);
 

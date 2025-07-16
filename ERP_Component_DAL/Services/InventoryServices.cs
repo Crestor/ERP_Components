@@ -2801,17 +2801,18 @@ namespace ERP_Component_DAL.Services
                 if (Add.RequisitionId.Equals(Guid.Empty))
                 {
                     cmd.CommandText = $"insert into Requisitions(RequisitionID, [Description],[RequisitionSeries],[RequisitionStatus], RequisitionType) " +
-                    $"VALUES ( @StoreRequisitionID, @description, @RequisitionSeries, 1, 5);";
+                    $"VALUES ( @StoreRequisitionID, @description, @RequisitionSeries, 1, @Type);";
 
                     cmd.Parameters.AddWithValue("@description", Add.Descripion ?? (object)DBNull.Value);
                     cmd.Parameters.AddWithValue("@RequisitionSeries", Add.requisitionSeries ?? (object)DBNull.Value);
                     cmd.Parameters.AddWithValue("@StoreRequisitionID", RequisitionID);
+                    cmd.Parameters.AddWithValue("@Type", RequisitionTypes.STORE_REQUISITION);
 
                 }
                 else
                 {
                     cmd.CommandText = $"insert into Requisitions(RequisitionID, [Description],[RequisitionSeries],[RequisitionStatus], RequisitionType) " +
-                    $"VALUES ( @StoreRequisitionID, @description,@RequisitionSeries, 1, 5); " +
+                    $"VALUES ( @StoreRequisitionID, @description,@RequisitionSeries, 1, @Type); " +
                     $"INSERT INTO RequisitionStoreRequisitionBridge(MaterailRequisitionID, StoreRequisitionID) VALUES " +
                     $"(@RequisitionID, @StoreRequisitionID)";
 
@@ -2819,6 +2820,7 @@ namespace ERP_Component_DAL.Services
                     cmd.Parameters.AddWithValue("@RequisitionSeries", Add.requisitionSeries ?? (object)DBNull.Value);
                     cmd.Parameters.AddWithValue("@RequisitionID", Add.RequisitionId);
                     cmd.Parameters.AddWithValue("@StoreRequisitionID", RequisitionID);
+                    cmd.Parameters.AddWithValue("@Type", RequisitionTypes.STORE_REQUISITION);
                 }
 
                 cmd.Connection = connection;

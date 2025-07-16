@@ -23,7 +23,8 @@ namespace ERP_Component_DAL.Models
         SALES_FORCASTING = 1,
         MATERIAL_REQUISITION = 2,
         WEAVER_MATERIAL_REQUISITION = 3,
-        SALES_FORECAST_RETAIL_STORE = 4
+        SALES_FORECAST_RETAIL_STORE = 4,
+        STORE_REQUISITION = 5
     }
     public enum StockTransactionType
     {
