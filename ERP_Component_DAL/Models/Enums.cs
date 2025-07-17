@@ -16,7 +16,7 @@ namespace ERP_Component_DAL.Models
     }
     public enum PurchaseOrderStatus
     {
-        PENDING = 1, ITEMS_RECEIVED = 2, ADVANCED_PAID = 3, CONVERTED_TO_BILL = 4
+        PENDING = 1, ITEMS_RECEIVED = 2, ADVANCED_PAID = 3, CONVERTED_TO_BILL = 4, ADVANCED_PENDING = 5,
     }
     public enum RequisitionTypes
     {

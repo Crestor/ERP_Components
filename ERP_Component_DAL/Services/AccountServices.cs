@@ -536,7 +536,10 @@ namespace ERP_Component_DAL.Services
                 SqlCommand cmd = new SqlCommand();
                 cmd.CommandType = System.Data.CommandType.Text;
                 //cmd.CommandText = $"SELECT (po.NetTotal * (po.AdvancePercent / 100.0)) AS AdvanceAmount,po.PurchaseOrderID, po.AmountPaid, po.NetTotal FROM PurchaseOrders po WHERE po.VendorID = '{VendorID}'";
-                cmd.CommandText = $"SELECT (po.NetTotal * (po.AdvancePercent / 100.0)) AS AdvanceAmount,po.PurchaseOrderID, po.AmountPaid, po.NetTotal, v.AccountID FROM PurchaseOrders po JOIN Vendors v ON po.VendorId = v.VendorID WHERE po.VendorID = '{VendorID}'";
+                cmd.CommandText = $"SELECT (po.NetTotal * (po.AdvancePercent / 100.0)) AS AdvanceAmount, po.PurchaseOrderID, " +
+                    $"po.AmountPaid, po.NetTotal, v.AccountID FROM PurchaseOrders po JOIN Vendors v ON po.VendorId = v.VendorID " +
+                    $"WHERE po.OrderStatus = @OrderStatus AND po.VendorID = '{VendorID}'";
+                cmd.Parameters.AddWithValue("@OrderStatus", (byte)PurchaseOrderStatus.ADVANCED_PENDING);
                 cmd.Connection = connection;
 
 
@@ -576,35 +579,44 @@ namespace ERP_Component_DAL.Services
 
         public bool UpdateAdvancedAmount(MakePayment mp)
         {
+            SqlTransaction transaction = null;
             try
             {
                 connection = new SqlConnection(_connectionString);
                 SqlCommand cmd = new SqlCommand();
                 Guid transactionID = Guid.NewGuid();
                 cmd.CommandType = CommandType.Text;
+                connection.Open();
+                transaction = connection.BeginTransaction();
+                cmd.Transaction = transaction;
 
                 cmd.CommandText = $"UPDATE PurchaseOrders SET AmountPaid= AmountPaid + @AmountPaid WHERE PurchaseOrderID = @PurchaseOrderID; " +
-                    $"UPDATE PurchaseOrders SET OrderStatus = 3 WHERE PurchaseOrderID = @PurchaseOrderID; " +
                     $"INSERT INTO Transactions(TransactionID, Amount, TransactionType, Remarks, AccountID) " +
                     $"VALUES (@TransactionID, @AmountPaid, 1, 'Paid Advaced Amount', @AccountID); " +
                     $"INSERT INTO TransactionsPurchaseOrderBridge(TransactionID, PurchaseOrderID) " +
-                    $"VALUES (@TransactionID, @PurchaseOrderID);";
+                    $"VALUES (@TransactionID, @PurchaseOrderID); " +
+                    $"UPDATE PurchaseOrders  SET OrderStatus = @OrderStatus " +
+                    $"WHERE AmountPaid = (SELECT (po.NetTotal * (po.AdvancePercent / 100.0)) FROM PurchaseOrders po " +
+                    $"WHERE po.PurchaseOrderID = @PurchaseOrderID) AND PurchaseOrderID = @PurchaseOrderID;";
 
                 cmd.Parameters.AddWithValue("@AmountPaid", mp.AdvanceAmount);
                 cmd.Parameters.AddWithValue("@PurchaseOrderID", mp.PurchaseOrderID);
                 cmd.Parameters.AddWithValue("@TransactionID", transactionID);
-                cmd.Parameters.AddWithValue("@AccountID", mp.AccountID);
+                cmd.Parameters.AddWithValue("@AccountID", mp.AccountID);    
+                cmd.Parameters.AddWithValue("@OrderStatus", (byte)PurchaseOrderStatus.ADVANCED_PAID);
                 cmd.Connection = connection;
-                connection.Open();
+
                 cmd.ExecuteScalar();
-                connection.Close();
+                transaction.Commit();
 
                 return true;
 
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                throw ex;
+                if (transaction?.Connection.State == ConnectionState.Open)
+                    transaction.Rollback();
+                throw;
             }
             finally
             {

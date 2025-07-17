@@ -2883,7 +2883,8 @@ namespace ERP_Component_DAL.Services
                 SqlCommand cmd = new();
                 cmd.CommandType = System.Data.CommandType.Text;
                 cmd.CommandText = $"Select ve.VendorID, ve.VendorName, ve.VendorCode,po.PurchaseOrderID, po.CreatedAt,po.Description,po.TaxableAmount from Vendors ve " +
-                    $"join PurchaseOrders po ON ve.VendorID = po.VendorId  Where po.OrderStatus = 1 Order By po.CreatedAt desc";
+                    $"join PurchaseOrders po ON ve.VendorID = po.VendorId  Where po.OrderStatus = @OrderStatus Order By po.CreatedAt desc";
+                cmd.Parameters.AddWithValue("@OrderStatus", (byte) PurchaseOrderStatus.ADVANCED_PAID);
                 cmd.Connection = connection;
 
 

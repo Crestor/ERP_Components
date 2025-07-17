@@ -204,13 +204,14 @@ namespace ERP_Component_DAL.Services
                 cmd.CommandType = CommandType.Text;
 
                 cmd.CommandText = $"INSERT INTO PurchaseOrders(PurchaseOrderID,VendorID,PurchaseRequisitionId,Description,TaxableAmount, OrderStatus, AdvancePercent) " +
-                    $"VALUES (@PurchaseOrderID, @VendorID, @RequisitionID,'{vendor.description}','{vendor.amount}', 1, @AdvancedRate)";
+                    $"VALUES (@PurchaseOrderID, @VendorID, @RequisitionID,'{vendor.description}','{vendor.amount}', @OrderStatus, @AdvancedRate)";
 
 
                 cmd.Parameters.AddWithValue("@PurchaseOrderID", purchaseOrderID);
                 cmd.Parameters.AddWithValue("@VendorID", vendor.vendorId);
                 cmd.Parameters.AddWithValue("@RequisitionID", vendor.requisitionId);
                 cmd.Parameters.AddWithValue("@AdvancedRate", vendor.advanceRate);
+                cmd.Parameters.AddWithValue("@OrderStatus", (byte)PurchaseOrderStatus.ADVANCED_PENDING);
 
                 cmd.Connection = connection;
                 connection.Open();
