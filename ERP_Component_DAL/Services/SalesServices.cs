@@ -804,7 +804,7 @@ namespace ERP_Component_DAL.Services
                 SqlCommand cmd = new SqlCommand();
                 cmd.CommandType = System.Data.CommandType.Text;
 
-                cmd.CommandText = @"SELECT cq.QuotationID, cq.GrossTotal,c.CustomerName, cq.QuotationSeries, cq.TermConditionID, i.ItemName, 
+                cmd.CommandText = @"SELECT cq.QuotationID, cq.GrossTotal,c.CustomerID,c.CustomerName, cq.QuotationSeries, cq.TermConditionID, i.ItemName, 
                                     qp.Quantity, i.UnitOFMeasure, qp.SellingPrice, qp.TaxableAmount, qp.discountRate, qp.DiscountAmount, qp.CGST, 
                                     qp.SGST,qp.IGST, qp.TotalAmount FROM CustomerQuotation cq 
                                     JOIN QuotationProduct qp ON cq.QuotationID=qp.QuotationID JOIN Customers c ON c.CustomerID = cq.CustomerID
@@ -818,6 +818,8 @@ namespace ERP_Component_DAL.Services
                 {
                     CL.Add(new Invoice()
                     {
+
+                        CustomerID = reader["CustomerID"] != DBNull.Value ? (Guid)reader["CustomerID"] : Guid.Empty,
                         QuotationID = reader["QuotationID"] != DBNull.Value ? (Guid)reader["QuotationID"] : Guid.Empty,
                         QuotationSeries = reader["QuotationSeries"] != DBNull.Value ? (string)reader["QuotationSeries"] : string.Empty,
                         TermConditionID = reader["TermConditionID"] != DBNull.Value ? (Guid)reader["TermConditionID"] : Guid.Empty,
@@ -884,8 +886,8 @@ namespace ERP_Component_DAL.Services
                 SqlCommand cmd = new SqlCommand();
                 cmd.CommandType = System.Data.CommandType.Text;
 
-                cmd.CommandText = $"INSERT INTO Invoice ([QuotationID],[Status],[PaymentMode],[PaymentType],[ReferenceNumber],[InvoiceNumber],[TDSPercentage],[TDSAmount],[TermConditionID],[TCSPercentage],[TCSAmount]) " + "OUTPUT INSERTED.InvoiceID " +
-                                                "VALUES (@QuotationID,'Unpaid',@PaymentMode,@PaymentType,@ReferenceNumber,@InvoiceNumber,@TDSPercentage,@TDSAmount,@TermConditionID,@TCSPercentage,@TCSAmount)";
+                cmd.CommandText = $"INSERT INTO Invoice ([QuotationID],[Status],[PaymentMode],[PaymentType],[ReferenceNumber],[InvoiceNumber],[TDSPercentage],[TDSAmount],[TermConditionID],[TCSPercentage],[TCSAmount],[CustomerID]) " + "OUTPUT INSERTED.InvoiceID " +
+                                                "VALUES (@QuotationID,'Unpaid',@PaymentMode,@PaymentType,@ReferenceNumber,@InvoiceNumber,@TDSPercentage,@TDSAmount,@TermConditionID,@TCSPercentage,@TCSAmount,@CustomerID )";
                 cmd.Parameters.AddWithValue("@QuotationID", Aq.QuotationID);
                 cmd.Parameters.AddWithValue("@InvoiceDate", Aq.InvoiceDate);
                 cmd.Parameters.AddWithValue("@PaymentMode", Aq.PaymentMode ?? (object)DBNull.Value);
@@ -897,6 +899,8 @@ namespace ERP_Component_DAL.Services
                 cmd.Parameters.AddWithValue("@TermConditionID", Aq.TermConditionID);
                 cmd.Parameters.AddWithValue("@TCSPercentage", Aq.TCSPercentage);
                 cmd.Parameters.AddWithValue("@TCSAmount", Aq.TCSAmount);
+                cmd.Parameters.AddWithValue("@CustomerID", Aq.CustomerID);
+                
 
                 cmd.Connection = connection;
                 connection.Open();

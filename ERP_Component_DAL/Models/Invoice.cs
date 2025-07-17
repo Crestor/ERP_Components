@@ -4,6 +4,7 @@
     public class Invoice
 
     {
+        public Guid CustomerID { get; set; }
         public string ItemName { get; set; }
         public Guid ItemId { get; set; }
         public decimal SellingPrice { get; set; }

@@ -17,9 +17,11 @@
         <h3>Basic Details</h3>
             <div class="form-row">
                         <label>Customer Name:</label>
-                        <input type="text" id="customerName" name="customerName" value="@Model[0].CustomerName" readonly ><br>
+                <input type="text" id="customerName" name="CustomerName" value="@Model[0].CustomerName" readonly><br>
+                        <input type="hidden" name="CustomerID" value="@Model[0].CustomerID" />
+
                         <label>Invoice Date</label>
-                <input type="text" id="date" name="date" value="@DateTime.Now.ToString("yyyy-mm-dd")" onchange="pass()" />
+                <input type="text" id="date" name="date" value="@DateTime.Now.ToString("yyyy-MM-dd")" onchange="pass()" />
             </div>
 
             <div class="form-row" >
