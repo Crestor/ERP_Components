@@ -49,7 +49,7 @@
 					<td>@x.amount</td>
 					<td>
 						<div class="table-button">
-
+							<button onclick="viewdetailsofpurchaseorder('@x.purchaseOrderId')">View</button>
 							<button onclick="location.href='@Url.Action("SetReceivedPurchaseOrder", "Inventory", new { purchaseOrderId = @x.purchaseOrderId }, null)'">Receive Order</button>
 							
 
@@ -66,4 +66,84 @@
 
 
 </div>
+
+<div id="viewModal" style="display:none; position:fixed; top:10%; margin-left:45px;
+     background:#fff; padding:20px; box-shadow:0 0 10px rgba(0,0,0,0.5); border-radius:10px; z-index:999; width:75%;">
+
+	<div id="modalContent">
+		<table>
+			<thead>
+				<tr>
+					<th>S.No</th>
+					<th>Item Name</th>
+					<th>Specification</th>
+					<th>HSN</th>
+					<th>Quantity</th>
+				</tr>
+			</thead>
+			<tbody id="TableBody">
+			</tbody>
+		</table>
+	</div>
+	<div class="button-container">
+		<button onclick="closeModal()" style="margin-top: 15px;">Close</button>
+	</div>
+</div>
+
+<div id="overlay" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%;
+     background:rgba(0,0,0,0.5); z-index:998;" onclick="closeModal()"></div>
+
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+
+<script>
+
+		
+function viewdetailsofpurchaseorder(purchaseorderid){
+		document.getElementById('viewModal').style.display = 'block';
+			document.getElementById('overlay').style.display = 'block';
+
+
+			let tableBody = document.getElementById("TableBody");
+			tableBody.innerHTML = '<tr><td colspan="10">Loading...</td></tr>';
+
+
+		PurchaseOrderId = purchaseorderid;
+			   $.ajax({
+			   type: 'POST',
+			   url: '/Inventory/ViewPurchaseOrderItems',
+			  data: { PurchaseOrderId: PurchaseOrderId },
+
+			success: function (response) {
+				console.log("Success:", response);
+
+				let totalAmountSum = 0;
+				tableBody.innerHTML = "";
+
+				$(response.list).each(function (index, item) {
+					var seq = index + 1;
+
+					const tr = document.createElement("tr");
+					tr.innerHTML = `
+						<td>${seq}</td>
+						<td>${item.itemName}</td>
+						<td>${item.specification}</td>
+						<td>${item.hsn}</td>
+						<td>${item.quantity}<small><small><small>${item.unitofmeasure}</small></small></small></td>
+					`;
+					tableBody.appendChild(tr);
+				});
+			},
+			error: function (xhr, status, error) {
+				console.error("Error:", error);
+				tableBody.innerHTML = '<tr><td colspan="10">Error loading data.</td></tr>';
+			}
+		});
+	}
+	function closeModal() {
+		document.getElementById('viewModal').style.display = 'none';
+		document.getElementById('overlay').style.display = 'none';
+	}
+</script>
 

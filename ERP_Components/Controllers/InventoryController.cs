@@ -718,6 +718,12 @@ namespace ERP_Components.Controllers
             return View(items);
         }
 
+        public JsonResult ViewPurchaseOrderItems(Guid PurchaseOrderId)
+        {
+            var inventoryData = PurchaseOrderId;
+            // ye ese hi likh diya taki error na de 
+            return Json(inventoryData);
+        }
 
         //[HttpPost]
         //public IActionResult Product(Product p)
