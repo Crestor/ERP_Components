@@ -3176,6 +3176,43 @@ namespace ERP_Component_DAL.Services
                 throw;
             }
         }
+
+        public List<PurchaseItem> FindPurchaseOrderItems(Guid purchaseOrderId)
+        {
+            var purchaseItems = new List<PurchaseItem>();
+            try
+            {
+                using(SqlConnection connection = new SqlConnection(_connectionString))
+                {
+                    string query = "SELECT pi.ItemID, i.ItemName, i.Specification, i.UnitOFMeasure, pi.Quantity FROM PurchaseItems pi " +
+                        "JOIN Items i ON pi.ItemID = i.ItemId WHERE PurchaseOrderID = @PurchaseOrderID";
+                    using(SqlCommand cmd = new SqlCommand(query, connection))
+                    {
+                        cmd.Parameters.AddWithValue("@PurchaseOrderID", purchaseOrderId);
+
+                        using (SqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                purchaseItems.Add(new PurchaseItem
+                                {
+                                 itemId = reader.GetGuid("ItemID"),
+                                 itemName = reader.GetString("ItemName"),
+                                 specifications = reader.GetString("Specification"),
+                                 quantity = reader.GetDecimal("Quantity"),
+                                 uom = reader.GetString("UnitOFMeasure")
+                                });
+                            }
+                        }   
+                    }
+                }
+            } 
+            catch(Exception) 
+            { 
+                throw; 
+            }
+            return purchaseItems;
+        }
     }
 
 }

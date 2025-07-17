@@ -11,6 +11,7 @@ namespace ERP_Component_DAL.Models
         public Guid itemId { get; set; }
         public string? itemName { get; set; }
         public decimal quantity { get; set; }
+        public string uom { get; set; }
     }
     public class PurchaseRequisitionItems : RequisitionItem
     {
@@ -22,5 +23,9 @@ namespace ERP_Component_DAL.Models
         public decimal unitPrice { get; set; }
         public decimal totalAmount { get; set; }
         public List<Guid> storePRIDs { get; set; }
+    }
+    public class PurchaseItem: RequisitionItem
+    {
+        public string specifications { get; set; }
     }
 }
