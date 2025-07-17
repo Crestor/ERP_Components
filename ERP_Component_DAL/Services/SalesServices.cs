@@ -214,9 +214,14 @@ namespace ERP_Component_DAL.Services
                 SqlCommand cmd = new SqlCommand();
                 cmd.CommandType = CommandType.Text;
 
-                cmd.CommandText = $"INSERT INTO CustomerQuotation ([QuotationSeries], [status],[DispatchNumber]) OUTPUT INSERTED.QuotationID VALUES (@QuotationSeries, 'open',@DispatchNumber )";
+                cmd.CommandText = $"INSERT INTO CustomerQuotation ([QuotationSeries], [status],[GrossTotal],[TermConditionID],[CustomerID],[DispatchNumber]) OUTPUT INSERTED.QuotationID VALUES (@QuotationSeries, 'open',@GrossTotal,'{termConditionID}',@CustomerID,@DispatchNumber )";
                 cmd.Parameters.AddWithValue("@QuotationSeries", quotation.QuotationSeries);
                 cmd.Parameters.AddWithValue("@DispatchNumber", quotation.DispatchNumber);
+                cmd.Parameters.AddWithValue("@GrossTotal", quotation.GrossTotal);
+                cmd.Parameters.AddWithValue("@CustomerID", quotation.CustomerID);
+
+
+
 
                 cmd.Connection = connection;
 
