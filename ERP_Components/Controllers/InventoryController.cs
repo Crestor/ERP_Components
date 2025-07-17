@@ -727,6 +727,27 @@ namespace ERP_Components.Controllers
             return Json(inventoryData);
         }
 
+
+
+        //--------"View Order Status"-------//
+        public IActionResult ViewItemsStatus()
+        {
+            //List<AddPurchaseRequisition> requisitions = inventoryServices.ViewSentRequisitions();
+            //return View(requisitions);
+            return View();
+        }
+
+        public JsonResult ViewRequisitionItemsStatus(Guid requisitionId)
+        {
+
+            //List<AddPurchaseRequisition> lists = inventoryServices.GetRequisitionItemsListStatus(requisitionId);
+            //return Json(new { list = lists });
+            return Json(requisitionId);
+
+        }
+
+
+
         //[HttpPost]
         //public IActionResult Product(Product p)
         //{
