@@ -3186,6 +3186,7 @@ namespace ERP_Component_DAL.Services
                 {
                     string query = "SELECT pi.ItemID, i.ItemName, i.Specification, i.UnitOFMeasure, pi.Quantity FROM PurchaseItems pi " +
                         "JOIN Items i ON pi.ItemID = i.ItemId WHERE PurchaseOrderID = @PurchaseOrderID";
+                    connection.Open();
                     using(SqlCommand cmd = new SqlCommand(query, connection))
                     {
                         cmd.Parameters.AddWithValue("@PurchaseOrderID", purchaseOrderId);
@@ -3196,11 +3197,11 @@ namespace ERP_Component_DAL.Services
                             {
                                 purchaseItems.Add(new PurchaseItem
                                 {
-                                 itemId = reader.GetGuid("ItemID"),
-                                 itemName = reader.GetString("ItemName"),
-                                 specifications = reader.GetString("Specification"),
-                                 quantity = reader.GetDecimal("Quantity"),
-                                 uom = reader.GetString("UnitOFMeasure")
+                                    itemId = reader.GetGuid("ItemID"),
+                                    itemName = reader.GetString("ItemName"),
+                                    specifications = reader.GetString("Specification"),
+                                    quantity = reader.GetInt32("Quantity"),
+                                    uom = reader.GetString("UnitOFMeasure")
                                 });
                             }
                         }   

@@ -26,6 +26,7 @@ namespace ERP_Component_DAL.Models
     }
     public class PurchaseItem: RequisitionItem
     {
+        public int quantity { get; set; }
         public string specifications { get; set; }
     }
 }
