@@ -137,9 +137,10 @@ namespace ERP_Components.Controllers
         {
             //HttpContext.Session.SetString("invoiceAdded", "False");
 
-            List<Invoice> In = salesServices.InvoiceQvalue(QuotationID);
+            //List<Invoice> In = salesServices.InvoiceQvalue(QuotationID);
 
-            return View(In);
+            InvoiceForm? invoice = salesServices.GetInvoiceFromQuotation(QuotationID);
+            return View(invoice);
         }
         public IActionResult SetAddInvoice(Invoice q)
         {

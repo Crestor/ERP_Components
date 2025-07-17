@@ -1,12 +1,13 @@
-﻿using System;
+﻿using ERP_Component_DAL.Models;
+using Microsoft.Data.SqlClient;
+using Microsoft.Extensions.Configuration;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
-using ERP_Component_DAL.Models;
-using Microsoft.Data.SqlClient;
-using Microsoft.Extensions.Configuration;
 
 namespace ERP_Component_DAL.Services
 {
@@ -2797,5 +2798,90 @@ RequisitionStatus=1
             }
         }
 
+        public InvoiceForm? GetInvoiceFromQuotation(Guid quotationID)
+        {
+            InvoiceForm? form = null;
+            try
+            {
+                using (var connection = new SqlConnection(_connectionString))
+                {
+                    var cmd = new SqlCommand();
+                    cmd.Connection = connection;
+                    cmd.CommandText = @"SELECT cq.QuotationID, cq.GrossTotal, cq.QuotationSeries, cq.TermConditionID, c.CustomerID, c.CustomerName, 
+                                        c.Phone, qp.ProductID, i.ItemName, qp.Quantity, i.UnitOFMeasure, qp.SellingPrice, qp.TaxableAmount, 
+                                        qp.discountRate, qp.DiscountAmount, qp.CGST, qp.SGST, qp.IGST, qp.TotalAmount, a.AddressID, a.AddressLine1, 
+                                        a.Area, a.City, a.District, a.State, a.Pincode, a.Country
+                                        FROM CustomerQuotation cq
+                                        JOIN QuotationProduct qp ON cq.QuotationID = qp.QuotationID
+                                        JOIN Customers c ON c.CustomerID = cq.CustomerID
+                                        JOIN Items i ON i.ItemId = qp.ProductID
+                                        JOIN Address a ON c.AddressID = a.AddressID
+                                        WHERE cq.QuotationID = @QuotationID";
+
+                    cmd.Parameters.AddWithValue("@QuotationID", quotationID);
+
+                    connection.Open();
+
+                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            if (form == null)
+                            {
+                                form = new InvoiceForm
+                                {
+                                    QuotationID = !reader.IsDBNull(reader.GetOrdinal("QuotationID")) ? reader.GetGuid(reader.GetOrdinal("QuotationID")) : Guid.Empty,
+                                    QuotationSeries = !reader.IsDBNull(reader.GetOrdinal("QuotationSeries")) ? reader.GetString(reader.GetOrdinal("QuotationSeries")) : string.Empty,
+                                    TermConditionID = !reader.IsDBNull(reader.GetOrdinal("TermConditionID")) ? reader.GetGuid(reader.GetOrdinal("TermConditionID")) : Guid.Empty,
+                                    GrossTotal = !reader.IsDBNull(reader.GetOrdinal("GrossTotal")) ? reader.GetDecimal(reader.GetOrdinal("GrossTotal")) : 0m,
+                                    Customer = new CustomerDetails
+                                    {
+                                        CustomerID = !reader.IsDBNull(reader.GetOrdinal("CustomerID")) ? reader.GetGuid(reader.GetOrdinal("CustomerID")) : Guid.Empty,
+                                        CustomerName = !reader.IsDBNull(reader.GetOrdinal("CustomerName")) ? reader.GetString(reader.GetOrdinal("CustomerName")) : string.Empty,
+                                        ContactNumber = !reader.IsDBNull(reader.GetOrdinal("Phone")) ? reader.GetString(reader.GetOrdinal("Phone")) : string.Empty
+                                    },
+                                    ShippingAddress = new Address
+                                    {
+                                        AddressID = !reader.IsDBNull(reader.GetOrdinal("AddressID")) ? reader.GetInt32(reader.GetOrdinal("AddressID")) : 0,
+                                        AddressLine1 = !reader.IsDBNull(reader.GetOrdinal("AddressLine1")) ? reader.GetString(reader.GetOrdinal("AddressLine1")) : string.Empty,
+                                        Area = !reader.IsDBNull(reader.GetOrdinal("Area")) ? reader.GetString(reader.GetOrdinal("Area")) : string.Empty,
+                                        City = !reader.IsDBNull(reader.GetOrdinal("City")) ? reader.GetString(reader.GetOrdinal("City")) : string.Empty,
+                                        District = !reader.IsDBNull(reader.GetOrdinal("District")) ? reader.GetString(reader.GetOrdinal("District")) : string.Empty,
+                                        State = !reader.IsDBNull(reader.GetOrdinal("State")) ? reader.GetString(reader.GetOrdinal("State")) : string.Empty,
+                                        Pincode = !reader.IsDBNull(reader.GetOrdinal("Pincode")) ? reader.GetString(reader.GetOrdinal("Pincode")) : string.Empty,
+                                        Country = !reader.IsDBNull(reader.GetOrdinal("Country")) ? reader.GetString(reader.GetOrdinal("Country")) : string.Empty
+                                    },
+                                    Items = new List<InvoiceItem>()
+                                };
+                            }
+
+                            var item = new InvoiceItem
+                            {
+                                ProductID = !reader.IsDBNull(reader.GetOrdinal("ProductID")) ? reader.GetGuid(reader.GetOrdinal("ProductID")) : Guid.Empty,
+                                ProductName = !reader.IsDBNull(reader.GetOrdinal("ItemName")) ? reader.GetString(reader.GetOrdinal("ItemName")) : string.Empty,
+                                Quantity = !reader.IsDBNull(reader.GetOrdinal("Quantity")) ? reader.GetInt32(reader.GetOrdinal("Quantity")) : 0,
+                                UOM = !reader.IsDBNull(reader.GetOrdinal("UnitOFMeasure")) ? reader.GetString(reader.GetOrdinal("UnitOFMeasure")) : string.Empty,
+                                UnitPrice = !reader.IsDBNull(reader.GetOrdinal("SellingPrice")) ? reader.GetDecimal(reader.GetOrdinal("SellingPrice")) : 0m,
+                                TaxableAmount = !reader.IsDBNull(reader.GetOrdinal("TaxableAmount")) ? reader.GetDecimal(reader.GetOrdinal("TaxableAmount")) : 0m,
+                                DiscountRate = !reader.IsDBNull(reader.GetOrdinal("discountRate")) ? reader.GetDecimal(reader.GetOrdinal("discountRate")) : 0m,
+                                DiscountAmount = !reader.IsDBNull(reader.GetOrdinal("DiscountAmount")) ? reader.GetDecimal(reader.GetOrdinal("DiscountAmount")) : 0m,
+                                CGST = !reader.IsDBNull(reader.GetOrdinal("CGST")) ? reader.GetDecimal(reader.GetOrdinal("CGST")) : 0m,
+                                SGST = !reader.IsDBNull(reader.GetOrdinal("SGST")) ? reader.GetDecimal(reader.GetOrdinal("SGST")) : 0m,
+                                IGST = !reader.IsDBNull(reader.GetOrdinal("IGST")) ? reader.GetDecimal(reader.GetOrdinal("IGST")) : 0m,
+                                TotalAmount = !reader.IsDBNull(reader.GetOrdinal("TotalAmount")) ? reader.GetDecimal(reader.GetOrdinal("TotalAmount")) : 0m
+                            };
+
+                            form.Items.Add(item);
+                        }
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+
+            return form;
+        }
     }
 }
