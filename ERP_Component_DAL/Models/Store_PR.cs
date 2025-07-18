@@ -14,6 +14,7 @@ namespace ERP_Component_DAL.Models
         public Item item { get; set; }
         public decimal Quantity { get; set; }
         public DateTime CreatedAt { get; set; }
+        public StorePRStatus status { get; set; }
 
     
     }
