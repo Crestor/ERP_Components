@@ -231,7 +231,8 @@ namespace ERP_Components.Controllers
             return View(products);
         }
 
-        public JsonResult GenerateBarcode(Guid itemId) {
+        public JsonResult GenerateBarcode(Guid itemId)
+        {
             string imageUrl;
             try
             {

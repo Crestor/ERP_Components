@@ -5,17 +5,18 @@
 }
 
 <link rel="stylesheet" href="/css/Product.css" />
-
+@model List<Item>
 <div class="form-section">
     <h3>Barcode</h3>
     <div class="form-row w-50">
         <label for="ItemName">Item Name</label>
         <select id="ItemId" class="form-control">
             <option selected disabled>Select Product</option>
-            @* @foreach (var product in Model.ItemNames)
+            @for (var i = 0; i < Model.Count; i++)
             {
-                <option value="@product.ItemId">@product.ItemName</option>
-            } *@
+                var product = Model[i];                
+                <option value="@product.itemId">@product.itemName</option>
+            } 
         </select>
     </div>
     <div class="button">
@@ -30,7 +31,7 @@
                     <button id="closePopup" class="close-button">X</button>
                 </div>
                 <div class="popup-content">
-                    <img id="barcodeImage" src="/images/QR.jpg" alt="Barcode Image" />
+                    <img id="barcodeImage" src="" alt="Barcode Image" />
                 </div>
                 <div class="popup-footer">
                 <p>Time Left:   <span id="timerDisplay"></span></p>
@@ -38,39 +39,29 @@
             </div>
         </div>
 </div>
-<script>
-    document.getElementById("generateBarcode").addEventListener("click",function(){
-        document.getElementById("overlay").classList.add('show');
-    });
-    document.getElementById("closePopup").addEventListener("click",function(){
-                document.getElementById("overlay").classList.remove('show');
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-    } )
-
-</script>
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', function () {
         const startButton = document.getElementById('generateBarcode');
         const timerDisplay = document.getElementById('timerDisplay');
+        const overlay = document.getElementById('overlay');
+        const barcodeImage = document.getElementById('barcodeImage');
 
         let countdownInterval;
-        const initialDuration = 10;
+        const initialDuration = 300;
 
         function formatTime(seconds) {
             const minutes = Math.floor(seconds / 60);
             const remainingSeconds = seconds % 60;
-            const formattedMinutes = String(minutes).padStart(2, '0');
-            const formattedSeconds = String(remainingSeconds).padStart(2, '0');
-            return `${formattedMinutes}:${formattedSeconds}`;
+            return `${String(minutes).padStart(2, '0')}:${String(remainingSeconds).padStart(2, '0')}`;
         }
 
         function startCountdown(duration) {
             let timer = duration;
             timerDisplay.textContent = formatTime(timer);
 
-            if (countdownInterval) {
-                clearInterval(countdownInterval);
-            }
+            if (countdownInterval) clearInterval(countdownInterval);
 
             countdownInterval = setInterval(function () {
                 timer--;
@@ -80,16 +71,46 @@
                 } else {
                     clearInterval(countdownInterval);
                     timerDisplay.textContent = '00:00';
-                    console.log('Countdown finished!');
-                    document.getElementById("overlay").classList.remove('show');
+                    overlay.classList.remove('show');
                 }
             }, 1000);
         }
 
-        startButton.addEventListener('click', function() {
-            startCountdown(initialDuration);
+        startButton.addEventListener('click', function () {
+            const selectedItemId = document.getElementById('ItemId').value;
+
+            if (!selectedItemId || selectedItemId === "Select Product") {
+                alert('Please select a product.');
+                return;
+            }
+
+            $.ajax({
+                type: "POST",
+                url: "/RetailSales/GenerateBarcode",
+                data: { itemId: selectedItemId },
+                success: function (response) {
+                    console.log(response);
+                    barcodeImage.src = response.imageUrl ;
+                    overlay.classList.add('show');
+                    startCountdown(initialDuration);
+                },
+                error: function () {
+                    alert("Error generating barcode.");
+                }
+            });
+        });
+
+        document.getElementById("closePopup").addEventListener("click", function () {
+            overlay.classList.remove('show');
         });
 
         timerDisplay.textContent = formatTime(initialDuration);
     });
+
+    document.getElementById("closePopup").addEventListener("click",function(){
+                document.getElementById("overlay").classList.remove('show');
+
+    } )
+
 </script>
+
