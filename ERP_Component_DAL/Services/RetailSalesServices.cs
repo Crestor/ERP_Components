@@ -862,7 +862,7 @@ namespace ERP_Component_DAL.Services
                                     new Item
                                     {
                                         itemId = reader.GetGuid("ItemId"),
-                                        itemName = reader.GetString("Name"),
+                                        itemName = reader.GetString("ItemName"),
                                         specification = reader.GetString("Specification")
                                     }
                                 );

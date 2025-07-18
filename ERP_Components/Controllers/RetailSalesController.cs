@@ -1,6 +1,8 @@
 ﻿using ERP_Component_DAL.Models;
 using ERP_Component_DAL.Services;
+using IronBarCode;
 using Microsoft.AspNetCore.Mvc;
+using System.Drawing;
 
 namespace ERP_Components.Controllers
 {
@@ -13,9 +15,10 @@ namespace ERP_Components.Controllers
 		private readonly IConfiguration _configuration;
 		private readonly RetailSalesServices retailsalesServices ;
         private readonly CenterlizedService centerlizedService;
+        private readonly IWebHostEnvironment _environment;
 
 
-		public RetailSalesController(ILogger<RetailSalesController> logger, IConfiguration configuration, CenterlizedService centerlizedService)
+		public RetailSalesController(ILogger<RetailSalesController> logger, IConfiguration configuration, CenterlizedService centerlizedService, IWebHostEnvironment environment)
 		{
 
 			_logger = logger;
@@ -24,6 +27,7 @@ namespace ERP_Components.Controllers
 			purchaseServices = new PurchaseServices(configuration);
 			retailsalesServices = new RetailSalesServices(configuration);
             this.centerlizedService = centerlizedService;
+            this._environment = environment;
 
 		}
 		public IActionResult Index()
@@ -224,12 +228,34 @@ namespace ERP_Components.Controllers
         {
             //RetailItemModel retail = retailsalesServices.CustomerBillAddressData();
             List<Item> products = retailsalesServices.FindProducts();
-            return View();
+            return View(products);
         }
 
         public JsonResult GenerateBarcode(Guid itemId) {
-
-            return Json("fjdhfjksdfhkjs");
+            string imageUrl;
+            try
+            {
+                GeneratedBarcode barcode = BarcodeWriter.CreateBarcode(itemId.ToString(), BarcodeWriterEncoding.Code128);
+                barcode.ResizeTo(400, 120);
+                barcode.AddBarcodeValueTextBelowBarcode();
+                // Styling a Barcode and adding annotation text
+                barcode.ChangeBarCodeColor(Color.Black);
+                barcode.SetMargins(10);
+                string path = Path.Combine(_environment.WebRootPath, "GeneratedBarcode");
+                if (!Directory.Exists(path))
+                {
+                    Directory.CreateDirectory(path);
+                }
+                string filePath = Path.Combine(_environment.WebRootPath, "GeneratedBarcode/barcode.png");
+                barcode.SaveAsPng(filePath);
+                string fileName = Path.GetFileName(filePath);
+                imageUrl = $"{this.Request.Scheme}://{this.Request.Host}{this.Request.PathBase}" + "/GeneratedBarcode/" + fileName;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            return Json(new {ImageUrl = imageUrl});
         }
 
 
