@@ -71,7 +71,9 @@
 					
 					<td>
 						<div class="table-button">
-							<button class="view-history" data-id="@x.CustomerID">View History</button>
+							<button class="view-history" data-id="@x.CustomerID" style="font-size:x-small">View History</button>
+                                <button style="font-size:x-small" onclick="location.href='@Url.Action("HistoryBillsOfCustomer", "RetailSales", new {CustomerID = x.CustomerID }, null)'">View Bills</button>
+
 						</div>
 					</td>
 				

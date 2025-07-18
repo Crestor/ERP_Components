@@ -84,7 +84,7 @@
         public DateOnly date { get; set; }
 
         public String Status { get; set; }
-
+        public DateTime CreatedAT { get; set; }
         public long ContactNumber { get; set; }
         public string ContactNO { get; set; }
         public decimal finalAmount { get; set; }

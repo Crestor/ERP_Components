@@ -1,0 +1,154 @@
+﻿@using ERP_Component_DAL.Models
+
+@{
+    ViewBag.Title = "Customer Bill";
+    Layout = "~/Views/Shared/_LayoutINV.cshtml";
+}
+
+@model RetailItemModel
+
+<link rel="stylesheet" href="~/css/ProductTwo.css" />
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    .topbar {
+        margin: 10px;
+        background-color: #a14040;
+        color: white;
+        padding: 10px 30px;
+        text-align: center;
+        font-size: 1.5rem;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    .dashboard {
+        padding: 10px;
+    }
+
+    .cards {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        gap: 20px;
+    }
+
+    .card {
+        background-color: white;
+        padding: 20px;
+        border-radius: 12px;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+        text-align: center;
+    }
+
+        .card h3 {
+            margin-bottom: 10px;
+            color: #555;
+        }
+
+        .card p {
+            font-size: 1.6rem;
+            font-weight: bold;
+            color: #138496;
+        }
+
+    .charts {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+        justify-content: space-between;
+    }
+
+    .chart-container {
+        flex: 1 1 450px;
+        background: white;
+        padding: 20px;
+        border-radius: 12px;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+        display: flex;
+        justify-content: center;
+        height: 400px;
+    }
+</style>
+<div id="details-container" style="font-family: monospace; width: 400px; margin: 0 auto; background: white; padding: 10px; border: 1px dashed #000; box-shadow: none;">
+    <div class="viewDoc" style="box-shadow: none; background: none;">
+        <h3 style="text-align:center; margin: 5px 0;">@Model?.CenterName</h3>
+        <p style="text-align:center; margin:0;">@Model.Street, @Model.AddressLine1</p>
+        <p style="text-align:center; margin:0;">@Model.AddressLine2, @Model.City</p>
+        <p style="text-align:center; margin:0;">Ph: 7455034126</p>
+        <p style="text-align:center; margin:0;">GST: 05AAZFS9368L1ZZ</p>
+        <p style="text-align:center; margin:0 0 5px;">Postal Code: @Model?.Pincode</p>
+
+        <hr style="border-top: 1px dashed #000;" />
+
+        <p>Name: <span id="billCustomerName">@Model.CustomerName</span></p>
+        <p>Date: <span id="billDate">@DateTime.Now.ToString("dd/MM/yyyy")</span></p>
+        <p>Time: <span id="billTime">@DateTime.Now.ToString("HH:mm")</span> | Bill No: <span id="billNo">1309</span></p>
+
+        <hr style="border-top: 1px dashed #000;" />
+
+
+        <table style="width:100%; font-size: 12px; table-layout: fixed; border-collapse: collapse; background: none; color: black; border: none; box-shadow: none;">
+            <thead>
+                <tr>
+                    <th style="text-align:center; padding: 4px 0; font-weight: normal; background: none; border: none; color: black;">Item</th>
+                    <th style="text-align:center; padding: 4px 0; font-weight: normal; background: none; border: none; color: black;">Qty</th>
+                    <th style="text-align:center; padding: 4px 0; font-weight: normal; background: none; border: none; color: black;">Price</th>
+                    <th style="text-align:center; padding: 4px 0; font-weight: normal; background: none; border: none; color: black;">Discount</th>
+                    <th style="text-align:center; padding: 4px 0; font-weight: normal; background: none; border: none; color: black;">Total</th>
+                </tr>
+            </thead>
+            <tbody id="billItemsBody">
+                @if (Model.retailItem != null && Model.retailItem.Any())
+                {
+                    foreach (var item in Model.retailItem)
+                    {
+                        <tr>
+                            <td style="text-align:center;">@item.ItemName</td>
+                            <td style="text-align:center;">@item.Quantity</td>
+                            <td style="text-align:center;">₹@item.MRP.ToString("0.00")</td>
+                            <td style="text-align:center;">₹0.00</td> @* Replace with actual discount if available *@
+                            <td style="text-align:center;">₹@(item.Quantity * item.MRP).ToString("0.00")</td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr><td colspan="5" style="text-align:center;">No items found.</td></tr>
+                }
+            </tbody>
+
+        </table>
+
+        <hr style="border-top: 1px dashed #000;" />
+        <p>Sub Total: <span id="billSubTotal">₹@Model.retailItem.Sum(x => x.Quantity * x.MRP).ToString("0.00")</span></p>
+        <p>CGST:6% <span id="billCGST">₹@((Model.retailItem.Sum(x => x.MRP * x.Quantity) * 0.06M).ToString("0.00"))</span></p>
+        <p>SGST:6% <span id="billSGST">₹@((Model.retailItem.Sum(x => x.MRP * x.Quantity) * 0.06M).ToString("0.00"))</span></p>
+        <p>
+            <strong>
+                Grand Total:
+                <span id="billGrandTotal">
+                    ₹@((Model.retailItem.Sum(x => x.MRP * x.Quantity) * 1.12M).ToString("0.00"))
+                </span>
+            </strong>
+        </p>
+
+
+
+       @*  <p>Sub Total: <span id="billSubTotal">₹0.00</span></p>
+        <p>You Saved: <span id="billTotalDiscount">₹0.00</span></p>
+        <p>CGST:6% <span id="billCGST">₹0.00</span></p>
+        <p>SGST:6% <span id="billSGST">₹0.00</span></p>
+        <p><strong>Grand Total: <span id="billGrandTotal">₹0.00</span></strong></p> *@
+
+
+        <hr style="border-top: 1px dashed #000;" />
+
+        <p style="text-align:center;">Thanks for Visiting</p>
+        <h4 style="text-align:center;">@Model?.CenterName</h4>
+    </div>
+</div>
+
+

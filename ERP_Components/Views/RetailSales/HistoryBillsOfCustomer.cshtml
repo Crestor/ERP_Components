@@ -1,0 +1,40 @@
+﻿@using ERP_Component_DAL.Models
+
+@{
+    ViewBag.Title = "View Customer Bill";
+    Layout = "~/Views/Shared/_LayoutINV.cshtml";
+}
+<link rel="stylesheet" href="/css/Product.css" />
+
+@model List<QuotationModel>
+
+<div class="table">
+    <table>
+        <thead>
+            <tr>
+                <th>S.No.</th>
+                <th>Customer Name</th>
+                <th>Created At (Date & Time)</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody id="geeks">
+            @for (var i = 0; i < Model.Count; i++)
+            {
+                var x = Model[i];
+                <tr>
+                    <td>@(i + 1)</td>
+                    <td>@x.CustomerName</td>
+                    <td>@x.CreatedAT.ToString("yyyy-MM-dd HH:mm:ss")</td>
+                    <td>
+                        <form asp-action="ViewCustomerBillDetails" asp-controller="RetailSales" method="post">
+                            <input type="hidden" name="CustomerID" value="@x.CustomerID" />
+                            <input type="hidden" name="CreatedAT" value="@x.CreatedAT.ToString("s")" />
+                            <button type="submit" class="view-history">View Bill</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

@@ -99,8 +99,37 @@ namespace ERP_Components.Controllers
 			return View(x);
 		}
 
+        //public IActionResult HistoryBillsOfCustomer(Guid CustomerID)
+        //{
+        //    List<QuotationModel> list = retailsalesServices.History(CustomerID);
+        //    return View(list);
+        //}
 
-      
+
+        public IActionResult HistoryBillsOfCustomer(Guid CustomerID)
+        {
+            List<QuotationModel> list = retailsalesServices.History(CustomerID);
+
+            //list = list
+            //    .GroupBy(x => x.CreatedAT)
+            //    .Select(g => g.First())
+            //    .OrderByDescending(x => x.CreatedAT)
+            //    .ToList();
+
+            return View(list);
+        }
+        [HttpPost]
+        public IActionResult ViewCustomerBillDetails(Guid CustomerID, DateTime CreatedAT)
+        {
+            RetailItemModel retailItem = retailsalesServices.CustomerBillAddressData();
+
+            retailItem.retailItem = retailsalesServices.GetBillDetailsByCustomerAndDate(CustomerID, CreatedAT);
+
+            return View(retailItem);
+        }
+
+
+
         public IActionResult ViewCustomerBillDocument(Guid RetailCustomerId)
         {
 			RetailItemModel retailItem = retailsalesServices.CustomerBillAddressData();

@@ -305,6 +305,159 @@ namespace ERP_Component_DAL.Services
 
 
         }
+        //public List<QuotationModel> History(Guid CustomerID)
+        //{
+        //    try
+        //    {
+        //        List<QuotationModel> sun = new();
+        //        String ConnectionString = configuration.GetConnectionString("DefaultConnectionString");
+        //        connection = new SqlConnection(ConnectionString);
+        //        SqlCommand cmd = new SqlCommand();
+        //        cmd.CommandType = System.Data.CommandType.Text;
+        //        cmd.CommandText = $"select rh.RetailCustomerID,rc.CustomerName,rl.CreatedAT from RetailBillHeader rh join RetailBillLine rl on rh.RetailBillID=rl.RetailBillID join RetailCustomers rc on rh.RetailCustomerID=rc.RetailCustomerID where rh.RetailCustomerID = '{CustomerID}'";
+
+        //        cmd.Connection = connection;
+
+        //        cmd.CommandTimeout = 300;
+        //        connection.Open();
+        //        SqlDataReader reader = cmd.ExecuteReader();
+        //        while (reader.Read())
+        //        {
+        //            sun.Add(new QuotationModel()
+        //            {
+
+        //                CustomerName = reader["CustomerName"] != DBNull.Value ? (string)reader["CustomerName"] : string.Empty,
+        //                CreatedAT = reader["CreatedAT"] != DBNull.Value ? ((DateTime)reader["CreatedAT"]).Date : default(DateTime),
+        //                //GrossTotal = reader["GrossTotal"] != DBNull.Value ? (decimal)reader["GrossTotal"] : 0m,
+        //                //TaxableAmount = reader["NetTotal"] != DBNull.Value ? (decimal)reader["NetTotal"] : 0m,
+        //                //ContactNO = reader["ContactNumber"] != DBNull.Value ? (string)reader["ContactNumber"] : string.Empty,
+
+        //                //RetailBillID = reader["RetailBillID"] != DBNull.Value ? (Guid)reader["RetailBillID"] : Guid.Empty,
+        //                CustomerID = reader["RetailCustomerID"] != DBNull.Value ? (Guid)reader["RetailCustomerID"] : Guid.Empty,
+        //            });
+        //        }
+
+        //        return sun;
+
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        throw ex;
+        //    }
+        //    finally
+        //    {
+        //        connection.Close();
+        //    }
+
+
+        //}
+
+        public List<QuotationModel> History(Guid CustomerID)
+        {
+            try
+            {
+                List<QuotationModel> sun = new();
+                string connectionString = configuration.GetConnectionString("DefaultConnectionString");
+                connection = new SqlConnection(connectionString);
+
+                SqlCommand cmd = new SqlCommand
+                {
+                    CommandType = System.Data.CommandType.Text,
+                    CommandText = $@" SELECT DISTINCT rh.RetailCustomerID, rc.CustomerName, rh.CreatedAT FROM RetailBillHeader rh JOIN RetailBillLine rl ON rh.RetailBillID = rl.RetailBillID JOIN RetailCustomers rc ON rh.RetailCustomerID = rc.RetailCustomerID WHERE rh.RetailCustomerID = '{CustomerID}' ORDER BY rh.CreatedAT DESC",
+                    Connection = connection
+                 
+                };
+
+                connection.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    sun.Add(new QuotationModel()
+                    {
+                        CustomerName = reader["CustomerName"] != DBNull.Value ? (string)reader["CustomerName"] : string.Empty,
+                        CreatedAT = reader["CreatedAT"] != DBNull.Value ? (DateTime)reader["CreatedAT"] : default,
+                        CustomerID = reader["RetailCustomerID"] != DBNull.Value ? (Guid)reader["RetailCustomerID"] : Guid.Empty,
+                    });
+                }
+
+                return sun;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                connection.Close();
+            }
+        }
+
+        public List<RetailItemModel> GetBillDetailsByCustomerAndDate(Guid customerId, DateTime createdAt)
+        {
+            try
+            {
+                List<RetailItemModel> sales = new();
+                string connectionstring = configuration.GetConnectionString("DefaultConnectionString");
+
+                using SqlConnection connection = new(connectionstring);
+                using SqlCommand cmd = new()
+                {
+                    CommandType = System.Data.CommandType.Text,
+                    CommandText = @"
+                SELECT 
+                    rl.CreatedAT,
+                    rc.CustomerName,
+                    I.ItemName,
+                    rl.Quantity,
+                    rl.MRP,
+                    rl.DiscountRate,
+                    rl.GrossTotal,
+                    rl.NetTotal,
+                    rl.GST,
+                    rh.CreatedAt
+                FROM RetailCustomers rc
+                JOIN RetailBillHeader rh ON rc.RetailCustomerID = rh.RetailCustomerID
+                JOIN RetailBillLine rl ON rl.RetailBillID = rh.RetailBillID
+                JOIN Items I ON I.ItemID = rl.ProductID
+                WHERE rh.RetailCustomerID = @CustomerID
+                  AND rh.CreatedAT >= @StartTime AND rh.CreatedAT < @EndTime"
+                };
+
+                // Use a 1-second range to match time ignoring milliseconds
+                DateTime startTime = createdAt;
+                DateTime endTime = createdAt.AddSeconds(1);
+
+                cmd.Parameters.AddWithValue("@CustomerID", customerId);
+                cmd.Parameters.AddWithValue("@StartTime", startTime);
+                cmd.Parameters.AddWithValue("@EndTime", endTime);
+
+                cmd.Connection = connection;
+                connection.Open();
+
+                using SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    sales.Add(new RetailItemModel
+                    {
+                        CustomerName = reader["CustomerName"]?.ToString() ?? string.Empty,
+                        ItemName = reader["ItemName"]?.ToString() ?? string.Empty,
+                        Quantity = reader["Quantity"] != DBNull.Value ? Convert.ToInt32(reader["Quantity"]) : 0,
+                        MRP = reader["MRP"] != DBNull.Value ? Convert.ToDecimal(reader["MRP"]) : 0m,
+                        GrossTotal = reader["GrossTotal"] != DBNull.Value ? Convert.ToDecimal(reader["GrossTotal"]) : 0m,
+                        NetTotal = reader["NetTotal"] != DBNull.Value ? Convert.ToDecimal(reader["NetTotal"]) : 0m,
+                        GST = reader["GST"] != DBNull.Value ? Convert.ToDecimal(reader["GST"]) : 0m
+                    });
+                }
+
+                return sales;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+
 
 
         public List<RetailItemModel> GetCustomerRetailData(Guid RetailBillID)
@@ -499,8 +652,8 @@ namespace ERP_Component_DAL.Services
             {
                 connection.Close();
             }
-        }
-
+        }   
+       
 
 
         public Guid AddSFDetails(QuotationModel Aq)
