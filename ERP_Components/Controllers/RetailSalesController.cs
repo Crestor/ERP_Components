@@ -220,7 +220,11 @@ namespace ERP_Components.Controllers
             return RedirectToAction("Salesforecasting");
         }
 
-
+        public IActionResult Barcode()
+        {
+            //RetailItemModel retail = retailsalesServices.CustomerBillAddressData();
+            return View();
+        }
 
 
     }

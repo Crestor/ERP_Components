@@ -1,0 +1,95 @@
+﻿@using ERP_Component_DAL.Models;
+@{
+    ViewBag.Title = "Barcode";
+    Layout = "~/Views/Shared/_LayoutINV.cshtml";
+}
+
+<link rel="stylesheet" href="/css/Product.css" />
+
+<div class="form-section">
+    <h3>Barcode</h3>
+    <div class="form-row w-50">
+        <label for="ItemName">Item Name</label>
+        <select id="ItemId" class="form-control">
+            <option selected disabled>Select Product</option>
+            @* @foreach (var product in Model.ItemNames)
+            {
+                <option value="@product.ItemId">@product.ItemName</option>
+            } *@
+        </select>
+    </div>
+    <div class="button">
+        <button type="button" id="generateBarcode" style="margin: 10px 0; background-color:#138496;color: white;">Generate Barcode</button>
+    </div>
+</div>
+<div class="overlay2" id="overlay">
+        <div class="popupBarcode">
+            <div class="viewbarcode">
+                <div class="popup-header">
+                    <h3>Barcode</h3>
+                    <button id="closePopup" class="close-button">X</button>
+                </div>
+                <div class="popup-content">
+                    <img id="barcodeImage" src="/images/QR.jpg" alt="Barcode Image" />
+                </div>
+                <div class="popup-footer">
+                <p>Time Left:   <span id="timerDisplay"></span></p>
+                </div>
+            </div>
+        </div>
+</div>
+<script>
+    document.getElementById("generateBarcode").addEventListener("click",function(){
+        document.getElementById("overlay").classList.add('show');
+    });
+    document.getElementById("closePopup").addEventListener("click",function(){
+                document.getElementById("overlay").classList.remove('show');
+
+    } )
+
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const startButton = document.getElementById('generateBarcode');
+        const timerDisplay = document.getElementById('timerDisplay');
+
+        let countdownInterval;
+        const initialDuration = 10;
+
+        function formatTime(seconds) {
+            const minutes = Math.floor(seconds / 60);
+            const remainingSeconds = seconds % 60;
+            const formattedMinutes = String(minutes).padStart(2, '0');
+            const formattedSeconds = String(remainingSeconds).padStart(2, '0');
+            return `${formattedMinutes}:${formattedSeconds}`;
+        }
+
+        function startCountdown(duration) {
+            let timer = duration;
+            timerDisplay.textContent = formatTime(timer);
+
+            if (countdownInterval) {
+                clearInterval(countdownInterval);
+            }
+
+            countdownInterval = setInterval(function () {
+                timer--;
+
+                if (timer >= 0) {
+                    timerDisplay.textContent = formatTime(timer);
+                } else {
+                    clearInterval(countdownInterval);
+                    timerDisplay.textContent = '00:00';
+                    console.log('Countdown finished!');
+                    document.getElementById("overlay").classList.remove('show');
+                }
+            }, 1000);
+        }
+
+        startButton.addEventListener('click', function() {
+            startCountdown(initialDuration);
+        });
+
+        timerDisplay.textContent = formatTime(initialDuration);
+    });
+</script>
