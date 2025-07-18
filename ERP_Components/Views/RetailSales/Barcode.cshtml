@@ -8,23 +8,31 @@
 @model List<Item>
 <div class="form-section">
     <h3>Barcode</h3>
-    <div class="form-row w-50">
-        <label for="ItemName">Item Name</label>
-        <select id="ItemId" class="form-control">
-            <option selected disabled>Select Product</option>
-            @for (var i = 0; i < Model.Count; i++)
-            {
-                var product = Model[i];                
-                <option value="@product.itemId">@product.itemName</option>
-            } 
-        </select>
+    <div class="form-row">
+        <label for="itemName">Item Name</label>
+        <input name="itemName" id="ItemName" value="" type="text" required/>
+        <label for="specification">Specification</label>
+        <input name="specification" id="specification" value="" type="text" required/>
     </div>
+    <div class="form-row">
+        <label for="sku">SKU</label>
+        <input name="sku" id="SKU" value="" type="number" required/>
+        <label for="hsn">HSN</label>
+        <input name="hsn" id="HSN" value="" type="text" required/>
+    </div>
+    <div class="form-row">
+        <label for="price">Price</label>
+        <input name="price" id="Price" value="" type="number" required/>
+        <label for="manufacturingDate">Manufacture Date:</label>
+        <input name="manufacturingDate" id="ManufactureDate" value="" type="date" required/>
+    </div> 
+
     <div class="button">
         <button type="button" id="generateBarcode" style="margin: 10px 0; background-color:#138496;color: white;">Generate Barcode</button>
     </div>
 </div>
 <div class="overlay2" id="overlay">
-        <div class="popupBarcode">
+        <div class="popupBarcode">                                      
             <div class="viewbarcode">
                 <div class="popup-header">
                     <h3>Barcode</h3>
@@ -77,17 +85,26 @@
         }
 
         startButton.addEventListener('click', function () {
-            const selectedItemId = document.getElementById('ItemId').value;
-
-            if (!selectedItemId || selectedItemId === "Select Product") {
-                alert('Please select a product.');
-                return;
+            const ItemName = document.getElementById('ItemName').value;
+            const specification = document.getElementById('specification').value;
+            const SKU = document.getElementById('SKU').value;
+            const HSN = document.getElementById('HSN').value;
+            const Price = document.getElementById('Price').value;
+            const ManufactureDate = document.getElementById('ManufactureDate').value;
+          const data = {
+                itemName: ItemName,
+                specification: specification,
+                sku: SKU,
+                hsn: HSN,
+                price: Price,
+                manufacturingDate: ManufactureDate
             }
+
 
             $.ajax({
                 type: "POST",
                 url: "/RetailSales/GenerateBarcode",
-                data: { itemId: selectedItemId },
+                data: data,
                 success: function (response) {
                     console.log(response);
                     barcodeImage.src = response.imageUrl ;

@@ -232,7 +232,7 @@ namespace ERP_Components.Controllers
             return View();
         }
 
-        public JsonResult GenerateBarcode(Guid item) {
+        public JsonResult GenerateBarcode(Item item) {
             string imageUrl;
             try
             {
