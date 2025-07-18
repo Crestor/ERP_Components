@@ -20,7 +20,7 @@
         public decimal TotalAmountAfterDiscount { get; set; }
         public string PaymentTerm { get; set; }
 
-        public List<Customer>? Customers { get; set; }
+        public List<Customer> Customers { get; set; }
 
         public RetailItemModel Retail { get; set; }
         public List<RetailItemModel> RetailItem { get; set; }

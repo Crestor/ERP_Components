@@ -720,11 +720,8 @@ namespace ERP_Components.Controllers
 
         public JsonResult ViewPurchaseOrderItems(Guid PurchaseOrderId)
         {
-            var inventoryData = PurchaseOrderId;
             List<PurchaseItem> purchaseItems = inventoryServices.FindPurchaseOrderItems(PurchaseOrderId);
-            // ye ese hi likh diya taki error na de 
-            // okay
-            return Json(inventoryData);
+            return Json(purchaseItems);
         }
 
 

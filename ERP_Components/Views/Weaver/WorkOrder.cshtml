@@ -8,11 +8,15 @@
 <style>
     button{
         justify-self:center;
+        background-color: #fcbcbc;
+    }
+    .active{
+        background-color:#138496;
     }
 </style>
     <div style="display:flex">
     <div class="col-6">
-        <button class="mb-1" id="view">View</button>
+        <button class="mb-1 active" id="view">View</button>
     </div>
     <div class="col-6">
         <button class="mb-1" id="ongoing">ongoing</button>
@@ -163,15 +167,24 @@
     const view = document.getElementById("view");
     const ongoing = document.getElementById("ongoing");
 
-    view.addEventListener("click", function () {
+    function setActiveButton(clickedButton) {
+        document.getElementById("view").classList.remove("active");
+        document.getElementById("ongoing").classList.remove("active");
+        clickedButton.classList.add("active");
+    }
+
+    document.getElementById("view").addEventListener("click", function () {
+        setActiveButton(this);
         document.getElementById("viewtable").style.display = "block";
         document.getElementById("ongoingtable").style.display = "none";
     });
 
-    ongoing.addEventListener("click", function () {
+    document.getElementById("ongoing").addEventListener("click", function () {
+        setActiveButton(this);
         document.getElementById("viewtable").style.display = "none";
         document.getElementById("ongoingtable").style.display = "block";
     });
+
 
     document.addEventListener("DOMContentLoaded", function () {
         const phaseButtons = document.querySelectorAll(".viewphase-btn");

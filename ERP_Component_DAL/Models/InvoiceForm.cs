@@ -8,14 +8,18 @@ namespace ERP_Component_DAL.Models
 {
     public class InvoiceForm
     {
+        public InvoiceForm()
+        {
+            this.Items = new List<InvoiceItem>();
+        }
        
         public Guid InvoiceID { get; set; }
         public string InvoiceNumber { get; set; }
         public DateOnly InvoiceDate { get; set; }
         public string Status { get; set; }
-        public CustomerDetails Customer { get; set; }
-        public Address ShippingAddress { get; set; }
-        public ShippingDetails ShippingDetails { get; set; }
+        public CustomerDetails? Customer { get; set; }
+        public Address? ShippingAddress { get; set; }
+        public ShippingDetails? ShippingDetails { get; set; }
         public List<InvoiceItem> Items { get; set; }
         public decimal TotalPriceBeforeDiscount { get; set; }
         public decimal TotalDiscountAmount { get; set; }

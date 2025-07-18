@@ -10,15 +10,15 @@
         display:none;
     }
 </style>
-@model List<Invoice>
+@model InvoiceForm
 <form method="post" asp-action="SetAddInvoice" asp-controller="Sales" onsubmit="savedInvoice()">
  <div id="firstSection">
     <div class="form-section">
         <h3>Basic Details</h3>
             <div class="form-row">
                         <label>Customer Name:</label>
-                <input type="text" id="customerName" name="CustomerName" value="@Model[0].CustomerName" readonly><br>
-                        <input type="hidden" name="CustomerID" value="@Model[0].CustomerID" />
+                <input type="text" id="customerName" name="CustomerName" value="@Model.Customer.CustomerName" readonly><br>
+                        <input type="hidden" name="CustomerID" value="@Model.Customer.CustomerID" />
 
                         <label>Invoice Date</label>
                 <input type="text" id="date" name="date" value="@DateTime.Now.ToString("yyyy-MM-dd")" onchange="pass()" />
@@ -59,9 +59,9 @@
 
 
 
-                    @for (var i = 0; i < Model.Count; i++)
+                    @for (var i = 0; i < Model.Items.Count; i++)
                     {
-                        var x = Model[i];
+                        var x = Model.Items[i];
                         var index = i + 1;
 
                         <tr>
@@ -69,14 +69,12 @@
 
 
                             <td>@index</td>
-                            <td> @x.ItemName</td>
+                            <td> @x.ProductName</td>
                            
                             @* <td>@x.Quantity</td> *@
-                            <td class="quantity">@x.Quantity</td>
-                            <td>@x.UnitOFMeasure</td>  @*if we want space of two column  colspan="2" *@
-                            @* <td>@x.SellingPrice</td> *@
-                            <td class="selling-price">@x.SellingPrice</td>
-                            <td>@x.discountRate</td>
+                            <td class="quantity">@x.Quantity<small><small><small>@x.UOM</small></small></small></td>
+                            <td class="selling-price">@x.UnitPrice</td>
+                            <td>@x.DiscountRate</td>
                             <td class="discount-amount">@x.DiscountAmount</td>
 
                             @* <td>@x.DiscountAmount</td> *@
@@ -106,12 +104,12 @@
                 <p><strong>Total Discount Amount:</strong><br /><span class="totalDiscountAmount" ></span></p>
 
 
-                    <p><strong>Gross Total:</strong><br /><span>@Model[0].GrossTotal</span> </p>
+                    <p><strong>Gross Total:</strong><br /><span>@Model.GrossTotal</span> </p>
                     <p><strong>Total Taxable Amount:</strong><br /><span class="totalTaxableAmount" ></span></p> 
 
             
-                    <input type="hidden" name="QuotationID" value="@Model[0].QuotationID" />
-                    <input type ="hidden" name="TermConditionID" value="@Model[0].TermConditionID" />
+                    <input type="hidden" name="QuotationID" value="@Model.QuotationID" />
+                    <input type ="hidden" name="TermConditionID" value="@Model.TermConditionID" />
 
           </div>
           <div class="button2">
@@ -128,12 +126,12 @@
                 <p><strong>Total Discount Amount:</strong><br /><span class="totalDiscountAmount" ></span></p>
 
 
-                    <p><strong>Gross Total:</strong><br /><input name="GrossTotal" id="grossTotal" type="number" value="@Model[0].GrossTotal" style="border:none" > </p>
+                    <p><strong>Gross Total:</strong><br /><input name="GrossTotal" id="grossTotal" type="number" value="@Model.GrossTotal" style="border:none" > </p>
                     <p><strong>Total Taxable Amount:</strong><br /><span class="totalTaxableAmount" ></span></p> 
 
             
-                    <input type="hidden" name="QuotationID" value="@Model[0].QuotationID" />
-                    <input type ="hidden" name="TermConditionID" value="@Model[0].TermConditionID" />
+                    <input type="hidden" name="QuotationID" value="@Model.QuotationID" />
+                    <input type ="hidden" name="TermConditionID" value="@Model.TermConditionID" />
 
           </div>
 
@@ -213,37 +211,37 @@
             <h3>Shipping Details</h3>
                   <div class="form-row">
                         <label>Company Name:</label>
-                        <input type="text" id="CompanyName" name="CompanyName"   placeholder="Enter name">
+                        <input type="text" id="CompanyName" name="CompanyName"  value="@Model.Customer.CustomerName" placeholder="Enter name">
                         <label>State:</label>
-                        <input type="text" id="State" name="State"   placeholder="Enter State">
+                        <input type="text" id="State" name="State"  value="@Model.ShippingAddress.State"  placeholder="Enter State">
                    </div>
                    <div class="form-row">
                         <label>Pin Code:</label>
-                        <input type="text" id="Pincode" name="Pincode"   placeholder="Enter Pin code">
+                        <input type="text" id="Pincode" name="Pincode"  value="@Model.ShippingAddress.Pincode"  placeholder="Enter Pin code">
 
                         <label>Consignment Number:</label>
-                        <input type="text" id="ConsignmentNumber" name="ConsignmentNumber"   placeholder="Enter Consignment Number">
+                        <input type="text" id="ConsignmentNumber" name="ConsignmentNumber"  placeholder="Enter Consignment Number">
                    </div>
                     <div class="form-row">
                         <label>Branch:</label>
-                        <input type="text" id="Branch" name="Branch"   placeholder="Enter Branch">
+                        <input type="text" id="Branch" name="Branch" value="@Model.Customer.Branch"  placeholder="Enter Branch">
 
                         <label>District:</label>
-                        <input type="text" id="District" name="District"   placeholder="Enter District">
+                        <input type="text" id="District" name="District" value="@Model.ShippingAddress.District"  placeholder="Enter District">
                     </div>
                     <div class="form-row">
                         <label>Contact Number:</label>
-                        <input type="number" id="ContactNumber" name="ContactNumber"   placeholder="Enter Contact Number">
+                        <input type="number" id="ContactNumber" name="ContactNumber" value="@Model.Customer.ContactNumber"  placeholder="Enter Contact Number">
                         <label>GSTIN:</label>
-                        <input type="text" id="GSTIN" name="GSTIN"   placeholder="Enter GSTIN">
+                        <input type="text" id="GSTIN" name="GSTIN" value="@Model.Customer.GSTIN"  placeholder="Enter GSTIN">
                     </div>
 
                     <div class="form-row">
                         <label>Area:</label>
-                        <input type="text" id="Area" name="Area"   placeholder="Enter Area">
+                        <input type="text" id="Area" name="Area"  value="@Model.ShippingAddress.Area" placeholder="Enter Area">
 
                         <label>City:</label>
-                        <input type="text" id="City" name="City"   placeholder="Enter City">
+                        <input type="text" id="City" name="City" value="@Model.ShippingAddress.City"  placeholder="Enter City">
                     </div>
                     <div class="form-row">
                         <label>Shipping Remote:</label>
