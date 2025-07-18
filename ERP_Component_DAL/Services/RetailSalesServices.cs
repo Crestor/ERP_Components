@@ -17,11 +17,13 @@ namespace ERP_Component_DAL.Services
 
         private readonly IConfiguration configuration;
         SqlConnection connection;
+        private readonly string _connectionString;
 
 
         public RetailSalesServices(IConfiguration config)
         {
             this.configuration = config;
+            this._connectionString = configuration.GetConnectionString("DefaultConnectionString");
         }
 
 
@@ -841,5 +843,40 @@ namespace ERP_Component_DAL.Services
             }
         }
 
+        public List<Item> FindProducts()
+        {
+            var products = new List<Item>();
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(_connectionString))
+                {
+                    string query = "SELECT it.ItemName, it.ItemId, it.Specification FROM Items it\r\nWHERE ItemType = 1 AND Specification NOT LIKE 'Unfinished%'";
+                    connection.Open();
+                    using (SqlCommand cmd = new SqlCommand(query, connection))
+                    {
+                        using(SqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                products.Add(
+                                    new Item
+                                    {
+                                        itemId = reader.GetGuid("ItemId"),
+                                        itemName = reader.GetString("Name"),
+                                        specification = reader.GetString("Specification")
+                                    }
+                                );
+                            }
+                        }
+                    }
+
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            return products;
+        }
     }
 }

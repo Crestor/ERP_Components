@@ -223,7 +223,13 @@ namespace ERP_Components.Controllers
         public IActionResult Barcode()
         {
             //RetailItemModel retail = retailsalesServices.CustomerBillAddressData();
+            List<Item> products = retailsalesServices.FindProducts();
             return View();
+        }
+
+        public JsonResult GenerateBarcode(Guid itemId) {
+
+            return Json("fjdhfjksdfhkjs");
         }
 
 
