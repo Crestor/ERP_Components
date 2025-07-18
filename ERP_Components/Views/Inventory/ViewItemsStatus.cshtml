@@ -6,7 +6,7 @@
 <link rel="stylesheet" href="/css/Product.css" />
 
 
-@model List<AddPurchaseRequisition>
+@model List<Requisition>
 
 <div class="table">
 
@@ -25,7 +25,7 @@
 
 
 
-	@* 	<tbody id="geeks">
+		<tbody id="geeks">
 
 
 			@for (var i = 0; i < Model.Count; i++)
@@ -34,23 +34,23 @@
 				var x = Model[i];
 				var index = i + 1;
 
-				<tr id="row-@x.RequisitionId">
+				<tr id="row-@x.requisitionId">
 					<td>@index</td>
 					<td>@x.requisitionSeries</td>
-					<td>@x.Descripion</td>
+					<td>@x.description</td>
 
-					<td>@x.Date.ToShortDateString()</td>
+					<td>@x.createdAt.ToShortDateString()</td>
 					<td>
 						<div class="table-button">
 
-							<button onclick="viewDetails('@x.RequisitionId')">View</button>
+							<button onclick="viewDetails('@x.requisitionId')">View</button>
 
 						</div>
 					</td>
 
 				</tr>
 			}
-		</tbody> *@
+		</tbody>
 
 	</table>
 
@@ -107,28 +107,26 @@
 
 		$.ajax({
 			type: 'POST',
-			url: '/Warehouse/ViewRequisitionItemsStatus',
+			url: '/Inventory/ViewRequisitionItemsStatus',
 			data: { requisitionId: requisitionId },
-			success: function (response) {
-				console.log("Success:", response);
+		success: function (response) {
+	console.log("Success:", response);
+	tableBody.innerHTML = "";
 
-				let totalAmountSum = 0;
-				tableBody.innerHTML = "";
+	$(response).each(function (index, item) {
+		var seq = index + 1;
 
-				$(response.list).each(function (index, item) {
-					var seq = index + 1;
-
-					const tr = document.createElement("tr");
-					tr.innerHTML = `
-						<td>${seq}</td>
-						<td>${item.itemName}</td>
-						<td>${item.specification}</td>
-						<td>${item.unitofmeasure}</td>
-						<td>${item.hsn}</td>
-						<td>${item.quantity}</td>
-						<td>${item.status}</td>
-					`;
-					tableBody.appendChild(tr);
+		const tr = document.createElement("tr");
+		tr.innerHTML = `
+			<td>${seq}</td>
+			<td>${item.item?.itemName ?? ''}</td>
+			<td>${item.item?.specification ?? ''}</td>
+			<td>${item.item?.unitOfMeasure ?? ''}</td>
+			<td>${item.item?.hsn ?? ''}</td>
+			<td>${item.quantity ?? ''}</td>
+			<td>${item.status ?? ''}</td>
+		`;
+		tableBody.appendChild(tr);
 				});
 			},
 			error: function (xhr, status, error) {

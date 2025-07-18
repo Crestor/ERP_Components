@@ -3216,19 +3216,64 @@ namespace ERP_Component_DAL.Services
         }
 
         //TODO: Complete this
+
+
         public List<Store_PR> FindStorePRByRequisitionID(Guid requisitionId)
         {
-            List<Store_PR> store_PRs = new List<Store_PR>();
-            //try
-            //{
-            //    using(SqlConnection connection=new SqlConnection(_connectionString))
-            //    {
-            //        string query = "SELECT * FROM Store_PR WHERE RequisitionID = @RequisitionID"
-            //    }
-            //}
+            try
+            {
+                List<Store_PR> store_PRs = new List<Store_PR>();
+                string connectionstring = configuration.GetConnectionString("DefaultConnectionString");
+                connection = new SqlConnection(connectionstring);
+                SqlCommand cmd = new();
+                cmd.CommandType = System.Data.CommandType.Text;
+                //cmd.CommandText = $"SELECT I.ItemName,I.Specification,I.UnitOFMeasure,I.HSN,SPR.Quantity,sprs.StatusName FROM Store_PR SPR JOIN Items I ON SPR.ItemID=I.ItemId  JOIN StorePRStatus sprs ON sprs.StorePRStatus=SPR.StorePRStatus WHERE RequisitionID= @RequisitionID";
+                cmd.CommandText = $"SELECT I.ItemName,I.Specification,I.UnitOFMeasure,I.HSN,SPR.Quantity,SPR.StorePRStatus FROM Store_PR SPR JOIN Items I ON SPR.ItemID=I.ItemId  WHERE RequisitionID = @RequisitionID";
+                cmd.Parameters.AddWithValue("@RequisitionID", requisitionId);
+                cmd.Connection = connection;
+
+                cmd.CommandTimeout = 300;
+                connection.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    store_PRs.Add(new Store_PR
+                    {
+
+                        RequisitionID = requisitionId,
+
+                        item = new Item
+                        {
+                            itemName = reader["ItemName"] != DBNull.Value ? (string)reader["ItemName"] : string.Empty,
+
+                            hsn = reader["HSN"] != DBNull.Value ? (string)reader["HSN"] : string.Empty,
 
 
-            return store_PRs;
+                            specification = reader["Specification"] != DBNull.Value ? (string)reader["Specification"] : string.Empty,
+                          
+                            unitOfMeasure = reader["UnitOFMeasure"] != DBNull.Value ? (string)reader["UnitOFMeasure"] : string.Empty,
+                        },
+                        //status = (StorePRStatus)reader["StorePRStatus"],
+                        status = reader["StorePRStatus"] != DBNull.Value? (StorePRStatus)(byte)reader["StorePRStatus"]: default,
+
+                        Quantity = reader["Quantity"] != DBNull.Value ? Convert.ToDecimal(reader["Quantity"]) : 0m,
+
+                    });
+                }
+
+                return store_PRs;
+
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+
+            }
+            finally
+            {
+                connection.Close();
+            }
         }
     }
 

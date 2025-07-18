@@ -8,6 +8,7 @@
 @model RetailItemModel
 
 <link rel="stylesheet" href="~/css/ProductTwo.css" />
+
 <style>
     * {
         margin: 0;
@@ -150,5 +151,64 @@
         <h4 style="text-align:center;">@Model?.CenterName</h4>
     </div>
 </div>
+<div class="button " style="float: right;">
+
+    <button id="download-button" style="padding:4px">
+        Download PDF
+    </button>
+
+    <button id="print-button" style="padding:4px">Print</button>
+</div>
+
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+
+            $("#download-button").click(async function () {
+        const { jsPDF } = window.jspdf;
+        const element = document.querySelector("#details-container");
+
+        const canvas = await html2canvas(element, {
+            scale: 3,
+            useCORS: true,
+            windowWidth: element.scrollWidth,
+            windowHeight: element.scrollHeight,
+        });
+
+        const imgData = canvas.toDataURL("image/png");
+        const pdf = new jsPDF("p", "mm", "a4");
+
+        const pdfWidth = pdf.internal.pageSize.getWidth();
+        const pdfHeight = pdf.internal.pageSize.getHeight();
+
+        pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, (canvas.height * pdfWidth) / canvas.width);
+        pdf.save("PFMS_Form.pdf");
+    });
+
+
+</script>
+
+<script>
+    $(document).ready(function () {
+        $("#print-button").click(function () {
+            var printContents = document.getElementById("details-container").innerHTML;
+            var originalContents = document.body.innerHTML;
+
+            document.body.innerHTML = printContents;
+            window.print();
+            document.body.innerHTML = originalContents;
+            location.reload();
+        });
+    });
+
+</script>
+
+
+
+
+
 
 
