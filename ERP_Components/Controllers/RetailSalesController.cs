@@ -227,16 +227,16 @@ namespace ERP_Components.Controllers
         public IActionResult Barcode()
         {
             //RetailItemModel retail = retailsalesServices.CustomerBillAddressData();
-            List<Item> products = retailsalesServices.FindProducts();
-            return View(products);
+            //List<Item> products = retailsalesServices.FindProducts();
+            //return View(products);
+            return View();
         }
 
-        public JsonResult GenerateBarcode(Guid itemId)
-        {
+        public JsonResult GenerateBarcode(Guid item) {
             string imageUrl;
             try
             {
-                GeneratedBarcode barcode = BarcodeWriter.CreateBarcode(itemId.ToString(), BarcodeWriterEncoding.Code128);
+                GeneratedBarcode barcode = BarcodeWriter.CreateBarcode(item.ToString(), BarcodeWriterEncoding.Code128);
                 barcode.ResizeTo(400, 120);
                 barcode.AddBarcodeValueTextBelowBarcode();
                 // Styling a Barcode and adding annotation text
@@ -248,9 +248,14 @@ namespace ERP_Components.Controllers
                     Directory.CreateDirectory(path);
                 }
                 string filePath = Path.Combine(_environment.WebRootPath, "GeneratedBarcode/barcode.png");
+                if (System.IO.File.Exists(filePath))
+                {
+                    System.IO.File.Delete(filePath);
+                }
                 barcode.SaveAsPng(filePath);
                 string fileName = Path.GetFileName(filePath);
                 imageUrl = $"{this.Request.Scheme}://{this.Request.Host}{this.Request.PathBase}" + "/GeneratedBarcode/" + fileName;
+                Console.WriteLine(imageUrl);
             }
             catch (Exception)
             {
@@ -258,7 +263,5 @@ namespace ERP_Components.Controllers
             }
             return Json(new {ImageUrl = imageUrl});
         }
-
-
     }
 }

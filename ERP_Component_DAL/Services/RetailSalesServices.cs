@@ -851,7 +851,7 @@ namespace ERP_Component_DAL.Services
             {
                 using (SqlConnection connection = new SqlConnection(_connectionString))
                 {
-                    string query = "SELECT it.ItemName, it.ItemId, it.Specification FROM Items it\r\nWHERE ItemType = 1 AND Specification NOT LIKE 'Unfinished%'";
+                    string query = "SELECT it.ItemId, it.ItemName, it.Specification, it.HSN, it.SKU, it.ItemCode, pr.MRP, (ISNULL((SELECT TOP 1 ArrivalDate FROM LotBatch WHERE ItemId = it.ItemId), GETDATE())) FROM Items it\r\nJOIN ProductPrice pr ON it.ItemId=pr.ProductID\r\nWHERE ItemType = 1 AND Specification NOT LIKE 'Unfinished%'\r\n";
                     connection.Open();
                     using (SqlCommand cmd = new SqlCommand(query, connection))
                     {

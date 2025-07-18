@@ -19,6 +19,11 @@ namespace ERP_Component_DAL.Models
         public string? unitOfMeasure { get; set; }
         public Category? category { get; set; }
         public SubCategory? subCategory { get; set; }
-        
+        public decimal price { get; set; }
+        public DateOnly manufacturingDate { get; set; }
+        public override string? ToString()
+        {
+            return $"{itemName}-{specification}-{hsn}-{sku}-{price}-{manufacturingDate.ToString()}";
+        }
     }
 }
