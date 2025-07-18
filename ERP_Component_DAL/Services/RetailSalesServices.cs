@@ -407,7 +407,6 @@ namespace ERP_Component_DAL.Services
                     CommandType = System.Data.CommandType.Text,
                     CommandText = @"
                 SELECT 
-                    rl.CreatedAT,
                     rc.CustomerName,
                     I.ItemName,
                     rl.Quantity,
@@ -447,7 +446,9 @@ namespace ERP_Component_DAL.Services
                         MRP = reader["MRP"] != DBNull.Value ? Convert.ToDecimal(reader["MRP"]) : 0m,
                         GrossTotal = reader["GrossTotal"] != DBNull.Value ? Convert.ToDecimal(reader["GrossTotal"]) : 0m,
                         NetTotal = reader["NetTotal"] != DBNull.Value ? Convert.ToDecimal(reader["NetTotal"]) : 0m,
-                        GST = reader["GST"] != DBNull.Value ? Convert.ToDecimal(reader["GST"]) : 0m
+                        GST = reader["GST"] != DBNull.Value ? Convert.ToDecimal(reader["GST"]) : 0m,
+                        CreatedAt = reader["CreatedAt"] != DBNull.Value ? ((DateTime)reader["CreatedAt"]).Date : default(DateTime),
+
                     });
                 }
 

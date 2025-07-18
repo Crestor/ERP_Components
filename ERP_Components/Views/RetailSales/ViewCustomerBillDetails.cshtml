@@ -84,9 +84,11 @@
 
         <hr style="border-top: 1px dashed #000;" />
 
-        <p>Name: <span id="billCustomerName">@Model.CustomerName</span></p>
-        <p>Date: <span id="billDate">@DateTime.Now.ToString("dd/MM/yyyy")</span></p>
-        <p>Time: <span id="billTime">@DateTime.Now.ToString("HH:mm")</span> | Bill No: <span id="billNo">1309</span></p>
+        @* <p>Name: <span id="billCustomerName">@Model.CustomerName</span></p> *@
+        <p>Name: <span id="billCustomerName">@Model.retailItem?.FirstOrDefault()?.CustomerName</span></p>
+        <p>Date: <span id="billDate">@Model.retailItem?.FirstOrDefault()?.CreatedAt.ToString("yyyy-MM-dd")</span></p>
+        <p>Time: <span id="billTime">@Model.retailItem?.FirstOrDefault()?.CreatedAt.ToString("HH:mm:ss")</span> | Bill No: <span id="billNo">1309</span></p>
+
 
         <hr style="border-top: 1px dashed #000;" />
 

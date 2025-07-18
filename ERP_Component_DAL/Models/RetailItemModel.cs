@@ -4,6 +4,7 @@ namespace ERP_Component_DAL.Models
 {
  public class RetailItemModel
     {
+        public DateTime CreatedAt { get; set; }
         public string ItemName { get; set; }
         public decimal MRP { get; set; }
         public int Quantity { get; set; }
