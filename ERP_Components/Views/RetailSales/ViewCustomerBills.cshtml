@@ -32,9 +32,25 @@
 		display: none;
 		border-left: 1px solid #ccc;
 	}
+
 </style>
+<div class="form-section">
+	<div class="form-row w-50" style="gap:10px">
+		<label for="searchContact">Search by Contact Number:</label>
+		<input type="text" id="searchContact" placeholder="Enter contact number" />
+		@* <div class="button"> *@
+		<button type="button" onclick="filterSingleMatchByContact()">Search</button>
+		@* </div> *@
+	</div>
+</div>
+
 <div class="container-main">
+	
 	<div class="table">
+
+		
+	
+
 
 	<table>
 		<thead>
@@ -118,7 +134,38 @@
     </div>
 </div>
 
+<script>
+	function filterSingleMatchByContact() {
+		const input = document.getElementById("searchContact").value.trim();
+		const rows = document.querySelectorAll("#geeks tr");
+
+		let firstMatchFound = false;
+
+		rows.forEach(row => {
+			const contactCell = row.cells[2]; // Contact number column
+
+			if (contactCell) {
+				const contactText = contactCell.textContent.trim();
+
+				if (!firstMatchFound && contactText === input && input !== "") {
+					row.style.display = "";
+					firstMatchFound = true;
+				} else {
+					row.style.display = "none";
+				}
+			}
+		});
+
+		// If input is empty, show all rows
+		if (input === "") {
+			rows.forEach(row => row.style.display = "");
+		}
+	}
+</script>
+
+
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 <script>
     $(document).on("click", ".view-history", function () {
         var customerId = $(this).data("id");
