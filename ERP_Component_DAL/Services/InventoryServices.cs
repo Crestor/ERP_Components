@@ -3214,6 +3214,22 @@ namespace ERP_Component_DAL.Services
             }
             return purchaseItems;
         }
+
+        //TODO: Complete this
+        public List<Store_PR> FindStorePRByRequisitionID(Guid requisitionId)
+        {
+            List<Store_PR> store_PRs = new List<Store_PR>();
+            //try
+            //{
+            //    using(SqlConnection connection=new SqlConnection(_connectionString))
+            //    {
+            //        string query = "SELECT * FROM Store_PR WHERE RequisitionID = @RequisitionID"
+            //    }
+            //}
+
+
+            return store_PRs;
+        }
     }
 
 }

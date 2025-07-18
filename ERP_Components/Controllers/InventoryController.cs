@@ -727,11 +727,14 @@ namespace ERP_Components.Controllers
 
 
         //--------"View Order Status"-------//
+
+        //TODO: Map this with front-end
         public IActionResult ViewItemsStatus()
         {
             //List<AddPurchaseRequisition> requisitions = inventoryServices.ViewSentRequisitions();
             //return View(requisitions);
-            return View();
+            List<Requisition> requisitions = centerlizedService.FindRequisitionsByType(RequisitionTypes.STORE_REQUISITION);
+            return View(requisitions);
         }
 
         public JsonResult ViewRequisitionItemsStatus(Guid requisitionId)
@@ -739,7 +742,8 @@ namespace ERP_Components.Controllers
 
             //List<AddPurchaseRequisition> lists = inventoryServices.GetRequisitionItemsListStatus(requisitionId);
             //return Json(new { list = lists });
-            return Json(requisitionId);
+            List<Store_PR> store_PRs = inventoryServices.FindStorePRByRequisitionID(requisitionId);
+            return Json(store_PRs);
 
         }
 

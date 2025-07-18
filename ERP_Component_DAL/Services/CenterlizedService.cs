@@ -151,9 +151,44 @@ namespace ERP_Component_DAL.Services
         }
 
         //TODO: 
-        public List<Requisition> FindRequisitionsByType()
+        public List<Requisition> FindRequisitionsByType(RequisitionTypes type)
         {
-            throw new NotImplementedException();
+            List<Requisition> requisitions = new List<Requisition>();
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(_connectionString))
+                {
+                    string query = "SELECT RequisitionID, [Description], CreatedAt, RequisitionSeries, RequisitionStatus, RequisitionType FROM Requisitions WHERE RequisitionType = @Type";
+                    connection.Open();
+                    using (SqlCommand cmd = new SqlCommand(query, connection))
+                    {
+                        cmd.Parameters.AddWithValue("@Type", (byte)type);
+                        using (SqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                Requisition req = new Requisition
+                                {
+                                    requisitionId = reader.GetGuid(reader.GetOrdinal("RequisitionID")),
+                                    // Ensure column names match what's selected in the query and type casting is correct
+                                    requisitionSeries = reader.IsDBNull(reader.GetOrdinal("RequisitionSeries")) ? null : reader.GetString(reader.GetOrdinal("RequisitionSeries")),
+                                    description = reader.IsDBNull(reader.GetOrdinal("Description")) ? null : reader.GetString(reader.GetOrdinal("Description")),
+                                    createdAt = reader.GetDateTime(reader.GetOrdinal("CreatedAt")),
+                                    requisitionType = (RequisitionTypes)reader.GetByte(reader.GetOrdinal("RequisitionType")),
+                                    requisitionStatus = (RequisitionStatus)reader.GetByte(reader.GetOrdinal("RequisitionStatus"))
+                                    // requisitionItems and items lists are not populated by this query
+                                };
+                                requisitions.Add(req);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+            return requisitions;
         }
 
         public void UpdateRequisitionStatus(Guid requisitionId, RequisitionStatus requisitionStatus)
