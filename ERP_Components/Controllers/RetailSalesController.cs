@@ -237,7 +237,7 @@ namespace ERP_Components.Controllers
             try
             {
                 GeneratedBarcode barcode = BarcodeWriter.CreateBarcode(item.ToString(), BarcodeWriterEncoding.Code128);
-                barcode.ResizeTo(400, 120);
+                barcode.ResizeTo(500, 120);
                 barcode.AddBarcodeValueTextBelowBarcode();
                 // Styling a Barcode and adding annotation text
                 barcode.ChangeBarCodeColor(Color.Black);
@@ -247,7 +247,7 @@ namespace ERP_Components.Controllers
                 {
                     Directory.CreateDirectory(path);
                 }
-                string filePath = Path.Combine(_environment.WebRootPath, "GeneratedBarcode/barcode.png");
+                string filePath = Path.Combine(_environment.WebRootPath, $"GeneratedBarcode/{item.GetHashCode()}.png");
                 if (System.IO.File.Exists(filePath))
                 {
                     System.IO.File.Delete(filePath);
