@@ -556,7 +556,7 @@ namespace ERP_Components.Controllers
         {
             BusinessSetUp businessSetUp = managerServices.FindCompanyDetails();
             //Yaha ye model paas karlena
-            return View();
+            return View(businessSetUp);
         }
         public IActionResult BussinessSetUpDetails(BusinessSetUp bussinessSetup)
         {

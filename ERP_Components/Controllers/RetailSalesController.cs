@@ -221,7 +221,7 @@ namespace ERP_Components.Controllers
         {
             Guid CenterID = Guid.Parse(HttpContext.Session.GetString("CenterID"));
             centerlizedService.SaveRequisition(salesForecast, CenterID, RequisitionTypes.SALES_FORECAST_RETAIL_STORE);
-            return RedirectToAction("Salesforecasting");
+            return RedirectToAction("RetailSalesforecasting");
         }
 
         public IActionResult Barcode()

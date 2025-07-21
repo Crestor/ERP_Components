@@ -709,7 +709,7 @@ input::placeholder{
 img{
     height:auto;
     width:auto;
-/*    margin-bottom:60px;*/
+    margin-bottom:60px;
 }
 .overlay2 {
     position: fixed;

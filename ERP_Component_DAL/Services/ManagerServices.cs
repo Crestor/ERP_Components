@@ -2155,12 +2155,12 @@ namespace ERP_Component_DAL.Services
 
                         using (SqlCommand cmd = new SqlCommand(addressQuery, connection, transaction))
                         {
-                            cmd.Parameters.AddWithValue("@Country", bussinessSetup.Country ?? (object)DBNull.Value);
-                            cmd.Parameters.AddWithValue("@State", bussinessSetup.State ?? (object)DBNull.Value);
-                            cmd.Parameters.AddWithValue("@District", bussinessSetup.District ?? (object)DBNull.Value);
-                            cmd.Parameters.AddWithValue("@City", bussinessSetup.City ?? (object)DBNull.Value);
-                            cmd.Parameters.AddWithValue("@Pincode", bussinessSetup.PinCode ?? (object)DBNull.Value);
-                            cmd.Parameters.AddWithValue("@AddressLine1", bussinessSetup.Address ?? (object)DBNull.Value);
+                            cmd.Parameters.AddWithValue("@Country", bussinessSetup.address.Country ?? (object)DBNull.Value);
+                            cmd.Parameters.AddWithValue("@State", bussinessSetup.address.State ?? (object)DBNull.Value);
+                            cmd.Parameters.AddWithValue("@District", bussinessSetup.address.District ?? (object)DBNull.Value);
+                            cmd.Parameters.AddWithValue("@City", bussinessSetup.address.City ?? (object)DBNull.Value);
+                            cmd.Parameters.AddWithValue("@Pincode", bussinessSetup.address.Pincode ?? (object)DBNull.Value);
+                            cmd.Parameters.AddWithValue("@AddressLine1", bussinessSetup.address.AddressLine1 ?? (object)DBNull.Value);
 
                             addressId = Convert.ToInt32(cmd.ExecuteScalar());
                         }
@@ -2203,8 +2203,9 @@ namespace ERP_Component_DAL.Services
             {
                 using (SqlConnection connection = new SqlConnection(_connectionString))
                 {
-                    string query = @"SELECT c.CompanyID, c.CompanyName, c.Phone, c.AlternatePhone, c.Email, c.GST, c.CIN, c.PAN, c.TAN 
-                                     a.Country, a.State, a.District, a.City, a.Pincode, a.AddressLine1 Company c JOIN Address a ON c.AdressID = c.AddressID";
+                    string query = @"   SELECT c.CompanyID, c.CompanyName, c.Phone, c.AlternatePhone, c.Email, c.GSTIN, c.CIN, c.PAN, c.TAN, 
+                                         a.Country, a.State, a.District, a.City, a.Pincode, a.AddressLine1 
+                                             FROM Company c JOIN Address a ON c.AddressID = a.AddressID";
                     connection.Open();
                     using (SqlCommand cmd = new SqlCommand(query, connection))
                     {
@@ -2218,7 +2219,7 @@ namespace ERP_Component_DAL.Services
                                     Email = reader.GetString("Email"),
                                     Mobile = reader.GetString("Phone"),
                                     AlternateMobile = reader.GetString("AlternatePhone"),
-                                    GstIn = reader.GetString("GST"),
+                                    GstIn = reader.GetString("GSTIN"),
                                     CIN = reader.GetString("CIN"),
                                     PAN = reader.GetString("PAN"),
                                     TAN = reader.GetString("TAN"),
