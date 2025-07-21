@@ -2135,6 +2135,118 @@ namespace ERP_Component_DAL.Services
         }
 
 
+        public void SaveCompanyDetails(BusinessSetUp bussinessSetup)
+        {
+            SqlTransaction transaction = null;
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                try 
+                {     
+                    connection.Open();
+                    using (transaction = connection.BeginTransaction())
+                    {
+
+                        string addressQuery = @"
+                        INSERT INTO Address(Country, State, District, City, Pincode, AddressLine1)
+                        VALUES(@Country, @State, @District, @City, @Pincode, @AddressLine1);
+                        SELECT SCOPE_IDENTITY();";
+
+                        int addressId;
+
+                        using (SqlCommand cmd = new SqlCommand(addressQuery, connection, transaction))
+                        {
+                            cmd.Parameters.AddWithValue("@Country", bussinessSetup.Country ?? (object)DBNull.Value);
+                            cmd.Parameters.AddWithValue("@State", bussinessSetup.State ?? (object)DBNull.Value);
+                            cmd.Parameters.AddWithValue("@District", bussinessSetup.District ?? (object)DBNull.Value);
+                            cmd.Parameters.AddWithValue("@City", bussinessSetup.City ?? (object)DBNull.Value);
+                            cmd.Parameters.AddWithValue("@Pincode", bussinessSetup.PinCode ?? (object)DBNull.Value);
+                            cmd.Parameters.AddWithValue("@AddressLine1", bussinessSetup.Address ?? (object)DBNull.Value);
+
+                            addressId = Convert.ToInt32(cmd.ExecuteScalar());
+                        }
+
+                        string companyQuery = @"
+                        INSERT INTO Company (CompanyName, AddressID, Phone, AlternatePhone, Email, GSTIN, PAN, CIN, TAN)
+                        VALUES (@CompanyName, @AddressID, @Phone, @AlternatePhone, @Email, @GSTIN, @PAN, @CIN, @TAN)";
+
+                        using (SqlCommand cmd = new SqlCommand(companyQuery, connection, transaction))
+                        {
+                            cmd.Parameters.AddWithValue("@CompanyName", bussinessSetup.BussinessName ?? (object)DBNull.Value);
+                            cmd.Parameters.AddWithValue("@AddressID", addressId); // Use the int AddressID here
+                            cmd.Parameters.AddWithValue("@Phone", bussinessSetup.Mobile ?? (object)DBNull.Value);
+                            cmd.Parameters.AddWithValue("@AlternatePhone", bussinessSetup.AlternateMobile ?? (object)DBNull.Value);
+                            cmd.Parameters.AddWithValue("@Email", bussinessSetup.Email ?? (object)DBNull.Value);
+                            cmd.Parameters.AddWithValue("@GSTIN", bussinessSetup.GstIn ?? (object)DBNull.Value);
+                            cmd.Parameters.AddWithValue("@PAN", bussinessSetup.PAN ?? (object)DBNull.Value);
+                            cmd.Parameters.AddWithValue("@CIN", bussinessSetup.CIN ?? (object)DBNull.Value);
+                            cmd.Parameters.AddWithValue("@TAN", bussinessSetup.TAN ?? (object)DBNull.Value);
+
+                            cmd.ExecuteNonQuery();
+                        }
+
+                        transaction.Commit();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    transaction?.Rollback();
+                    throw;
+                }
+            }
+            
+        }
+
+        public BusinessSetUp FindCompanyDetails()
+        {
+            BusinessSetUp businessSetUp;
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(_connectionString))
+                {
+                    string query = @"SELECT c.CompanyID, c.CompanyName, c.Phone, c.AlternatePhone, c.Email, c.GST, c.CIN, c.PAN, c.TAN 
+                                     a.Country, a.State, a.District, a.City, a.Pincode, a.AddressLine1 Company c JOIN Address a ON c.AdressID = c.AddressID";
+                    connection.Open();
+                    using (SqlCommand cmd = new SqlCommand(query, connection))
+                    {
+                        using (SqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            if (reader.Read())
+                                businessSetUp = new BusinessSetUp
+                                {
+                                    CompanyID = reader.GetGuid("CompanyID"),
+                                    BussinessName = reader.GetString("CompanyName"),
+                                    Email = reader.GetString("Email"),
+                                    Mobile = reader.GetString("Phone"),
+                                    AlternateMobile = reader.GetString("AlternatePhone"),
+                                    GstIn = reader.GetString("GST"),
+                                    CIN = reader.GetString("CIN"),
+                                    PAN = reader.GetString("PAN"),
+                                    TAN = reader.GetString("TAN"),
+                                    address = new Address
+                                    {
+                                        Country = reader.GetString("Country"),
+                                        State = reader.GetString("State"),
+                                        District = reader.GetString("District"),
+                                        City = reader.GetString("City"),
+                                        Pincode = reader.GetString("Pincode"),
+                                        AddressLine1 = reader.GetString("AddressLine1")
+                                    }
+
+                                };
+                            else
+                                throw new Exception("No Business Details Available");
+                        }
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            return businessSetUp;
+        }
+
+
 
         //public List<VendorQuotationItem> GetRequisitionItems(Guid RequisitionID)
         //{
