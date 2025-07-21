@@ -1,15 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using System.Reflection.Metadata.Ecma335;
-using System.Text;
-using System.Threading.Tasks;
-using ERP_Component_DAL.Models;
+﻿using ERP_Component_DAL.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
+using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Linq;
 using System.Numerics;
+using System.Reflection.Metadata.Ecma335;
+using System.Text;
+using System.Threading.Tasks;
+using System.Transactions;
 
 
 
@@ -2135,65 +2136,107 @@ namespace ERP_Component_DAL.Services
         }
 
 
-        public void SaveCompanyDetails(BusinessSetUp bussinessSetup)
+        public void SaveCompanyDetails(BusinessSetUp businessSetup)
         {
-            SqlTransaction transaction = null;
             using (var connection = new SqlConnection(_connectionString))
-            {
-                try 
-                {     
-                    connection.Open();
-                    using (transaction = connection.BeginTransaction())
+            {    
+                connection.Open();
+                using (SqlTransaction transaction = connection.BeginTransaction())
                     {
-
-                        string addressQuery = @"
-                        INSERT INTO Address(Country, State, District, City, Pincode, AddressLine1)
-                        VALUES(@Country, @State, @District, @City, @Pincode, @AddressLine1);
-                        SELECT SCOPE_IDENTITY();";
-
-                        int addressId;
-
-                        using (SqlCommand cmd = new SqlCommand(addressQuery, connection, transaction))
+                        try 
                         {
-                            cmd.Parameters.AddWithValue("@Country", bussinessSetup.address.Country ?? (object)DBNull.Value);
-                            cmd.Parameters.AddWithValue("@State", bussinessSetup.address.State ?? (object)DBNull.Value);
-                            cmd.Parameters.AddWithValue("@District", bussinessSetup.address.District ?? (object)DBNull.Value);
-                            cmd.Parameters.AddWithValue("@City", bussinessSetup.address.City ?? (object)DBNull.Value);
-                            cmd.Parameters.AddWithValue("@Pincode", bussinessSetup.address.Pincode ?? (object)DBNull.Value);
-                            cmd.Parameters.AddWithValue("@AddressLine1", bussinessSetup.address.AddressLine1 ?? (object)DBNull.Value);
+                            if (businessSetup.CompanyID == Guid.Empty)
+                                InsertCompanyDetails(businessSetup, connection, transaction);
+                            else
+                                UpdateCompanyDetails(businessSetup, connection, transaction);
 
-                            addressId = Convert.ToInt32(cmd.ExecuteScalar());
+                                
                         }
-
-                        string companyQuery = @"
-                        INSERT INTO Company (CompanyName, AddressID, Phone, AlternatePhone, Email, GSTIN, PAN, CIN, TAN)
-                        VALUES (@CompanyName, @AddressID, @Phone, @AlternatePhone, @Email, @GSTIN, @PAN, @CIN, @TAN)";
-
-                        using (SqlCommand cmd = new SqlCommand(companyQuery, connection, transaction))
-                        {
-                            cmd.Parameters.AddWithValue("@CompanyName", bussinessSetup.BussinessName ?? (object)DBNull.Value);
-                            cmd.Parameters.AddWithValue("@AddressID", addressId); // Use the int AddressID here
-                            cmd.Parameters.AddWithValue("@Phone", bussinessSetup.Mobile ?? (object)DBNull.Value);
-                            cmd.Parameters.AddWithValue("@AlternatePhone", bussinessSetup.AlternateMobile ?? (object)DBNull.Value);
-                            cmd.Parameters.AddWithValue("@Email", bussinessSetup.Email ?? (object)DBNull.Value);
-                            cmd.Parameters.AddWithValue("@GSTIN", bussinessSetup.GstIn ?? (object)DBNull.Value);
-                            cmd.Parameters.AddWithValue("@PAN", bussinessSetup.PAN ?? (object)DBNull.Value);
-                            cmd.Parameters.AddWithValue("@CIN", bussinessSetup.CIN ?? (object)DBNull.Value);
-                            cmd.Parameters.AddWithValue("@TAN", bussinessSetup.TAN ?? (object)DBNull.Value);
-
-                            cmd.ExecuteNonQuery();
-                        }
-
-                        transaction.Commit();
+                        catch (Exception) { transaction.Rollback(); throw; }    
                     }
-                }
-                catch (Exception ex)
-                {
-                    transaction?.Rollback();
-                    throw;
-                }
             }
             
+        }
+        private void InsertCompanyDetails(BusinessSetUp businessSetup, SqlConnection connection, SqlTransaction transaction)
+        {
+            string addressQuery = @"INSERT INTO Address(Country, State, District, City, Pincode, AddressLine1)
+                                    OUTPUT INSERTED.AddressID
+                                    VALUES(@Country, @State, @District, @City, @Pincode, @AddressLine1);";
+
+            int addressId;
+
+            using (SqlCommand cmd = new SqlCommand(addressQuery, connection, transaction))
+            {
+                cmd.Parameters.AddWithValue("@Country", businessSetup.address.Country ?? (object)DBNull.Value);
+                cmd.Parameters.AddWithValue("@State", businessSetup.address.State ?? (object)DBNull.Value);
+                cmd.Parameters.AddWithValue("@District", businessSetup.address.District ?? (object)DBNull.Value);
+                cmd.Parameters.AddWithValue("@City", businessSetup.address.City ?? (object)DBNull.Value);
+                cmd.Parameters.AddWithValue("@Pincode", businessSetup.address.Pincode ?? (object)DBNull.Value);
+                cmd.Parameters.AddWithValue("@AddressLine1", businessSetup.address.AddressLine1 ?? (object)DBNull.Value);
+
+                addressId = Convert.ToInt32(cmd.ExecuteScalar());
+            }
+
+            string companyQuery = @"INSERT INTO Company (CompanyName, AddressID, Phone, AlternatePhone, Email, GSTIN, PAN, CIN, TAN)
+                                    VALUES (@CompanyName, @AddressID, @Phone, @AlternatePhone, @Email, @GSTIN, @PAN, @CIN, @TAN)";
+
+            using (SqlCommand cmd = new SqlCommand(companyQuery, connection, transaction))
+            {
+                cmd.Parameters.AddWithValue("@CompanyName", businessSetup.BussinessName ?? (object)DBNull.Value);
+                cmd.Parameters.AddWithValue("@AddressID", addressId);
+                cmd.Parameters.AddWithValue("@Phone", businessSetup.Mobile ?? (object)DBNull.Value);
+                cmd.Parameters.AddWithValue("@AlternatePhone", businessSetup.AlternateMobile ?? (object)DBNull.Value);
+                cmd.Parameters.AddWithValue("@Email", businessSetup.Email ?? (object)DBNull.Value);
+                cmd.Parameters.AddWithValue("@GSTIN", businessSetup.GstIn ?? (object)DBNull.Value);
+                cmd.Parameters.AddWithValue("@PAN", businessSetup.PAN ?? (object)DBNull.Value);
+                cmd.Parameters.AddWithValue("@CIN", businessSetup.CIN ?? (object)DBNull.Value);
+                cmd.Parameters.AddWithValue("@TAN", businessSetup.TAN ?? (object)DBNull.Value);
+
+                cmd.ExecuteNonQuery();
+            }
+
+            transaction.Commit();
+        }
+
+        private void UpdateCompanyDetails(BusinessSetUp businessSetup, SqlConnection connection, SqlTransaction transaction)
+        {
+            string addressQuery = @"UPDATE Address SET Country = @Country, State=@State, District=@District, 
+                                    City=@City,Pincode=@Pincode, AddressLine1=@AddressLine1;";
+
+            int addressId;
+
+            using (SqlCommand cmd = new SqlCommand(addressQuery, connection, transaction))
+            {
+                cmd.Parameters.AddWithValue("@Country", businessSetup.address.Country ?? (object)DBNull.Value);
+                cmd.Parameters.AddWithValue("@State", businessSetup.address.State ?? (object)DBNull.Value);
+                cmd.Parameters.AddWithValue("@District", businessSetup.address.District ?? (object)DBNull.Value);
+                cmd.Parameters.AddWithValue("@City", businessSetup.address.City ?? (object)DBNull.Value);
+                cmd.Parameters.AddWithValue("@Pincode", businessSetup.address.Pincode ?? (object)DBNull.Value);
+                cmd.Parameters.AddWithValue("@AddressLine1", businessSetup.address.AddressLine1 ?? (object)DBNull.Value);
+
+                addressId = Convert.ToInt32(cmd.ExecuteScalar());
+            }
+
+            string companyQuery = @"UPDATE Company SET CompanyName=@CompanyName, AddressID=@AddressID, Phone=@Phone,
+                                    AlternatePhone=@AlternatePhone, Email=@Email, GSTIN=@GSTIN, PAN=@PAN, CIN=@CIN, 
+                                    TAN=@TAN";
+
+            using (SqlCommand cmd = new SqlCommand(companyQuery, connection, transaction))
+            {
+                cmd.Parameters.AddWithValue("@CompanyName", businessSetup.BussinessName ?? (object)DBNull.Value);
+                cmd.Parameters.AddWithValue("@AddressID", addressId);
+                cmd.Parameters.AddWithValue("@Phone", businessSetup.Mobile ?? (object)DBNull.Value);
+                cmd.Parameters.AddWithValue("@AlternatePhone", businessSetup.AlternateMobile ?? (object)DBNull.Value);
+                cmd.Parameters.AddWithValue("@Email", businessSetup.Email ?? (object)DBNull.Value);
+                cmd.Parameters.AddWithValue("@GSTIN", businessSetup.GstIn ?? (object)DBNull.Value);
+                cmd.Parameters.AddWithValue("@PAN", businessSetup.PAN ?? (object)DBNull.Value);
+                cmd.Parameters.AddWithValue("@CIN", businessSetup.CIN ?? (object)DBNull.Value);
+                cmd.Parameters.AddWithValue("@TAN", businessSetup.TAN ?? (object)DBNull.Value);
+
+                cmd.ExecuteNonQuery();
+            }
+
+            transaction.Commit();
         }
 
         public BusinessSetUp FindCompanyDetails()

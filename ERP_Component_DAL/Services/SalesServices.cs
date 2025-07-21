@@ -1412,7 +1412,7 @@ namespace ERP_Component_DAL.Services
                 cmd.Parameters.AddWithValue("@VehicleNumber", dispatch.VehicleNumber);
                 cmd.Parameters.AddWithValue("@TimeOfSupply", dispatch.TimeOfSupply);
                 cmd.Parameters.AddWithValue("@FreightCharges", dispatch.FreightCharges);
-                cmd.Parameters.AddWithValue("@InvoiceStatus", 1);
+                cmd.Parameters.AddWithValue("@InvoiceStatus", (byte)InvoiceStatus.DISPATCHED);
                 cmd.Connection = connection;
                 connection.Open();
                 cmd.ExecuteScalar();

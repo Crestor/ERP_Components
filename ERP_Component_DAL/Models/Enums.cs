@@ -59,4 +59,10 @@ namespace ERP_Component_DAL.Models
         PENDING = 1,
         MERGED_IN_PURCHASE_REQ = 2
     }
+
+    public enum InvoiceStatus
+    {
+        PENDING = 0,
+        DISPATCHED = 1
+    }
 }
