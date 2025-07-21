@@ -2883,5 +2883,57 @@ RequisitionStatus=1
 
             return form;
         }
+
+        public BusinessSetUp GetBusinessSetUp()
+        {
+            BusinessSetUp businessSetUp;
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(_connectionString))
+                {
+                    string query = @"   SELECT c.CompanyID, c.CompanyName, c.Phone, c.AlternatePhone, c.Email, c.GSTIN, c.CIN, c.PAN, c.TAN, 
+                                         a.Country, a.State, a.District, a.City, a.Pincode, a.AddressLine1 
+                                             FROM Company c JOIN Address a ON c.AddressID = a.AddressID";
+                    connection.Open();
+                    using (SqlCommand cmd = new SqlCommand(query, connection))
+                    {
+                        using (SqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            if (reader.Read())
+                                businessSetUp = new BusinessSetUp
+                                {
+                                    CompanyID = reader.GetGuid("CompanyID"),
+                                    BussinessName = reader.GetString("CompanyName"),
+                                    Email = reader.GetString("Email"),
+                                    Mobile = reader.GetString("Phone"),
+                                    AlternateMobile = reader.GetString("AlternatePhone"),
+                                    GstIn = reader.GetString("GSTIN"),
+                                    CIN = reader.GetString("CIN"),
+                                    PAN = reader.GetString("PAN"),
+                                    TAN = reader.GetString("TAN"),
+                                    address = new Address
+                                    {
+                                        Country = reader.GetString("Country"),
+                                        State = reader.GetString("State"),
+                                        District = reader.GetString("District"),
+                                        City = reader.GetString("City"),
+                                        Pincode = reader.GetString("Pincode"),
+                                        AddressLine1 = reader.GetString("AddressLine1")
+                                    }
+
+                                };
+                            else
+                                throw new Exception("No Business Details Available");
+                        }
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            return businessSetUp;
+        }
+
     }
 }

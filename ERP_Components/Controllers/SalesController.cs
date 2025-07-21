@@ -203,7 +203,7 @@ namespace ERP_Components.Controllers
             InvoiceView iv = new InvoiceView();
             iv.ProductView = salesServices.ViewInvoiceProd(QuotationID);
             iv.ListView = new List<Invoice>
-        {
+            {
 
             salesServices.EditInvoice(InvoiceID),
             salesServices.ViewShippedTo(InvoiceID),
@@ -211,12 +211,8 @@ namespace ERP_Components.Controllers
             salesServices.ViewDispatchDetails(InvoiceID),
             salesServices.ViewCourierDetails(InvoiceID),
 
-        };
-
-
-
-
-
+            };
+            iv.BusinessSetUp = salesServices.GetBusinessSetUp();
             return View(iv);
         }
 

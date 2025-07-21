@@ -4,5 +4,7 @@
     {
         public List<Invoice> ProductView { get; set; }
         public List<Invoice> ListView { get; set; }
+
+        public BusinessSetUp BusinessSetUp { get; set; }
     }
 }
