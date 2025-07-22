@@ -275,6 +275,14 @@ namespace ERP_Components.Controllers
             productionServices.StartProduction(model);
            return RedirectToAction("StartProduction");
         }
-
+        public IActionResult AddProductionStages()
+        {
+            return View();
+        }
+        [HttpPost]
+        public IActionResult AddProductionStagesDetails(StageFormModel production)
+        {
+            return RedirectToAction("AddProductionStages");
+        }
     }
 }

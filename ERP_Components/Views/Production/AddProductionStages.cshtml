@@ -1,0 +1,113 @@
+﻿@model ERP_Component_DAL.Models.StageFormModel
+
+@{
+    ViewBag.Title = "Add Stages";
+    Layout = "~/Views/Shared/_LayoutINV.cshtml";
+}
+
+<link rel="stylesheet" href="~/css/Product.css" />
+
+<div class="form-section">
+    <h3>Add Work Stages</h3>
+
+    <form method="post" asp-controller="Production" asp-action="AddProductionStagesDetails" id="stageForm">
+        <div id="hiddenStagesContainer"></div>
+
+        <div id="currentStageInput" class="form-section border p-2 mb-3">
+            <div class="form-row mb-2">
+                <label class="pe-2 w-25">Stage Name</label>
+                <input type="text" id="stageName" />
+                <label class="pe-2 w-25">Work Input</label>
+                <input type="text" id="workInput" />
+            </div>
+
+            <div id="outputFields"></div>
+
+            <div class="button">
+                <button type="button" onclick="addOutput()">Add Output</button>
+            </div>
+
+            <div class="button">
+                <button type="button" onclick="saveStage()">Next Stage</button>
+            </div>
+        </div>
+
+        <table class="table table-bordered w-100 mt-3" id="stageSummaryTable" style="display:none;">
+            <thead>
+                <tr>
+                    <th>Stage Name</th>
+                    <th>Work Input</th>
+                    <th>Outputs</th>
+                </tr>
+            </thead>
+            <tbody id="stageSummaryBody"></tbody>
+        </table>
+
+        <div class="button">
+            <button type="submit">Submit</button>
+        </div>
+    </form>
+</div>
+
+<script>
+    let stageIndex = 0;
+
+    function addOutput() {
+        const outputContainer = document.getElementById("outputFields");
+        const outputCount = outputContainer.querySelectorAll("input").length;
+
+        const html = `
+            <div class="form-row">
+                <label>Output</label>
+                <input type="text" id="output-${outputCount}" />
+            </div>
+        `;
+        outputContainer.insertAdjacentHTML('beforeend', html);
+    }
+
+    function saveStage() {
+        const stageName = document.getElementById("stageName").value.trim();
+        const workInput = document.getElementById("workInput").value.trim();
+        const outputInputs = document.querySelectorAll("#outputFields input");
+
+        if (!stageName || !workInput || outputInputs.length === 0) {
+            alert("Please fill all fields and add at least one output.");
+            return;
+        }
+
+        const hiddenContainer = document.getElementById("hiddenStagesContainer");
+
+        let hiddenHtml = `
+            <input type="hidden" name="Stages[${stageIndex}].StageName" value="${stageName}" />
+            <input type="hidden" name="Stages[${stageIndex}].WorkInput" value="${workInput}" />
+        `;
+
+        outputInputs.forEach((el, i) => {
+            const val = el.value.trim();
+            if (val) {
+                hiddenHtml += `<input type="hidden" name="Stages[${stageIndex}].Outputs[${i}].OutputValue" value="${val}" />`;
+            }
+        });
+
+        hiddenContainer.insertAdjacentHTML('beforeend', hiddenHtml);
+
+        // Display in table
+        const outputList = Array.from(outputInputs).map(el => el.value.trim()).join(", ");
+        const rowHtml = `
+            <tr>
+                <td>${stageName}</td>
+                <td>${workInput}</td>
+                <td>${outputList}</td>
+            </tr>
+        `;
+        document.getElementById("stageSummaryBody").insertAdjacentHTML("beforeend", rowHtml);
+        document.getElementById("stageSummaryTable").style.display = "table";
+
+        // Clear input
+        document.getElementById("stageName").value = "";
+        document.getElementById("workInput").value = "";
+        document.getElementById("outputFields").innerHTML = "";
+
+        stageIndex++;
+    }
+</script>

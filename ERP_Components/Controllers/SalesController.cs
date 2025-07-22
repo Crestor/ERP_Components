@@ -215,12 +215,7 @@ namespace ERP_Components.Controllers
             iv.BusinessSetUp = salesServices.GetBusinessSetUp();
             return View(iv);
         }
-
-
-
-
-
-        //ProformaInvoice
+         //ProformaInvoice
         public IActionResult ManageProformaInvoice()
         {
             List<ProformaInvoice> IL = salesServices.ListProformaInvoice();
