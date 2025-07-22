@@ -322,7 +322,7 @@ namespace ERP_Component_DAL.Services
                 connection = new SqlConnection(connectionstring);
                 SqlCommand cmd = new();
                 cmd.CommandType = System.Data.CommandType.Text;
-                cmd.CommandText = $"SELECT pss.ProductID, pss.Stage, pss.StageTime, pss.StageWork, ISNULL(( SELECT ps.StatusName FROM ProductionProcess pp   JOIN ProductionStatuses ps ON pp.ProcessStatus = ps.ProductionStatus  WHERE pp.ProductionOrderID = '{productionOrderId}'   AND pp.ProductID = '{productId}' AND pp.Stage = pss.Stage ), 'PENDING') AS Status FROM ProductionStages pss WHERE pss.ProductID = '{productId}' ORDER BY pss.Stage;";
+                cmd.CommandText = $"SELECT pss.ProductID, pss.Stage, pss.StageTime, pss.StageWork, pss.InputProductID, pss.InputQuantity ISNULL(( SELECT ps.StatusName FROM ProductionProcess pp   JOIN ProductionStatuses ps ON pp.ProcessStatus = ps.ProductionStatus  WHERE pp.ProductionOrderID = '{productionOrderId}'   AND pp.ProductID = '{productId}' AND pp.Stage = pss.Stage ), 'PENDING') AS Status FROM ProductionStages pss WHERE pss.ProductID = '{productId}' ORDER BY pss.Stage;";
                 cmd.Connection = connection;
 
 
@@ -340,9 +340,8 @@ namespace ERP_Component_DAL.Services
                         stageTime = reader["StageTime"] != DBNull.Value ? (int)reader["StageTime"] : 0,
                         //stage = reader["Stage"] != DBNull.Value ? (Int32)reader["Stage"] : 0,
                         stage = reader["Stage"] != DBNull.Value ? (byte)reader["Stage"] : (byte)0,
-
-
-
+                        inputProductId = reader["InputProductID"] != DBNull.Value ? (Guid)reader["InputProductID"]: Guid.Empty,
+                        inputQuantity = reader["InputQuanity"] != DBNull.Value ? (decimal)reader["InputQuantity"]: 0.0m
                     });
                 }
 
@@ -833,7 +832,7 @@ RequisitionStatus=1
         }
 
 
-        public List<Production> GoToNextStage(Guid productionOrderId, Guid productId)
+        public List<Production> GoToNextStage(Guid productionOrderId, Guid productId, Guid outputProductID, decimal outputQuantity)
         {
             var materials = new List<Production>();
             try

@@ -27,7 +27,11 @@ namespace ERP_Component_DAL.Models
         public string? stageWork { get; set; }
         public string? materialName { get; set; }
         public string? unitOfMeasure { get; set; }
+        public Guid inputProductId { get; set; }
+        public decimal inputQuantity { get; set; }
+        public Guid outputProductId { get; set; }
 
+        public decimal outputQuantity { get; set; }
         public DateTime createdAt { get; set; }
 
 

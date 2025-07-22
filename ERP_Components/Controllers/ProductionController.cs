@@ -132,9 +132,9 @@ namespace ERP_Components.Controllers
             return View(product);
         }
 
-        public JsonResult GoToNextStage(Guid productionOrderId, Guid productId)
+        public JsonResult GoToNextStage(Guid productionOrderId, Guid productId, Guid outputProductID, decimal outputQuantity)
         {
-            var UpdatedStages = productionServices.GoToNextStage(productionOrderId, productId);
+            var UpdatedStages = productionServices.GoToNextStage(productionOrderId, productId, outputProductID, outputQuantity);
             return Json(UpdatedStages);
         }
 
