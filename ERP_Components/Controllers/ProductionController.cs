@@ -282,7 +282,12 @@ namespace ERP_Components.Controllers
             //List<Item> products = productionServices.FindItems(CenterId, ItemType.PRODUCT); // Will change this in free time to some thing more better
             List<Item> products = items.Where(material => material.itemName.Contains("Thread")).ToList();
             List<Item>  materials = items.Where(material => material.itemName.Contains("Yarn") || material.itemName.Contains("Cocoon")).ToList();
-            return View(new { materials = materials, products = products});
+            MaterialforProductionStage materialforProductionStage = new MaterialforProductionStage
+            {
+                materials = materials,
+                products = products
+            };
+            return View(materialforProductionStage);
         }
         [HttpPost]
         public IActionResult AddProductionStagesDetails(Guid productId, List<Stage> stages)
