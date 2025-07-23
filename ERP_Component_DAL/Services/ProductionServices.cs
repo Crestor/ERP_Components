@@ -1390,5 +1390,52 @@ RequisitionStatus=1
             }
             return list;
         }
+
+        public void SaveStages(Guid productId, List<Stage> stages)
+        {
+            using (SqlConnection connection = new SqlConnection(_connectionString))
+            {
+                connection.Open();
+                using (SqlTransaction transaction = connection.BeginTransaction())
+                {
+                    try
+                    {
+                        DataTable stagesTable = new DataTable();
+                        stagesTable.Columns.Add("ProductID", typeof(Guid));
+                        stagesTable.Columns.Add("Stage", typeof(byte));
+                        stagesTable.Columns.Add("StageWork", typeof(string));
+                        stagesTable.Columns.Add("StageTime", typeof(int));
+                        stages.ForEach(stage => stagesTable.Rows.Add(productId, stage.stage, stage.stageWork, stage.stageTime));
+                        using (SqlBulkCopy bulkCopy = new SqlBulkCopy(connection, SqlBulkCopyOptions.Default, transaction))
+                        {
+                            bulkCopy.DestinationTableName = "ProductionStages";
+                            bulkCopy.WriteToServer(stagesTable);
+                        }
+
+                        DataTable stageMaterials = new DataTable();
+                        stageMaterials.Columns.Add("Stage", typeof(byte));
+                        stageMaterials.Columns.Add("MaterialID", typeof(Guid));
+                        stageMaterials.Columns.Add("ProductID", typeof(Guid));
+                        stageMaterials.Columns.Add("Quantity", typeof(decimal));
+                        stageMaterials.Columns.Add("MaterialType", typeof(byte));
+                        stages.ForEach(stage => {
+                            stageMaterials.Rows.Add(stage.stage, stage?.inputMaterial?.materialId, productId, stage?.inputMaterial?.quantity, stage?.inputMaterial?.materialType());
+                            stage?.outputMaterial?.ForEach(material => stageMaterials.Rows.Add(stage.stage, material.materialId, productId, material.quantity, material.materialType()));
+                        });
+                        using (SqlBulkCopy bulkCopy = new SqlBulkCopy(connection, SqlBulkCopyOptions.Default, transaction))
+                        {
+                            bulkCopy.DestinationTableName = "StageMaterials";
+                            bulkCopy.WriteToServer(stageMaterials);
+                        }
+                            transaction.Commit();
+                    }
+                    catch (Exception)
+                    {
+                        transaction.Rollback();
+                        throw;
+                    }
+                }
+            }
+        }
     }
 }

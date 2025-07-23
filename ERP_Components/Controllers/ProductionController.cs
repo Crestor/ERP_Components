@@ -280,8 +280,8 @@ namespace ERP_Components.Controllers
             Guid CenterId = Guid.Parse(HttpContext.Session.GetString("CenterID"));
             List<Item> items =  productionServices.FindItems(CenterId, ItemType.MATERIAL); // will make it more reliable in future
             //List<Item> products = productionServices.FindItems(CenterId, ItemType.PRODUCT); // Will change this in free time to some thing more better
-            List<Item> products = items.Where(material => material.itemName.Contains("Thread")).ToList();
-            List<Item>  materials = items.Where(material => material.itemName.Contains("Yarn") || material.itemName.Contains("Cocoon")).ToList();
+            List<Item> materials = items.Where(material => material.itemName.Contains("Thread") || material.itemName.Contains("Cocoon")).ToList();
+            List<Item>  products = items.Where(material => material.itemName.Contains("Yarn")).ToList();
             MaterialforProductionStage materialforProductionStage = new MaterialforProductionStage
             {
                 materials = materials,
@@ -292,7 +292,13 @@ namespace ERP_Components.Controllers
         [HttpPost]
         public IActionResult AddProductionStagesDetails(Guid productId, List<Stage> stages)
         {
+            productionServices.SaveStages(productId, stages);
             return RedirectToAction("AddProductionStages");
+        }
+
+        public IActionResult? GetProductionStages()
+        {
+            return null;
         }
     }
 }
