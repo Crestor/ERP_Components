@@ -296,7 +296,7 @@ namespace ERP_Components.Controllers
             return RedirectToAction("AddProductionStages");
         }
 
-        public IActionResult GetProducts()
+        public IActionResult ViewProductionStagesDetail()
         {
             Guid CenterId = Guid.Parse(HttpContext.Session.GetString("CenterID"));
             List<Item> products = productionServices.FindItems(CenterId, ItemType.MATERIAL)
@@ -304,6 +304,10 @@ namespace ERP_Components.Controllers
                 .ToList();
 
             return View(products);
+        }
+        public JsonResult GetStagesDetails(Guid itemId)
+        {
+            return Json(itemId);
         }
     }
 }

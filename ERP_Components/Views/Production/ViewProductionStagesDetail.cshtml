@@ -1,0 +1,136 @@
+﻿@using ERP_Component_DAL.Models
+@model List<Item>
+
+@{
+    ViewBag.Title = "Production Stages Detail";
+    Layout = "~/Views/Shared/_LayoutINV.cshtml";
+}
+<link rel="stylesheet" href="~/css/Product.css" />
+
+
+<!-- 🟦 Card Layout -->
+<div class="row row-cols-1 row-cols-md-4 justify-content-center g-4">
+    @for (int i = 0; i < Model.Count; i++)
+    {
+        <div class="col">
+            <div class="card p-0" data-id="@Model[i].itemId">
+                <div class="card-header">
+                    <h5 class="align-self-center" style="color:#138496">@Model[i].itemName</h5>
+                </div>
+                <div class="card-body">
+                    <p>@Model[i].specification</p>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<!-- 🟧 Stage Modal -->
+<div class="modal" id="stageModal">
+    <div class="modal-content">
+        <span class="close-btn" onclick="closeStageModal()">X</span>
+        <h3>Production Stages</h3>
+        <div id="stageTableContainer"></div>
+    </div>
+</div>
+
+<!-- 🟨 Output Modal -->
+<div class="modal" id="outputModal">
+    <div class="modal-content">
+        <span class="close-btn" onclick="closeOutputModal()">X</span>
+        <h3>Output Details</h3>
+        <div id="outputTableContainer"></div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <script>
+        let currentStages = [];
+
+        $(document).ready(function () {
+            $('.card').on('click', function () {
+                const itemId = $(this).data('id');
+
+                $.ajax({
+                    url: '/Production/GetStagesDetails',
+                    type: 'GET',
+                    data: { itemId: itemId },
+                    success: function (response) {
+                        currentStages = response;
+                        showStagesInModal(response);
+                    },
+                    error: function () {
+                        alert('Failed to load stages.');
+                    }
+                });
+            });
+        });
+
+        function showStagesInModal(stages) {
+            let html = `
+                <table class="stage-table">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Stage Name</th>
+                            <th>Operator</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            `;
+
+            stages.forEach((stage, index) => {
+                html += `
+                    <tr>
+                        <td>${index + 1}</td>
+                        <td>${stage.stageName}</td>
+                        <td>${stage.operator}</td>
+                        <td><button onclick="showOutputModal(${index})">View Output</button></td>
+                    </tr>
+                `;
+            });
+
+            html += `</tbody></table>`;
+            $('#stageTableContainer').html(html);
+            $('#stageModal').fadeIn();
+        }
+
+        function showOutputModal(index) {
+            const outputData = currentStages[index].output;
+            let html = `
+                <table class="output-table">
+                    <thead>
+                        <tr>
+                            <th>Material</th>
+                            <th>Quantity</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            `;
+
+            outputData.forEach(row => {
+                html += `
+                    <tr>
+                        <td>${row.material}</td>
+                        <td>${row.qty}</td>
+                    </tr>
+                `;
+            });
+
+            html += `</tbody></table>`;
+            $('#outputTableContainer').html(html);
+            $('#outputModal').fadeIn();
+        }
+
+        function closeStageModal() {
+            $('#stageModal').fadeOut();
+        }
+
+        function closeOutputModal() {
+            $('#outputModal').fadeOut();
+        }
+    </script>
+}
