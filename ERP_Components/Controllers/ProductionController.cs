@@ -277,10 +277,12 @@ namespace ERP_Components.Controllers
         }
         public IActionResult AddProductionStages()
         {
+            //productionServices.FindMaterials(); // will make it more reliable in future
+            //productionServices.FindProducts(); // Will change this in free time to some thing more better
             return View();
         }
         [HttpPost]
-        public IActionResult AddProductionStagesDetails(StageFormModel production)
+        public IActionResult AddProductionStagesDetails(Guid productId, List<Stage> stages)
         {
             return RedirectToAction("AddProductionStages");
         }
