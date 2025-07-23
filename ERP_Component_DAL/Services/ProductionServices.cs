@@ -1351,5 +1351,44 @@ RequisitionStatus=1
                 throw;
             }
         }
+
+        public List<Item> FindItems(Guid CenterId, ItemType type)
+        {
+            List<Item> list = new List<Item>();
+            try
+            {
+
+                using (SqlConnection connection = new SqlConnection(_connectionString))
+                {
+                    string query = @"SELECT it.ItemName, it.ItemId, it.Specification FROM Items it ";
+                                     //JOIN Inventory i ON i.ItemID=it.ItemId
+                                     //WHERE it.ItemType = @Type AND i.CenterId = @CenterId";
+                    connection.Open();
+                    using (SqlCommand cmd = new SqlCommand(query, connection))
+                    {
+                        //cmd.Parameters.AddWithValue("@Type", type);
+                        //cmd.Parameters.AddWithValue("@CenterId", CenterId);
+                        using (SqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                list.Add(
+                                    new Item
+                                    {
+                                        itemId = reader.GetGuid("ItemId"),
+                                        itemName = reader.GetString("ItemName"),
+                                        specification = reader.GetString("Specification")
+                                    }
+                                    );
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception) {
+                throw;
+            }
+            return list;
+        }
     }
 }

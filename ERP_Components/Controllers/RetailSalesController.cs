@@ -1,6 +1,6 @@
 ﻿using ERP_Component_DAL.Models;
 using ERP_Component_DAL.Services;
-using IronBarCode;
+using IronBarCode; 
 using Microsoft.AspNetCore.Mvc;
 using System.Drawing;
 
