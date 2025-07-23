@@ -45,6 +45,7 @@ namespace ERP_Component_DAL.Models
     {   
         public byte stage { get; set; } // 1, 2, 3, 4
         public string? stageWork { get; set; }
+        public int stageTime { get; set; }    
         public InputMaterial? inputMaterial { get; set; }
         public List<OutputMaterial>? outputMaterial { get; set; }
 

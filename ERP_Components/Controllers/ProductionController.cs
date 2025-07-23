@@ -296,9 +296,14 @@ namespace ERP_Components.Controllers
             return RedirectToAction("AddProductionStages");
         }
 
-        public IActionResult? GetProductionStages()
+        public IActionResult GetProducts()
         {
-            return null;
+            Guid CenterId = Guid.Parse(HttpContext.Session.GetString("CenterID"));
+            List<Item> products = productionServices.FindItems(CenterId, ItemType.MATERIAL)
+                .Where(product => product.itemName.Contains("Yarn"))
+                .ToList();
+
+            return View(products);
         }
     }
 }
