@@ -307,7 +307,7 @@ namespace ERP_Components.Controllers
         }
         public JsonResult GetStagesDetails(Guid itemId)
         {
-            productionServices.FindStagesByProductId(itemId);
+            List<Stage> stages = productionServices.FindStagesByProductId(itemId);
             return Json(itemId);
         }
     }
