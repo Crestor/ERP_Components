@@ -340,8 +340,8 @@ namespace ERP_Component_DAL.Services
                         stageTime = reader["StageTime"] != DBNull.Value ? (int)reader["StageTime"] : 0,
                         //stage = reader["Stage"] != DBNull.Value ? (Int32)reader["Stage"] : 0,
                         stage = reader["Stage"] != DBNull.Value ? (byte)reader["Stage"] : (byte)0,
-                        inputProductId = reader["InputProductID"] != DBNull.Value ? (Guid)reader["InputProductID"]: Guid.Empty,
-                        inputQuantity = reader["InputQuanity"] != DBNull.Value ? (decimal)reader["InputQuantity"]: 0.0m
+                        inputProductId = reader["InputProductID"] != DBNull.Value ? (Guid)reader["InputProductID"] : Guid.Empty,
+                        inputQuantity = reader["InputQuanity"] != DBNull.Value ? (decimal)reader["InputQuantity"] : 0.0m
                     });
                 }
 
@@ -383,7 +383,7 @@ namespace ERP_Component_DAL.Services
 
         //                materialName = reader["Material"] != DBNull.Value ? (string)reader["Material"] : string.Empty,
         //                quantityRequired = reader["RequiredQuantity"] != DBNull.Value ? Convert.ToDecimal(reader["RequiredQuantity"]) : 0m,
-                      
+
 
         //            });
         //        }
@@ -416,7 +416,7 @@ namespace ERP_Component_DAL.Services
                 SqlCommand cmd = new();
                 cmd.CommandType = System.Data.CommandType.Text;
                 cmd.CommandText = $"SELECT it.ItemId, it.ItemName AS Material, CASE WHEN pmm.Quantity * po.Quantity - i.InStock < 0 THEN 0 ELSE pmm.Quantity * po.Quantity - i.InStock END AS RequiredQuantity FROM ProductMaterialMapping pmm JOIN ProductionOrder po ON pmm.ProductID = po.ProductID JOIN Inventory i ON i.ItemID = pmm.MaterialID JOIN Items it ON it.ItemId = pmm.MaterialID WHERE po.ProductionOrderID = '{productionOrderId}' AND i.InventoryCenter = 3 GROUP BY it.ItemId, it.ItemName,pmm.Quantity * po.Quantity - i.InStock";
-                
+
                 cmd.Connection = connection;
 
                 cmd.CommandTimeout = 300;
@@ -457,7 +457,7 @@ namespace ERP_Component_DAL.Services
             try
             {
                 string connectionString = configuration.GetConnectionString("DefaultConnectionString");
-                
+
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
                     string query = $"INSERT INTO ProductionProcess([ProductionOrderID],[ProductID],[Stage],[ProcessStatus])  VALUES('{production.productionOrderId}','{production.productId}',1,2)";
@@ -627,7 +627,7 @@ namespace ERP_Component_DAL.Services
             }
 
         }
-            //<--------------------Material Requistions--------------------->
+        //<--------------------Material Requistions--------------------->
 
 
         //    public List<Production> GetMaterialNames()
@@ -727,7 +727,7 @@ namespace ERP_Component_DAL.Services
 
                 cmd.Parameters.AddWithValue("@ItemID", product.materialId);
                 cmd.Parameters.AddWithValue("@RequisitionID", product.RequisitionID);
-       
+
                 cmd.Parameters.AddWithValue("@Quantity", product.quantityRequired);
 
                 cmd.Connection = connection;
@@ -771,7 +771,7 @@ RequisitionStatus=1
                 cmd2.Parameters.AddWithValue("@RequisitionSeries", Aq.RequisitionSeries ?? (object)DBNull.Value);
                 cmd2.Parameters.AddWithValue("@Description", Aq.Description);
                 cmd2.Parameters.AddWithValue("@RequisitionID", Aq.RequisitionID);
-            
+
                 connection.Open();
                 cmd2.ExecuteNonQuery();
                 connection.Close();
@@ -800,7 +800,7 @@ RequisitionStatus=1
                 SqlCommand cmd = new();
                 cmd.CommandType = System.Data.CommandType.Text;
                 cmd.CommandText = $"select I.ItemName,R.Quantity from Items I  join RequisitionItems R  ON R.ItemId=I.ItemId where RequisitionID= '{RequisitionID}'";
-             
+
 
                 cmd.Connection = connection;
                 connection.Open();
@@ -870,7 +870,7 @@ RequisitionStatus=1
             }
             catch (Exception ex)
             {
-                throw; 
+                throw;
             }
         }
 
@@ -977,7 +977,7 @@ RequisitionStatus=1
                 {
                     prod.Add(new Production
                     {
-                  
+
                         stageWork = reader["StageWork"] != DBNull.Value ? (string)reader["StageWork"] : string.Empty,
 
                         stageTime = reader["StageTime"] != DBNull.Value ? (int)reader["StageTime"] : 0,
@@ -1026,7 +1026,7 @@ RequisitionStatus=1
                         itemName = reader["Material"] != DBNull.Value ? (string)reader["Material"] : string.Empty,
                         UOM = reader["UnitOFMeasure"] != DBNull.Value ? (string)reader["UnitOFMeasure"] : string.Empty,
 
-                       
+
 
                     });
                 }
@@ -1055,7 +1055,7 @@ RequisitionStatus=1
                 connection = new SqlConnection(connectionstring);
                 SqlCommand cmd = new();
                 cmd.CommandType = System.Data.CommandType.Text;
-                 cmd.CommandText = $"SELECT m.ItemID AS MaterialID, m.ItemName AS Material, (pmm.Quantity * po.Quantity) AS RequiredQuantity, m.UnitOFMeasure, i.InStock AS AvailableQuantity FROM ProductionOrder po JOIN ProductMaterialMapping pmm ON po.ProductID = pmm.ProductID JOIN Items m ON pmm.MaterialID = m.ItemId JOIN Inventory i ON pmm.MaterialID = i.ItemId WHERE po.ProductionOrderID = '{productionOrderId}' AND i.InventoryCenter = 3";
+                cmd.CommandText = $"SELECT m.ItemID AS MaterialID, m.ItemName AS Material, (pmm.Quantity * po.Quantity) AS RequiredQuantity, m.UnitOFMeasure, i.InStock AS AvailableQuantity FROM ProductionOrder po JOIN ProductMaterialMapping pmm ON po.ProductID = pmm.ProductID JOIN Items m ON pmm.MaterialID = m.ItemId JOIN Inventory i ON pmm.MaterialID = i.ItemId WHERE po.ProductionOrderID = '{productionOrderId}' AND i.InventoryCenter = 3";
 
                 cmd.Connection = connection;
 
@@ -1102,7 +1102,7 @@ RequisitionStatus=1
 
                     using (SqlCommand cmd = new SqlCommand(query, connection))
                     {
-                        using(SqlDataReader reader = cmd.ExecuteReader())
+                        using (SqlDataReader reader = cmd.ExecuteReader())
                         {
                             while (reader.Read())
                             {
@@ -1361,8 +1361,8 @@ RequisitionStatus=1
                 using (SqlConnection connection = new SqlConnection(_connectionString))
                 {
                     string query = @"SELECT it.ItemName, it.ItemId, it.Specification FROM Items it ";
-                                     //JOIN Inventory i ON i.ItemID=it.ItemId
-                                     //WHERE it.ItemType = @Type AND i.CenterId = @CenterId";
+                    //JOIN Inventory i ON i.ItemID=it.ItemId
+                    //WHERE it.ItemType = @Type AND i.CenterId = @CenterId";
                     connection.Open();
                     using (SqlCommand cmd = new SqlCommand(query, connection))
                     {
@@ -1385,7 +1385,8 @@ RequisitionStatus=1
                     }
                 }
             }
-            catch (Exception) {
+            catch (Exception)
+            {
                 throw;
             }
             return list;
@@ -1418,16 +1419,17 @@ RequisitionStatus=1
                         stageMaterials.Columns.Add("ProductID", typeof(Guid));
                         stageMaterials.Columns.Add("Quantity", typeof(decimal));
                         stageMaterials.Columns.Add("MaterialType", typeof(byte));
-                        stages.ForEach(stage => {
-                            stageMaterials.Rows.Add(stage.stage, stage?.inputMaterial?.materialId, productId, stage?.inputMaterial?.quantity, stage?.inputMaterial?.materialType());
-                            stage?.outputMaterial?.ForEach(material => stageMaterials.Rows.Add(stage.stage, material.materialId, productId, material.quantity, material.materialType()));
+                        stages.ForEach(stage =>
+                        {
+                            stageMaterials.Rows.Add(stage.stage, stage?.inputMaterial?.materialId, productId, stage?.inputMaterial?.quantity, stage?.inputMaterial?.materialType);
+                            stage?.outputMaterial?.ForEach(material => stageMaterials.Rows.Add(stage.stage, material.materialId, productId, material.quantity, material.materialType));
                         });
                         using (SqlBulkCopy bulkCopy = new SqlBulkCopy(connection, SqlBulkCopyOptions.Default, transaction))
                         {
                             bulkCopy.DestinationTableName = "StageMaterials";
                             bulkCopy.WriteToServer(stageMaterials);
                         }
-                            transaction.Commit();
+                        transaction.Commit();
                     }
                     catch (Exception)
                     {
@@ -1436,6 +1438,93 @@ RequisitionStatus=1
                     }
                 }
             }
+        }
+
+        public List<Stage> FindStagesByProductId(Guid itemId)
+        {
+            List<Stage> stages = new List<Stage>();
+            using (SqlConnection connection = new SqlConnection(_connectionString))
+            {
+                connection.Open();
+                using (SqlTransaction transaction = connection.BeginTransaction())
+                {
+                    try
+                    {
+                        string stageQuery = @"SELECT ps.Stage, ps.StageTime, ps.StageWork FROM ProductionStages ps WHERE ps.ProductID = @ProductID";
+                        using (var cmd = new SqlCommand(stageQuery, connection, transaction))
+                        {
+                            cmd.Parameters.AddWithValue("@ProductID", itemId);
+                            using (var reader = cmd.ExecuteReader())
+                            {
+                                while (reader.Read())
+                                {
+                                    stages.Add(
+                                    new Stage
+                                    {
+                                        stage = reader.GetByte("Stage"),
+                                        stageWork = reader.GetString("StageWork"),
+                                        //stageTime = reader.GetInt32("StageTime"),
+                                    }
+                                   );
+                                }
+                            }
+                        }
+
+                        string materialQuery = @"SELECT sm.MaterialID, m.ItemName, sm.Quantity, m.UnitOFMeasure, m.Specification, sm.MaterialType, sm.Stage FROM StageMaterials sm JOIN Items m ON sm.MaterialID=m.ItemId WHERE sm.ProductID = @ProductID";
+                        using (var cmd = new SqlCommand(materialQuery, connection, transaction))
+                        {
+                            cmd.Parameters.AddWithValue("@ProductID", itemId);
+                            
+                            using (var reader = cmd.ExecuteReader())
+                            {
+                                int i = 0;
+                                while (reader.Read())
+                                {
+                                    byte stage = reader.GetByte("Stage");
+                                    if (stage > stages[i].stage)
+                                        i++;
+                                    
+                                        var stageMaterial = new StageMaterial
+                                        {
+                                            quantity = reader.GetDecimal("Quantity"),
+                                            materialId = reader.GetGuid("MaterialID"),
+                                            materialName = reader.GetString("ItemName"),
+                                            specification = reader.GetString("Specification"),
+                                            uom = reader.GetString("UnitOFMeasure"),
+                                            materialType = reader.GetByte("MaterialType"),
+                                        };
+
+                                        if (stageMaterial.materialType == 1)
+                                        stages[i].inputMaterial = new InputMaterial
+                                            {
+                                                materialId = stageMaterial.materialId,
+                                                quantity = stageMaterial.quantity,
+                                                materialName = stageMaterial.materialName,
+                                                specification = stageMaterial.specification,
+                                                uom = stageMaterial.uom,
+                                            };
+                                        else
+                                        stages[i].outputMaterial?.Add(new OutputMaterial
+                                            {
+                                                materialId = stageMaterial.materialId,
+                                                quantity = stageMaterial.quantity,
+                                                materialName = stageMaterial.materialName,
+                                                specification = stageMaterial.specification,
+                                                uom = stageMaterial.uom,
+                                            });
+                                }
+                            }
+                        }
+                        transaction.Commit();
+                    }
+                    catch (Exception)
+                    {
+                        transaction.Rollback();
+                        throw;
+                    }
+                }
+            }
+            return stages;
         }
     }
 }
