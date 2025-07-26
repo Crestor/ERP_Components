@@ -809,14 +809,21 @@ namespace ERP_Component_DAL.Services
                 connection = new SqlConnection(ConnectionString);
                 SqlCommand cmd = new SqlCommand();
                 cmd.CommandType = System.Data.CommandType.Text;
+                Guid transactionID = Guid.NewGuid();
 
-                cmd.CommandText = @"UPDATE customerQuotation SET GrossTotal = GrossTotal - @OldGrossTotal WHERE QuotationID = @QuotationID;
-            UPDATE Invoice SET Status = CASE WHEN (SELECT GrossTotal FROM customerQuotation WHERE QuotationID = @QuotationID) = 0 THEN 'Paid' ELSE 'Partial Paid' END WHERE QuotationID = @QuotationID;";
+                cmd.CommandText = @"UPDATE customerQuotation SET GrossTotal = GrossTotal - @ReceivedAmount WHERE QuotationID = @QuotationID;
+                                UPDATE Invoice SET Status = CASE WHEN (SELECT GrossTotal FROM customerQuotation WHERE QuotationID = @QuotationID) = 0 THEN 'Paid' ELSE 'Partial Paid' END WHERE QuotationID = @QuotationID;"
+                                +$"INSERT INTO Transactions(TransactionID, Amount, TransactionType, Remarks, AccountID) " +
+                                $"VALUES (@TransactionID, @ReceivedAmount, 0, 'Recieved Bill Amount', (SELECT c.AccountID FROM Customers c WHERE c.CustomerID = @CustomerID)); " +
+                                $"INSERT INTO TransactionsInvoiceBridge(TransactionID, InvoiceID) " +
+                                $"VALUES (@TransactionID, (SELECT InvoiceID FROM Invoice WHERE QuotationID = @QuotationID)); ";
 
                 cmd.Parameters.AddWithValue("@QuotationID", mp.QuotationID);
-                cmd.Parameters.AddWithValue("@OldGrossTotal", mp.OldGrossTotal);
-
+                cmd.Parameters.AddWithValue("@ReceivedAmount", mp.OldGrossTotal);
+                cmd.Parameters.AddWithValue("@TransactionID", transactionID);
+                cmd.Parameters.AddWithValue("@CustomerID", mp.CustomerID);
                 cmd.Connection = connection;
+
                 connection.Open();
                 cmd.ExecuteNonQuery();
 
@@ -1109,9 +1116,9 @@ namespace ERP_Component_DAL.Services
                 using (SqlConnection connection = new SqlConnection(_connectionString))
                 {
                     string query = @"SELECT t.TransactionID, t.TransactionDate, (CASE WHEN t.TransactionType = 1 THEN t.Amount ELSE -1.0 END) AS Debit, 
-                                    (CASE WHEN t.TransactionType = 2 THEN t.Amount ELSE -1.0 END) AS Credit, t.Remarks, ad.AccountNumber
+                                    (CASE WHEN t.TransactionType = 0 THEN t.Amount ELSE -1.0 END) AS Credit, t.Remarks, ad.AccountNumber
                                     FROM Transactions t
-                                    JOIN AccountDetails ad ON ad.AccountID = t.AccountID";
+                                    JOIN AccountDetails ad ON ad.AccountID = t.AccountID ORDER BY TransactionDate DESC";
                     connection.Open();
                     using (SqlCommand cmd = new SqlCommand(query, connection))
                     {
